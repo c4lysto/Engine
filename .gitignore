@@ -1,0 +1,20 @@
+*.obj
+*.tlog
+*.tlog
+Component System/Debug/Component System.tlog/Component System.lastbuildstate
+*.pdb
+Engine.sdf
+*.log
+Input Manager/Debug/vc120.pdb
+*.idb
+Input Manager/Debug/vc120.idb
+*.tlog
+Input Manager/Debug/Input Manager.log
+*.tlog
+*.tlog
+*.log
+Component System/Debug/Component System.tlog/Lib-link.read.1.tlog
+*.tlog
+Engine.v12.suo
+Input Manager/Debug/Input Manager.log
+*.tlog
