@@ -35,6 +35,8 @@ public:
 
 	void Set(Vec4V_In vSphere);
 	Vec4V_Out Get() const;
+	Vec4V_Ref GetRef();
+	Vec4V_ConstRef GetRef() const;
 
 };
 

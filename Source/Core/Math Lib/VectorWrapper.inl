@@ -547,6 +547,11 @@ template<> __forceinline Vector_Out VectorPermute<VecElem::X2, VecElem::Y2, VecE
 
 #undef BLEND_MASK
 
+__forceinline s32 VectorSignMask(Vector_In vec)
+{
+	return _mm_movemask_ps(vec);
+}
+
 __forceinline Vector_Out VectorMin(Vector_In lhs, Vector_In rhs)
 {
 	return _mm_min_ps(lhs, rhs);

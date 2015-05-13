@@ -189,6 +189,8 @@ Vector_Out VectorPermute(Vector_In vec);
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
 Vector_Out VectorPermute(Vector_In lhs, Vector_In rhs);
 
+s32 VectorSignMask(Vector_In vec);
+
 Vector_Out VectorMin(Vector_In lhs, Vector_In rhs);
 Vector_Out VectorMinInt(Vector_In lhs, Vector_In rhs);
 

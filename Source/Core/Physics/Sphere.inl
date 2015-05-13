@@ -40,3 +40,13 @@ __forceinline Vec4V_Out Sphere::Get() const
 {
 	return m_vSphere;
 }
+
+__forceinline Vec4V_Ref Sphere::GetRef()
+{
+	return m_vSphere;
+}
+
+__forceinline Vec4V_ConstRef Sphere::GetRef() const
+{
+	return m_vSphere;
+}

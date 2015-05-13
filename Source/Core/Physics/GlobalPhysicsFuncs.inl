@@ -67,5 +67,5 @@ __forceinline bool TestRayToSphere(Ray_In vRay, Sphere_In vSphere)
 
 __forceinline bool TestAABBToAABB(AABB_In lhs, AABB_In rhs)
 {
-	return (IsLessThan(lhs.m_vMax, rhs.m_vMin)) != 0;
+	return (IsGreaterThanOrEqualXYZ(lhs.GetMax(), rhs.GetMin()) & IsLessThanOrEqualXYZ(lhs.GetMin(), rhs.GetMax())) != 0;
 }

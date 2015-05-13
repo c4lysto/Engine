@@ -1,18 +1,8 @@
-﻿  InputManager.cpp
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\mat44v.inl(87): error C2719: 'rhs': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\mat44v.inl(88): error C2719: 'rhs': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\mat44v.inl(89): error C2719: 'rhs': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\mat44v.inl(90): error C2719: 'rhs': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\globalmathfuncs.inl(296): error C2719: 'mMatrix': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\globalmathfuncs.inl(302): error C2719: 'mMatrix': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\input\inputmanager.cpp(69): error C3867: 'InputManager::InputThreadProc': function call missing argument list; use '&InputManager::InputThreadProc' to create a pointer to member
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\input\inputmanager.cpp(69): error C2780: 'StaticFunctionPointer<retType,tArgs...> CreateFunctionPointer(retType (__cdecl *)(tArgs...))' : expects 1 arguments - 2 provided
-          c:\users\administrator\documents\ryan's projects repository\engine\source\core\utilities\functionpointer.h(264) : see declaration of 'CreateFunctionPointer'
-  WinMain.cpp
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\mat44v.inl(87): error C2719: 'rhs': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\mat44v.inl(88): error C2719: 'rhs': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\mat44v.inl(89): error C2719: 'rhs': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\mat44v.inl(90): error C2719: 'rhs': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\globalmathfuncs.inl(296): error C2719: 'mMatrix': formal parameter with __declspec(align('16')) won't be aligned
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\globalmathfuncs.inl(302): error C2719: 'mMatrix': formal parameter with __declspec(align('16')) won't be aligned
-  Generating Code...
+﻿Build started 5/13/15 9:19:26 AM.
+     1>Project "C:\Users\rmetts\Documents\GitHub\Engine\Input Manager\Input Manager.vcxproj" on node 4 (Build target(s)).
+     1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.Cpp.Platform.targets(64,5): error MSB8020: The build tools for CTP_Nov2013 (Platform Toolset = 'CTP_Nov2013') cannot be found. To build using the CTP_Nov2013 build tools, please install CTP_Nov2013 build tools.  Alternatively, you may upgrade to the current Visual Studio tools by selecting the Project menu or right-click the solution, and then selecting "Upgrade Solution...".
+     1>Done Building Project "C:\Users\rmetts\Documents\GitHub\Engine\Input Manager\Input Manager.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.01

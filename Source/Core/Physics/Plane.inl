@@ -46,7 +46,7 @@ __forceinline Vec4V_Out Plane::Get() const
 	return m_vPlane;
 }
 
-__forceinline Vec3V_Out Plane::GetPlanePos() const
+__forceinline Vec3V_Out Plane::GetPos() const
 {
 	return GetNormal() * GetOffset();
 }

@@ -1,15 +1,14 @@
-﻿  InputManager.cpp
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(972): error C2664: 'Vec2V::Vec2V(const Vec2V &)' : cannot convert argument 1 from 'void' to 'const Vec2V &'
-          Expressions of type void cannot be converted to other types
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(978): error C2664: 'Vec3V::Vec3V(const Vec3V &)' : cannot convert argument 1 from 'void' to 'const Vec3V &'
-          Expressions of type void cannot be converted to other types
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(984): error C2664: 'Vec4V::Vec4V(const Vec4V &)' : cannot convert argument 1 from 'void' to 'const Vec4V &'
-          Expressions of type void cannot be converted to other types
-  WinMain.cpp
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(972): error C2664: 'Vec2V::Vec2V(const Vec2V &)' : cannot convert argument 1 from 'void' to 'const Vec2V &'
-          Expressions of type void cannot be converted to other types
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(978): error C2664: 'Vec3V::Vec3V(const Vec3V &)' : cannot convert argument 1 from 'void' to 'const Vec3V &'
-          Expressions of type void cannot be converted to other types
-c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(984): error C2664: 'Vec4V::Vec4V(const Vec4V &)' : cannot convert argument 1 from 'void' to 'const Vec4V &'
-          Expressions of type void cannot be converted to other types
-  Generating Code...
+﻿Build started 5/13/15 9:20:09 AM.
+     1>Project "C:\Users\rmetts\Documents\GitHub\Engine\Input Manager\Input Manager.vcxproj" on node 4 (Build target(s)).
+     1>ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _WINDOWS /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt "..\..\..\Ryan's Projects Repository\Engine\Input Manager\WinMain.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Input\InputManager.cpp"
+         InputManager.cpp
+     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Input\InputManager.cpp': No such file or directory
+         WinMain.cpp
+     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Input Manager\WinMain.cpp': No such file or directory
+         Generating Code...
+     1>Done Building Project "C:\Users\rmetts\Documents\GitHub\Engine\Input Manager\Input Manager.vcxproj" (Build target(s)) -- FAILED.
+
+Build FAILED.
+
+Time Elapsed 00:00:00.36

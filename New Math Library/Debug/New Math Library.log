@@ -1,8 +1,8 @@
 ﻿Build started 5/13/15 9:19:26 AM.
-     1>Project "C:\Users\rmetts\Documents\GitHub\Engine\Component System\Component System.vcxproj" on node 3 (Build target(s)).
+     1>Project "C:\Users\rmetts\Documents\GitHub\Engine\New Math Library\New Math Library.vcxproj" on node 3 (Build target(s)).
      1>C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.Cpp.Platform.targets(64,5): error MSB8020: The build tools for CTP_Nov2013 (Platform Toolset = 'CTP_Nov2013') cannot be found. To build using the CTP_Nov2013 build tools, please install CTP_Nov2013 build tools.  Alternatively, you may upgrade to the current Visual Studio tools by selecting the Project menu or right-click the solution, and then selecting "Upgrade Solution...".
-     1>Done Building Project "C:\Users\rmetts\Documents\GitHub\Engine\Component System\Component System.vcxproj" (Build target(s)) -- FAILED.
+     1>Done Building Project "C:\Users\rmetts\Documents\GitHub\Engine\New Math Library\New Math Library.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:00.07
+Time Elapsed 00:00:00.14
