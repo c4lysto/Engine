@@ -1,0 +1,15 @@
+﻿  InputManager.cpp
+c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(972): error C2664: 'Vec2V::Vec2V(const Vec2V &)' : cannot convert argument 1 from 'void' to 'const Vec2V &'
+          Expressions of type void cannot be converted to other types
+c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(978): error C2664: 'Vec3V::Vec3V(const Vec3V &)' : cannot convert argument 1 from 'void' to 'const Vec3V &'
+          Expressions of type void cannot be converted to other types
+c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(984): error C2664: 'Vec4V::Vec4V(const Vec4V &)' : cannot convert argument 1 from 'void' to 'const Vec4V &'
+          Expressions of type void cannot be converted to other types
+  WinMain.cpp
+c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(972): error C2664: 'Vec2V::Vec2V(const Vec2V &)' : cannot convert argument 1 from 'void' to 'const Vec2V &'
+          Expressions of type void cannot be converted to other types
+c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(978): error C2664: 'Vec3V::Vec3V(const Vec3V &)' : cannot convert argument 1 from 'void' to 'const Vec3V &'
+          Expressions of type void cannot be converted to other types
+c:\users\administrator\documents\ryan's projects repository\engine\source\core\math lib\GlobalMathFuncs.inl(984): error C2664: 'Vec4V::Vec4V(const Vec4V &)' : cannot convert argument 1 from 'void' to 'const Vec4V &'
+          Expressions of type void cannot be converted to other types
+  Generating Code...
