@@ -1,0 +1,26 @@
+*.idb
+*.tlog
+Utilities/Debug/HashString.obj
+*.obj
+*.pdb
+Input Manager/Debug/vc120.pdb
+*.cod
+Component System/Debug/Component System.tlog/Lib-link.write.1.tlog
+*.exe
+Engine.sdf
+*.tlog
+*.pdb
+*.lastbuildstate
+Component System/Debug/Component System.tlog/Lib-link.read.1.tlog
+*.lib
+*.suo
+*.tlog
+*.pdb
+Input Manager/Debug/vc120.idb
+*.tlog
+Component System/Debug/Component System.tlog/Lib-link.write.1.tlog
+*.ilk
+Input Manager/Debug/Input Manager.log
+*.idb
+Input Manager/Debug/vc120.pdb
+*.tlog
