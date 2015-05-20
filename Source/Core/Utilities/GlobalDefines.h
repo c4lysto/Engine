@@ -1,6 +1,8 @@
 #ifndef GLOBAL_DEFINES_H
 #define GLOBAL_DEFINES_H
 
+#include "FeatureLevelDefines.h"
+
 typedef __int8 s8;
 typedef unsigned __int8 u8;
 typedef __int16 s16;
@@ -10,17 +12,26 @@ typedef unsigned __int32 u32;
 typedef __int64 s64;
 typedef unsigned __int64 u64;
 
+#ifdef NULL
+#undef NULL
+#define NULL nullptr
+#endif // NULL
+
 #ifndef SSE_AVAILABLE
 #if defined(_M_IX86) || defined(_M_AMD64)
-#define SSE_AVAILABLE 1
+#define SSE_AVAILABLE (1)
 #else
-#define SSE_AVAILABLE 0
+#define SSE_AVAILABLE (0)
 #endif
 #endif // SSE_AVAILABLE
 
 #ifndef ALIGN
 #define ALIGN(byteAlign) __declspec(align(byteAlign))
 #endif
+
+#ifndef RESTRICT
+#define RESTRICT __restrict
+#endif // RESTRICT
 
 #ifndef GLOBALCONST
 #define GLOBALCONST extern const __declspec(selectany)
@@ -45,6 +56,16 @@ typedef unsigned __int64 u64;
 #ifndef UNUSED_PARAM
 #define UNUSED_PARAM(x)
 #endif // UNUSED_PARAM
+
+#ifndef WARN_UNUSED_RESULT
+#if defined(_SAL_VERSION)
+	#define WARN_UNUSED_RESULT(x) _Check_return_ x
+#elif 0
+	#define WARN_UNUSED_RESULT(x) __attribute__(warn_unused_result) x
+#else
+	#define WARN_UNUSED_RESULT(x) x
+#endif
+#endif // WARN_UNUSED_RESULT
 
 #ifndef TO_STRING
 #define TO_STRING(str) #str

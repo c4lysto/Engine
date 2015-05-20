@@ -395,8 +395,35 @@ __forceinline _DeferredFuncPtr<retType(callConv *)(tArgs...), retType, tArgs...>
 }
 
 // Lambda Support
-//template<typename funcPtrType, typename... tArgs> \
-//__forceinline _DeferredFuncPtr<
+template <typename funcPtrType>
+struct function_traits : public function_traits<decltype(&funcPtrType::operator())> { };
+
+template <typename retType, typename className, typename... tArgs>
+struct function_traits< retType(className::*)(tArgs...) const>
+{
+	typedef retType(*pointerType)(tArgs...);
+	typedef retType ReturnType;
+};
+
+template <typename retType, typename... tArgs>
+struct function_traits< retType(*)(tArgs...) >
+{
+	typedef retType(*pointerType)(tArgs...);
+	typedef retType ReturnType;
+};
+
+template <typename funcPtrType>
+typename function_traits<funcPtrType>::pointerType _LambdaToFuncPtr(funcPtrType& lambdaFuncPtr)
+{
+	return static_cast< typename function_traits<funcPtrType>::pointerType >(lambdaFuncPtr);
+};
+
+template<typename funcPtrType, typename... tArgs> \
+__forceinline typename function_traits<funcPtrType>::pointerType \
+			CreateFunctionPointer(funcPtrType funcPtr) \
+{ \
+	return _LambdaToFuncPtr(funcPtr); \
+}
 
 CREATE_FUNC_PTR_WRAP_ALL(CREATE_STATIC_FUNC_WRAP, )
 #undef CREATE_STATIC_FUNC_WRAP

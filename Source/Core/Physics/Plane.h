@@ -36,9 +36,9 @@ public:
 	void Set(Vec4V_In vPlane);
 	Vec4V_Out Get() const;
 
-	Vec3V_Out GetPlanePos() const;
+	Vec3V_Out GetPos() const;
 };
 
-#include "Plane.h"
+#include "Plane.inl"
 
 #endif // PLANE_H

@@ -191,6 +191,14 @@ class Mat44V;
 #define RADIANS_TO_DEGREES(rad) ((rad) * _180_OVER_PI)
 #endif
 
+#ifndef TRUE_MASK
+#define TRUE_MASK (0xFFFFFFFF)
+#endif // TRUE_MASK
+
+#ifndef FALSE_MASK
+#define FALSE_MASK (0x0)
+#endif // FALSE_MASK
+
 #ifdef max
 #undef max
 #endif
