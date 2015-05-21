@@ -23,6 +23,7 @@
     <ClInclude Include="..\Source\Core\Math Lib\Mat33f.h" />
     <ClInclude Include="..\Source\Core\Math Lib\Mat33V.h" />
     <ClInclude Include="..\Source\Core\Math Lib\Mat34f.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Mat34V.h" />
     <ClInclude Include="..\Source\Core\Math Lib\Mat44f.h" />
     <ClInclude Include="..\Source\Core\Math Lib\Mat44V.h" />
     <ClInclude Include="..\Source\Core\Math Lib\MathDeclarations.h" />
@@ -42,6 +43,7 @@
     <None Include="..\Source\Core\Math Lib\Mat33f.inl" />
     <None Include="..\Source\Core\Math Lib\Mat33V.inl" />
     <None Include="..\Source\Core\Math Lib\Mat34f.inl" />
+    <None Include="..\Source\Core\Math Lib\Mat34V.inl" />
     <None Include="..\Source\Core\Math Lib\Mat44f.inl" />
     <None Include="..\Source\Core\Math Lib\Mat44V.inl" />
     <None Include="..\Source\Core\Math Lib\ScalarV.inl" />

@@ -5,13 +5,10 @@
 //#define GLOBALMATHFUNCS_INL
 
 #include "MathDeclarations.h"
-//#include "VecCmpResult.h"
 
 #ifndef MATHLIB_H
 #error "Don't Include GlobalMathFunc.h Directly. Include MathLib.h Instead."
 #endif // MATHLIB_H
-
-class VecCmpResult;
 
 
 // Utility Functions
@@ -36,15 +33,6 @@ Vec4f_Out Lerp(Vec4f_In lhs, Vec4f_In rhs, const float& fLambda);
 
 float Abs(const float& fScalar);
 double Abs(const double& fScalar);
-Vec2f_Out Abs(Vec2f_In vec);
-Vec3f_Out Abs(Vec3f_In vec);
-Vec4f_Out Abs(Vec4f_In vec);
-
-float Sqrt(const float& fScalar);
-double Sqrt(const double& fScalar);
-Vec2f_Out Sqrt(Vec2f_In vec);
-Vec3f_Out Sqrt(Vec3f_In vec);
-Vec4f_Out Sqrt(Vec4f_In vec);
 
 template<VecElem pX, VecElem pY> Vec2f_Out Permute(Vec2f_In lhs);
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3f_Out Permute(Vec3f_In lhs);
@@ -54,14 +42,10 @@ template<VecElem pX, VecElem pY> Vec2f_Out Permute(Vec2f_In lhs, Vec2f_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3f_Out Permute(Vec3f_In lhs, Vec3f_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4f_Out Permute(Vec4f_In lhs, Vec4f_In rhs);
 
-s32 SignMask(Vec2f_In vVector);
-s32 SignMask(Vec3f_In vVector);
-s32 SignMask(Vec4f_In vVector);
-
 
 // Comparison Functions
 
-#define VEC_CMP_DECLBASE(name, varType)	VecCmpResult name ( varType##_In lhs, varType##_In rhs);
+#define VEC_CMP_DECLBASE(name, varType)	varType##_Out name ( varType##_In lhs, varType##_In rhs);
 
 #define VEC_CMP_DECL(name, varType) bool name ( varType##_In lhs, varType##_In rhs);
 #define VEC_CMP_DECL1(name, varType) VEC_CMP_DECL( name##X, varType)
@@ -243,6 +227,9 @@ Vec3f_Out Cross(Vec3f_In lhs, Vec3f_In rhs);
 
 // Matrix Function
 
+Mat44f Mat34ToMat44(Mat34f_In mMatrix);
+Mat34f Mat44ToMat34(Mat44f_In mMatrix);
+
 Mat44f_Out MatrixInverse(Mat44f_In mMatrix);
 
 Mat33f_Out Transpose(Mat33f_In mMatrix);
@@ -268,9 +255,6 @@ Vec3V_Out Lerp(Vec3V_In lhs, Vec3V_In rhs, ScalarV_In vLambda);
 Vec4V_Out Lerp(Vec4V_In lhs, Vec4V_In rhs, ScalarV_In vLambda);
 
 ScalarV_Out Abs(ScalarV_In vScalar);
-Vec2V_Out Abs(Vec2V_In vec);
-Vec3V_Out Abs(Vec3V_In vec);
-Vec4V_Out Abs(Vec4V_In vec);
 
 template<VecElem pX, VecElem pY> Vec2V_Out Permute(Vec2V_In lhs);
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3V_Out Permute(Vec3V_In lhs);
@@ -279,10 +263,6 @@ template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4V_Out Permute(Vec4V
 template<VecElem pX, VecElem pY> Vec2V_Out Permute(Vec2V_In lhs, Vec2V_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3V_Out Permute(Vec3V_In lhs, Vec3V_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4V_Out Permute(Vec4V_In lhs, Vec4V_In rhs);
-
-s32 SignMask(Vec2V_In vVector);
-s32 SignMask(Vec3V_In vVector);
-s32 SignMask(Vec4V_In vVector);
 
 template<VecElem elem> ScalarV_Out ScalarVFromElement(Vector_In vVector);
 template<VecElem elem> ScalarV_Out ScalarVFromElement(Vec2V_In vVector);
@@ -378,9 +358,6 @@ VEC_CMP_DECL_VEC4(IsLessThanOrEqualInt, Vec4V)
 // Vector Math Functions
 
 ScalarV_Out Sqrt(ScalarV_In vScalar);
-Vec2V_Out Sqrt(Vec2V_In vec);
-Vec3V_Out Sqrt(Vec3V_In vec);
-Vec4V_Out Sqrt(Vec4V_In vec);
 
 ScalarV Dot(Vec2V_In vVectorA, Vec2V_In vVectorB);
 ScalarV Dot(Vec3V_In vVectorA, Vec3V_In vVectorB);
@@ -446,7 +423,10 @@ Vec4V_Out Round(Vec4V_In vVector);
 
 Mat44V_Out Lerp(Mat44V_In MatrixA, Mat44V_In MatrixB, ScalarV_In vLambda);
 
-Vec3V_Out CrossProduct(Vec3V_In lhs, Vec3V_In rhs);
+Vec3V_Out Cross(Vec3V_In lhs, Vec3V_In rhs);
+
+Mat44V Mat34ToMat44(Mat34V_In mMatrix);
+Mat34V Mat44ToMat34(Mat44V_In mMatrix);
 
 Mat44V_Out MatrixInverse(Mat44V_In mMatrix);
 
@@ -462,48 +442,6 @@ Mat44V MakeOrthographicMatrixV(float fWidth, float fHeight, float fNear, float f
 
 Mat44V MakeTextureMatrixOffsetV(unsigned int unWidth, unsigned int unHeight);
 #endif //SSE_AVAILABLE
-
-class VecCmpResult
-{
-private:
-	Vec4V m_VectorMask;	
-
-public:
-	explicit VecCmpResult(const bool& bX);
-	VecCmpResult(const bool& bX, const bool& bY);
-	VecCmpResult(const bool& bX, const bool& bY, const bool& bZ);
-	VecCmpResult(const bool& bX, const bool& bY, const bool& bZ, const bool bW);
-
-#if SSE_AVAILABLE
-	VecCmpResult(Vector_In result);
-#endif // SSE_AVAILABLE
-
-	explicit operator Vec2f() const;
-	explicit operator Vec3f() const;
-	explicit operator Vec4f() const;
-
-#if SSE_AVAILABLE
-	explicit operator Vec2V() const;
-	explicit operator Vec3V() const;
-	explicit operator Vec4V() const;
-	explicit operator Vector() const;
-#endif // SSE_AVAILABLE
-
-	int GetResultMask() const;
-	operator s32 () const;
-
-	bool IsTrueAny() const;
-	bool IsTrueAll() const;
-
-	template<VecElem index>
-	__forceinline bool IsTrue() const;
-
-	template<VecElem index0, VecElem index1>
-	__forceinline bool IsTrue() const;
-
-	template<VecElem index0, VecElem index1, VecElem index2>
-	bool IsTrue() const;
-};
 
 //#endif //GLOBALMATHFUNCS_INL
 

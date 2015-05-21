@@ -4,6 +4,7 @@
 #define MAT44V_H
 
 #include "Vec3V.h"
+#include "Vec4V.h"
 
 typedef Mat44V& Mat44V_Ref;
 typedef const Mat44V& Mat44V_ConstRef;
@@ -15,6 +16,8 @@ typedef Mat44V Mat44V_Out;
 
 // Other Mat44V Aliases
 typedef Mat44V float4x4V;
+
+class Mat34V;
 
 ALIGN(16) class Mat44V
 {
@@ -56,7 +59,6 @@ public:
 					const float& fWx, const float& fWy, const float& fWz, const float& fWw);
 	Mat44V(Mat44V_In mMatrix);
 	Mat44V(Mat44V&& mMatrix);
-	Mat44V(XMMATRIX&& mMatrix);
 	explicit Mat44V(Vec4V_In vXAxis,
 					Vec4V_In vYAxis,
 					Vec4V_In vZAxis,
@@ -66,6 +68,7 @@ public:
 	explicit Mat44V(eXRotationInitializer eXRotation, const float& fRotationInRadians);
 	explicit Mat44V(eYRotationInitializer eXRotation, const float& fRotationInRadians);
 	explicit Mat44V(eZRotationInitializer eXRotation, const float& fRotationInRadians);
+	explicit Mat44V(eMatrixPositionInitializer eMatrixPos, Vec3V_In vPos);
 
 #if defined(Mat44V_ACCESSOR) && defined(Mat44V_ACCESSOR_CONST)
 	Mat44V_ACCESSOR_CONST(Vec4V, GetXAxis, xAxis)
@@ -102,7 +105,6 @@ public:
 
 	Mat44V_ConstRef operator=(Mat44V_In mMatrix);
 	Mat44V_ConstRef operator=(Mat44V&& mMatrix);
-	Mat44V_ConstRef operator=(XMMATRIX&& mMatrix);
 
 	Mat44V_Out operator*(Mat44V_In mMatrix) const;
 	void operator*=(Mat44V_In mMatrix);
@@ -141,6 +143,8 @@ public:
 
 	void OrthoNormalInvert();
 };
+
+Mat34V Mat44ToMat34(Mat44V_In mMatrix);
 
 #include "Mat44V.inl"
 

@@ -48,6 +48,8 @@ enum eXRotationInitializer	{ I_ROTATION_X };
 enum eYRotationInitializer	{ I_ROTATION_Y };
 enum eZRotationInitializer	{ I_ROTATION_Z };
 
+enum eMatrixPositionInitializer	{ I_MAT_POS };
+
 enum class VecElem
 {
 	X = 0x0,
@@ -191,22 +193,14 @@ class Mat44V;
 #define RADIANS_TO_DEGREES(rad) ((rad) * _180_OVER_PI)
 #endif
 
-#ifndef TRUE_MASK
-#define TRUE_MASK (0xFFFFFFFF)
-#endif // TRUE_MASK
-
-#ifndef FALSE_MASK
-#define FALSE_MASK (0x0)
-#endif // FALSE_MASK
-
 #ifdef max
 #undef max
 #endif
-#define max(a,b) Max(a, b)
+#define max(a,b) Max((a), (b))
 
 #ifdef min
 #undef min
 #endif
-#define min(a,b) Min(a, b)
+#define min(a,b) Min((a), (b))
 
 #endif //MATHDECLARATIONS_H

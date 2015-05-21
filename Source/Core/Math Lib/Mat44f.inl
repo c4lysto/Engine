@@ -66,34 +66,13 @@ inline Mat44f::Mat44f(eZRotationInitializer UNUSED_PARAM(eZRotation), const floa
 	wAxis = g_IdentityW4;
 }
 
-inline Mat44f::Mat44f(XMMATRIX&& mMatrix)
+__forceinline Mat44f::Mat44f(eMatrixPositionInitializer UNUSED_PARAM(eMatrixPos), Vec3f_In vPos) :
+	xAxis(I_X_AXIS),
+	yAxis(I_Y_AXIS),
+	zAxis(I_Z_AXIS),
+	wAxis(vPos, 1.0f)
 {
-#if SSE_AVAILABLE
-	VectorStoreU(mMatrix.r[0], xAxis.GetVector());
-	VectorStoreU(mMatrix.r[1], yAxis.GetVector());
-	VectorStoreU(mMatrix.r[2], zAxis.GetVector());
-	VectorStoreU(mMatrix.r[3], wAxis.GetVector());
-#else
-	xAxis.x = mMatrix._11;
-	xAxis.y = mMatrix._12;
-	xAxis.z = mMatrix._13;
-	xAxis.w = mMatrix._14;
 
-	yAxis.x = mMatrix._21;
-	yAxis.y = mMatrix._22;
-	yAxis.z = mMatrix._23;
-	yAxis.w = mMatrix._24;
-
-	zAxis.x = mMatrix._31;
-	zAxis.y = mMatrix._32;
-	zAxis.z = mMatrix._33;
-	zAxis.w = mMatrix._34;
-
-	wAxis.x = mMatrix._41;
-	wAxis.y = mMatrix._42;
-	wAxis.z = mMatrix._43;
-	wAxis.w = mMatrix._44;
-#endif // SSE_AVAILABLE
 }
 
 __forceinline Mat44f::Mat44f(Vec4f_In vXAxis,
@@ -339,7 +318,7 @@ inline Vec4f_Out operator*(Vec4f_In vVector, Mat44f_In mMatrix)
 #endif
 }
 
-__forceinline Vec4f_ConstRef operator*=(Vec4f_Ref vVector, Mat44f_In mMatrix)
+__forceinline Vec4f_Ref operator*=(Vec4f_Ref vVector, Mat44f_In mMatrix)
 {
 	return vVector = vVector * mMatrix;
 }
@@ -477,7 +456,8 @@ __forceinline void Mat44f::Normalize()
 __forceinline void Mat44f::Invert()
 {
 #if 1
-	*this = DirectX::XMMatrixInverse(NULL, DirectX::XMLoadFloat4x4((DirectX::XMFLOAT4X4*)this));
+	DirectX::XMMATRIX mat = DirectX::XMMatrixInverse(NULL, DirectX::XMLoadFloat4x4((DirectX::XMFLOAT4X4*)this));
+	*this = *reinterpret_cast<Mat44f*>(&mat);
 #else
 	float determinant = MatrixDeterminant(*this);
 

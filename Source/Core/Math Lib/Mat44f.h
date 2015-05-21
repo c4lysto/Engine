@@ -16,6 +16,8 @@ typedef Mat44f Mat44f_Out;
 // Other Mat44f Aliases
 typedef Mat44f float4x4;
 
+class Mat34f;
+
 class Mat44f
 {
 #define Mat44_ACCESSOR(retType, name, retVal) \
@@ -48,7 +50,6 @@ public:
 					const float& fWx, const float& fWy, const float& fWz, const float& fWw);
 	Mat44f(Mat44f_In mMatrix);
 	Mat44f(Mat44f&& mMatrix);
-	Mat44f(XMMATRIX&& mMatrix);
 	explicit Mat44f(Vec4f_In vXAxis,
 					Vec4f_In vYAxis,
 					Vec4f_In vZAxis,
@@ -58,6 +59,7 @@ public:
 	explicit Mat44f(eXRotationInitializer eXRotation, const float& fRotationInRadians);
 	explicit Mat44f(eYRotationInitializer eYRotation, const float& fRotationInRadians);
 	explicit Mat44f(eZRotationInitializer eZRotation, const float& fRotationInRadians);
+	explicit Mat44f(eMatrixPositionInitializer eMatrixPos, Vec3f_In vPos);
 
 #if defined(Mat44_ACCESSOR) && defined(Mat44_ACCESSOR_CONST)
 	Mat44_ACCESSOR_CONST(Vec4f, GetXAxis, xAxis)
@@ -98,7 +100,7 @@ public:
 	Mat44f_Out operator*(Mat44f_In mMatrix) const;
 	void operator*=(Mat44f_In mMatrix);
 	friend Vec4f_Out operator*(Vec4f_In vVector, Mat44f_In mMatrix);
-	friend Vec4f_ConstRef operator*=(Vec4f_Ref vVector, Mat44f_In mMatrix);
+	friend Vec4f_Ref operator*=(Vec4f_Ref vVector, Mat44f_In mMatrix);
 
 	Mat44f_Out operator+(Mat44f_In rhs) const;
 	void operator+=(Mat44f_In rhs);
@@ -135,6 +137,8 @@ public:
 
 	void OrthoNormalInvert();
 };
+
+Mat34f Mat44ToMat34(Mat44f_In mMatrix);
 
 #include "Mat44f.inl"
 

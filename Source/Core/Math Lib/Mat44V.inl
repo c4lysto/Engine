@@ -26,14 +26,6 @@ __forceinline Mat44V::Mat44V(Mat44V&& mMatrix) :
 {
 }
 
-__forceinline Mat44V::Mat44V(XMMATRIX&& mMatrix) : 
-	xAxis(move(mMatrix.r[0])),
-	yAxis(move(mMatrix.r[1])),
-	zAxis(move(mMatrix.r[2])),
-	wAxis(move(mMatrix.r[3]))
-{
-}
-
 __forceinline Mat44V::Mat44V(Vec4V_In vXAxis,
 							 Vec4V_In vYAxis,
 							 Vec4V_In vZAxis,
@@ -83,6 +75,14 @@ inline Mat44V::Mat44V(eZRotationInitializer UNUSED_PARAM(eZRotation), const floa
 	wAxis = g_IdentityW4V;
 }
 
+__forceinline Mat44V::Mat44V(eMatrixPositionInitializer UNUSED_PARAM(eMatrixPos), Vec3V_In vPos) :
+	xAxis(I_X_AXIS),
+	yAxis(I_Y_AXIS),
+	zAxis(I_Z_AXIS),
+	wAxis(vPos, ScalarV(I_ONE))
+{
+}
+
 //__forceinline Mat44V::operator XMMATRIX() const
 //{
 //	return *(XMMATRIX*)this;
@@ -117,16 +117,6 @@ __forceinline Mat44V_ConstRef Mat44V::operator=(Mat44V&& mMatrix)
 	return *this;
 }
 
-__forceinline Mat44V_ConstRef Mat44V::operator=(XMMATRIX&& mMatrix)
-{
-	row1 = move(mMatrix.r[0]);
-	row2 = move(mMatrix.r[1]);
-	row3 = move(mMatrix.r[2]);
-	row4 = move(mMatrix.r[3]);
-
-	return *this;
-}
-
 inline Mat44V Mat44V::operator*(Mat44V_In mMatrix) const
 {
 	Mat44V result;
@@ -134,49 +124,49 @@ inline Mat44V Mat44V::operator*(Mat44V_In mMatrix) const
 	Vector tmp1, tmp2;
 
 	// get the top row
-	tmp1 = VectorSet(xAxis.x);
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row1);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorSet(xAxis.y);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row1);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorSet(xAxis.z);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row1);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorSet(xAxis.w);
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row1);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	result.row1 = tmp2;
 
 	// get 2nd row
-	tmp1 = VectorSet(yAxis.x);
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row2);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorSet(yAxis.y);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row2);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorSet(yAxis.z);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row2);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorSet(yAxis.w);
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row2);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	result.row2 = tmp2;
 
 	// get 3rd row
-	tmp1 = VectorSet(zAxis.x);
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row3);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorSet(zAxis.y);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row3);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorSet(zAxis.z);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row3);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorSet(zAxis.w);
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row3);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	result.row3 = tmp2;
 
 	// get 4th row
-	tmp1 = VectorSet(wAxis.x);
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row4);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorSet(wAxis.y);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row4);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorSet(wAxis.z);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row4);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorSet(wAxis.w);
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row4);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	result.row4 = tmp2;
@@ -189,49 +179,49 @@ inline void Mat44V::operator*=(Mat44V_In mMatrix)
 	Vector tmp1, tmp2;
 
 	// get the top row
-	tmp1 = VectorSet(xAxis.x);
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row1);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorSet(xAxis.y);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row1);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorSet(xAxis.z);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row1);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorSet(xAxis.w);
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row1);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	row1 = tmp2;
 
 	// get 2nd row
-	tmp1 = VectorSet(yAxis.x);
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row2);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorSet(yAxis.y);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row2);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorSet(yAxis.z);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row2);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorSet(yAxis.w);
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row2);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	row2 = tmp2;
 
 	// get 3rd row
-	tmp1 = VectorSet(zAxis.x);
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row3);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorSet(zAxis.y);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row3);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorSet(zAxis.z);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row3);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorSet(zAxis.w);
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row3);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	row3 = tmp2;
 
 	// get 4th row
-	tmp1 = VectorSet(wAxis.x);
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row4);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorSet(wAxis.y);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row4);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorSet(wAxis.z);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row4);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorSet(wAxis.w);
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row4);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	row4 = tmp2;
@@ -347,7 +337,8 @@ __forceinline void Mat44V::Normalize()
 
 __forceinline void Mat44V::Invert()
 {
-	*this = XMMatrixInverse(NULL, *(XMMATRIX*)this);
+	DirectX::XMMATRIX mat = XMMatrixInverse(NULL, *(XMMATRIX*)this);
+	*this = *reinterpret_cast<Mat44V*>(&mat);
 }
 
 inline void Mat44V::LookAt(Vec3V_In mPos, Vec3V_In vWorldUp)

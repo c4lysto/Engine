@@ -66,6 +66,9 @@
     <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Mat34V.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\Core\Math Lib\GlobalMathFuncs.inl">
@@ -108,6 +111,9 @@
       <Filter>Resource Files</Filter>
     </None>
     <None Include="..\Source\Core\Math Lib\VectorWrapper.inl">
+      <Filter>Resource Files</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Mat34V.inl">
       <Filter>Resource Files</Filter>
     </None>
   </ItemGroup>

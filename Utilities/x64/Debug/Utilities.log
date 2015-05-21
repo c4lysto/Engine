@@ -1,14 +1,12 @@
-﻿Build started 5/21/2015 12:51:31 AM.
+﻿Build started 5/21/2015 1:10:15 AM.
      1>Project "C:\Users\Administrator\Documents\GitHub\Engine\Utilities\Utilities.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I../Source/Core /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\Source\Core\Utilities\HashString.cpp ..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp
-         ObjectMemoryPool.cpp
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I../Source/Core /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\Source\Core\Utilities\HashString.cpp
          HashString.cpp
      1>c:\users\administrator\documents\github\engine\source\core\utilities\GlobalDefines.h(227): error C2065: '_MM_HINT_NTA' : undeclared identifier
      1>c:\users\administrator\documents\github\engine\source\core\utilities\GlobalDefines.h(227): error C3861: '_mm_prefetch': identifier not found
-         Generating Code...
      1>Done Building Project "C:\Users\Administrator\Documents\GitHub\Engine\Utilities\Utilities.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:02.14
+Time Elapsed 00:00:00.60

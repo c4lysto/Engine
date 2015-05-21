@@ -2,8 +2,8 @@
 #define MAT34F_H
 
 #include "Mat33f.h"
+#include "Mat44f.h"
 #include "Vec3f.h"
-#include "Vec4f.h"
 
 class Mat34f;
 
@@ -55,7 +55,6 @@ public:
 					const float& fWx, const float& fWy, const float& fWz);
 	Mat34f(Mat34f_In mMatrix);
 	Mat34f(Mat34f&& mMatrix);
-	Mat34f(XMMATRIX&& mMatrix);
 	explicit Mat34f(Vec3f_In vXAxis,
 					Vec3f_In vYAxis,
 					Vec3f_In vZAxis,
@@ -65,6 +64,7 @@ public:
 	explicit Mat34f(eXRotationInitializer eXRotation, const float& fRotationInRadians);
 	explicit Mat34f(eYRotationInitializer eYRotation, const float& fRotationInRadians);
 	explicit Mat34f(eZRotationInitializer eZRotation, const float& fRotationInRadians);
+	explicit Mat34f(eMatrixPositionInitializer eMatrixPos, Vec3f_In vPos);
 
 #if defined(MAT34F_ACCESSOR) && defined(MAT34F_ACCESSOR_CONST)
 	MAT34F_ACCESSOR_CONST(Vec3f, GetXAxis, xAxis)
@@ -87,13 +87,13 @@ public:
 #endif
 
 #ifdef MAT34F_MUTATOR
-	MAT44_MUTATOR(SetXAxis, Vec3f_In, xAxis)
-	MAT44_MUTATOR(SetYAxis, Vec3f_In, yAxis)
-	MAT44_MUTATOR(SetZAxis, Vec3f_In, zAxis)
-	MAT44_MUTATOR(SetWAxis, Vec3f_In, wAxis)
-#undef MAT44_MUTATOR
+	MAT34F_MUTATOR(SetXAxis, Vec3f_In, xAxis)
+	MAT34F_MUTATOR(SetYAxis, Vec3f_In, yAxis)
+	MAT34F_MUTATOR(SetZAxis, Vec3f_In, zAxis)
+	MAT34F_MUTATOR(SetWAxis, Vec3f_In, wAxis)
+#undef MAT34F_MUTATOR
 #else
-#error MAT44 MUTATORS NOT DEFINED!
+#error MAT34F MUTATORS NOT DEFINED!
 #endif
 
 
@@ -102,8 +102,9 @@ public:
 	Mat34f_Ref operator=(Mat34f_In mMatrix);
 	Mat34f_Ref operator=(Mat34f&& mMatrix);
 
+	friend Vec3f_Out operator*(Vec3f_ConstRef vPos, Mat34f_In mMatrix);
+	friend Vec3f_Ref operator*=(Vec3f_Ref vPos, Mat34f_In mMatrix);
 	friend Vec3f_Out operator*(Vec4f_In vVector, Mat34f_In mMatrix);
-	friend Vec4f_Ref operator*=(Vec4f_Ref vVector, Mat34f_In mMatrix);
 
 	Mat34f_Out operator+(Mat34f_In rhs) const;
 	void operator+=(Mat34f_In rhs);
@@ -111,7 +112,6 @@ public:
 	Mat34f_Out operator-(Mat34f_In rhs) const;
 	void operator-=(Mat34f_In rhs);
 
-	// actually faster than DirectX Version :)
 	void Rotate_GlobalX(const float& fRadians);
 	void Rotate_GlobalY(const float& fRadians);
 	void Rotate_GlobalZ(const float& fRadians);
@@ -120,26 +120,23 @@ public:
 	void Rotate_LocalY(const float& fRadians);
 	void Rotate_LocalZ(const float& fRadians);
 
-	void Scale(const Vec3f& vScale);
+	void Scale(Vec3f_In vScale);
 
-	void SetScale(const Vec3f& vScale);
+	void SetScale(Vec3f_In vScale);
 	Vec3f GetScale() const;
 
 	void Translate(Vec3f vTranslation);
 
-	void Transpose();
 	void Transpose3x3();
 
 	void Normalize();
 
-	void Invert();
-
-	void LookAt(const Vec3f& mPos, const Vec3f& vWorldUp = g_IdentityY3);
+	void LookAt(Vec3f_In mPos, Vec3f_In vWorldUp = g_IdentityY3);
 
 	void TurnTo(Vec3f_In vPos, const float& fDeltaTime, float fTurnModifier = 1.0f);
-
-	void OrthoNormalInvert();
 };
+
+Mat44f Mat34ToMat44(Mat34f_In mMatrix);
 
 #include "Mat34f.inl"
 
