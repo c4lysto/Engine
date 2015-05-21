@@ -28,3 +28,4 @@ Input Manager/Debug/vc120.pdb
 New Math Library/x64/Debug/New Math Library.log
 *.pdb
 *.obj
+*.opensdf

@@ -1,28 +1,14 @@
-﻿Build started 5/13/15 9:20:07 AM.
-     1>Project "C:\Users\rmetts\Documents\GitHub\Engine\Utilities\Utilities.vcxproj" on node 2 (Build target(s)).
+﻿Build started 5/21/2015 12:51:31 AM.
+     1>Project "C:\Users\Administrator\Documents\GitHub\Engine\Utilities\Utilities.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I../Source/Core /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\Debugging\DebugWindow.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\HashString.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysEvent.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysHook.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysMutex.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysSemaphore.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysSyncObject.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysThread.cpp" "..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\ThreadPool.cpp"
-         ThreadPool.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\ThreadPool.cpp': No such file or directory
-         SysThread.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysThread.cpp': No such file or directory
-         SysSyncObject.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysSyncObject.cpp': No such file or directory
-         SysSemaphore.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysSemaphore.cpp': No such file or directory
-         SysMutex.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysMutex.cpp': No such file or directory
-         SysHook.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysHook.cpp': No such file or directory
-         SysEvent.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\SysEvent.cpp': No such file or directory
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I../Source/Core /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /errorReport:prompt ..\Source\Core\Utilities\HashString.cpp ..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp
+         ObjectMemoryPool.cpp
          HashString.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\HashString.cpp': No such file or directory
-         DebugWindow.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Source\Core\Utilities\Debugging\DebugWindow.cpp': No such file or directory
+     1>c:\users\administrator\documents\github\engine\source\core\utilities\GlobalDefines.h(227): error C2065: '_MM_HINT_NTA' : undeclared identifier
+     1>c:\users\administrator\documents\github\engine\source\core\utilities\GlobalDefines.h(227): error C3861: '_mm_prefetch': identifier not found
          Generating Code...
-     1>Done Building Project "C:\Users\rmetts\Documents\GitHub\Engine\Utilities\Utilities.vcxproj" (Build target(s)) -- FAILED.
+     1>Done Building Project "C:\Users\Administrator\Documents\GitHub\Engine\Utilities\Utilities.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:02.31
+Time Elapsed 00:00:02.14

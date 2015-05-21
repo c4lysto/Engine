@@ -19,19 +19,37 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\Core\Math Lib\GlobalMathFuncs.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Mat33f.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Mat33V.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Mat34f.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Mat44f.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Mat44V.h" />
     <ClInclude Include="..\Source\Core\Math Lib\MathDeclarations.h" />
     <ClInclude Include="..\Source\Core\Math Lib\MathLib.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\ScalarV.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Vec2f.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Vec2V.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Vec3f.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Vec3V.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Vec4f.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\Vec4V.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\VecCmpResult.h" />
     <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\Core\Math Lib\GlobalMathFuncs.inl" />
+    <None Include="..\Source\Core\Math Lib\Mat33f.inl" />
+    <None Include="..\Source\Core\Math Lib\Mat33V.inl" />
+    <None Include="..\Source\Core\Math Lib\Mat34f.inl" />
+    <None Include="..\Source\Core\Math Lib\Mat44f.inl" />
     <None Include="..\Source\Core\Math Lib\Mat44V.inl" />
-    <None Include="..\Source\Core\Math Lib\Matrix44.inl" />
-    <None Include="..\Source\Core\Math Lib\Vec2.inl" />
+    <None Include="..\Source\Core\Math Lib\ScalarV.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec2f.inl" />
     <None Include="..\Source\Core\Math Lib\Vec2V.inl" />
-    <None Include="..\Source\Core\Math Lib\Vec3.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec3f.inl" />
     <None Include="..\Source\Core\Math Lib\Vec3V.inl" />
-    <None Include="..\Source\Core\Math Lib\Vec4.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec4f.inl" />
     <None Include="..\Source\Core\Math Lib\Vec4V.inl" />
     <None Include="..\Source\Core\Math Lib\VectorWrapper.inl" />
   </ItemGroup>

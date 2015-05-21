@@ -1,11 +1,11 @@
-﻿Build started 5/13/15 9:20:09 AM.
-     1>Project "C:\Users\rmetts\Documents\GitHub\Engine\Test Console\Test Console.vcxproj" on node 2 (Build target(s)).
+﻿Build started 5/21/2015 12:51:33 AM.
+     1>Project "C:\Users\Administrator\Documents\GitHub\Engine\Test Console\Test Console.vcxproj" on node 2 (Build target(s)).
      1>ClCompile:
-         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I"C:\Users\Administrator\Documents\Ryan's Projects Repository\Engine\Source\Core" /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /FAc /Fa"x64\Debug\\" /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /FI../Source/Core/Utilities/UtilitiesInclude.h /errorReport:prompt "..\..\..\Ryan's Projects Repository\Engine\Test Console\main.cpp"
+         C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\bin\x86_amd64\CL.exe /c /I..\Source\Core /Zi /nologo /W3 /WX- /sdl /Od /D WIN32 /D _DEBUG /D _CONSOLE /D _LIB /D _UNICODE /D UNICODE /Gm /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /FAc /Fa"x64\Debug\\" /Fo"x64\Debug\\" /Fd"x64\Debug\vc120.pdb" /Gd /TP /FI../Source/Core/Utilities/UtilitiesInclude.h /errorReport:prompt main.cpp
          main.cpp
-     1>c1xx : fatal error C1083: Cannot open source file: '..\..\..\Ryan's Projects Repository\Engine\Test Console\main.cpp': No such file or directory
-     1>Done Building Project "C:\Users\rmetts\Documents\GitHub\Engine\Test Console\Test Console.vcxproj" (Build target(s)) -- FAILED.
+     1>main.cpp(16): error C2871: 'VecElem' : a namespace with this name does not exist
+     1>Done Building Project "C:\Users\Administrator\Documents\GitHub\Engine\Test Console\Test Console.vcxproj" (Build target(s)) -- FAILED.
 
 Build FAILED.
 
-Time Elapsed 00:00:00.10
+Time Elapsed 00:00:04.06

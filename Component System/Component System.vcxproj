@@ -155,13 +155,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\Core\Components\ArmorComponent.h" />
     <ClInclude Include="..\Source\Core\Components\Component.h" />
     <ClInclude Include="..\Source\Core\Components\ComponentContainer.h" />
+    <ClInclude Include="..\Source\Core\Components\ComponentFactory.h" />
     <ClInclude Include="..\Source\Core\Components\Entity.h" />
+    <ClInclude Include="..\Source\Core\Components\EntityFactory.h" />
+    <ClInclude Include="..\Source\Core\Components\HealthComponent.h" />
+    <ClInclude Include="..\Source\Core\Components\ObjectTransform.h" />
+    <ClInclude Include="..\Source\Core\Components\TransformComponent.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\Core\Components\ArmorComponent.cpp" />
     <ClCompile Include="..\Source\Core\Components\ComponentContainer.cpp" />
+    <ClCompile Include="..\Source\Core\Components\ComponentFactory.cpp" />
     <ClCompile Include="..\Source\Core\Components\Entity.cpp" />
+    <ClCompile Include="..\Source\Core\Components\EntityFactory.cpp" />
+    <ClCompile Include="..\Source\Core\Components\HealthComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">

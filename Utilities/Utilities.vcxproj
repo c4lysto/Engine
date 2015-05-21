@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="..\Source\Core\Utilities\Debugging\DebugWindow.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\HashString.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\SysEvent.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\SysHook.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\SysMutex.cpp" />
@@ -36,6 +37,7 @@
     <ClInclude Include="..\Source\Core\Utilities\FunctionPointer.h" />
     <ClInclude Include="..\Source\Core\Utilities\GlobalDefines.h" />
     <ClInclude Include="..\Source\Core\Utilities\HashString.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h" />
     <ClInclude Include="..\Source\Core\Utilities\SysEvent.h" />
     <ClInclude Include="..\Source\Core\Utilities\SysHook.h" />
     <ClInclude Include="..\Source\Core\Utilities\SysMutex.h" />
