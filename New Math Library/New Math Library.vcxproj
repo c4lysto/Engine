@@ -19,21 +19,21 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\MathDeclarations.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\MathLib.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\VectorWrapper.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\MathDeclarations.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\MathLib.h" />
+    <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\GlobalMathFuncs.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\Mat44V.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\Matrix44.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\Vec2.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\Vec2V.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\Vec3.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\Vec3V.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\Vec4.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\Vec4V.inl" />
-    <None Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Math Lib\VectorWrapper.inl" />
+    <None Include="..\Source\Core\Math Lib\GlobalMathFuncs.inl" />
+    <None Include="..\Source\Core\Math Lib\Mat44V.inl" />
+    <None Include="..\Source\Core\Math Lib\Matrix44.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec2.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec2V.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec3.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec3V.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec4.inl" />
+    <None Include="..\Source\Core\Math Lib\Vec4V.inl" />
+    <None Include="..\Source\Core\Math Lib\VectorWrapper.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3C69EFDB-7DFC-4C91-9230-D6C8CDD88425}</ProjectGuid>
@@ -85,19 +85,19 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Administrator\Documents\Ryan%27s Projects Repository\Math Library;$(IncludePath)</IncludePath>
+    <IncludePath>..\Math Library;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
-    <IncludePath>C:\Users\Administrator\Documents\Ryan%27s Projects Repository\Math Library;$(IncludePath)</IncludePath>
+    <IncludePath>..\Math Library;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Administrator\Documents\Ryan%27s Projects Repository\Math Library;$(IncludePath)</IncludePath>
+    <IncludePath>..\Math Library;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
-    <IncludePath>C:\Users\Administrator\Documents\Ryan%27s Projects Repository\Math Library;$(IncludePath)</IncludePath>
+    <IncludePath>..\Math Library;$(IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>

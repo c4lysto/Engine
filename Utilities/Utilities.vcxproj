@@ -19,31 +19,31 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\Debugging\DebugWindow.cpp" />
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\HashString.cpp" />
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysEvent.cpp" />
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysHook.cpp" />
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysMutex.cpp" />
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysSemaphore.cpp" />
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysSyncObject.cpp" />
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysThread.cpp" />
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\ThreadPool.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\Debugging\DebugWindow.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\HashString.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\SysEvent.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\SysHook.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\SysMutex.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\SysSemaphore.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\SysSyncObject.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\SysThread.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\CriticalSection.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\Debugging\DebugHelp.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\Debugging\DebugWindow.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\FunctionPointer.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\GlobalDefines.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\HashString.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysEvent.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysHook.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysMutex.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysSemaphore.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysSyncObject.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\SysThread.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\ThreadPool.h" />
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Utilities\UtilitiesInclude.h" />
+    <ClInclude Include="..\Source\Core\Utilities\CriticalSection.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugHelp.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugWindow.h" />
+    <ClInclude Include="..\Source\Core\Utilities\FunctionPointer.h" />
+    <ClInclude Include="..\Source\Core\Utilities\GlobalDefines.h" />
+    <ClInclude Include="..\Source\Core\Utilities\HashString.h" />
+    <ClInclude Include="..\Source\Core\Utilities\SysEvent.h" />
+    <ClInclude Include="..\Source\Core\Utilities\SysHook.h" />
+    <ClInclude Include="..\Source\Core\Utilities\SysMutex.h" />
+    <ClInclude Include="..\Source\Core\Utilities\SysSemaphore.h" />
+    <ClInclude Include="..\Source\Core\Utilities\SysSyncObject.h" />
+    <ClInclude Include="..\Source\Core\Utilities\SysThread.h" />
+    <ClInclude Include="..\Source\Core\Utilities\ThreadPool.h" />
+    <ClInclude Include="..\Source\Core\Utilities\UtilitiesInclude.h" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{10AE78BB-987D-4061-A1D4-8F4ADD9A86EB}</ProjectGuid>
