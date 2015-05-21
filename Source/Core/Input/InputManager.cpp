@@ -27,8 +27,8 @@ using namespace std;
 InputManager g_InputManager;
 
 InputManager::InputManager() : 
-m_ucModifiers(IM_None), 
-m_ucConnectedDevices(DID_Mouse | DID_Keyboard), 
+m_ucModifiers((u8)InputModifier::None),
+m_ucConnectedDevices((int)InputDevice::Mouse | (int)InputDevice::Keyboard), 
 m_WindowHandle(nullptr)
 {
 
@@ -272,14 +272,14 @@ void InputManager::ProcessInput()
 
 			switch(pInputEvent->m_eInputState)
 			{
-				case IS_Pressed:
+				case (int)InputState::Pressed:
 				{
-					pInputEvent->m_eInputState = IS_Down;
+					pInputEvent->m_eInputState = InputState::Down;
 				}
 				break;
 
-				case IS_Released:
-				case IS_Changed:
+				case (int)InputState::Released:
+				case (int)InputState::Changed:
 				{
 					delete pInputEvent;
 					pInputEvent = nullptr;
@@ -323,49 +323,49 @@ void InputManager::HandleModifierInput(const InputEvent& inputEvent)
 {
 	switch(inputEvent.m_eInputID)
 	{
-	case KID_LShift:
+	case (int)InputID::LShift:
 		{
-			SetInputModifier(IM_LShift, inputEvent.m_eInputState < IS_Released);
+			SetInputModifier(InputModifier::LShift, inputEvent.m_eInputState < InputState::Released);
 		}
 		break;
 
-	case KID_RShift:
+	case (int)InputID::RShift:
 		{
-			SetInputModifier(IM_RShift, inputEvent.m_eInputState < IS_Released);
+			SetInputModifier(InputModifier::RShift, inputEvent.m_eInputState < InputState::Released);
 		}
 		break;
 
-	case KID_LCtrl:
+	case (int)InputID::LCtrl:
 		{
-			SetInputModifier(IM_LCtrl, inputEvent.m_eInputState < IS_Released);
+			SetInputModifier(InputModifier::LCtrl, inputEvent.m_eInputState < InputState::Released);
 		}
 		break;
 
-	case KID_RCtrl:
+	case (int)InputID::RCtrl:
 		{
-			SetInputModifier(IM_RCtrl, inputEvent.m_eInputState < IS_Released);
+			SetInputModifier(InputModifier::RCtrl, inputEvent.m_eInputState < InputState::Released);
 		}
 		break;
 
-	case KID_LAlt:
+	case (int)InputID::LAlt:
 		{
-			SetInputModifier(IM_LAlt, inputEvent.m_eInputState < IS_Released);
+			SetInputModifier(InputModifier::LAlt, inputEvent.m_eInputState < InputState::Released);
 		}
 		break;
 
-	case KID_RAlt:
+	case (int)InputID::RAlt:
 		{
-			SetInputModifier(IM_RAlt, inputEvent.m_eInputState < IS_Released);
+			SetInputModifier(InputModifier::RAlt, inputEvent.m_eInputState < InputState::Released);
 		}
 		break;
 	}
 }
 
-void InputManager::SetInputModifier(EInputModifier eModifier, bool bSet)
+void InputManager::SetInputModifier(InputModifier eModifier, bool bSet)
 {
-	if(Verify(eModifier > IM_None && eModifier <= IM_RAlt, "Input Manager - Trying To Set An Invalid Modifier"))
+	if(Verify(eModifier > InputModifier::None && eModifier <= InputModifier::RAlt, "Input Manager - Trying To Set An Invalid Modifier"))
 	{
-		m_ucModifiers = bSet ? (m_ucModifiers | eModifier) : (m_ucModifiers & ~eModifier);
+		m_ucModifiers = bSet ? (m_ucModifiers | (int)eModifier) : (m_ucModifiers & ~(int)eModifier);
 	}
 }
 
@@ -375,10 +375,10 @@ void InputManager::CreateKeyboardEvent(PRAWINPUT pInput)
 
 	InputEvent newEvent;
 	
-	newEvent.m_eInputID = EInputID(rwKeyboard.MakeCode | ((rwKeyboard.Flags & RID_ALT_SCANCODE_FLAG) << RID_SCANCODE_OFFSET));
-	newEvent.m_eInputState =  IS_Down;
-	newEvent.m_eModifiers = m_ucModifiers;
-	newEvent.m_eDeviceID = DID_Keyboard;
+	newEvent.m_eInputID = InputID(rwKeyboard.MakeCode | ((rwKeyboard.Flags & RID_ALT_SCANCODE_FLAG) << RID_SCANCODE_OFFSET));
+	newEvent.m_eInputState =  InputState::Down;
+	newEvent.m_eModifiers = (InputModifier)m_ucModifiers;
+	newEvent.m_eDeviceID = InputDevice::Keyboard;
 
 	PostButtonEvent(newEvent, !(rwKeyboard.Flags & RID_KEY_UP_FLAG));
 
@@ -419,17 +419,17 @@ void InputManager::PostButtonEvent(InputEvent& inputEvent, bool bIsDown)
 	{
 		if(!pDownEvent)
 		{
-			inputEvent.m_eInputState = IS_Pressed;
+			inputEvent.m_eInputState = InputState::Pressed;
 			PostInputEvent(&inputEvent);
 		}
 	}
 	else
 	{
-		inputEvent.m_eInputState = IS_Released;
+		inputEvent.m_eInputState = InputState::Released;
 
 		if(pDownEvent)
 		{
-			pDownEvent->m_eInputState = IS_Released;
+			pDownEvent->m_eInputState = InputState::Released;
 			PostInputEvent(pDownEvent);
 		}
 		else
@@ -452,11 +452,11 @@ void InputManager::PostInputEvent(const InputEvent* pInputEvent)
 			m_lCurrentEvents.push_back(pInputEvent->MakeNewCopy());
 		}
 
-		if(pInputEvent->m_eInputState != IS_Changed)
+		if(pInputEvent->m_eInputState != InputState::Changed)
 		{
 			InputEvent* pChangedEvent = pInputEvent->MakeNewCopy();
 
-			pChangedEvent->m_eInputState = IS_Changed;
+			pChangedEvent->m_eInputState = InputState::Changed;
 			m_lCurrentEvents.push_back(pChangedEvent);
 		}
 	}
@@ -504,7 +504,7 @@ void InputManager::InputThreadProc(void* pArgs)
 
 void InputManager::PostMouseButtonEvent(RAWMOUSE& rwMouse, InputMouseButtonEvent& newEvent)
 {
-	newEvent.m_eModifiers = m_ucModifiers;
+	newEvent.m_eModifiers = (InputModifier)m_ucModifiers;
 	newEvent.m_vMousePos = GetMousePosition();
 
 	if(rwMouse.usButtonFlags != RI_MOUSE_WHEEL)
@@ -513,7 +513,7 @@ void InputManager::PostMouseButtonEvent(RAWMOUSE& rwMouse, InputMouseButtonEvent
 		{
 			if((rwMouse.usButtonFlags & MOUSE_BUTTON_MASK(i)))
 			{
-				newEvent.m_eInputID = EInputID(KID_MouseButton1 + i);
+				newEvent.m_eInputID = InputID((int)InputID::MouseButton1 + i);
 				break;
 			}
 		}
@@ -523,8 +523,8 @@ void InputManager::PostMouseButtonEvent(RAWMOUSE& rwMouse, InputMouseButtonEvent
 	else
 	{
 		// If The High Bit Is Set Then That Means the Wheel Was Scrolled Down
-		newEvent.m_eInputID = (rwMouse.usButtonData & 0x8000) ? KID_MouseWheelDown : KID_MouseWheelUp;
-		newEvent.m_eInputState = IS_Changed;
+		newEvent.m_eInputID = (rwMouse.usButtonData & 0x8000) ? InputID::MouseWheelDown : InputID::MouseWheelUp;
+		newEvent.m_eInputState = InputState::Changed;
 
 		PostInputEvent(&newEvent);
 	}
@@ -540,11 +540,11 @@ void InputManager::RegisterEventCallback(InputEvent& inputEvent, InputCallbackfn
 	}
 }
 
-Vec2i InputManager::GetMousePosition()
+Vec2f InputManager::GetMousePosition()
 {
 	POINT cursorPos;
 	GetCursorPos(&cursorPos);
-	return Vec2i(cursorPos.x, cursorPos.y);
+	return Vec2f((float)cursorPos.x, (float)cursorPos.y);
 }
 
 LRESULT __stdcall InputManager::InputHookCallback(int code, WPARAM wParam, LPARAM lParam)
@@ -609,7 +609,7 @@ void InputManager::DisplayCurrentEvents()
 	{
 		InputEvent*& pInputEvent = (*iter);
 
-		cout << "Input Event - ID: " << pInputEvent->m_eInputID << "  State: " << pInputEvent->m_eInputState << "  Modifiers: " << pInputEvent->m_eModifiers << "  Device: " << pInputEvent->m_eDeviceID << endl;
+		cout << "Input Event - ID: " << (int)pInputEvent->m_eInputID << "  State: " << (int)pInputEvent->m_eInputState << "  Modifiers: " << (int)pInputEvent->m_eModifiers << "  Device: " << (int)pInputEvent->m_eDeviceID << endl;
 	}
 }
 #endif

@@ -29,3 +29,6 @@ New Math Library/x64/Debug/New Math Library.log
 *.pdb
 *.obj
 *.opensdf
+*.pdb
+Input Manager/x64/Debug/vc120.idb
+*.pdb

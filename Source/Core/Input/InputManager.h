@@ -50,7 +50,7 @@ private:
 	InputEvent* GetCurrentInputEvent(const InputEvent& inputEvent) const;
 
 	void HandleModifierInput(const InputEvent& inputEvent);
-	void SetInputModifier(EInputModifier eModifier, bool bSet);
+	void SetInputModifier(InputModifier eModifier, bool bSet);
 
 	void CreateKeyboardEvent(PRAWINPUT pInput);
 	void CreateMouseEvent(PRAWINPUT pInput);
@@ -85,7 +85,7 @@ public:
 
 	void RegisterEventCallback(InputEvent& inputEvent, InputCallbackfn& fpEventHandler, bool bOverrideCallback = false);
 
-	Vec2i GetMousePosition();
+	Vec2f GetMousePosition();
 
 public:
 	static LRESULT __stdcall InputHookCallback(int code, WPARAM wParam, LPARAM lParam);

@@ -9,171 +9,171 @@
 typedef long long QWORD;
 #endif
 
-enum EInputState : unsigned char
+enum class InputState : unsigned char
 {
-	IS_Pressed	= 0x0,
-	IS_Down		= 0x1,
-	IS_Released	= 0x2,
-	IS_Changed	= 0x4
+	Pressed	= 0x0,
+	Down		= 0x1,
+	Released	= 0x2,
+	Changed	= 0x4
 };
 
-enum EDeviceID : unsigned char
+enum class InputDevice : unsigned char
 {
-	DID_None		= 0x0,
-	DID_Mouse		= 0x1,
-	DID_Keyboard	= 0x2,
-	DID_Gamepad1	= 0x4,
-	DID_Gamepad2	= 0x8,
-	DID_Gamepad3	= 0x10,
-	DID_Gamepad4	= 0x20,
+	None		= 0x0,
+	Mouse		= 0x1,
+	Keyboard	= 0x2,
+	Gamepad1	= 0x4,
+	Gamepad2	= 0x8,
+	Gamepad3	= 0x10,
+	Gamepad4	= 0x20,
 
-	DID_GamepadAny	= (DID_Gamepad1 | DID_Gamepad2 | DID_Gamepad3 | DID_Gamepad4)
+	GamepadAny	= (Gamepad1 | Gamepad2 | Gamepad3 | Gamepad4)
 };
 
-enum EInputModifier : unsigned char
+enum class InputModifier : unsigned char
 {
-	IM_None		= 0,
-	IM_LCtrl	= 0x1,
-	IM_LShift	= 0x2,
-	IM_LAlt		= 0x4,
-	IM_RCtrl	= 0x8,
-	IM_RShift	= 0x10,
-	IM_RAlt		= 0x20,
+	None		= 0,
+	LCtrl	= 0x1,
+	LShift	= 0x2,
+	LAlt		= 0x4,
+	RCtrl	= 0x8,
+	RShift	= 0x10,
+	RAlt		= 0x20,
 
-	IM_Ctrl		= (IM_LCtrl | IM_RCtrl),
-	IM_Shift	= (IM_LShift | IM_RShift),
-	IM_Alt		= (IM_LAlt | IM_RAlt)
+	Ctrl	= (LCtrl | RCtrl),
+	Shift	= (LShift | RShift),
+	Alt		= (LAlt | RAlt)
 };
 
-enum EInputID : unsigned short
+enum class InputID : unsigned short
 {
 	// Keyboard
-	KID_None	= 0,
-	KID_Esc		= 1,
-	KID_1,
-	KID_2,
-	KID_3,
-	KID_4,
-	KID_5,
-	KID_6,
-	KID_7,
-	KID_8,
-	KID_9,
-	KID_0,
-	KID_Minus,
-	KID_Equals,
-	KID_Backspace,
-	KID_Tab,
-	KID_Q,
-	KID_W,
-	KID_E,
-	KID_R,
-	KID_T,
-	KID_Y,
-	KID_U,
-	KID_I,
-	KID_O,
-	KID_P,
-	KID_LBracket,
-	KID_RBracket,
-	KID_Enter,
-	KID_LCtrl,
-	KID_A,
-	KID_S,
-	KID_D,
-	KID_F,
-	KID_G,
-	KID_H,
-	KID_J,
-	KID_K,
-	KID_L,
-	KID_Semicolon,
-	KID_Apostrophe,
-	KID_Tilde,
-	KID_LShift,
-	KID_Backslash,
-	KID_Z,
-	KID_X,
-	KID_C,
-	KID_V,
-	KID_B,
-	KID_N,
-	KID_M,
-	KID_Comma,
-	KID_Period,
-	KID_Slash,
-	KID_RShift,
-	KID_NUM_Asterisk,
-	KID_LAlt,
-	KID_Space,
-	KID_CapsLock,
-	KID_F1,
-	KID_F2,
-	KID_F3,
-	KID_F4,
-	KID_F5,
-	KID_F6,
-	KID_F7,
-	KID_F8,
-	KID_F9,
-	KID_F10,
-	KID_NumLock,
-	KID_ScrollLock,
-	KID_NUM_7,
-	KID_NUM_8,
-	KID_NUM_9,
-	KID_NUM_Minus,
-	KID_NUM_4,
-	KID_NUM_5,
-	KID_NUM_6,
-	KID_NUM_Plus,
-	KID_NUM_1,
-	KID_NUM_2,
-	KID_NUM_3,
-	KID_NUM_0,
-	KID_NUM_Period,
-	KID_NUM_Divide	= (53 | 0x80),			// 53 + (flags & (0x2))
-	KID_NUM_Enter	= (28 | 0x80),			// 28 + (flags & (0x2))
+	None	= 0,
+	Esc		= 1,
+	ONE,
+	TWO,
+	THREE,
+	FOUR,
+	FIVE,
+	SIX,
+	SEVEN,
+	EIGHT,
+	NINE,
+	ZERO,
+	Minus,
+	Equals,
+	Backspace,
+	Tab,
+	Q,
+	W,
+	E,
+	R,
+	T,
+	Y,
+	U,
+	I,
+	O,
+	P,
+	LBracket,
+	RBracket,
+	Enter,
+	LCtrl,
+	A,
+	S,
+	D,
+	F,
+	G,
+	H,
+	J,
+	K,
+	L,
+	Semicolon,
+	Apostrophe,
+	Tilde,
+	LShift,
+	Backslash,
+	Z,
+	X,
+	C,
+	V,
+	B,
+	N,
+	M,
+	Comma,
+	Period,
+	Slash,
+	RShift,
+	NUM_Asterisk,
+	LAlt,
+	Space,
+	CapsLock,
+	F1,
+	F2,
+	F3,
+	F4,
+	F5,
+	F6,
+	F7,
+	F8,
+	F9,
+	F10,
+	NumLock,
+	ScrollLock,
+	NUM_7,
+	NUM_8,
+	NUM_9,
+	NUM_Minus,
+	NUM_4,
+	NUM_5,
+	NUM_6,
+	NUM_Plus,
+	NUM_1,
+	NUM_2,
+	NUM_3,
+	NUM_0,
+	NUM_Period,
+	NUM_Divide	= (53 | 0x80),			// 53 + (flags & (0x2))
+	NUM_Enter	= (28 | 0x80),			// 28 + (flags & (0x2))
 	// 86 is skipped for some reason...
-	KID_F11			= 87,					// 87
-	KID_F12,								// 88
-	KID_Insert		= (82 | (0x80)),		// 82 + (flags & (0x2))
-	KID_Delete		= (83 | (0x80)),		// 83 + (flags & (0x2))
-	KID_Home		= (71 | (0x80)),		// 71 + (flags & (0x2))
-	KID_End			= (79 | (0x80)),		// 79 + (flags & (0x2))
-	KID_PageUp		= (73 | (0x80)),		// 73 + (flags & (0x2))
-	KID_PageDown	= (81 | (0x80)),		// 81 + (flags & (0x2))
-	KID_Left		= (75 | (0x80)),		// 75 + (flags & (0x2))
-	KID_Right		= (77 | (0x80)),		// 77 + (flags & (0x2))
-	KID_Up			= (72 | (0x80)),		// 72 + (flags & (0x2))
-	KID_Down		= (80 | (0x80)),		// 80 + (flags & (0x2))
-	KID_RAlt		= (56 | (0x80)),		// 56 + (flags & (0x2))
-	KID_RCtrl		= (29 | (0x80)),		// 29 + (flags & (0x2))
+	F11			= 87,					// 87
+	F12,								// 88
+	Insert		= (82 | (0x80)),		// 82 + (flags & (0x2))
+	Delete		= (83 | (0x80)),		// 83 + (flags & (0x2))
+	Home		= (71 | (0x80)),		// 71 + (flags & (0x2))
+	End			= (79 | (0x80)),		// 79 + (flags & (0x2))
+	PageUp		= (73 | (0x80)),		// 73 + (flags & (0x2))
+	PageDown	= (81 | (0x80)),		// 81 + (flags & (0x2))
+	Left		= (75 | (0x80)),		// 75 + (flags & (0x2))
+	Right		= (77 | (0x80)),		// 77 + (flags & (0x2))
+	Up			= (72 | (0x80)),		// 72 + (flags & (0x2))
+	Down		= (80 | (0x80)),		// 80 + (flags & (0x2))
+	RAlt		= (56 | (0x80)),		// 56 + (flags & (0x2))
+	RCtrl		= (29 | (0x80)),		// 29 + (flags & (0x2))
 
 	// Mouse
-	KID_MouseButton1 = 0x100,
-	KID_MouseLButton = KID_MouseButton1,
-	KID_MouseButton2,
-	KID_MouseRButton = KID_MouseButton2,
-	KID_MouseButton3,
-	KID_MouseMButton = KID_MouseButton3,
-	KID_MouseButton4,
-	KID_MouseButton5,
-	KID_MouseWheelUp,
-	KID_MouseWheelDown,
-	KID_MouseMove
+	MouseButton1 = 0x100,
+	MouseLButton = MouseButton1,
+	MouseButton2,
+	MouseRButton = MouseButton2,
+	MouseButton3,
+	MouseMButton = MouseButton3,
+	MouseButton4,
+	MouseButton5,
+	MouseWheelUp,
+	MouseWheelDown,
+	MouseMove
 };
 
 struct InputEvent
 {
-	EInputID m_eInputID			: 16;
-	EInputState m_eInputState	: 4;
-	u32 m_eModifiers			: 6;
-	EDeviceID m_eDeviceID		: 6;
+	InputID m_eInputID			: 16;
+	InputState m_eInputState	: 4;
+	InputModifier m_eModifiers	: 6;
+	InputDevice m_eDeviceID		: 6;
 
-	InputEvent() : m_eInputID(KID_None), m_eDeviceID(DID_None), m_eInputState(IS_Changed), m_eModifiers(IM_None) {}
-	InputEvent(EDeviceID eDID) : m_eDeviceID(eDID) {}
-	InputEvent(EDeviceID eDID, EInputID eKID, EInputState eIS, u8 eModifiers = IM_None)
+	InputEvent() : m_eInputID(InputID::None), m_eDeviceID(InputDevice::None), m_eInputState(InputState::Changed), m_eModifiers(InputModifier::None) {}
+	InputEvent(InputDevice eDID) : m_eDeviceID(eDID) {}
+	InputEvent(InputDevice eDID, InputID eKID, InputState eIS, InputModifier eModifiers = InputModifier::None)
 			: m_eDeviceID(eDID), m_eInputID(eKID), m_eInputState(eIS), m_eModifiers(eModifiers) {}
 
 	virtual ~InputEvent() {}
@@ -225,11 +225,11 @@ struct InputEvent
 
 struct InputMouseButtonEvent : public InputEvent
 {
-	Vec2i m_vMousePos;
+	Vec2f m_vMousePos;
 
-	InputMouseButtonEvent() : InputEvent(DID_Mouse, KID_None, IS_Down) {}
-	InputMouseButtonEvent(EInputID eKID, EInputState eIS, EInputModifier modifiers, Vec2i vCurrMousePos)
-		: InputEvent(DID_Mouse, eKID, eIS, modifiers), m_vMousePos(vCurrMousePos) {}
+	InputMouseButtonEvent() : InputEvent(InputDevice::Mouse, InputID::None, InputState::Down) {}
+	InputMouseButtonEvent(InputID eKID, InputState eIS, InputModifier modifiers, Vec2f_In vCurrMousePos)
+		: InputEvent(InputDevice::Mouse, eKID, eIS, modifiers), m_vMousePos(vCurrMousePos) {}
 
 	virtual ~InputMouseButtonEvent() {}
 
@@ -241,12 +241,12 @@ struct InputMouseButtonEvent : public InputEvent
 
 struct InputMouseMoveEvent : public InputEvent
 {
-	Vec2i m_vMousePos;
+	Vec2f m_vMousePos;
 	Vec2f m_vMouseMovement;
 
-	InputMouseMoveEvent() : InputEvent(DID_Mouse, KID_MouseMove, IS_Changed) {}
-	InputMouseMoveEvent(Vec2i vCurrMousePos, Vec2f vCurrMouseMovement)
-		: InputEvent(DID_Mouse, KID_MouseMove, IS_Changed, IM_None), m_vMousePos(vCurrMousePos), m_vMouseMovement(vCurrMouseMovement) {}
+	InputMouseMoveEvent() : InputEvent(InputDevice::Mouse, InputID::MouseMove, InputState::Changed) {}
+	InputMouseMoveEvent(Vec2f_In vCurrMousePos, Vec2f_In vCurrMouseMovement)
+		: InputEvent(InputDevice::Mouse, InputID::MouseMove, InputState::Changed, InputModifier::None), m_vMousePos(vCurrMousePos), m_vMouseMovement(vCurrMouseMovement) {}
 
 	virtual ~InputMouseMoveEvent() {}
 
