@@ -32,16 +32,17 @@ public:
 };
 
 template<typename funcPtrType, typename retType, typename className, typename... tArgs>
-class _DeferredMemberFuncPtr : public _DeferredFuncPtr<funcPtrType, retType, tArgs...>
+class _DeferredMemberFuncPtr : public _FuncPtrBase<retType, tArgs...>
 {
 protected:
+	funcPtrType m_pFunc;
 	className* m_pInvokingObject;
 
 public:
-	_DeferredMemberFuncPtr(const _DeferredMemberFuncPtr& rhs) : _DeferredFuncPtr(rhs.m_pFunc), m_pInvokingObject(rhs.m_pInvokingObject) {}
-	_DeferredMemberFuncPtr(_DeferredMemberFuncPtr&& rhs) : _DeferredFuncPtr(rhs.m_pFunc), m_pInvokingObject(rhs.m_pInvokingObject) {}
-	_DeferredMemberFuncPtr(className* pInvokingObject, const funcPtrType& pFunc) : _DeferredFuncPtr(pFunc), m_pInvokingObject(pInvokingObject) {}
-	_DeferredMemberFuncPtr(className* pInvokingObject, funcPtrType&& pFunc) : _DeferredFuncPtr(pFunc), m_pInvokingObject(pInvokingObject) {}
+	_DeferredMemberFuncPtr(const _DeferredMemberFuncPtr& rhs) : m_pFunc(rhs.m_pFunc), m_pInvokingObject(rhs.m_pInvokingObject) {}
+	_DeferredMemberFuncPtr(_DeferredMemberFuncPtr&& rhs) : m_pFunc(rhs.m_pFunc), m_pInvokingObject(rhs.m_pInvokingObject) {}
+	_DeferredMemberFuncPtr(className* pInvokingObject, const funcPtrType& pFunc) : m_pFunc(pFunc), m_pInvokingObject(pInvokingObject) {}
+	_DeferredMemberFuncPtr(className* pInvokingObject, funcPtrType&& pFunc) : m_pFunc(pFunc), m_pInvokingObject(pInvokingObject) {}
 	_DeferredMemberFuncPtr(const funcPtrType& pFunc) : m_pFunc(pFunc) {}
 
 	virtual __forceinline retType operator()(tArgs... args) const
@@ -93,7 +94,7 @@ public:
 		}
 		return *this;
 	}
-	
+
 	StaticFunctionPointer& operator=(const _FuncPtr& pFunc)
 	{
 		m_pFunc = pFunc;
@@ -111,7 +112,7 @@ public:
 		m_pFunc = rhs.m_pFunc;
 		return *this;
 	}
-	
+
 	template<typename funcPtrType>
 	StaticFunctionPointer& operator=(_DeferredFuncPtr<funcPtrType, retType, tArgs...>&& rhs)
 	{
@@ -218,7 +219,7 @@ public:
 		return m_pFunc;
 	}
 
-	virtual __forceinline retType operator()(tArgs... args) const 
+	virtual __forceinline retType operator()(tArgs... args) const
 	{
 		return (m_pInvokingObject->*m_pFunc)(args...);
 	}
@@ -274,7 +275,7 @@ public:
 	{
 		m_pFuncWrapper = rhs.CreateCopy();
 	}
-	
+
 	template<typename className>
 	FunctionPointer(const MemberFunctionPointer<retType, className, tArgs...>& rhs)
 	{
@@ -288,11 +289,11 @@ public:
 	}
 
 	template<typename funcPtrType, typename className>
-	FunctionPointer(const _DeferredFuncPtr<funcPtrType, retType, className, tArgs...>& rhs)
+	FunctionPointer(const _DeferredMemberFuncPtr<funcPtrType, retType, className, tArgs...>& rhs)
 	{
 		m_pFuncWrapper = rhs.CreateCopy();
 	}
-	~FunctionPointer() {Clean();}
+	~FunctionPointer() { Clean(); }
 
 	FunctionPointer& operator=(const FunctionPointer& rhs)
 	{
@@ -331,7 +332,7 @@ public:
 		Assign(rhs);
 		return *this;
 	}
-	
+
 	template<typename className>
 	FunctionPointer& operator=(const MemberFunctionPointer<retType, className, tArgs...>& rhs)
 	{
@@ -347,7 +348,7 @@ public:
 	}
 
 	template<typename funcPtrType, typename className>
-	FunctionPointer& operator=(const _DeferredFuncPtr<funcPtrType, retType, className, tArgs...>& rhs)
+	FunctionPointer& operator=(const _DeferredMemberFuncPtr<funcPtrType, retType, className, tArgs...>& rhs)
 	{
 		Assign(rhs);
 		return *this;
