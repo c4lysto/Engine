@@ -138,29 +138,28 @@ __forceinline Vec4f_Out Permute(Vec4f_In lhs, Vec4f_In rhs)
 #define VEC_CMP_MAKE_MASK_4 VEC_CMP_MAKE_MASK_3 | ((vecResult.GetWRef() != 0) << 3)
 
 #define VEC_CMP_2(cmp) \
-		lhs.GetXRef() cmp rhs.GetXRef() ? 0xFFFFFFFF : 0, \
-		lhs.GetYRef() cmp rhs.GetYRef() ? 0xFFFFFFFF : 0
+	lhs.GetXRef() cmp rhs.GetXRef(), \
+	lhs.GetYRef() cmp rhs.GetYRef()
 
 #define VEC_CMP_3(cmp) \
-		VEC_CMP_2(cmp) \
-		, lhs.GetZRef() cmp rhs.GetZRef() ? 0xFFFFFFFF : 0
+	VEC_CMP_2(cmp) \
+	, lhs.GetZRef() cmp rhs.GetZRef()
 
 #define VEC_CMP_4(cmp) \
-		VEC_CMP_3(cmp) \
-		, lhs.GetWRef() cmp rhs.GetWRef() ? 0xFFFFFFFF : 0
+	VEC_CMP_3(cmp) \
+	, lhs.GetWRef() cmp rhs.GetWRef()
 
 #define VEC_CMP_DEFBASE(name, varType, cmpDef)	\
-	__forceinline varType##_Out name ( varType##_In lhs, varType##_In rhs) \
-	{ \
-		return varType##Int ( cmpDef ); \
-	}
+	__forceinline VecCmpResult name(varType##_In lhs, varType##_In rhs) \
+{ \
+	return VecCmpResult(cmpDef); \
+}
 
 #define VEC_CMP_DEF(name, amt, nameExt, varType) \
-	__forceinline bool name##nameExt ( varType##_In lhs, varType##_In rhs) \
-	{ \
-		varType vecResult = name(lhs, rhs); \
-		return ( VEC_CMP_MAKE_MASK_##amt ) == CMP_MASK_##nameExt ; \
-	}
+	__forceinline bool name##nameExt(varType##_In lhs, varType##_In rhs) \
+{ \
+	return VecCmpResult(name(lhs, rhs)) == CMP_MASK_##nameExt; \
+}
 
 #define VEC_CMP_DEF1(name, varType) VEC_CMP_DEF( name, 1, X, varType)
 #define VEC_CMP_DEF2(name, varType) VEC_CMP_DEF( name, 2, XY, varType)
@@ -168,86 +167,86 @@ __forceinline Vec4f_Out Permute(Vec4f_In lhs, Vec4f_In rhs)
 #define VEC_CMP_DEF4(name, varType) VEC_CMP_DEF( name, 4, XYZW, varType)
 
 #define VEC_CMP_DEF_VEC2(name, cmp, varType)  \
-		VEC_CMP_DEFBASE(name, varType, VEC_CMP_2(cmp)) \
-		VEC_CMP_DEF1(name, varType) \
-		VEC_CMP_DEF2(name, varType) 
+	VEC_CMP_DEFBASE(name, varType, VEC_CMP_2(cmp)) \
+	VEC_CMP_DEF1(name, varType) \
+	VEC_CMP_DEF2(name, varType)
 
 #define VEC_CMP_DEF_VEC3(name, cmp, varType)  \
-		VEC_CMP_DEFBASE(name, varType, VEC_CMP_3(cmp)) \
-		VEC_CMP_DEF1(name, varType) \
-		VEC_CMP_DEF2(name, varType) \
-		VEC_CMP_DEF3(name, varType)
+	VEC_CMP_DEFBASE(name, varType, VEC_CMP_3(cmp)) \
+	VEC_CMP_DEF1(name, varType) \
+	VEC_CMP_DEF2(name, varType) \
+	VEC_CMP_DEF3(name, varType)
 
 #define VEC_CMP_DEF_VEC4(name, cmp, varType)  \
-		VEC_CMP_DEFBASE(name, varType, VEC_CMP_4(cmp)) \
-		VEC_CMP_DEF1(name, varType) \
-		VEC_CMP_DEF2(name, varType) \
-		VEC_CMP_DEF3(name, varType) \
-		VEC_CMP_DEF4(name, varType)
+	VEC_CMP_DEFBASE(name, varType, VEC_CMP_4(cmp)) \
+	VEC_CMP_DEF1(name, varType) \
+	VEC_CMP_DEF2(name, varType) \
+	VEC_CMP_DEF3(name, varType) \
+	VEC_CMP_DEF4(name, varType)
 
-VEC_CMP_DEF_VEC2(IsEqual, ==, Vec2f)
-VEC_CMP_DEF_VEC3(IsEqual, ==, Vec3f)
-VEC_CMP_DEF_VEC4(IsEqual, ==, Vec4f)
+VEC_CMP_DEF_VEC2(IsEqual, == , Vec2f)
+VEC_CMP_DEF_VEC3(IsEqual, == , Vec3f)
+VEC_CMP_DEF_VEC4(IsEqual, == , Vec4f)
 
-VEC_CMP_DEF_VEC2(IsNotEqual, !=, Vec2f)
-VEC_CMP_DEF_VEC3(IsNotEqual, !=, Vec3f)
-VEC_CMP_DEF_VEC4(IsNotEqual, !=, Vec4f)
+VEC_CMP_DEF_VEC2(IsNotEqual, != , Vec2f)
+VEC_CMP_DEF_VEC3(IsNotEqual, != , Vec3f)
+VEC_CMP_DEF_VEC4(IsNotEqual, != , Vec4f)
 
 VEC_CMP_DEF_VEC2(IsGreaterThan, >, Vec2f)
 VEC_CMP_DEF_VEC3(IsGreaterThan, >, Vec3f)
 VEC_CMP_DEF_VEC4(IsGreaterThan, >, Vec4f)
 
-VEC_CMP_DEF_VEC2(IsGreaterThanOrEqual, >=, Vec2f)
-VEC_CMP_DEF_VEC3(IsGreaterThanOrEqual, >=, Vec3f)
-VEC_CMP_DEF_VEC4(IsGreaterThanOrEqual, >=, Vec4f)
+VEC_CMP_DEF_VEC2(IsGreaterThanOrEqual, >= , Vec2f)
+VEC_CMP_DEF_VEC3(IsGreaterThanOrEqual, >= , Vec3f)
+VEC_CMP_DEF_VEC4(IsGreaterThanOrEqual, >= , Vec4f)
 
 VEC_CMP_DEF_VEC2(IsLessThan, <, Vec2f)
 VEC_CMP_DEF_VEC3(IsLessThan, <, Vec3f)
 VEC_CMP_DEF_VEC4(IsLessThan, <, Vec4f)
 
-VEC_CMP_DEF_VEC2(IsLessThanOrEqual, <=, Vec2f)
-VEC_CMP_DEF_VEC3(IsLessThanOrEqual, <=, Vec3f)
-VEC_CMP_DEF_VEC4(IsLessThanOrEqual, <=, Vec4f)
+VEC_CMP_DEF_VEC2(IsLessThanOrEqual, <= , Vec2f)
+VEC_CMP_DEF_VEC3(IsLessThanOrEqual, <= , Vec3f)
+VEC_CMP_DEF_VEC4(IsLessThanOrEqual, <= , Vec4f)
 
 #undef VEC_CMP_2
 #undef VEC_CMP_3
 #undef VEC_CMP_4
 
 #define VEC_CMP_2(cmp) \
-	lhs.GetXiRef() cmp rhs.GetXiRef() ? 0xFFFFFFFF : 0, \
-	lhs.GetYiRef() cmp rhs.GetYiRef() ? 0xFFFFFFFF : 0
+	lhs.GetXiRef() cmp rhs.GetXiRef(), \
+	lhs.GetYiRef() cmp rhs.GetYiRef()
 
 #define VEC_CMP_3(cmp) \
 	VEC_CMP_2(cmp) \
-	, lhs.GetZiRef() cmp rhs.GetZiRef() ? 0xFFFFFFFF : 0
+	, lhs.GetZiRef() cmp rhs.GetZiRef()
 
 #define VEC_CMP_4(cmp) \
 	VEC_CMP_3(cmp) \
-	, lhs.GetWiRef() cmp rhs.GetWiRef() ? 0xFFFFFFFF : 0
+	, lhs.GetWiRef() cmp rhs.GetWiRef()
 
-VEC_CMP_DEF_VEC2(IsEqualInt, ==, Vec2f)
-VEC_CMP_DEF_VEC3(IsEqualInt, ==, Vec3f)
-VEC_CMP_DEF_VEC4(IsEqualInt, ==, Vec4f)
+VEC_CMP_DEF_VEC2(IsEqualInt, == , Vec2f)
+VEC_CMP_DEF_VEC3(IsEqualInt, == , Vec3f)
+VEC_CMP_DEF_VEC4(IsEqualInt, == , Vec4f)
 
-VEC_CMP_DEF_VEC2(IsNotEqualInt, !=, Vec2f)
-VEC_CMP_DEF_VEC3(IsNotEqualInt, !=, Vec3f)
-VEC_CMP_DEF_VEC4(IsNotEqualInt, !=, Vec4f)
+VEC_CMP_DEF_VEC2(IsNotEqualInt, != , Vec2f)
+VEC_CMP_DEF_VEC3(IsNotEqualInt, != , Vec3f)
+VEC_CMP_DEF_VEC4(IsNotEqualInt, != , Vec4f)
 
 VEC_CMP_DEF_VEC2(IsGreaterThanInt, >, Vec2f)
 VEC_CMP_DEF_VEC3(IsGreaterThanInt, >, Vec3f)
 VEC_CMP_DEF_VEC4(IsGreaterThanInt, >, Vec4f)
 
-VEC_CMP_DEF_VEC2(IsGreaterThanOrEqualInt, >=, Vec2f)
-VEC_CMP_DEF_VEC3(IsGreaterThanOrEqualInt, >=, Vec3f)
-VEC_CMP_DEF_VEC4(IsGreaterThanOrEqualInt, >=, Vec4f)
+VEC_CMP_DEF_VEC2(IsGreaterThanOrEqualInt, >= , Vec2f)
+VEC_CMP_DEF_VEC3(IsGreaterThanOrEqualInt, >= , Vec3f)
+VEC_CMP_DEF_VEC4(IsGreaterThanOrEqualInt, >= , Vec4f)
 
 VEC_CMP_DEF_VEC2(IsLessThanInt, <, Vec2f)
 VEC_CMP_DEF_VEC3(IsLessThanInt, <, Vec3f)
 VEC_CMP_DEF_VEC4(IsLessThanInt, <, Vec4f)
 
-VEC_CMP_DEF_VEC2(IsLessThanOrEqualInt, <=, Vec2f)
-VEC_CMP_DEF_VEC3(IsLessThanOrEqualInt, <=, Vec3f)
-VEC_CMP_DEF_VEC4(IsLessThanOrEqualInt, <=, Vec4f)
+VEC_CMP_DEF_VEC2(IsLessThanOrEqualInt, <= , Vec2f)
+VEC_CMP_DEF_VEC3(IsLessThanOrEqualInt, <= , Vec3f)
+VEC_CMP_DEF_VEC4(IsLessThanOrEqualInt, <= , Vec4f)
 
 #undef VEC_CMP_DEF_VEC4
 #undef VEC_CMP_DEF_VEC3
@@ -760,16 +759,16 @@ __forceinline ScalarV_Out ScalarVFromElement(Vec4V_In vVector)
 // Comparison Functions
 
 #define VEC_CMP_DEFBASE(name, varType)	\
-	__forceinline varType##_Out name ( varType##_In lhs, varType##_In rhs) \
-	{ \
-		return varType( Vector##name (lhs.GetVector(), rhs.GetVector()) ); \
-	}
+	__forceinline varType##_Out name(varType##_In lhs, varType##_In rhs) \
+{ \
+	return varType(Vector##name(lhs.GetVector(), rhs.GetVector())); \
+}
 
 #define VEC_CMP_DEF(name, nameExt, varType) \
-	__forceinline bool name##nameExt ( varType##_In lhs, varType##_In rhs ) \
-	{ \
-		return Vector##name##nameExt (lhs.GetVector(), rhs.GetVector()); \
-	}
+	__forceinline bool name##nameExt(varType##_In lhs, varType##_In rhs) \
+{ \
+	return Vector##name##nameExt(lhs.GetVector(), rhs.GetVector()); \
+}
 
 #define VEC_CMP_DEF1(name, varType) VEC_CMP_DEF(name, X, varType)
 #define VEC_CMP_DEF2(name, varType) VEC_CMP_DEF(name, XY, varType)
@@ -777,18 +776,18 @@ __forceinline ScalarV_Out ScalarVFromElement(Vec4V_In vVector)
 #define VEC_CMP_DEF4(name, varType) VEC_CMP_DEF(name, XYZW, varType)
 
 #define VEC_CMP_DEF_VEC2(name, varType) \
-		VEC_CMP_DEFBASE(name, varType) \
-		VEC_CMP_DEF1(name, varType) \
-		VEC_CMP_DEF2(name, varType)
+	VEC_CMP_DEFBASE(name, varType) \
+	VEC_CMP_DEF1(name, varType) \
+	VEC_CMP_DEF2(name, varType)
 
 #define VEC_CMP_DEF_VEC3(name, varType) \
-		VEC_CMP_DEF_VEC2(name, varType) \
-		VEC_CMP_DEF3(name, varType)
+	VEC_CMP_DEF_VEC2(name, varType) \
+	VEC_CMP_DEF3(name, varType)
 
 #define VEC_CMP_DEF_VEC4(name, varType) \
-		VEC_CMP_DEF_VEC3(name, varType) \
-		VEC_CMP_DEF4(name, varType)
-		
+	VEC_CMP_DEF_VEC3(name, varType) \
+	VEC_CMP_DEF4(name, varType)
+
 VEC_CMP_DEF_VEC2(IsEqual, Vec2V)
 VEC_CMP_DEF_VEC3(IsEqual, Vec3V)
 VEC_CMP_DEF_VEC4(IsEqual, Vec4V)
