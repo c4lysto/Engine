@@ -19,11 +19,14 @@ public:
 	const HashString& operator=(const HashString& rhs);
 	const HashString& operator=(const u32& rhs);
 
-	bool operator==(const HashString& rhs) {return m_Hash == rhs.m_Hash;}
-	bool operator==(const u32& rhs) {return m_Hash == rhs;}
+	bool operator==(const HashString& rhs) const {return m_Hash == rhs.m_Hash;}
+	bool operator==(const u32& rhs) const { return m_Hash == rhs; }
 
-	bool operator!=(const HashString& rhs) {return m_Hash != rhs.m_Hash;}
-	bool operator!=(const u32& rhs) {return m_Hash != rhs;}
+	bool operator!=(const HashString& rhs) const { return m_Hash != rhs.m_Hash; }
+	bool operator!=(const u32& rhs) const { return m_Hash != rhs; }
+
+	bool operator<(const HashString& rhs) const { return m_Hash < rhs.m_Hash; }
+	bool operator>(const HashString& rhs) const { return m_Hash > rhs.m_Hash; }
 
 	operator u32() {return m_Hash;}
 };
