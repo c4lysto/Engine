@@ -8,16 +8,16 @@ CEntity::CEntity() : m_ID(INVALID_ENTITY_ID)
 
 CEntity::~CEntity()
 {
-	m_Components.clear();
+	ShutdownComponents();
 }
 
 template<typename ComponentClass>
 void CEntity::AddComponent(ComponentClass* pComponent)
 {
-	if(Verify(pComponent, "Attempting To Add An Invalid Component To The Entity", COMPONENT_ID(ComponentClass)))
+	if(Verify(pComponent, "Attempting To Add An Invalid Component To An Entity", COMPONENT_ID(ComponentClass)))
 	{
-		if(/*Verify(COMPONENT_ID(ComponentClass) != INVALID_COMPONENT_ID, "Attempting To Add A Component With Invalid ID") &&*/ 
-		   m_Components.find(COMPONENT_ID(ComponentClass)) == m_Components.end())
+		if(Verify(m_Components.find(COMPONENT_ID(ComponentClass)) == m_Components.end(), 
+					"Component (ID: %d, Name: %s) Already Exists On Entity!", COMPONENT_ID(ComponentClass), COMPONENT_NAME(ComponentClass)))
 		{
 			m_Components.insert(pComponent);
 			pComponent->PostAdd();
@@ -26,31 +26,51 @@ void CEntity::AddComponent(ComponentClass* pComponent)
 }
 
 template<typename ComponentClass>
-void CEntity::RemoveComponent(ComponentClass* pComponent)
+void CEntity::RemoveComponent()
 {
-	if(Verify(pComponent, "Attempting To Remove An Invalid Component (%i) To The Entity", COMPONENT_ID(ComponentClass)))
+	Assert(COMPONENT_ID(ComponentClass) != INVALID_COMPONENT_ID, "Component (%s) has an ID that is the same as INVALID_COMPONENT_ID", COMPONENT_NAME(ComponentClass));
+	
+	//if(Verify(pComponent, "Attempting To Remove An Invalid Component (ID: %d, Name: %s) From An Entity", COMPONENT_ID(ComponentClass), COMPONENT_NAME(ComponentClass)))
 	{
-		if(/*Verify(COMPONENT_ID(ComponentClass) != INVALID_COMPONENT_ID, "Attempting To Remove A Component With Invalid ID") &&*/ 
-			m_Components.find(COMPONENT_ID(ComponentClass)) == m_Components.end())
+		EntityComponentContainer::iterator iter = m_Components.find(COMPONENT_ID(ComponentClass));
+		if(iter != m_Components.end())
 		{
-			m_Components.erase(pComponent);
-			pComponent->PostRemove();
+			if(iter->second)
+			{
+				iter->second->PostRemove();
+				delete iter->second;
+			}
+
+			m_Components.erase(iter);
 		}
 	}
 }
 
 template<typename ComponentClass>
-IComponent* CEntity::GetComponent()
+ComponentClass* CEntity::GetComponent()
 {
-	//if(COMPONENT_ID(ComponentClass) != INVALID_COMPONENT_ID)
-	{
-		EntityComponentContainer::iterator iter = m_Components.find(COMPONENT_ID(ComponentClass));
+	Assert(COMPONENT_ID(ComponentClass) != INVALID_COMPONENT_ID, "Component (%s) has an ID that is the same as INVALID_COMPONENT_ID", COMPONENT_NAME(ComponentClass));
 
-		if(iter != m_Component.end())
-		{
-			return (*iter);
-		}
+	EntityComponentContainer::iterator iter = m_Components.find(COMPONENT_ID(ComponentClass));
+
+	if(iter != m_Component.end())
+	{
+		return (ComponentClass*)iter->second;
 	}
 
 	return nullptr;
+}
+
+void CEntity::ShutdownComponents()
+{
+	for(EntityComponentContainer::iterator iter = m_Components.begin(); iter != m_Components.end(); ++iter)
+	{
+		if(iter->second)
+		{
+			iter->second->PostRemove();
+			delete iter->second;
+		}
+	}
+
+	m_Components.clear();
 }

@@ -1,48 +1,50 @@
 #ifndef COMPONENT_H
 #define COMPONENT_H
 
-#define INVALID_COMPONENT_ID ((u32)-1)
+#include <typeinfo>
+#include "../Utilities/Memory/ObjectMemoryPool.h"
+
+typedef u64 ComponentID;
+
+#define INVALID_COMPONENT_ID ((ComponentID)-1)
 
 template<typename ComponentClass>
-__forceinline size_t GetComponentID() \
+__forceinline ComponentID GetComponentID() \
 { \
-	return typeid(ComponentClass).hash_code(); \
+	return (ComponentID)typeid(ComponentClass).hash_code(); \
+}
+
+template<typename ComponentClass>
+__forceinline const char* GetComponentName() \
+{ \
+	return typeid(ComponentClass).name(); \
 }
 
 #define COMPONENT_ID(className) (GetComponentID<(className)>())
+#define COMPONENT_NAME(className) (GetComponentName<(className)>())
 
 
 class CEntity;
 
 class IComponent
 {
-#if DEBUG
-	char* m_szComponentName;
-#endif // DEBUG
-
 protected:
 	CEntity* m_pEntity;
 
-	//void SetUniqueID(u32 nID) { if(Verify(m_ID == INVALID_COMPONENT_ID, "Component ID Already Set!")) m_ID = nID; }
-
 public:
-	IComponent() : m_pEntity(nullptr)/*, m_ID(INVALID_COMPONENT_ID)*/ {}
-	IComponent(CEntity* pParent) : m_pEntity(pParent)/*, m_ID(INVALID_COMPONENT_ID)*/ DEBUG_ONLY(, m_szComponentName())
-	{
-		Assert(m_pEntity, "IComponent - Invalid Parent Entity");
-	}
+	IComponent() : m_pEntity(nullptr) {}
+	IComponent(CEntity* pParent) : m_pEntity(pParent) {}
 
-	virtual ~IComponent() = 0 {}
+	// Runtime Check, Slower Than Using COMPONENT_ID()/COMPONENT_NAME()
+	// and should only be used if we do not know the type of the component
+	// at compile time
+	__forceinline ComponentID GetID() {return typeid(*this).hash_code();}
+	__forceinline const char* GetName() {return typeid(*this).name();}
 
-	/*int GetID() {return m_ID;}*/
+	virtual ~IComponent() = 0 {m_pEntity = nullptr;}
 
 	virtual void PostAdd() {}
 	virtual void PostRemove() {}
-
-	/*bool operator<(const IComponent& rhs)
-	{
-		return m_ID < rhs.m_ID;
-	}*/
 };
 
 #endif // COMPONENT_H

@@ -9,16 +9,19 @@ using std::map;
 #include <string>
 using std::string;
 
-#define INVALID_ENTITY_ID ((u32)-1)
-
 class IComponent;
 
-typedef map<u32, IComponent*> EntityComponentContainer;
+typedef u64 ComponentID;
+typedef u64 EntityID;
+
+#define INVALID_ENTITY_ID ((EntityID)-1)
+
+typedef map<ComponentID, IComponent*> EntityComponentContainer;
 
 class CEntity
 {
 private:
-	u32 m_ID;
+	EntityID m_ID;
 
 #if DEBUG
 	string m_szEntityName;
@@ -30,16 +33,19 @@ public:
 	CEntity();
 	~CEntity();
 
-	u32 GetID() {return m_ID;}
+	EntityID GetID() {return m_ID;}
 
 	template<typename ComponentClass>
 	void AddComponent(ComponentClass* pComponent);
 
 	template<typename ComponentClass>
-	void RemoveComponent(ComponentClass* pComponent);
+	void RemoveComponent();
 
 	template<typename ComponentClass>
-	IComponent* GetComponent();
+	ComponentClass* GetComponent();
+
+private:
+	void ShutdownComponents();
 
 };
 
