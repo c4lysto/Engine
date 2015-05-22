@@ -10,6 +10,7 @@
 #error "Don't Include GlobalMathFunc.h Directly. Include MathLib.h Instead."
 #endif // MATHLIB_H
 
+class VecCmpResult;
 
 // Utility Functions
 
@@ -45,7 +46,7 @@ template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4f_Out Permute(Vec4f
 
 // Comparison Functions
 
-#define VEC_CMP_DECLBASE(name, varType)	varType##_Out name ( varType##_In lhs, varType##_In rhs);
+#define VEC_CMP_DECLBASE(name, varType)	VecCmpResult name ( varType##_In lhs, varType##_In rhs);
 
 #define VEC_CMP_DECL(name, varType) bool name ( varType##_In lhs, varType##_In rhs);
 #define VEC_CMP_DECL1(name, varType) VEC_CMP_DECL( name##X, varType)
@@ -54,17 +55,17 @@ template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4f_Out Permute(Vec4f
 #define VEC_CMP_DECL4(name, varType) VEC_CMP_DECL( name##XYZW, varType)
 
 #define VEC_CMP_DECL_VEC2(name, varType)  \
-		VEC_CMP_DECLBASE(name, varType) \
-		VEC_CMP_DECL1(name, varType) \
-		VEC_CMP_DECL2(name, varType) 
+	VEC_CMP_DECLBASE(name, varType) \
+	VEC_CMP_DECL1(name, varType) \
+	VEC_CMP_DECL2(name, varType)
 
 #define VEC_CMP_DECL_VEC3(name, varType)  \
-		VEC_CMP_DECL_VEC2(name, varType) \
-		VEC_CMP_DECL3(name, varType)
+	VEC_CMP_DECL_VEC2(name, varType) \
+	VEC_CMP_DECL3(name, varType)
 
 #define VEC_CMP_DECL_VEC4(name, varType)  \
-		VEC_CMP_DECL_VEC3(name, varType) \
-		VEC_CMP_DECL4(name, varType)
+	VEC_CMP_DECL_VEC3(name, varType) \
+	VEC_CMP_DECL4(name, varType)
 
 VEC_CMP_DECL_VEC2(IsEqual, Vec2f)
 VEC_CMP_DECL_VEC3(IsEqual, Vec3f)
@@ -283,17 +284,17 @@ template<VecElem elem> ScalarV_Out ScalarVFromElement(Vec4V_In vVector);
 #define VEC_CMP_DECL4(name, varType) VEC_CMP_DECL( name##XYZW, varType)
 
 #define VEC_CMP_DECL_VEC2(name, varType)  \
-		VEC_CMP_DECLBASE(name, varType) \
-		VEC_CMP_DECL1(name, varType) \
-		VEC_CMP_DECL2(name, varType) 
+	VEC_CMP_DECLBASE(name, varType) \
+	VEC_CMP_DECL1(name, varType) \
+	VEC_CMP_DECL2(name, varType)
 
 #define VEC_CMP_DECL_VEC3(name, varType)  \
-		VEC_CMP_DECL_VEC2(name, varType) \
-		VEC_CMP_DECL3(name, varType)
+	VEC_CMP_DECL_VEC2(name, varType) \
+	VEC_CMP_DECL3(name, varType)
 
 #define VEC_CMP_DECL_VEC4(name, varType)  \
-		VEC_CMP_DECL_VEC3(name, varType) \
-		VEC_CMP_DECL4(name, varType)
+	VEC_CMP_DECL_VEC3(name, varType) \
+	VEC_CMP_DECL4(name, varType)
 
 VEC_CMP_DECL_VEC2(IsEqual, Vec2V)
 VEC_CMP_DECL_VEC3(IsEqual, Vec3V)
@@ -442,6 +443,48 @@ Mat44V MakeOrthographicMatrixV(float fWidth, float fHeight, float fNear, float f
 
 Mat44V MakeTextureMatrixOffsetV(unsigned int unWidth, unsigned int unHeight);
 #endif //SSE_AVAILABLE
+
+class VecCmpResult
+{
+private:
+	Vec4V m_VectorMask;
+
+public:
+	explicit VecCmpResult(const bool& bX);
+	VecCmpResult(const bool& bX, const bool& bY);
+	VecCmpResult(const bool& bX, const bool& bY, const bool& bZ);
+	VecCmpResult(const bool& bX, const bool& bY, const bool& bZ, const bool bW);
+
+#if SSE_AVAILABLE
+	VecCmpResult(Vector_In result);
+#endif // SSE_AVAILABLE
+
+	explicit operator Vec2f() const;
+	explicit operator Vec3f() const;
+	explicit operator Vec4f() const;
+
+#if SSE_AVAILABLE
+	explicit operator Vec2V() const;
+	explicit operator Vec3V() const;
+	explicit operator Vec4V() const;
+	explicit operator Vector() const;
+#endif // SSE_AVAILABLE
+
+	int GetResultMask() const;
+	operator s32 () const;
+
+	bool IsTrueAny() const;
+	bool IsTrueAll() const;
+
+	template<VecElem index>
+	__forceinline bool IsTrue() const;
+
+	template<VecElem index0, VecElem index1>
+	__forceinline bool IsTrue() const;
+
+	template<VecElem index0, VecElem index1, VecElem index2>
+	bool IsTrue() const;
+};
 
 //#endif //GLOBALMATHFUNCS_INL
 
