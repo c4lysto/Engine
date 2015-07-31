@@ -1,21 +1,38 @@
-#ifndef SYSSEMAPHORE_H
-#define SYSSEMAPHORE_H
-#include "SysSyncObject.h"
+#ifndef _RECON_SYSSEMAPHORE_H_
+#define _RECON_SYSSEMAPHORE_H_
 
-// Semaphore Can Only Be Created Via SysCreateSemaphore(int)
+#include "UtilitiesInclude.h"
+
+namespace recon
+{
+
+// Semaphore Can Only Be Created Via SysCreateSemaphore(SysSemaphore&, int)
 // Semaphore Must Be Closed Via SysCloseSemaphore(SysSemaphore&)
-class SysSemaphore : public SysSyncObject
+class SysSemaphore
 {
 public:
-	SysSemaphore() {}
-	~SysSemaphore() {}
+	typedef void* Handle;
 
-	void Signal(int nSignalCount = 1);
+private:
+	SysSemaphore::Handle m_Semaphore;
+
+public:
+	SysSemaphore();
+	~SysSemaphore();
+
+	SysSemaphore(const SysSemaphore& rhs) = delete;
+	SysSemaphore& operator=(const SysSemaphore& rhs) = delete;
+
+	void Wait();
+	bool TryWait();
+	void Unlock(int nSignalCount = 1);
 
 public:
 
-	friend SysSemaphore SysCreateSemaphore(int nInitialCount = 0);
+	friend void SysCreateSemaphore(SysSemaphore& sysSemaphore, int nInitialCount = 0);
 	friend void SysCloseSemaphore(SysSemaphore& sysSemaphore);
 };
 
-#endif // SYSSEMAPHORE_H
+} // namespace recon
+
+#endif // _RECON_SYSSEMAPHORE_H_

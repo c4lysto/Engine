@@ -1,15 +1,16 @@
-#ifndef	THREADPOOL_H
-#define THREADPOOL_H
+#ifndef	_RECON_THREADPOOL_H_
+#define _RECON_THREADPOOL_H_
 
-#include <vector>
-using std::vector;
-
+#include <atomic>
 #include <queue>
-using std::queue;
+#include <vector>
 
 #include "SysThread.h"
 #include "SysSemaphore.h"
-#include "CriticalSection.h"
+#include "SysCriticalSection.h"
+
+namespace recon
+{
 
 class ThreadPool
 {
@@ -18,47 +19,37 @@ private:
 	{
 		SysThreadProc m_pProc;
 		void* m_pArgs;
-		eThreadPriority m_ePriority;
+		SysThreadPriority m_ePriority;
 
 		JobArgs() {}
-		JobArgs(SysThreadProc pProc, void* pArgs, eThreadPriority ePriority) :
+		JobArgs(SysThreadProc pProc, void* pArgs, SysThreadPriority ePriority) :
 			m_pProc(pProc), m_pArgs(pArgs), m_ePriority(ePriority) {}
-
-		/*const JobArgs& operator=(const JobArgs& rhs)
-		{
-			if(this != &rhs)
-			{
-				m_pProc = rhs.m_pProc; 
-				m_pArgs = rhs.m_pArgs;
-				m_ePriority = rhs.m_ePriority;
-			}
-			return *this;
-		}*/
 	};
 
 private:
-	SysSyncObjectMultiple m_GroupSyncObject;
 	SysSemaphore m_JobSemaphore;
-	CriticalSection m_JobCS;
-	vector<SysThread*> m_vThreads;
-	queue<JobArgs> m_qJobs;
-
-	void AddThread(SysThread* pThread);
+	SysCriticalSection m_JobCS;
+	std::vector<SysThread> m_vThreads;
+	std::queue<JobArgs> m_qJobs;
 
 	static void WorkerThreadProc(void* pArgs);
 
-	JobArgs GetWork();
+	bool GetWork(JobArgs& jobArgs);
 
 public:
 	ThreadPool();
 	~ThreadPool();
 
 	// Optional Call
-	void Init(size_t poolSize);
+	void Init(size_t poolSize, const char* szPoolName = "Thread Pool");
 
 	void Shutdown();
 
-	void AddWork(SysThreadProc pProc, void* pArgs, eThreadPriority ePriority = THREAD_PRIO_NORMAL);
+	void AddWork(SysThreadProc pProc, void* pArgs, SysThreadPriority ePriority = SysThreadPriority::Normal);
+
+	void ClearWorkQueue();
 };
 
-#endif // THREADPOOL_H
+} // namespace recon
+
+#endif // _RECON_THREADPOOL_H_

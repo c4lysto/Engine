@@ -1,69 +1,80 @@
-#ifndef SYSTHREAD_H
-#define SYSTHREAD_H
+#ifndef _RECON_SYSTHREAD_H_
+#define _RECON_SYSTHREAD_H_
 
-#include "SysSyncObject.h"
 #include "FunctionPointer.h"
+#include <thread>
+
+namespace recon
+{
 
 typedef FunctionPointer<void, void*> SysThreadProc;
+class SysEvent;
 
-#define THREAD_KILL_RET_VAL (0xCDCDCDCDU)
-
-enum eThreadPriority
+enum class SysThreadPriority
 {
-	THREAD_PRIO_IDLE = -15,
-	THREAD_PRIO_LOW = -2,
-	THREAD_PRIO_BELOW_NORMAL = -1,
-	THREAD_PRIO_NORMAL = 0,
-	THREAD_PRIO_ABOVE_NORMAL = 1,
-	THREAD_PRIO_HIGH = 2,
-	THREAD_PRIO_CRITICAL = 15
+	Idle = -15,
+	Low = -2,
+	Below_Normal = -1,
+	Normal = 0,
+	Above_Normal = 1,
+	High = 2,
+	Critical = 15
 };
 
-class SysThread : public SysSyncObject
+class SysThread
 {
+public:
+	typedef std::thread::native_handle_type Handle;
+
 private:
 	struct ThreadArgs
 	{
 		void* m_pArgs;
-		char* m_szThreadName;
-		eThreadPriority m_ePriority;
 		SysThreadProc m_pThreadFunc;
+		//SysEvent* m_pThreadStartEvent;
 
 		ThreadArgs() :
 			m_pArgs(nullptr),
-			m_szThreadName(nullptr),
-			m_ePriority(THREAD_PRIO_NORMAL),
-			m_pThreadFunc(nullptr)
+			m_pThreadFunc(nullptr)//,
+			//m_pThreadStartEvent(nullptr)
 		{}
 	};
 
 private:
+	std::thread m_Thread;
 	ThreadArgs m_ThreadArgs;
-
-	void CloseThread();
 
 	static unsigned int __stdcall DefaultThreadProc(void* pArgs);
 
 public:
 	SysThread();
+	SysThread(SysThreadProc pThreadProc, void* pArgs, SysThreadPriority eThreadPrio = SysThreadPriority::Normal, const char* szThreadName = nullptr);
+	SysThread(SysThread&& rhs);
 	~SysThread();
 
 	// Undefined to avoid bad things.
 	SysThread(const SysThread& rhs) = delete;
 	SysThread& operator=(const SysThread& rhs) = delete;
 
-	bool StartThread(SysThreadProc pThreadProc, void* pArgs, eThreadPriority = THREAD_PRIO_NORMAL, char* szThreadName = nullptr);
+	SysThread::Handle GetThreadHandle() {return m_Thread.native_handle();}
+
+	operator bool() {return m_Thread.get_id() != std::thread::id();}
+	std::size_t GetID() { return m_Thread.get_id().hash(); }
+
+	bool StartThread(SysThreadProc pThreadProc, void* pArgs, SysThreadPriority threadPriority = SysThreadPriority::Normal, const char* szThreadName = nullptr);
+
+	// Wait For Thread To Finish
+	void Wait();
 
 	void EndThread();
-
-	// Only Call This If You Know What You Are Doing!
-	void KillThread();
 };
 
-// hThread - Pass nullptr to set Calling Thread's Name
-void SysSetThreadName(const char* szName, void* hThread = nullptr);
+// pThread - Pass nullptr to set Calling Thread's Name
+void SysSetThreadName(const char* szName, SysThread* pThread = nullptr);
 
-// hThread - Pass nullptr to set Calling Thread's Priority
-void SysSetThreadPriority(eThreadPriority eThreadPrio, void* hThread = nullptr);
+// pThread - Pass nullptr to set Calling Thread's Priority
+void SysSetThreadPriority(SysThreadPriority threadPriority, SysThread* pThread = nullptr);
 
-#endif //THREAD_H
+} // namespace recon
+
+#endif // _RECON_SYSTHREAD_H_

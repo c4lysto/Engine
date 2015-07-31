@@ -1,5 +1,3 @@
-//#ifndef VEC2F_INL
-//#define VEC2F_INL
 
 __forceinline Vec2f::Vec2f(Vec2f_In vVector) : x(vVector.x), y(vVector.y)
 {
@@ -29,13 +27,13 @@ __forceinline Vec2f::Vec2f(Vector_In vVector)
 	y = VectorExtractFloat<VecElem::Y>(vVector);
 }
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 __forceinline Vec2f::Vec2f(Vector&& vVector)
 {
 	x = VectorExtractFloat<VecElem::X>(vVector);
 	y = VectorExtractFloat<VecElem::Y>(vVector);
 }
-#endif
+#endif // !RECON_OS_64BIT
 #endif
 
 __forceinline Vec2f_Ref Vec2f::operator=(Vec2f_In vVector)
@@ -58,60 +56,76 @@ __forceinline Vec2f_Ref Vec2f::operator=(Vec2f&& vVector)
 	return *this;
 }
 
-__forceinline Vec2f Vec2f::operator+(Vec2f_In vVector) const
+__forceinline Vec2f_Out Vec2f::operator+(Vec2f_In vVector) const
 {
 	return Vec2f(x + vVector.x, y + vVector.y);
 }
 
-__forceinline Vec2f_Ref Vec2f::operator+=(Vec2f_In vVector)
+__forceinline void Vec2f::operator+=(Vec2f_In vVector)
 {
 	x += vVector.x;	y += vVector.y;
-	return *this;
 }
 
-__forceinline Vec2f Vec2f::operator-(Vec2f_In vVector) const
+__forceinline Vec2f_Out Vec2f::operator-(Vec2f_In vVector) const
 {
 	return Vec2f(x - vVector.x, y - vVector.y);
 }
 
-__forceinline Vec2f_Ref Vec2f::operator-=(Vec2f_In vVector)
+__forceinline void Vec2f::operator-=(Vec2f_In vVector)
 {
 	x -= vVector.x;	y -= vVector.y;
-	return *this;
 }
 
-__forceinline Vec2f Vec2f::operator-() const
+__forceinline Vec2f_Out Vec2f::operator-() const
 {
 	return Vec2fInt(iX ^ 0x80000000, iY ^ 0x80000000);
 }
 
-__forceinline Vec2f Vec2f::operator*(const float& fScalar) const
+__forceinline Vec2f_Out Vec2f::operator*(const float& fScalar) const
 {
 	return Vec2f(x * fScalar, y * fScalar);
 }
 
-__forceinline Vec2f operator*(const float& fScalar, Vec2f_In vVector)
+__forceinline Vec2f_Out operator*(const float& fScalar, Vec2f_In vVector)
 {
 	return Vec2f(vVector.x * fScalar, vVector.y * fScalar);
 }
 
-__forceinline Vec2f_Ref Vec2f::operator*=(const float& fScalar)
+__forceinline void Vec2f::operator*=(const float& fScalar)
 {
 	x *= fScalar; y *= fScalar;
-	return *this;
 }
 
-__forceinline Vec2f Vec2f::operator/(const float& fScalar) const
+__forceinline Vec2f_Out Vec2f::operator*(Vec2f_In vVector) const
+{
+	return Vec2f(x * vVector.x, y * vVector.y);
+}
+
+__forceinline void Vec2f::operator*=(Vec2f_In vVector)
+{
+	x *= vVector.x; y *= vVector.y;
+}
+
+__forceinline Vec2f_Out Vec2f::operator/(const float& fScalar) const
 {
 	float fInvScalar = 1 / fScalar;
 	return Vec2f(x * fInvScalar, y * fInvScalar);
 }
 
-__forceinline Vec2f_Ref Vec2f::operator/=(const float& fScalar)
+__forceinline void Vec2f::operator/=(const float& fScalar)
 {
 	float fInvScalar = 1 / fScalar;
 	x *= fInvScalar; y *= fInvScalar;
-	return *this;
+}
+
+__forceinline Vec2f_Out Vec2f::operator/(Vec2f_In vVector) const
+{
+	return Vec2f(x/vVector.x, y/vVector.y);
+}
+
+__forceinline void Vec2f::operator/=(Vec2f_In vVector)
+{
+	x /= vVector.x; y /= vVector.y;
 }
 
 __forceinline bool Vec2f::operator==(Vec2f_In vVector)
@@ -137,10 +151,9 @@ __forceinline Vec2f_Out Vec2f::operator&(Vec2f_In vVector) const
 	return Vec2fInt(iX & vVector.iX, iY & vVector.iY);
 }
 
-__forceinline Vec2f_Ref Vec2f::operator&=(Vec2f_In vVector)
+__forceinline void Vec2f::operator&=(Vec2f_In vVector)
 {
 	iX &= vVector.iX; iY &= vVector.iY;
-	return *this;
 }
 
 __forceinline Vec2f_Out Vec2f::operator|(Vec2f_In vVector) const
@@ -148,10 +161,9 @@ __forceinline Vec2f_Out Vec2f::operator|(Vec2f_In vVector) const
 	return Vec2fInt(iX | vVector.iX, iY | vVector.iY);
 }
 
-__forceinline Vec2f_Ref Vec2f::operator|=(Vec2f_In vVector)
+__forceinline void Vec2f::operator|=(Vec2f_In vVector)
 {
 	iX |= vVector.iX; iY |= vVector.iY;
-	return *this;
 }
 
 __forceinline Vec2f_Out Vec2f::operator^(Vec2f_In vVector) const
@@ -159,10 +171,9 @@ __forceinline Vec2f_Out Vec2f::operator^(Vec2f_In vVector) const
 	return Vec2fInt(iX ^ vVector.iX, iY ^ vVector.iY);
 }
 
-__forceinline Vec2f_Ref Vec2f::operator^=(Vec2f_In vVector)
+__forceinline void Vec2f::operator^=(Vec2f_In vVector)
 {
 	iX ^= vVector.iX; iY ^= vVector.iY;
-	return *this;
 }
 
 __forceinline Vec2f_Out Vec2f::operator~() const
@@ -189,5 +200,3 @@ __forceinline Vec2f_Out Vec2fInt(const s32& intX, const s32& intY)
 {
 	return Vec2f(*reinterpret_cast<const float*>(&intX), *reinterpret_cast<const float*>(&intY));
 }
-
-//#endif //VEC2_INL

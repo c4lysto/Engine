@@ -120,7 +120,7 @@ public:
 	void Scale(const Vec3f& vScale);
 
 	void SetScale(const Vec3f& vScale);
-	Vec3f GetScale() const;
+	Vec3f_Out GetScale() const;
 
 	void Translate(Vec3f vTranslation);
 
@@ -128,8 +128,6 @@ public:
 	void Transpose3x3();
 
 	void Normalize();
-
-	void Invert();
 
 	void LookAt(const Vec3f& mPos, const Vec3f& vWorldUp = g_IdentityY3);
 

@@ -50,6 +50,16 @@ __forceinline Vec3V_ConstRef AABB::GetMaxRef() const
 	return m_vMax;
 }
 
+__forceinline Vec3V_Out AABB::GetDimensions() const
+{
+	return m_vMax - m_vMin;
+}
+
+__forceinline Vec3V_Out AABB::GetHalfDimensions() const
+{
+	return GetDimensions() * ScalarV(I_HALF);
+}
+
 __forceinline void AABB::SetUserData1(ScalarV_In vData)
 {
 	m_vMin.SetW(vData);

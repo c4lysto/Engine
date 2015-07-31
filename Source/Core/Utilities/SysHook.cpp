@@ -1,6 +1,9 @@
 #include "SysHook.h"
 #include "Debugging\DebugHelp.h"
 
+namespace recon
+{
+
 SysHook::SysHook() : m_pHook(nullptr)
 {
 
@@ -33,3 +36,5 @@ void SysHook::Shutdown()
 		m_pHook = nullptr;
 	}
 }
+
+} // namespace recon

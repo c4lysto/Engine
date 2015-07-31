@@ -31,7 +31,8 @@
     <ClCompile Include="..\Source\Core\Utilities\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\Core\Utilities\CriticalSection.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Atomic.h" />
+    <ClInclude Include="..\Source\Core\Utilities\SysCriticalSection.h" />
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugHelp.h" />
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugWindow.h" />
     <ClInclude Include="..\Source\Core\Utilities\FunctionPointer.h" />
@@ -46,6 +47,9 @@
     <ClInclude Include="..\Source\Core\Utilities\SysThread.h" />
     <ClInclude Include="..\Source\Core\Utilities\ThreadPool.h" />
     <ClInclude Include="..\Source\Core\Utilities\UtilitiesInclude.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Source\Core\Utilities\Atomic.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{10AE78BB-987D-4061-A1D4-8F4ADD9A86EB}</ProjectGuid>

@@ -4,7 +4,7 @@
 #include "Component.h"
 #include "ObjectTransform.h"
 
-class TransformComponent : public IComponent
+class TransformComponent : public recon::IComponent
 {
 private:
 	IObjectTransform* m_pTransform;

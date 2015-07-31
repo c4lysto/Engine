@@ -1,12 +1,15 @@
-#ifndef PLANE_H
-#define PLANE_H
+#ifndef _RECON_PLANE_H_
+#define _RECON_PLANE_H_
+
+namespace recon
+{
 
 class Plane;
 
 typedef Plane& Plane_Ref;
 typedef const Plane& Plane_ConstRef;
 
-#if _WIN64
+#if RECON_OS_64BIT
 typedef Plane Plane_In;
 #else
 typedef Plane_ConstRef Plane_In;
@@ -41,4 +44,6 @@ public:
 
 #include "Plane.inl"
 
-#endif // PLANE_H
+} // namespace recon
+
+#endif // _RECON_PLANE_H_

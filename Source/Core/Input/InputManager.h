@@ -1,10 +1,10 @@
-#ifndef INPUTMANAGER_H
-#define INPUTMANAGER_H
+#ifndef _RECON_INPUT_MANAGER_H_
+#define _RECON_INPUT_MANAGER_H_
 
 #include <Windows.h>
 #include "Input.h"
 #include "../Utilities/SysThread.h"
-#include "../Utilities/CriticalSection.h"
+#include "../Utilities/SysCriticalSection.h"
 #include "../Utilities/SysHook.h"
 #include "../Utilities/SysEvent.h"
 
@@ -17,6 +17,9 @@ using std::list;
 
 #include <queue>
 using std::queue;
+
+namespace recon
+{
 
 class InputManager
 {
@@ -36,8 +39,8 @@ private:
 	void* m_WindowHandle;
 	SysThread m_InputThread;
 	SysEvent m_NewInputEvent;
-	CriticalSection m_PendingInputCS;
-	CriticalSection m_CurrentInputCS;
+	SysCriticalSection m_PendingInputCS;
+	SysCriticalSection m_CurrentInputCS;
 	SysHook m_InputHook;
 
 	unsigned char m_ucModifiers;
@@ -91,6 +94,8 @@ public:
 	static LRESULT __stdcall InputHookCallback(int code, WPARAM wParam, LPARAM lParam);
 };
 
-extern InputManager g_InputManager;
+} // namespace recon;
 
-#endif
+extern recon::InputManager g_InputManager;
+
+#endif // _RECON_INPUT_MANAGER_H_

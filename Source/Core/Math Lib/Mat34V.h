@@ -127,7 +127,7 @@ public:
 	void Scale(Vec3V_In vScale);
 
 	void SetScale(Vec3V_In vScale);
-	Vec3V GetScale() const;
+	Vec3V_Out GetScale() const;
 
 	void Translate(Vec3V_In vTranslation);
 
@@ -141,7 +141,7 @@ public:
 	void TurnTo(Vec3V_In vPos, const float& fDeltaTime, float fTurnModifier = 1.0f);
 };
 
-Mat44V Mat34ToMat44(Mat34V_In mMatrix);
+Mat44V_Out Mat34ToMat44(Mat34V_In mMatrix);
 
 #include "Mat34V.inl"
 

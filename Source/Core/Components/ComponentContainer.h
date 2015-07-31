@@ -3,13 +3,13 @@
 
 #include "Component.h"
 
-class ComponentContainer : public IComponent
+class ComponentContainer : public recon::IComponent
 {
 private:
 
 
 public:
-	ComponentContainer(CEntity* pParent);
+	ComponentContainer(recon::Entity* pParent);
 	virtual ~ComponentContainer();
 
 };

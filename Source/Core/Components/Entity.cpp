@@ -1,18 +1,21 @@
 #include "Entity.h"
 #include "Component.h"
 
-CEntity::CEntity() : m_ID(INVALID_ENTITY_ID)
+namespace recon
+{
+
+Entity::Entity() : m_ID(INVALID_ENTITY_ID)
 {
 	m_Components.clear();
 }
 
-CEntity::~CEntity()
+Entity::~Entity()
 {
 	ShutdownComponents();
 }
 
 template<typename ComponentClass>
-void CEntity::AddComponent(ComponentClass* pComponent)
+void Entity::AddComponent(ComponentClass* pComponent)
 {
 	if(Verify(pComponent, "Attempting To Add An Invalid Component To An Entity", COMPONENT_ID(ComponentClass)))
 	{
@@ -26,7 +29,7 @@ void CEntity::AddComponent(ComponentClass* pComponent)
 }
 
 template<typename ComponentClass>
-void CEntity::RemoveComponent()
+void Entity::RemoveComponent()
 {
 	Assert(COMPONENT_ID(ComponentClass) != INVALID_COMPONENT_ID, "Component (%s) has an ID that is the same as INVALID_COMPONENT_ID", COMPONENT_NAME(ComponentClass));
 	
@@ -47,7 +50,7 @@ void CEntity::RemoveComponent()
 }
 
 template<typename ComponentClass>
-ComponentClass* CEntity::GetComponent()
+ComponentClass* Entity::GetComponent()
 {
 	Assert(COMPONENT_ID(ComponentClass) != INVALID_COMPONENT_ID, "Component (%s) has an ID that is the same as INVALID_COMPONENT_ID", COMPONENT_NAME(ComponentClass));
 
@@ -61,7 +64,7 @@ ComponentClass* CEntity::GetComponent()
 	return nullptr;
 }
 
-void CEntity::ShutdownComponents()
+void Entity::ShutdownComponents()
 {
 	for(EntityComponentContainer::iterator iter = m_Components.begin(); iter != m_Components.end(); ++iter)
 	{
@@ -74,3 +77,5 @@ void CEntity::ShutdownComponents()
 
 	m_Components.clear();
 }
+
+} // namespace recon

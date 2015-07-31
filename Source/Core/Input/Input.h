@@ -1,13 +1,16 @@
-#ifndef INPUT_H
-#define INPUT_H
+#ifndef _RECON_INPUT_H_
+#define _RECON_INPUT_H_
 
 #include "../Utilities/UtilitiesInclude.h"
 #include "../Math Lib/MathLib.h"
 #include "../Utilities/FunctionPointer.h"
 
-#ifdef _WIN64
+#if RECON_OS_64BIT
 typedef long long QWORD;
 #endif
+
+namespace recon
+{
 
 enum class InputState : unsigned char
 {
@@ -256,6 +259,8 @@ struct InputMouseMoveEvent : public InputEvent
 	}
 };
 
-typedef FunctionPointer<void, const InputEvent&> InputCallbackfn;
+} // namespace recon
+
+typedef recon::FunctionPointer<void, const recon::InputEvent&> InputCallbackfn;
 
 #endif

@@ -1,12 +1,15 @@
-#ifndef SPHERE_H
-#define SPHERE_H
+#ifndef _RECON_SPHERE_H_
+#define _RECON_SPHERE_H_
+
+namespace recon
+{
 
 class Sphere;
 
 typedef Sphere& Sphere_Ref;
 typedef const Sphere& Sphere_ConstRef;
 
-#if _WIN64
+#if RECON_OS_64BIT
 typedef Sphere Sphere_In;
 #else
 typedef Sphere_ConstRef Sphere_In;
@@ -45,4 +48,6 @@ bool IntersectSphereToSphere(Sphere_ConstRef lhs, Sphere_ConstRef rhs, ScalarV_R
 
 #include "Sphere.inl"
 
-#endif // SPHERE_H
+} // namespace recon
+
+#endif // _RECON_SPHERE_H_

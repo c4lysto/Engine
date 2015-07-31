@@ -1,5 +1,8 @@
 #include "SysSyncObject.h"
 
+namespace recon
+{
+
 SysSyncObject::SysSyncObject() : m_pHandle(nullptr)
 {	
 }
@@ -103,3 +106,5 @@ bool SysSyncObjectMultiple::WaitAny()
 	}
 	return false;
 }
+
+} // namespace recon

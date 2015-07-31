@@ -215,7 +215,7 @@ LONG WINAPI WriteDumpFile(_EXCEPTION_POINTERS* exceptions)
 
 		ExInfo.ThreadId = ::GetCurrentThreadId();
 		ExInfo.ExceptionPointers = exceptions;
-		ExInfo.ClientPointers = NULL;
+		ExInfo.ClientPointers = 0;
 		MiniDumpWriteDump( GetCurrentProcess(), GetCurrentProcessId(), hFile, MiniDumpWithFullMemory, &ExInfo, NULL, NULL );
 		::CloseHandle(hFile);
 	}

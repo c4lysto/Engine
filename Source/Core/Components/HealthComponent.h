@@ -3,7 +3,7 @@
 
 #include "Component.h"
 
-class HealthComponent : public IComponent
+class HealthComponent : public recon::IComponent
 {
 private:
 	s32 m_MaxHealth;

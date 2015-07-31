@@ -1,38 +1,60 @@
 #include "SysEvent.h"
 
+namespace recon
+{
+
+SysEvent::SysEvent()
+{
+	m_Event = nullptr;
+}
+
+SysEvent::~SysEvent()
+{
+	SysCloseEvent(*this);
+}
+
+void SysEvent::Wait()
+{
+	if(m_Event)
+	{
+		WaitForSingleObject(m_Event, INFINITE);
+	}
+}
+
+bool SysEvent::IsSignaled()
+{
+	if(m_Event)
+	{
+		return (WaitForSingleObject(m_Event, 0) == WAIT_OBJECT_0);
+	}
+
+	return false;
+}
+
 void SysEvent::Signal()
 {
-	if(m_pHandle)
-		SetEvent(m_pHandle);
+	if(m_Event)
+		SetEvent(m_Event);
 }
 
-void SysEvent::Reset()
+void SysCreateEvent(SysEvent& sysEvent, bool bInitiallySignaled /*= false*/)
 {
-	if(m_pHandle)
-		ResetEvent(m_pHandle);
-}
+	SysCloseEvent(sysEvent);
 
-SysEvent SysCreateEvent(bool bManuallyManaged /*= false*/, bool bInitialState /*= false*/)
-{
-	SysEvent sysEvent;
-
-	void* pEvent = CreateEvent(false, bManuallyManaged, bManuallyManaged ? bInitialState : false, nullptr);
+	SysEvent::Handle pEvent = CreateEvent(false, false, bInitiallySignaled, nullptr);
+	Assert(pEvent, "Failed To Create SysEvent!");
 
 	if(pEvent)
-		sysEvent.m_pHandle = pEvent;
-#if __ASSERT
-	else
-		DisplayDebugString("Failed To Create Event!");
-#endif // __ASSERT
-
-	return sysEvent;
+		sysEvent.m_Event = pEvent;
 }
 
 void SysCloseEvent(SysEvent& sysEvent)
 {
-	if(sysEvent.m_pHandle)
+	if(sysEvent.m_Event)
 	{
-		CloseHandle(sysEvent.m_pHandle);
-		sysEvent.m_pHandle = nullptr;
+		CloseHandle(sysEvent.m_Event);
+		sysEvent.m_Event = nullptr;
 	}
 }
+
+} // namespace recon

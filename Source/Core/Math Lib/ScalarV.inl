@@ -1,15 +1,16 @@
 
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 __forceinline ScalarV::ScalarV(ScalarV&& vVector)
 {
 	row = move(vVector.row);
 }
-#endif // !_WIN64
+#endif // !RECON_OS_64BIT
 
 __forceinline ScalarV::ScalarV(Vector_In vVector)
 {
 	row = vVector;
+	Assert(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
 }
 
 __forceinline ScalarV::ScalarV(const float& fVal)
@@ -27,24 +28,32 @@ __forceinline Vector_Out ScalarV::GetVector() const
 	return row;
 }
 
-__forceinline float ScalarV::GetFloat()
+__forceinline float ScalarV::GetFloat() const
 {
 	return VectorExtractFloat<VecElem::X>(row);
 }
 
-__forceinline float ScalarV::AsFloat()
+__forceinline float ScalarV::AsFloat() const
 {
 	return GetFloat();
 }
 
-__forceinline int ScalarV::GetInt()
+__forceinline int ScalarV::GetInt() const
 {
 	return VectorExtractInt<VecElem::X>(row);
 }
 
-__forceinline int ScalarV::AsInt()
+__forceinline int ScalarV::AsInt() const
 {
 	return GetInt();
+}
+
+__forceinline bool ScalarV::IsValid() const
+{
+	// Checks if all the components are the same value
+	return (VectorSignMask(VectorIsEqualInt(VectorSplat<VecElem::X>(row), VectorSplat<VecElem::Y>(row))) & \
+			VectorSignMask(VectorIsEqualInt(VectorSplat<VecElem::Z>(row), VectorSplat<VecElem::W>(row))) & \
+			VectorSignMask(VectorIsEqualInt(VectorSplat<VecElem::X>(row), VectorSplat<VecElem::Z>(row)))) == 0xF;
 }
 
 __forceinline ScalarV_Out ScalarV::operator-() const
@@ -57,6 +66,7 @@ __forceinline ScalarV_Ref ScalarV::operator=(ScalarV_In rhs)
 	if(this != &rhs)
 	{
 		row = rhs.row;
+		Assert(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
 	}
 	return *this;
 }

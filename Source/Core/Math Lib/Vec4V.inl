@@ -1,30 +1,27 @@
-//#if SSE_AVAILABLE
-//#ifndef VEC4V_INL
-//#define VEC4V_INL
 
 //__forceinline Vec4V::Vec4V(Vec4V_In vVector)
 //{
 //	row = vVector.row;
 //}
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 __forceinline Vec4V::Vec4V(Vec4V&& vVector)
 {
 	row = vVector.row;
 }
-#endif // !_WIN64
+#endif // !RECON_OS_64BIT
 
 __forceinline Vec4V::Vec4V(Vector_In vVector)
 {
 	row = vVector;
 }
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 __forceinline Vec4V::Vec4V(Vector&& vVector)
 {
 	row = move(vVector);
 }
-#endif // !_WIN64
+#endif // !RECON_OS_64BIT
 
 __forceinline Vec4V::Vec4V(const float& fVal)
 {
@@ -95,7 +92,7 @@ __forceinline void Vec4V::SetW(ScalarV_In vW)
 	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(row, vW.GetVector());
 }
 
-__forceinline Vec4V Vec4V::operator-() const
+__forceinline Vec4V_Out Vec4V::operator-() const
 {
 	return Vec4V(VectorNegate(row));
 }
@@ -106,71 +103,76 @@ __forceinline Vec4V_Out Vec4V::operator=(Vec4V_In vVector)
 	return *this;
 }
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 __forceinline Vec4V_Out Vec4V::operator=(Vec4V&& vVector)
 {
 	if(this != &vVector)
 		row = move(vVector.row);
 	return *this;
 }
-#endif // !_WIN64
+#endif // !RECON_OS_64BIT
 
-__forceinline Vec4V Vec4V::operator-(Vec4V_In vVector) const
+__forceinline Vec4V_Out Vec4V::operator-(Vec4V_In vVector) const
 {
 	return Vec4V(VectorSubtract(row, vVector.row));
 }
 
-__forceinline Vec4V_Out Vec4V::operator-=(Vec4V_In vVector)
+__forceinline void Vec4V::operator-=(Vec4V_In vVector)
 {
 	row = VectorSubtract(row, vVector.row);
-	return *this;
 }
 
-__forceinline Vec4V Vec4V::operator+(Vec4V_In vVector) const
+__forceinline Vec4V_Out Vec4V::operator+(Vec4V_In vVector) const
 {
 	return Vec4V(VectorAdd(row, vVector.row));
 }
 
-__forceinline Vec4V_Out Vec4V::operator+=(Vec4V_In vVector)
+__forceinline void Vec4V::operator+=(Vec4V_In vVector)
 {
 	row = VectorAdd(row, vVector.row);
-	return *this;
 }
 
-__forceinline Vec4V Vec4V::operator/(ScalarV_In vScalar) const
+__forceinline Vec4V_Out Vec4V::operator/(ScalarV_In vScalar) const
 {
 	return Vec4V(VectorDivide(row, vScalar.GetVector()));
 }
 
-__forceinline Vec4V_Out Vec4V::operator/=(ScalarV_In vScalar)
+__forceinline void Vec4V::operator/=(ScalarV_In vScalar)
 {
 	row = VectorDivide(row, vScalar.GetVector());
-	return *this;
 }
 
-__forceinline Vec4V Vec4V::operator*(Vec4V_In vVector) const
+__forceinline Vec4V_Out Vec4V::operator/(Vec4V_In vVector) const
+{
+	return Vec4V(VectorDivide(row, vVector.row));
+}
+
+__forceinline void Vec4V::operator/=(Vec4V_In vVector)
+{
+	row = VectorDivide(row, vVector.row);
+}
+
+__forceinline Vec4V_Out Vec4V::operator*(Vec4V_In vVector) const
 {
 	return Vec4V(VectorMultiply(row, vVector.row));
 }
 
-__forceinline Vec4V_Out Vec4V::operator*=(Vec4V_In vVector)
+__forceinline void Vec4V::operator*=(Vec4V_In vVector)
 {
 	row = VectorMultiply(row, vVector.row);
-	return *this;
 }
 
-__forceinline Vec4V Vec4V::operator*(ScalarV_In vScalar) const
+__forceinline Vec4V_Out Vec4V::operator*(ScalarV_In vScalar) const
 {
 	return Vec4V(VectorMultiply(row, vScalar.GetVector()));
 }
 
-__forceinline Vec4V_Out Vec4V::operator*=(ScalarV_In vScalar)
+__forceinline void Vec4V::operator*=(ScalarV_In vScalar)
 {
 	row = VectorMultiply(row, vScalar.GetVector());
-	return *this;
 }
 
-__forceinline Vec4V operator*(ScalarV_Ref vScalar, Vec4V_In vVector)
+__forceinline Vec4V_Out operator*(ScalarV_Ref vScalar, Vec4V_In vVector)
 {
 	return Vec4V(VectorMultiply(vVector.GetVector(), vScalar.GetVector()));
 }
@@ -187,40 +189,37 @@ __forceinline bool Vec4V::operator!=(Vec4V_In vVector) const
 
 __forceinline Vec4V_Out Vec4V::operator&(Vec4V_In vVector) const
 {
-	return Vec4V(row & vVector.row);
+	return Vec4V(VectorAnd(row, vVector.row));
 }
 
-__forceinline Vec4V_Out Vec4V::operator&=(Vec4V_In vVector)
+__forceinline void Vec4V::operator&=(Vec4V_In vVector)
 {
-	row = row & vVector.row;
-	return *this;
+	row = VectorAnd(row, vVector.row);
 }
 
 __forceinline Vec4V_Out Vec4V::operator|(Vec4V_In vVector) const
 {
-	return Vec4V(row | vVector.row);
+	return Vec4V(VectorOr(row, vVector.row));
 }
 
-__forceinline Vec4V_Out Vec4V::operator|=(Vec4V_In vVector)
+__forceinline void Vec4V::operator|=(Vec4V_In vVector)
 {
-	row = row | vVector.row;
-	return *this;
+	row = VectorOr(row, vVector.row);
 }
 
 __forceinline Vec4V_Out Vec4V::operator^(Vec4V_In vVector) const
 {
-	return Vec4V(row ^ vVector.row);
+	return Vec4V(VectorXOr(row, vVector.row));
 }
 
-__forceinline Vec4V_Out Vec4V::operator^=(Vec4V_In vVector)
+__forceinline void Vec4V::operator^=(Vec4V_In vVector)
 {
-	row = row ^ vVector.row;
-	return *this;
+	row = VectorXOr(row, vVector.row);
 }
 
 __forceinline Vec4V_Out Vec4V::operator~() const
 {
-	return Vec4V(~row);
+	return Vec4V(VectorNot(row));
 }
 
 __forceinline const float& Vec4V::operator[](int index) const
@@ -259,6 +258,3 @@ __forceinline Vec4V_Out Vec4VFloatToInt(Vec4V_In vec)
 {
 	return Vec4V(VectorFloatToInt(vec.GetVector())); 
 }
-
-//#endif //VEC4V_INL
-//#endif //SSE_AVAILABLE

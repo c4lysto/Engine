@@ -1,12 +1,15 @@
-#ifndef ENTITY_FACTORY_H
-#define ENTITY_FACTORY_H
+#ifndef _RECON_ENTITY_FACTORY_H_
+#define _RECON_ENTITY_FACTORY_H_
 
 #include "../Utilities/HashString.h"
 
 #include <map>
 #include <list>
 
-class CEntity;
+namespace recon
+{
+
+class Entity;
 
 class EntityFactory
 {
@@ -27,7 +30,7 @@ private:
 private:
 	void RegisterEntity(const EntityDesc& entityDesc);
 
-	CEntity* CreateEntityFromDesc(const EntityDesc& entityDesc);
+	Entity* CreateEntityFromDesc(const EntityDesc& entityDesc);
 
 public:
 	EntityFactory();
@@ -35,8 +38,10 @@ public:
 
 	void Init(const char* szDirectory);
 
-	CEntity* CreateEntity(const char* szName);
-	CEntity* CreateEntity(const HashString& hashName);
+	Entity* CreateEntity(const char* szName);
+	Entity* CreateEntity(const HashString& hashName);
 };
 
-#endif // ENTITY_FACTORY_H
+} // namespace recon
+
+#endif // _RECON_ENTITY_FACTORY_H_

@@ -1,21 +1,57 @@
-#ifndef SYSMUTEX_H
-#define SYSMUTEX_H
-#include "SysSyncObject.h"
+#ifndef _RECON_SYSMUTEX_H_
+#define _RECON_SYSMUTEX_H_
 
-// Mutex Can Only Be Created Via SysCreateMutex(bool)
-// Mutex Must Be Closed Via SysMutex::CloseMutex(SysMutex&)
-class SysMutex : public SysSyncObject
+#include "UtilitiesInclude.h"
+
+#include <mutex>
+
+namespace recon
 {
+
+class SysMutex
+{
+	friend class SysLocalMutex;
+
+public:
+	typedef std::mutex::native_handle_type Handle;
+
+private:
+	std::mutex m_Mutex;
+
 public:
 	SysMutex() {}
 	~SysMutex() {}
 
-	void Signal();
+	SysMutex(const SysMutex& rhs) = delete;
+	SysMutex& operator=(const SysMutex& rhs) = delete;
+
+	void Lock() {m_Mutex.lock();}
+	bool TryLock() {return m_Mutex.try_lock();}
+	void Unlock() {m_Mutex.unlock();}
 
 public:
 
-	friend SysMutex SysCreateMutex(bool bInitialOwner = false);
+	friend void SysCreateMutex(SysMutex& sysMutex, bool bInitialOwner = false);
 	friend void SysCloseMutex(SysMutex& sysMutex);
 };
+
+
+class SysLocalMutex
+{
+private:
+	std::lock_guard<std::mutex> m_Lock;
+
+public:
+	SysLocalMutex(SysMutex& sysMutex) :
+		m_Lock(sysMutex.m_Mutex)
+	{
+	}
+	
+	~SysLocalMutex()
+	{
+	}
+};
+
+} // namespace recon
 
 #endif // SYSMUTEX_H

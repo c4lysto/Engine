@@ -1,6 +1,9 @@
 #include "ComponentFactory.h"
 
-ComponentFactory gComponentFactory;
+recon::ComponentFactory gComponentFactory;
+
+namespace recon
+{
 
 ComponentFactory::ComponentFactory()
 {
@@ -23,7 +26,7 @@ ComponentClass* ComponentFactory::CreateComponent()
 	return new ComponentClass;
 }
 
-IComponent* CreateComponent(ComponentID componentID)
+IComponent* ComponentFactory::CreateComponent(ComponentID componentID)
 {
 
 }
@@ -36,3 +39,5 @@ void ComponentFactory::ReturnComponent(ComponentClass* pComponent)
 		delete pComponent;
 	}
 }
+
+} // namespace recon

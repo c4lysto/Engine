@@ -61,7 +61,7 @@ public:
 #if SSE_AVAILABLE
 	explicit Vec3f(Vector_In vVector);
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 	explicit Vec3f(Vector&& vVector);
 #endif
 #endif
@@ -85,6 +85,25 @@ public:
 	DEFINE_VEC3_ENUM_CONSTRUCTOR(eTwoPIInitializer, TWO_PI)
 	DEFINE_VEC3_ENUM_CONSTRUCTOR(eFLTMINInitializer, FLT_MIN)
 	DEFINE_VEC3_ENUM_CONSTRUCTOR(eFLTMAXInitializer, FLT_MAX)
+
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegOneInitializer, -1.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegTwoInitializer, -2.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegThreeInitializer, -3.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegFourInitializer, -4.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegFiveInitializer, -5.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegSixInitializer, -6.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegSevenInitializer, -7.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegEightInitializer, -8.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegNineInitializer, -9.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegTenInitializer, -10.0f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegQuarterInitializer, -0.25f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegHalfInitializer, -0.5f)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegPIInitializer, -PI)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegHalfPIInitializer, -PI_OVER_2)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegTwoPIInitializer, -TWO_PI)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegFLTMINInitializer, -FLT_MIN)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eNegFLTMAXInitializer, -FLT_MAX)
+
 	DEFINE_VEC3_ENUM_VAL_CONSTRUCTOR(eXAxisInitializer, 1.0f, 0.0f, 0.0f)
 	DEFINE_VEC3_ENUM_VAL_CONSTRUCTOR(eYAxisInitializer, 0.0f, 1.0f, 0.0f)
 	DEFINE_VEC3_ENUM_VAL_CONSTRUCTOR(eZAxisInitializer, 0.0f, 0.0f, 1.0f)
@@ -137,42 +156,42 @@ public:
 #error VEC3 MUTATORS NOT DEFINED
 #endif
 
-	Vec3f operator-() const;
+	Vec3f_Out operator-() const;
 
 	Vec3f_Ref operator=(Vec3f_In vVector);
 	Vec3f_Ref operator=(Vec3f&& vVector);
 
-	Vec3f_Ref operator*=(const float& fScalar);
-	Vec3f_Ref operator*=(Vec3f_In vScale);
+	void operator*=(const float& fScalar);
+	void operator*=(Vec3f_In vScale);
 
-	Vec3f operator/(const float& fScalar) const;
-	Vec3f operator/(Vec3f_In vScale) const;
+	Vec3f_Out operator/(const float& fScalar) const;
+	Vec3f_Out operator/(Vec3f_In vScale) const;
 
-	Vec3f_Ref operator/=(const float& fScalar);
-	Vec3f_Ref operator/=(Vec3f_In vScale);
+	void operator/=(const float& fScalar);
+	void operator/=(Vec3f_In vScale);
 
-	Vec3f operator*(const float& fScalar) const;
-	friend Vec3f operator*(const float& fScalar, Vec3f_In vVector);
-	Vec3f operator*(Vec3f_In vScale) const;
+	Vec3f_Out operator*(const float& fScalar) const;
+	friend Vec3f_Out operator*(const float& fScalar, Vec3f_In vVector);
+	Vec3f_Out operator*(Vec3f_In vScale) const;
 
-	Vec3f_Ref operator+=(Vec3f_In vVector);
-	Vec3f operator+(Vec3f_In vVector) const;
+	void operator+=(Vec3f_In vVector);
+	Vec3f_Out operator+(Vec3f_In vVector) const;
 
-	Vec3f_Ref operator-=(Vec3f_In vVector);
-	Vec3f operator-(Vec3f_In vVector) const;
+	void operator-=(Vec3f_In vVector);
+	Vec3f_Out operator-(Vec3f_In vVector) const;
 
 	bool operator==(Vec3f_In vVector) const;
 
 	bool operator!=(Vec3f_In vVector) const;
 
 	Vec3f_Out operator&(Vec3f_In vVector) const;
-	Vec3f_Ref operator&=(Vec3f_In vVector);
+	void operator&=(Vec3f_In vVector);
 
 	Vec3f_Out operator|(Vec3f_In vVector) const;
-	Vec3f_Ref operator|=(Vec3f_In vVector);
+	void operator|=(Vec3f_In vVector);
 
 	Vec3f_Out operator^(Vec3f_In vVector) const;
-	Vec3f_Ref operator^=(Vec3f_In vVector);
+	void operator^=(Vec3f_In vVector);
 
 	Vec3f_Out operator~() const;
 

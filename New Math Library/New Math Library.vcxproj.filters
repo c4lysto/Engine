@@ -13,108 +13,150 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Header Files\Math Core">
+      <UniqueIdentifier>{51139307-5339-4fb0-bee7-79326d975063}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Math Core">
+      <UniqueIdentifier>{aa5bef04-1598-4f78-bca5-d5fe81552b29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Physics">
+      <UniqueIdentifier>{ee505905-d499-4f0d-8f49-f063d877c1cb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource Files\Physics">
+      <UniqueIdentifier>{ce7175c9-c21c-48bb-b406-38538940c250}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Core\Math Lib\GlobalMathFuncs.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Math Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Math Lib\Mat33f.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Math Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Math Lib\Mat33V.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Math Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Math Lib\Mat34f.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Mat44f.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Mat44V.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\MathDeclarations.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\MathLib.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\ScalarV.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Vec2f.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Vec2V.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Vec3f.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Vec3V.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Vec4f.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Vec4V.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\VecCmpResult.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Math Core</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Math Lib\Mat34V.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Mat44f.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Mat44V.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\MathDeclarations.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\MathLib.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\ScalarV.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Vec2f.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Vec2V.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Vec3f.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Vec3V.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Vec4f.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Vec4V.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\VecCmpResult.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Physics\AABB.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Physics\GlobalPhysicsFuncs.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Physics\Plane.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Physics\Ray.h">
+      <Filter>Header Files\Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Physics\Sphere.h">
+      <Filter>Header Files\Physics</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\Core\Math Lib\GlobalMathFuncs.inl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Math Core</Filter>
     </None>
     <None Include="..\Source\Core\Math Lib\Mat33f.inl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Math Core</Filter>
     </None>
     <None Include="..\Source\Core\Math Lib\Mat33V.inl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Math Core</Filter>
     </None>
     <None Include="..\Source\Core\Math Lib\Mat34f.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Mat44f.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Mat44V.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\ScalarV.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Vec2f.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Vec2V.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Vec3f.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Vec3V.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Vec4f.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Vec4V.inl">
-      <Filter>Resource Files</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\VectorWrapper.inl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Math Core</Filter>
     </None>
     <None Include="..\Source\Core\Math Lib\Mat34V.inl">
-      <Filter>Resource Files</Filter>
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Mat44f.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Mat44V.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\ScalarV.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Vec2f.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Vec2V.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Vec3f.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Vec3V.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Vec4f.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Vec4V.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\VectorWrapper.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Physics\AABB.inl">
+      <Filter>Resource Files\Physics</Filter>
+    </None>
+    <None Include="..\Source\Core\Physics\GlobalPhysicsFuncs.inl">
+      <Filter>Resource Files\Physics</Filter>
+    </None>
+    <None Include="..\Source\Core\Physics\Plane.inl">
+      <Filter>Resource Files\Physics</Filter>
+    </None>
+    <None Include="..\Source\Core\Physics\Ray.inl">
+      <Filter>Resource Files\Physics</Filter>
+    </None>
+    <None Include="..\Source\Core\Physics\Sphere.inl">
+      <Filter>Resource Files\Physics</Filter>
     </None>
   </ItemGroup>
 </Project>

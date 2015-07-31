@@ -1,5 +1,3 @@
-//#ifndef Mat44fF_INL
-//#define Mat44fF_INL
 
 __forceinline Mat44f::Mat44f(const float& fXx, const float& fXy, const float& fXz, const float& fXw,
 							 const float& fYx, const float& fYy, const float& fYz, const float& fYw,
@@ -21,10 +19,10 @@ __forceinline Mat44f::Mat44f(Mat44f_In mMatrix) :
 }
 
 __forceinline Mat44f::Mat44f(Mat44f&& mMatrix) :
-	xAxis(move(mMatrix.xAxis)),
-	yAxis(move(mMatrix.yAxis)),
-	zAxis(move(mMatrix.zAxis)),
-	wAxis(move(mMatrix.wAxis))
+	xAxis(std::move(mMatrix.xAxis)),
+	yAxis(std::move(mMatrix.yAxis)),
+	zAxis(std::move(mMatrix.zAxis)),
+	wAxis(std::move(mMatrix.wAxis))
 {
 }
 
@@ -102,10 +100,10 @@ __forceinline Mat44f_Ref Mat44f::operator=(Mat44f&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
-		xAxis = move(mMatrix.xAxis);
-		yAxis = move(mMatrix.yAxis);
-		zAxis = move(mMatrix.zAxis);
-		wAxis = move(mMatrix.wAxis);
+		xAxis = std::move(mMatrix.xAxis);
+		yAxis = std::move(mMatrix.yAxis);
+		zAxis = std::move(mMatrix.zAxis);
+		wAxis = std::move(mMatrix.wAxis);
 	}
 	return *this;
 }
@@ -401,7 +399,7 @@ __forceinline void Mat44f::SetScale(const Vec3f& vScale)
 	zAxis.SetXYZ(::Normalize(zAxis.GetXYZ()) * vScale.GetZ());
 }
 
-__forceinline Vec3f Mat44f::GetScale() const
+__forceinline Vec3f_Out Mat44f::GetScale() const
 {
 	Vec3f retVal(Mag(xAxis.GetXYZ()), Mag(yAxis.GetXYZ()), Mag(zAxis.GetXYZ()));
 	return retVal;
@@ -451,21 +449,6 @@ __forceinline void Mat44f::Normalize()
 	xAxis.SetXYZ(::Normalize(xAxis.GetXYZ()));
 	yAxis.SetXYZ(::Normalize(yAxis.GetXYZ()));
 	zAxis.SetXYZ(::Normalize(zAxis.GetXYZ()));
-}
-
-__forceinline void Mat44f::Invert()
-{
-#if 1
-	DirectX::XMMATRIX mat = DirectX::XMMatrixInverse(NULL, DirectX::XMLoadFloat4x4((DirectX::XMFLOAT4X4*)this));
-	*this = *reinterpret_cast<Mat44f*>(&mat);
-#else
-	float determinant = MatrixDeterminant(*this);
-
-	if(determinant == 0)
-		return;
-
-	float invDet = 1.0f / determinant;
-#endif;
 }
 
 __forceinline void Mat44f::LookAt(const Vec3f& mPos, const Vec3f& vWorldUp)
@@ -518,5 +501,3 @@ __forceinline void Mat44f::OrthoNormalInvert()
 	wAxis.y = -Dot(tmp.wAxis.GetXYZ(), tmp.yAxis.GetXYZ());
 	wAxis.z = -Dot(tmp.wAxis.GetXYZ(), tmp.zAxis.GetXYZ());
 }
-
-//#endif //Mat44fF_INL

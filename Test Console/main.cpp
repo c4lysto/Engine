@@ -1,3 +1,4 @@
+#include <windows.h>
 #include <iostream>
 using namespace std;
 
@@ -7,15 +8,18 @@ using namespace std;
 #include <list>
 
 #include "Utilities\Timer.h"
+#include "Utilities\Atomic.h"
 #include "Math Lib\MathLib.h"
 #include "Utilities\ThreadPool.h"
 //#include "Utilities\SmartPointer.h"
 #include "Utilities\FunctionPointer.h"
 #include "Utilities\HashString.h"
-
-using namespace VecElem;
-
+#include <mutex>
 //#include "../Utilities/DebugHelp.h"
+
+#include <DirectXMath.h>
+
+#include <bitset>
 
 #define TEST_SETS 1
 #define TEST_REPS 1000000000
@@ -75,16 +79,162 @@ float TstGlobal()
 
 typedef float (TstThreadArgs::*tstFunc)(void);
 
-void CallFuncPtr(FunctionPointer<int, int&> funcPtr)
+void CallFuncPtr(recon::FunctionPointer<int, int&> funcPtr)
 {
 	int val;
 	funcPtr(val);
 }
 
+void IntelMatInverse(float* src)
+{
+	__m128 minor0, minor1, minor2, minor3;
+	__m128 row0, row1, row2, row3;
+	__m128 det, tmp1;
+
+	tmp1 = _mm_setzero_ps();
+	row1 = _mm_setzero_ps();
+	row3 = _mm_setzero_ps();
+
+	tmp1 = _mm_loadh_pi(_mm_loadl_pi(tmp1, (__m64*)(src)), (__m64*)(src + 4));
+	row1 = _mm_loadh_pi(_mm_loadl_pi(row1, (__m64*)(src + 8)), (__m64*)(src + 12));
+	row0 = _mm_shuffle_ps(tmp1, row1, 0x88);
+	row1 = _mm_shuffle_ps(row1, tmp1, 0xDD);
+	tmp1 = _mm_loadh_pi(_mm_loadl_pi(tmp1, (__m64*)(src + 2)), (__m64*)(src + 6));
+	row3 = _mm_loadh_pi(_mm_loadl_pi(row3, (__m64*)(src + 10)), (__m64*)(src + 14));
+	row2 = _mm_shuffle_ps(tmp1, row3, 0x88);
+	row3 = _mm_shuffle_ps(row3, tmp1, 0xDD);
+	// -----------------------------------------------
+	tmp1 = _mm_mul_ps(row2, row3);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0xB1);
+	minor0 = _mm_mul_ps(row1, tmp1);
+	minor1 = _mm_mul_ps(row0, tmp1);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0x4E);
+	minor0 = _mm_sub_ps(_mm_mul_ps(row1, tmp1), minor0);
+	minor1 = _mm_sub_ps(_mm_mul_ps(row0, tmp1), minor1);
+	minor1 = _mm_shuffle_ps(minor1, minor1, 0x4E);
+	// -----------------------------------------------
+	tmp1 = _mm_mul_ps(row1, row2);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0xB1);
+	minor0 = _mm_add_ps(_mm_mul_ps(row3, tmp1), minor0);
+	minor3 = _mm_mul_ps(row0, tmp1);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0x4E);
+	minor0 = _mm_sub_ps(minor0, _mm_mul_ps(row3, tmp1));
+	minor3 = _mm_sub_ps(_mm_mul_ps(row0, tmp1), minor3);
+	minor3 = _mm_shuffle_ps(minor3, minor3, 0x4E);
+	// -----------------------------------------------
+	tmp1 = _mm_mul_ps(_mm_shuffle_ps(row1, row1, 0x4E), row3);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0xB1);
+	row2 = _mm_shuffle_ps(row2, row2, 0x4E);
+	minor0 = _mm_add_ps(_mm_mul_ps(row2, tmp1), minor0);
+	minor2 = _mm_mul_ps(row0, tmp1);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0x4E);
+	minor0 = _mm_sub_ps(minor0, _mm_mul_ps(row2, tmp1));
+	minor2 = _mm_sub_ps(_mm_mul_ps(row0, tmp1), minor2);
+	minor2 = _mm_shuffle_ps(minor2, minor2, 0x4E);
+	// -----------------------------------------------
+	tmp1 = _mm_mul_ps(row0, row1);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0xB1);
+	minor2 = _mm_add_ps(_mm_mul_ps(row3, tmp1), minor2);
+	minor3 = _mm_sub_ps(_mm_mul_ps(row2, tmp1), minor3);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0x4E);
+	minor2 = _mm_sub_ps(_mm_mul_ps(row3, tmp1), minor2);
+	minor3 = _mm_sub_ps(minor3, _mm_mul_ps(row2, tmp1));
+	// -----------------------------------------------
+	tmp1 = _mm_mul_ps(row0, row3);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0xB1);
+	minor1 = _mm_sub_ps(minor1, _mm_mul_ps(row2, tmp1));
+	minor2 = _mm_add_ps(_mm_mul_ps(row1, tmp1), minor2);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0x4E);
+	minor1 = _mm_add_ps(_mm_mul_ps(row2, tmp1), minor1);
+	minor2 = _mm_sub_ps(minor2, _mm_mul_ps(row1, tmp1));
+	// -----------------------------------------------
+	tmp1 = _mm_mul_ps(row0, row2);
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0xB1);
+	minor1 = _mm_add_ps(_mm_mul_ps(row3, tmp1), minor1);
+	minor3 = _mm_sub_ps(minor3, _mm_mul_ps(row1, tmp1));
+	tmp1 = _mm_shuffle_ps(tmp1, tmp1, 0x4E);
+	minor1 = _mm_sub_ps(minor1, _mm_mul_ps(row3, tmp1));
+	minor3 = _mm_add_ps(_mm_mul_ps(row1, tmp1), minor3);
+	// -----------------------------------------------
+	det = _mm_mul_ps(row0, minor0);
+	det = _mm_add_ps(_mm_shuffle_ps(det, det, 0x4E), det);
+	det = _mm_add_ss(_mm_shuffle_ps(det, det, 0xB1), det);
+	tmp1 = _mm_rcp_ss(det);
+	det = _mm_sub_ss(_mm_add_ss(tmp1, tmp1), _mm_mul_ss(det, _mm_mul_ss(tmp1, tmp1)));
+	det = _mm_shuffle_ps(det, det, 0x00);
+	minor0 = _mm_mul_ps(det, minor0);
+	_mm_storel_pi((__m64*)(src), minor0);
+	_mm_storeh_pi((__m64*)(src + 2), minor0);
+	minor1 = _mm_mul_ps(det, minor1);
+	_mm_storel_pi((__m64*)(src + 4), minor1);
+	_mm_storeh_pi((__m64*)(src + 6), minor1);
+	minor2 = _mm_mul_ps(det, minor2);
+	_mm_storel_pi((__m64*)(src + 8), minor2);
+	_mm_storeh_pi((__m64*)(src + 10), minor2);
+	minor3 = _mm_mul_ps(det, minor3);
+	_mm_storel_pi((__m64*)(src + 12), minor3);
+	_mm_storeh_pi((__m64*)(src + 14), minor3);
+}
+
+class ScalarTstV
+{
+private:
+	Vector row;
+
+public:
+	__forceinline explicit ScalarTstV(Vector vec) : row(vec){}
+
+	__forceinline explicit ScalarTstV(eOneInitializer)
+	{
+		row = VectorSetConstant<(u32)FloatToIntRep::One, (u32)FloatToIntRep::One, (u32)FloatToIntRep::One, (u32)FloatToIntRep::One>();
+	}
+
+	__forceinline explicit ScalarTstV(eFiveInitializer)
+	{
+		row = VectorSetConstant<(u32)FloatToIntRep::Five, (u32)FloatToIntRep::Five, (u32)FloatToIntRep::Five, (u32)FloatToIntRep::Five>();
+	}
+
+	void operator=(ScalarTstV rhs)
+	{
+		row = rhs.row;
+	}
+
+	ScalarTstV operator*(ScalarTstV rhs)
+	{
+		return ScalarTstV(_mm_mul_ps(row, rhs.row));
+	}
+};
+
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetBreakAlloc(-1);
+
+	//LONG interlockedTst = 0;
+	//_InterlockedAdd(&interlockedTst, 1);
+
+	std::mutex mutexTst;
+
+	float matf[] = { 0.0f, 1.0f, 0.0f, 0.0f,
+					 0.0f, 0.0f, 1.0f, 0.0f,
+					 1.0f, 0.0f, 0.0f, 0.0f,
+					 100.0f, 50.0f, 25.0f, 1.0f };
+
+	IntelMatInverse(matf);
+
+	Mat44f mat(	0.0f, 1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f, 0.0f,
+				1.0f, 0.0f, 0.0f, 0.0f,
+				100.0f, 50.0f, 25.0f, 1.0f);
+	Mat44V matV(0.0f, 1.0f, 0.0f, 0.0f,
+				0.0f, 0.0f, 1.0f, 0.0f,
+				1.0f, 0.0f, 0.0f, 0.0f,
+				100.0f, 50.0f, 25.0f, 1.0f);
+
+	//mat.Invert();
+	matV = MatrixInverse(matV);
+
+	//assert(!memcmp(matf, &mat, sizeof(Mat44f)));
 
 	//Timer timer;
 	//double totalTime = 0;
@@ -107,18 +257,28 @@ int main()
 	//func.SetInvokingObject(pTstArgs);
 	//int retVal = func(250);
 
-	//ThreadPool tstThreadPool;//s[10];
-	//tstThreadPool.Init(20);
+	recon::ThreadPool tstThreadPool;//s[10];
+	tstThreadPool.Init(2);
 
 	//CallFuncPtr(TestThisBitch);
 
 	int tstVal = 250;
+
+	/*Vec2V five(5.0f), ten(I_ONE);
+	Vec2V fifty = five * ten;*/
+
+	Vector myVec = VectorExp2(VectorSet(TWO_PI));
+	DirectX::XMVECTOR dxVec = DirectX::XMVectorExp2(DirectX::XMVectorSet(TWO_PI, TWO_PI, TWO_PI, TWO_PI));
 
 	//std::function<int(int)> memFunc;
 	//memFunc = std::bind(&TstThreadArgs::TstMethod, pTstArgs, std::placeholders::_1);
 	//FunctionPointer<int, int&> memFunc;
 	//memFunc = CreateFunctionPointer(pTstArgs, &TstThreadArgs::TstMethod);
 	//memFunc(tstVal);
+
+	s8 tstA = 50, tstB = -100;
+	s8 tstABResult = Abs(tstA);
+	tstABResult = Abs(tstB);
 
 	std::function<int(int&)> globalFunc = TestThisBitch;
 	//StaticFunctionPointer<int, int&> globalFunc = TestThisBitch;
@@ -139,14 +299,14 @@ int main()
 	//pVirtualTst->TstVirtual();
 	//delete pVirtualTst;
 
-	/*for(int i = 0; i < 20; ++i)
+	for(int i = 0; i < 20; ++i)
 	{
 		Sleep(rand() % 1000);
-		for(int j = 0; j < 1000; ++j)
+		for(int j = 0; j < 400; ++j)
 		{
 			tstThreadPool.AddWork(TstThreadProc, pTstArgs);
 		}
-	}*/
+	}
 
 	/*Mat44V convertTst(INIT_IDENTITY);
 	Mat44 convTst1;
@@ -196,7 +356,7 @@ int TstThreadProc(void* pArgs)
 
 	cout << vectst2.GetX() << ' ' << vectst2.GetY() << ' ' << vectst2.GetZ() << ' ' << vectst2.GetW() << endl;*/
 
-	//tstThreadPool.Shutdown();
+	tstThreadPool.Shutdown();
 	delete pTstArgs;
 	return 0;
 }

@@ -8,6 +8,8 @@
 #include <xmmintrin.h>
 #include <intrin.h>
 
+#define RECON_USE_SVML (0)
+
 #define VEC_INT_TO_FLOAT _mm_castsi128_ps
 #define VEC_FLOAT_TO_INT _mm_castps_si128
 
@@ -15,7 +17,7 @@ typedef __m128 Vector;
 typedef Vector& Vector_Ref;
 typedef const Vector& Vector_ConstRef;
 
-#if _WIN64
+#if RECON_OS_64BIT
 	typedef Vector Vector_In;
 #else
 	typedef Vector_ConstRef Vector_In;
@@ -24,6 +26,12 @@ typedef const Vector& Vector_ConstRef;
 typedef Vector Vector_Out;
 
 // Initialization Operations:
+
+template<u32 val>
+Vector_Out VectorSetConstant();
+
+template<u32 val0, u32 val1, u32 val2, u32 val3>
+Vector_Out VectorSetConstant();
 
 Vector_Out VectorSet(const float& fVal);
 
@@ -52,6 +60,18 @@ template<VecElem index>
 int VectorExtractInt(Vector_In vec);
 
 
+// Permute Operations:
+
+template<VecElem splat>
+Vector_Out VectorSplat(Vector_In vec);
+
+template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
+Vector_Out VectorPermute(Vector_In vec);
+
+template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
+Vector_Out VectorPermute(Vector_In lhs, Vector_In rhs);
+
+
 // Conversion Operations:
 
 Vector_Out VectorIntToFloat(Vector_In vec);
@@ -62,7 +82,7 @@ Vector_Out VectorFloatToInt(Vector_In vec);
 // Arithmetic Operations: 
 
 Vector_Out VectorAdd(Vector_In lhs, Vector_In rhs);
-Vector_Out operator+(Vector_In lhs, Vector_In rhs);
+//Vector_Out operator+(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorAddInt(Vector_In lhs, Vector_In rhs);
 
@@ -71,7 +91,7 @@ Vector_Out VectorAddInt(Vector_In lhs, Vector_In rhs);
 Vector_Out VectorHAdd(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorSubtract(Vector_In lhs, Vector_In rhs);
-Vector_Out operator-(Vector_In lhs, Vector_In rhs);
+//Vector_Out operator-(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorSubtractInt(Vector_In lhs, Vector_In rhs);
 
@@ -80,15 +100,15 @@ Vector_Out VectorSubtractInt(Vector_In lhs, Vector_In rhs);
 Vector_Out VectorHSub(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorMultiply(Vector_In lhs, Vector_In rhs);
-Vector_Out operator*(Vector_In lhs, Vector_In rhs);
+//Vector_Out operator*(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorMultiplyInt(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorDivide(Vector_In lhs, Vector_In rhs);
-Vector_Out operator/(Vector_In lhs, Vector_In rhs);
+//Vector_Out operator/(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorNegate(Vector_In vec);
-Vector_Out operator-(Vector_In vec);
+//Vector_Out operator-(Vector_In vec);
 
 Vector_Out VectorAbs(Vector_In vec);
 
@@ -108,29 +128,60 @@ Vector_Out VectorRound(Vector_In vec);
 
 Vector_Out VectorSign(Vector_In vec);
 
+Vector_Out VectorLog2(Vector_In vec);
+
+Vector_Out VectorExp2(Vector_In vec);
+
+
+// Trigonometry Operations:
+
+Vector_Out VectorSin(Vector_In vec);
+
+Vector_Out VectorASin(Vector_In vec);
+
+Vector_Out VectorCos(Vector_In vec);
+
+Vector_Out VectorACos(Vector_In vec);
+
+Vector_Out VectorTan(Vector_In vec);
+
+Vector_Out VectorATan(Vector_In vec);
+
+// NOTE: Performs Sin/Cos of Vec.x
+// Returns: Vector(Sin(), Cos(), Sin(), Cos());
+Vector_Out VectorSinCos(Vector_In vec);
+
 
 // Logical Operations:
 
 Vector_Out VectorAnd(Vector_In lhs, Vector_In rhs);
-Vector_Out operator&(Vector_In lhs, Vector_In rhs);
+//Vector_Out operator&(Vector_In lhs, Vector_In rhs);
 
 // rhs is Negated Before the And so: result = lhs & ~rhs;
 Vector_Out VectorAndNot(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorNot(Vector_In vec);
-Vector_Out operator~(Vector_In vec);
+//Vector_Out operator~(Vector_In vec);
 
 Vector_Out VectorOr(Vector_In lhs, Vector_In rhs);
-Vector_Out operator|(Vector_In lhs, Vector_In rhs);
+//Vector_Out operator|(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorXOr(Vector_In lhs, Vector_In rhs);
-Vector_Out operator^(Vector_In lhs, Vector_In rhs);
+//Vector_Out operator^(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorLeftShift(Vector_In vec, int nCount);
-Vector_Out operator<<(Vector_In vec, int nCount);
+//Vector_Out operator<<(Vector_In vec, int nCount);
+
+// shiftCount is is expected to have integer data NOT floats
+// If all values of shiftCount are the same then you should use VectorLeftShift as it is MUCH faster
+Vector_Out VectorLeftShift4(Vector_In vec, Vector_In shiftCount);
 
 Vector_Out VectorRightShift(Vector_In vec, int nCount);
-Vector_Out operator>>(Vector_In vec, int nCount);
+//Vector_Out operator>>(Vector_In vec, int nCount);
+
+// shiftCount is is expected to have integer data NOT floats
+// If all values of shiftCount are the same then you should use VectorLeftShift as it is MUCH faster
+Vector_Out VectorRightShift4(Vector_In vec, Vector_In shiftCount);
 
 
 // Comparison Functions:
@@ -183,12 +234,6 @@ VEC_CMP_DECL_ALL(IsLessThanOrEqualInt);
 
 // Misc Operations:
 
-template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
-Vector_Out VectorPermute(Vector_In vec);
-
-template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
-Vector_Out VectorPermute(Vector_In lhs, Vector_In rhs);
-
 s32 VectorSignMask(Vector_In vec);
 
 Vector_Out VectorMin(Vector_In lhs, Vector_In rhs);
@@ -196,6 +241,10 @@ Vector_Out VectorMinInt(Vector_In lhs, Vector_In rhs);
 
 Vector_Out VectorMax(Vector_In lhs, Vector_In rhs);
 Vector_Out VectorMaxInt(Vector_In lhs, Vector_In rhs);
+
+Vector_Out VectorSelectTF(Vector_In lhs, Vector_In rhs, Vector_In condition);
+
+Vector_Out VectorBitscanForward(Vector_In vec);
 
 
 // Vector Math Operations:

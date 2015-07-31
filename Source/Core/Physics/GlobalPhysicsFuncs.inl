@@ -20,14 +20,14 @@ __forceinline bool TestSphereToSphere(Sphere_In lhs, Sphere_In rhs)
 
 __forceinline bool TestSphereToPlane(Sphere_In vSphere, Plane_In vPlane)
 {
-	Vec3V vPlanePosToCenter = vSphere.GetCenter() - vPlane.GetPlanePos();
+	Vec3V vPlanePosToCenter = vSphere.GetCenter() - vPlane.GetPos();
 	return vSphere.GetRadiusSq() <= Abs(Dot(vPlanePosToCenter, vPlane.GetNormal()));
 }
 
-bool TestSphereToRay(Sphere_In vSphere, Ray_In vRay)
+inline bool TestSphereToRay(Sphere_In vSphere, Ray_In vRay)
 {
 	Vec3V vSphereCenter = vSphere.GetCenter();
-	Vec3V vRayOriginToSphere = vSphereCenter - vRay.GetOrigin();
+	Vec3V vRayOriginToSphere = vSphereCenter - vRay.GetOriginRef();
 	Vec3V vClosestPointToSphere = vRay.GetDirRef() * Dot(vRay.GetDirRef(), vRayOriginToSphere);
 	return vSphere.GetRadiusSq() >= MagSq(vClosestPointToSphere-vSphereCenter);
 }

@@ -1,5 +1,8 @@
-#ifndef AABB_H
-#define AABB_H
+#ifndef _RECON_AABB_H_
+#define _RECON_AABB_H_
+
+namespace recon
+{
 
 class AABB;
 
@@ -37,6 +40,9 @@ public:
 	Vec3V_Ref GetMaxRef();
 	Vec3V_ConstRef GetMaxRef() const;
 
+	Vec3V_Out GetDimensions() const;
+	Vec3V_Out GetHalfDimensions() const;
+
 	void SetUserData1(ScalarV_In vData);
 	ScalarV_Out GetUserData1() const;
 
@@ -50,4 +56,6 @@ public:
 
 #include "AABB.inl"
 
-#endif // AABB_H
+} // namespace recon
+
+#endif // _RECON_AABB_H_

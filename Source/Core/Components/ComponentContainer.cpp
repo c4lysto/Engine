@@ -1,6 +1,6 @@
 #include "ComponentContainer.h"
 
-ComponentContainer::ComponentContainer(CEntity* pParent) : IComponent(pParent)
+ComponentContainer::ComponentContainer(recon::Entity* pParent) : IComponent(pParent)
 {
 
 }

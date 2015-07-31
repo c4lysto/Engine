@@ -1,5 +1,5 @@
-#ifndef COMPONENT_H
-#define COMPONENT_H
+#ifndef _RECON_COMPONENT_H_
+#define _RECON_COMPONENT_H_
 
 #include <typeinfo>
 #include "../Utilities/Memory/ObjectMemoryPool.h"
@@ -23,17 +23,19 @@ __forceinline const char* GetComponentName() \
 #define COMPONENT_ID(className) (GetComponentID<(className)>())
 #define COMPONENT_NAME(className) (GetComponentName<(className)>())
 
+namespace recon
+{
 
-class CEntity;
+class Entity;
 
 class IComponent
 {
 protected:
-	CEntity* m_pEntity;
+	Entity* m_pEntity;
 
 public:
 	IComponent() : m_pEntity(nullptr) {}
-	IComponent(CEntity* pParent) : m_pEntity(pParent) {}
+	IComponent(Entity* pParent) : m_pEntity(pParent) {}
 
 	// Runtime Check, Slower Than Using COMPONENT_ID()/COMPONENT_NAME()
 	// and should only be used if we do not know the type of the component
@@ -47,4 +49,6 @@ public:
 	virtual void PostRemove() {}
 };
 
-#endif // COMPONENT_H
+} // namespace recon
+
+#endif // _RECON_COMPONENT_H_

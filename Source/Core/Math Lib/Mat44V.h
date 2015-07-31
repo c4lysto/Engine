@@ -126,7 +126,7 @@ public:
 	void Scale(Vec3V_In vScale);
 
 	void SetScale(Vec3V_In vScale);
-	Vec3V GetScale() const;
+	Vec3V_Out GetScale() const;
 
 	void Translate(Vec3V_In vTranslation);
 
@@ -134,8 +134,6 @@ public:
 	void Transpose3x3();
 
 	void Normalize();
-
-	void Invert();
 
 	void LookAt(Vec3V_In mPos, Vec3V_In vWorldUp = g_IdentityY3V);
 

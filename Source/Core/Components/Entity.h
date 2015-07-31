@@ -1,5 +1,5 @@
-#ifndef ENTITY_H
-#define ENTITY_H
+#ifndef _RECON_ENTITY_H_
+#define _RECON_ENTITY_H_
 
 #include "Utilities/UtilitiesInclude.h"
 
@@ -9,17 +9,21 @@ using std::map;
 #include <string>
 using std::string;
 
-class IComponent;
-
 typedef u64 ComponentID;
 typedef u64 EntityID;
 
 #define INVALID_ENTITY_ID ((EntityID)-1)
 
-typedef map<ComponentID, IComponent*> EntityComponentContainer;
-
-class CEntity
+namespace recon
 {
+
+class IComponent;
+
+class Entity
+{
+private:
+	typedef map<ComponentID, IComponent*> EntityComponentContainer;
+
 private:
 	EntityID m_ID;
 
@@ -30,8 +34,8 @@ private:
 	EntityComponentContainer m_Components;
 
 public:
-	CEntity();
-	~CEntity();
+	Entity();
+	~Entity();
 
 	EntityID GetID() {return m_ID;}
 
@@ -49,4 +53,6 @@ private:
 
 };
 
-#endif // ENTITY_H
+} // namespace recon
+
+#endif // _RECON_ENTITY_H_

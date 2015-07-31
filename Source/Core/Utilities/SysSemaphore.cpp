@@ -1,32 +1,60 @@
 #include "SysSemaphore.h"
 
-void SysSemaphore::Signal(int nSignalCount /*= 1*/)
+namespace recon
 {
-	if(m_pHandle)
-		ReleaseSemaphore(m_pHandle, nSignalCount, NULL);
+
+SysSemaphore::SysSemaphore()
+{
+	m_Semaphore = nullptr;
 }
 
-SysSemaphore SysCreateSemaphore(int nInitialCount /*= 0*/)
+SysSemaphore::~SysSemaphore()
 {
-	SysSemaphore sysSemaphore;
+	SysCloseSemaphore(*this);
+}
 
-	void* pSemaphore = CreateSemaphore(nullptr, nInitialCount, LONG_MAX, nullptr);
+void SysSemaphore::Wait()
+{
+	if(m_Semaphore)
+	{
+		WaitForSingleObject(m_Semaphore, INFINITE);
+	}
+}
+
+bool SysSemaphore::TryWait()
+{
+	if(m_Semaphore)
+	{
+		return (WaitForSingleObject(m_Semaphore, 0) == WAIT_OBJECT_0);
+	}
+
+	return false;
+}
+
+void SysSemaphore::Unlock(int nSignalCount /*= 1*/)
+{
+	if(m_Semaphore)
+		ReleaseSemaphore(m_Semaphore, nSignalCount, NULL);
+}
+
+void SysCreateSemaphore(SysSemaphore& sysSemaphore, int nInitialCount /*= 0*/)
+{
+	SysCloseSemaphore(sysSemaphore);
+
+	SysSemaphore::Handle pSemaphore = CreateSemaphore(nullptr, nInitialCount, LONG_MAX, nullptr);
+	Assert(pSemaphore, "Failed To Create Semaphore!");
 
 	if(pSemaphore)
-		sysSemaphore.m_pHandle = pSemaphore;
-#if __ASSERT
-	else
-		DisplayDebugString("Failed To Create Semaphore!");
-#endif // __ASSERT
-
-	return sysSemaphore;
+		sysSemaphore.m_Semaphore = pSemaphore;
 }
 
 void SysCloseSemaphore(SysSemaphore& sysSemaphore)
 {
-	if(sysSemaphore.m_pHandle)
+	if (sysSemaphore.m_Semaphore)
 	{
-		CloseHandle(sysSemaphore.m_pHandle);
-		sysSemaphore.m_pHandle = nullptr;
+		CloseHandle(sysSemaphore.m_Semaphore);
+		sysSemaphore.m_Semaphore = nullptr;
 	}
 }
+
+} // namespace recon

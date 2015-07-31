@@ -1,5 +1,3 @@
-//#ifndef Mat34fF_INL
-//#define Mat34fF_INL
 
 __forceinline Mat34f::Mat34f(const float& fXx, const float& fXy, const float& fXz,
 							 const float& fYx, const float& fYy, const float& fYz,
@@ -21,10 +19,10 @@ __forceinline Mat34f::Mat34f(Mat34f_In mMatrix) :
 }
 
 __forceinline Mat34f::Mat34f(Mat34f&& mMatrix) :
-	xAxis(move(mMatrix.xAxis)),
-	yAxis(move(mMatrix.yAxis)),
-	zAxis(move(mMatrix.zAxis)),
-	wAxis(move(mMatrix.wAxis))
+	xAxis(std::move(mMatrix.xAxis)),
+	yAxis(std::move(mMatrix.yAxis)),
+	zAxis(std::move(mMatrix.zAxis)),
+	wAxis(std::move(mMatrix.wAxis))
 {
 }
 
@@ -102,10 +100,10 @@ __forceinline Mat34f_Ref Mat34f::operator=(Mat34f&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
-		xAxis = move(mMatrix.xAxis);
-		yAxis = move(mMatrix.yAxis);
-		zAxis = move(mMatrix.zAxis);
-		wAxis = move(mMatrix.wAxis);
+		xAxis = std::move(mMatrix.xAxis);
+		yAxis = std::move(mMatrix.yAxis);
+		zAxis = std::move(mMatrix.zAxis);
+		wAxis = std::move(mMatrix.wAxis);
 	}
 	return *this;
 }
@@ -224,7 +222,7 @@ __forceinline void Mat34f::SetScale(Vec3f_In vScale)
 	zAxis = ::Normalize(zAxis) * vScale.GetZ();
 }
 
-__forceinline Vec3f Mat34f::GetScale() const
+__forceinline Vec3f_Out Mat34f::GetScale() const
 {
 	Vec3f retVal(Mag(xAxis), Mag(yAxis), Mag(zAxis));
 	return retVal;
@@ -288,5 +286,3 @@ inline void Mat34f::TurnTo(Vec3f_In vPos, const float& fDeltaTime, float fTurnMo
 	xAxis = ::Normalize(Cross(g_WorldUp, zAxis));
 	yAxis = ::Normalize(Cross(zAxis, xAxis));
 }
-
-//#endif //Mat34fF_INL

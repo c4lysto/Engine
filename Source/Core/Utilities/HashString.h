@@ -1,6 +1,9 @@
-#ifndef HASHSTRING_H
-#define HASHSTRING_H
+#ifndef _RECON_HASHSTRING_H_
+#define _RECON_HASHSTRING_H_
 #include "GlobalDefines.h"
+
+namespace recon
+{
 
 class HashString
 {
@@ -11,10 +14,10 @@ private:
 
 public:
 	HashString() : m_Hash(0) {}
-	HashString(const u32& rhs) : m_Hash(rhs) {}
-	HashString(u32&& rhs) : m_Hash(rhs) {}
 	HashString(HashString&& rhs) : m_Hash(rhs.m_Hash) {}
-	HashString(const char* szString);
+	explicit HashString(const u32& rhs) : m_Hash(rhs) {}
+	explicit HashString(u32&& rhs) : m_Hash(rhs) {}
+	explicit HashString(const char* szString);
 
 	const HashString& operator=(const HashString& rhs);
 	const HashString& operator=(const u32& rhs);
@@ -31,4 +34,6 @@ public:
 	operator u32() {return m_Hash;}
 };
 
-#endif // HASHSTRING_H
+} // namespace recon
+
+#endif // _RECON_HASHSTRING_H_

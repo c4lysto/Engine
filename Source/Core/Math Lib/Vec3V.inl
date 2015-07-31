@@ -35,24 +35,24 @@ __forceinline Vec3V::Vec3V(ScalarV_In vX, Vec2V_In vYZ)
 //	row = vVector.row;
 //}
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 __forceinline Vec3V::Vec3V(Vec3V&& vVector)
 {
 	row = move(vVector.row);
 }
-#endif // !_WIN64
+#endif // !RECON_OS_64BIT
 
 __forceinline Vec3V::Vec3V(Vector_In vVector)
 {
 	row = vVector;
 }
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 __forceinline Vec3V::Vec3V(Vector&& vVector)
 {
 	row = move(vVector);
 }
-#endif // !_WIN64
+#endif // !RECON_OS_64BIT
 
 __forceinline void Vec3V::SetX(ScalarV_In vX)
 {
@@ -74,7 +74,7 @@ __forceinline void Vec3V::SetW(ScalarV_In vW)
 	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(row, vW.GetVector());
 }
 
-__forceinline Vec3V Vec3V::operator-() const
+__forceinline Vec3V_Out Vec3V::operator-() const
 {
 	return Vec3V(VectorNegate(row));
 }
@@ -85,55 +85,51 @@ __forceinline Vec3V_Out Vec3V::operator=(Vec3V_In vVector)
 	return *this;
 }
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 __forceinline Vec3V_Out Vec3V::operator=(Vec3V&& vVector)
 {
 	if(this != &vVector)
 		row = move(vVector.row);
 	return *this;
 }
-#endif // !_WIN_64
+#endif // !RECON_OS_64BIT
 
-__forceinline Vec3V_Out Vec3V::operator*=(ScalarV_In vScalar)
+__forceinline void Vec3V::operator*=(ScalarV_In vScalar)
 {
 	row = VectorDivide(row, vScalar.GetVector());
-	return *this;
 }
 
-__forceinline Vec3V_Out Vec3V::operator*=(Vec3V_In rhs)
+__forceinline void Vec3V::operator*=(Vec3V_In rhs)
 {
 	row = VectorMultiply(row, rhs.row);
-	return *this;
 }
 
-__forceinline Vec3V Vec3V::operator/(ScalarV_In vScalar) const
+__forceinline Vec3V_Out Vec3V::operator/(ScalarV_In vScalar) const
 {
 	return Vec3V(VectorDivide(row, vScalar.GetVector()));
 }
 
-__forceinline Vec3V Vec3V::operator/(Vec3V_In rhs) const
+__forceinline Vec3V_Out Vec3V::operator/(Vec3V_In rhs) const
 {
 	return Vec3V(VectorDivide(row, rhs.row));
 }
 
-__forceinline Vec3V_Out Vec3V::operator/=(ScalarV_In vScalar)
+__forceinline void Vec3V::operator/=(ScalarV_In vScalar)
 {
 	row = VectorDivide(row, vScalar.GetVector());
-	return *this;
 }
 
-__forceinline Vec3V_Out Vec3V::operator/=(Vec3V_In rhs)
+__forceinline void Vec3V::operator/=(Vec3V_In rhs)
 {
 	row = VectorDivide(row, rhs.row);
-	return *this;
 }
 
-__forceinline Vec3V Vec3V::operator*(ScalarV_In vScalar) const
+__forceinline Vec3V_Out Vec3V::operator*(ScalarV_In vScalar) const
 {
 	return Vec3V(VectorMultiply(row, vScalar.GetVector()));
 }
 
-__forceinline Vec3V Vec3V::operator*(Vec3V_In rhs) const
+__forceinline Vec3V_Out Vec3V::operator*(Vec3V_In rhs) const
 {
 	return Vec3V(VectorMultiply(row, rhs.row));
 }
@@ -143,24 +139,22 @@ __forceinline Vec3V operator*(ScalarV_Ref vScalar, Vec3V_In vVector)
 	return Vec3V(VectorMultiply(vScalar.GetVector(), vVector.row));
 }
 
-__forceinline Vec3V_Out Vec3V::operator+=(Vec3V_In vVector)
+__forceinline void Vec3V::operator+=(Vec3V_In vVector)
 {
 	row = VectorAdd(row, vVector.row);
-	return *this;
 }
 
-__forceinline Vec3V Vec3V::operator+(Vec3V_In vVector) const
+__forceinline Vec3V_Out Vec3V::operator+(Vec3V_In vVector) const
 {
 	return Vec3V(VectorAdd(row, vVector.row));
 }
 
-__forceinline Vec3V_Out Vec3V::operator-=(Vec3V_In vVector)
+__forceinline void Vec3V::operator-=(Vec3V_In vVector)
 {
 	row = VectorSubtract(row, vVector.row);
-	return *this;
 }
 
-__forceinline Vec3V Vec3V::operator-(Vec3V_In vVector) const
+__forceinline Vec3V_Out Vec3V::operator-(Vec3V_In vVector) const
 {
 	return Vec3V(VectorSubtract(row, vVector.row));
 }
@@ -177,40 +171,37 @@ __forceinline bool Vec3V::operator!=(Vec3V_In vVector) const
 
 __forceinline Vec3V_Out Vec3V::operator&(Vec3V_In vVector) const
 {
-	return Vec3V(row & vVector.row);
+	return Vec3V(VectorAnd(row, vVector.row));
 }
 
-__forceinline Vec3V_Out Vec3V::operator&=(Vec3V_In vVector)
+__forceinline void Vec3V::operator&=(Vec3V_In vVector)
 {
-	row = row & vVector.row;
-	return *this;
+	row = VectorAnd(row, vVector.row);
 }
 
 __forceinline Vec3V_Out Vec3V::operator|(Vec3V_In vVector) const
 {
-	return Vec3V(row | vVector.row);
+	return Vec3V(VectorOr(row, vVector.row));
 }
 
-__forceinline Vec3V_Out Vec3V::operator|=(Vec3V_In vVector)
+__forceinline void Vec3V::operator|=(Vec3V_In vVector)
 {
-	row = row | vVector.row;
-	return *this;
+	row = VectorOr(row, vVector.row);
 }
 
 __forceinline Vec3V_Out Vec3V::operator^(Vec3V_In vVector) const
 {
-	return Vec3V(row ^ vVector.row);
+	return Vec3V(VectorXOr(row, vVector.row));
 }
 
-__forceinline Vec3V_Out Vec3V::operator^=(Vec3V_In vVector)
+__forceinline void Vec3V::operator^=(Vec3V_In vVector)
 {
-	row = row ^ vVector.row;
-	return *this;
+	row = VectorXOr(row, vVector.row);
 }
 
 __forceinline Vec3V_Out Vec3V::operator~() const
 {
-	return Vec3V(~row);
+	return Vec3V(VectorNot(row));
 }
 
 __forceinline const float& Vec3V::operator[](int index) const

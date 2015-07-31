@@ -19,10 +19,10 @@ __forceinline Mat44V::Mat44V(Mat44V_In mMatrix) :
 }
 
 __forceinline Mat44V::Mat44V(Mat44V&& mMatrix) : 
-	xAxis(move(mMatrix.xAxis)),
-	yAxis(move(mMatrix.yAxis)),
-	zAxis(move(mMatrix.zAxis)),
-	wAxis(move(mMatrix.wAxis))
+	xAxis(std::move(mMatrix.xAxis)),
+	yAxis(std::move(mMatrix.yAxis)),
+	zAxis(std::move(mMatrix.zAxis)),
+	wAxis(std::move(mMatrix.wAxis))
 {
 }
 
@@ -109,10 +109,10 @@ __forceinline Mat44V_ConstRef Mat44V::operator=(Mat44V&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
-		xAxis = move(mMatrix.xAxis);
-		yAxis = move(mMatrix.yAxis);
-		zAxis = move(mMatrix.zAxis);
-		wAxis = move(mMatrix.wAxis);
+		xAxis = std::move(mMatrix.xAxis);
+		yAxis = std::move(mMatrix.yAxis);
+		zAxis = std::move(mMatrix.zAxis);
+		wAxis = std::move(mMatrix.wAxis);
 	}
 	return *this;
 }
@@ -298,7 +298,7 @@ __forceinline void Mat44V::SetScale(Vec3V_In vScale)
 	zAxis.SetXYZ(::Normalize(zAxis.GetXYZ()) * vScale.GetZ());
 }
 
-__forceinline Vec3V Mat44V::GetScale() const
+__forceinline Vec3V_Out Mat44V::GetScale() const
 {
 	Vec3V retVal(Mag(xAxis), Mag(yAxis), Mag(zAxis));
 	return retVal;
@@ -333,12 +333,6 @@ __forceinline void Mat44V::Normalize()
 	xAxis.Normalize();
 	yAxis.Normalize();
 	zAxis.Normalize();
-}
-
-__forceinline void Mat44V::Invert()
-{
-	DirectX::XMMATRIX mat = XMMatrixInverse(NULL, *(XMMATRIX*)this);
-	*this = *reinterpret_cast<Mat44V*>(&mat);
 }
 
 inline void Mat44V::LookAt(Vec3V_In mPos, Vec3V_In vWorldUp)

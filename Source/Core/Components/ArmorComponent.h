@@ -3,7 +3,7 @@
 
 #include "Component.h"
 
-class ArmorComponent : public IComponent
+class ArmorComponent : public recon::IComponent
 {
 private:
 	s32 m_Armor;

@@ -1,6 +1,8 @@
-#ifndef GLOBALPHYSICSFUNCS_H
-#define GLOBALPHYSICSFUNCS_H
+#ifndef _RECON_GLOBALPHYSICSFUNCS_H_
+#define _RECON_GLOBALPHYSICSFUNCS_H_
 
+namespace recon
+{
 
 // Sphere Intersections:
 
@@ -39,4 +41,6 @@ bool TestAABBToAABB(AABB_In lhs, AABB_In rhs);
 
 #include "GlobalPhysicsFuncs.inl"
 
-#endif // GLOBALPHYSICSFUNCS_H
+} // namespace recon
+
+#endif // _RECON_GLOBALPHYSICSFUNCS_H_

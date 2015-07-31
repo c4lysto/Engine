@@ -80,9 +80,6 @@
     <ClInclude Include="..\Source\Core\Utilities\UtilitiesInclude.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\CriticalSection.h">
-      <Filter>Header Files\Threading</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\ThreadPool.h">
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
@@ -104,5 +101,16 @@
     <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Atomic.h">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\SysCriticalSection.h">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Source\Core\Utilities\Atomic.inl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

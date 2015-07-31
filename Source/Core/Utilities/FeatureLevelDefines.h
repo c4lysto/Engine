@@ -1,6 +1,111 @@
 #ifndef FEATURE_LEVEL_DEFINES_H
 #define FEATURE_LEVEL_DEFINES_H
 
+/* Start: Compiler Detection */
+
+/* Start: Microsoft Visual C++ Detection */
+#define RECON_MSC_COMPILER (0)
+
+#if defined(_MSC_VER)
+	#undef RECON_MSC_COMPILER
+	#define RECON_MSC_COMPILER (1)
+#endif // defined(_MSC_VER)
+/* End: Microsoft Visual C++ Detection */
+
+
+/* Start: GCC Compiler Detection */
+#define RECON_GCC_COMPILER (0)
+
+#if defined(__GNUC__) || defined(__GNUG__)
+	#undef RECON_GCC_COMPILER
+	#define RECON_GCC_COMPILER (1)
+#endif // defined(__GNUC__) || defined(__GNUG__)
+/* End: GCC Compiler Detection */
+
+/* End: Compiler Detection */
+
+
+/*	Start: OS Detection	*/
+
+#define RECON_OS_32BIT (1)
+#define RECON_OS_64BIT (0)
+#define RECON_OS_DETECTED (0)
+
+/*	Start: Window Detection	*/
+#define RECON_OS_WINDOWS (0)
+
+#if !RECON_OS_DETECTED && (defined(_WIN32) || defined(_WIN64) || defined(__WIN32__) || defined(__TOS_WIN__) || defined(__WINDOWS__))
+	#undef RECON_OS_WINDOWS
+	#define RECON_OS_WINDOWS (1)
+
+	#if defined(_WIN64)
+		#undef RECON_OS_64BIT
+		#define RECON_OS_64BIT (1)
+	#endif // Windows Version Detection
+
+	// Let Code Know That We've Detected an OS
+	#undef RECON_OS_DETECTED
+	#define RECON_OS_DETECTED (1)
+#endif 
+/*	End: Window Detection	*/
+
+
+/*	Start: Apple Detection	*/
+#define RECON_OS_MAC (0)
+#define RECON_OS_IOS (0)
+
+#if !RECON_OS_DETECTED && (defined(macintosh) || defined(Macintosh) || (defined(__APPLE__) && defined(__MACH__)))
+
+	#if ((defined(__APPLE__) && defined(__MACH__)) && defined(__ENVIRONMENT_IPHONE_OS_VERSION_MIN_REQUIRED__))
+		#undef RECON_OS_IOS
+		#define RECON_OS_IOS (1)
+	#else
+		#undef RECON_OS_MAC
+		#define RECON_OS_MAC (1)
+	#endif
+
+	// Let Code Know That We've Detected an OS
+	#undef RECON_OS_DETECTED
+	#define RECON_OS_DETECTED (1)
+#endif
+/*	End: Apple Detection	*/
+
+
+/*	Start: Linux Detection	*/
+#define RECON_OS_LINUX (0)
+
+#if !RECON_OS_DETECTED && (defined(linux) || defined(__linux))
+	#undef RECON_OS_LINUX
+	#define RECON_OS_LINUX (1)
+	// Let Code Know That We've Detected an OS
+	#undef RECON_OS_DETECTED
+	#define RECON_OS_DETECTED (1)
+#endif
+/*	End: Linux Detection	*/
+
+
+/*	Start: Android Detection	*/
+#define RECON_OS_ANDROID (0)
+
+#if !RECON_OS_DETECTED && (defined(__ANDROID__))
+	#undef RECON_OS_ANDROID
+	#define RECON_OS_ANDROID (1)
+	// Let Code Know That We've Detected an OS
+	#undef RECON_OS_DETECTED
+	#define RECON_OS_DETECTED (1)
+#endif 
+/*	End: Android Detection		*/
+
+#if !RECON_OS_DETECTED
+#error "FAILED TO DETECT THE OPERATING SYSTEM!!!"
+#endif // !RECON_OS_DETECTED
+
+/*	End: OS Detection	*/
+
+
+
+/*	Start: C++ Feature Detection	*/
+
 #ifndef CPP11
 	#if defined(__cplusplus) && __cplusplus >= 201103L
 		#define CPP11 (1)
@@ -9,9 +114,7 @@
 	#endif // defined(__cplusplus) && __cplusplus >= 201103L
 #endif // CPP11
 
-#if defined(_MSC_VER)
-
-#define MSC_COMPILER (1)
+#if RECON_MSC_COMPILER
 
 #if (_MSC_VER >= 1800)
 #define VS2013_FEATURE_LEVEL (1)
@@ -55,7 +158,7 @@
 
 #else // if !defined(_MSC_VER)
 
-#define MSC_COMPILER (0)
+#define RECON_MSC_COMPILER (0)
 #define VS2013_FEATURE_LEVEL (0)
 #define VS2012_FEATURE_LEVEL (0)
 #define VS2010_FEATURE_LEVEL (0)
@@ -109,5 +212,9 @@
 #ifndef CPP_FEATURE_RANGE_BASED_LOOP
 #define CPP_FEATURE_RANGE_BASED_LOOP (0)
 #endif // CPP_FEATURE_RANGE_BASED_LOOP
+
+/*	End: C++ Feature Detection	*/
+
+
 
 #endif // FEATURE_LEVEL_DEFINES_H

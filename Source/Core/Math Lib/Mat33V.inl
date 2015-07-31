@@ -16,9 +16,9 @@ __forceinline Mat33V::Mat33V(Mat33V_In mMatrix) :
 }
 
 __forceinline Mat33V::Mat33V(Mat33V&& mMatrix) :
-	xAxis(move(mMatrix.xAxis)),
-	yAxis(move(mMatrix.yAxis)),
-	zAxis(move(mMatrix.zAxis))
+	xAxis(std::move(mMatrix.xAxis)),
+	yAxis(std::move(mMatrix.yAxis)),
+	zAxis(std::move(mMatrix.zAxis))
 {
 }
 
@@ -74,9 +74,9 @@ inline Mat33V_Ref Mat33V::operator=(Mat33V&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
-		xAxis = move(mMatrix.GetXAxisRef());
-		yAxis = move(mMatrix.GetYAxisRef());
-		zAxis = move(mMatrix.GetZAxisRef());
+		xAxis = std::move(mMatrix.GetXAxisRef());
+		yAxis = std::move(mMatrix.GetYAxisRef());
+		zAxis = std::move(mMatrix.GetZAxisRef());
 	}
 	return *this;
 }
@@ -172,7 +172,7 @@ inline Vec3V_Out operator*(Vec3V_ConstRef vVector, Mat33V_In mMatrix)
 #endif
 }
 
-Vec3V_Ref operator*=(Vec3V_Ref vVector, Mat33V_In mMatrix)
+__forceinline Vec3V_Ref operator*=(Vec3V_Ref vVector, Mat33V_In mMatrix)
 {
 	vVector = vVector * mMatrix;
 	return vVector;

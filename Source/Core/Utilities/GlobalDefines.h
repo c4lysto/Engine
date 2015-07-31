@@ -1,5 +1,5 @@
-#ifndef GLOBAL_DEFINES_H
-#define GLOBAL_DEFINES_H
+#ifndef _RECON_GLOBAL_DEFINES_H_
+#define _RECON_GLOBAL_DEFINES_H_
 
 #include "FeatureLevelDefines.h"
 
@@ -12,63 +12,97 @@ typedef unsigned __int32 u32;
 typedef __int64 s64;
 typedef unsigned __int64 u64;
 
-#ifdef NULL
-#undef NULL
-#define NULL nullptr
-#endif // NULL
+// Too Risky To Redefine NULL!
+//#if !defined(__cplusplus) || (defined(_MSC_VER) && _MSC_VER < 1600)
+//	#define NULL 0
+//#else
+//	#define NULL nullptr
+//#endif
 
 #ifndef SSE_AVAILABLE
-#if defined(_M_IX86) || defined(_M_AMD64)
-#define SSE_AVAILABLE (1)
-#else
-#define SSE_AVAILABLE (0)
-#endif
+	#if defined(_M_IX86) || defined(_M_AMD64)
+		#define SSE_AVAILABLE (1)
+	#else
+		#define SSE_AVAILABLE (0)
+	#endif
 #endif // SSE_AVAILABLE
 
 #ifndef ALIGN
-#define ALIGN(byteAlign) __declspec(align(byteAlign))
+	#if RECON_MSC_COMPILER
+		#define ALIGN(byteAlign) __declspec(align(byteAlign))
+	#elif RECON_GCC_COMPILER
+		#define ALIGN(byteAlign) __attribute__((aligned(byteAlign)))
+	#else
+		#error "#define ALIGN NOT SUPPORTED FOR THIS COMPILER TYPE!"
+	#endif
 #endif
 
 #ifndef RESTRICT
-#define RESTRICT __restrict
+	#define RESTRICT __restrict
 #endif // RESTRICT
 
 #ifndef GLOBALCONST
-#define GLOBALCONST extern const __declspec(selectany)
+	#if RECON_MSC_COMPILER
+		#define GLOBALCONST extern const __declspec(selectany)
+	#elif RECON_GCC_COMPILER
+		#define GLOBALCONST extern const __attribute__((weak))
+	#else
+		#error "#define GLOBALCONST NOT SUPPORTED FOR THIS COMPILER TYPE!"
+	#endif
 #endif
 
 #ifndef THREADLOCAL
-#define THREADLOCAL __declspec(thread)
+	#if RECON_MSC_COMPILER
+		#define THREADLOCAL __declspec(thread)
+	#elif RECON_GCC_COMPILER
+		#define THREADLOCAL __thread
+	#else
+		#error "#define THREADLOCAL NOT SUPPORTED FOR THIS COMPILER TYPE!"
+	#endif
 #endif
 
+#ifndef NOINLINE
+	#if RECON_MSC_COMPILER
+		#define NOINLINE __declspec(noinline)
+	#elif RECON_GCC_COMPILER
+		#define NOINLINE __attribute__((noinline))
+	#else
+		#error "#define NOINLINE NOT SUPPORTED FOR THIS COMPILER TYPE!"
+	#endif
+#endif 
+
 #ifndef SAFE_RELEASE
-#define SAFE_RELEASE(rel) { if(rel) {rel->Release(); rel = nullptr;}}
+	#define SAFE_RELEASE(rel) { if(rel) {rel->Release(); rel = nullptr;}}
 #endif
 
 #ifndef SAFE_DELETE
-#define SAFE_DELETE(del) { if(del) {delete del; del = nullptr;} }
+	#define SAFE_DELETE(del) { if(del) {delete del; del = nullptr;} }
 #endif
 
 #ifndef NUMELEM
-#define NUMELEM(arr) (sizeof(arr)/(*(arr)))
+	#define NUMELEM(arr) (sizeof(arr)/(*(arr)))
 #endif
 
 #ifndef UNUSED_PARAM
-#define UNUSED_PARAM(x)
+	#define UNUSED_PARAM(x)
 #endif // UNUSED_PARAM
 
+#ifndef COMMENT
+	#define COMMENT(...)
+#endif // COMMENT
+
 #ifndef WARN_UNUSED_RESULT
-#if defined(_SAL_VERSION)
-	#define WARN_UNUSED_RESULT(x) _Check_return_ x
-#elif 0
-	#define WARN_UNUSED_RESULT(x) __attribute__(warn_unused_result) x
-#else
-	#define WARN_UNUSED_RESULT(x) x
+	#if RECON_MSC_COMPILER && defined(_SAL_VERSION)
+		#define WARN_UNUSED_RESULT(x) _Check_return_ x
+	#elif RECON_GCC_COMPILER
+		#define WARN_UNUSED_RESULT(x) __attribute__(warn_unused_result) x
+	#else
+		#define WARN_UNUSED_RESULT(x) x
 #endif
 #endif // WARN_UNUSED_RESULT
 
 #ifndef TO_STRING
-#define TO_STRING(str) #str
+	#define TO_STRING(str) #str
 #endif
 
 #define ONE_OVER_255 (1.0f/255.0f)
@@ -80,112 +114,116 @@ typedef unsigned __int64 u64;
 #define LONG_LONG_MASK (0xFFFFFFFFFFFFFFFFLL)
 
 #ifndef CHAR_MIN
-#define CHAR_MIN	(-128)
+	#define CHAR_MIN	(-128)
 #endif // CHAR_MIN
 
 #ifndef S8_MIN
-#define S8_MIN		CHAR_MIN
+	#define S8_MIN		CHAR_MIN
 #endif // S8_MIN
 
 #ifndef CHAR_MAX
-#define CHAR_MAX	(127)
+	#define CHAR_MAX	(127)
 #endif // CHAR_MAX
 
 #ifndef S8_MAX
-#define S8_MAX		CHAR_MAX
+	#define S8_MAX		CHAR_MAX
 #endif // S8_MAX
 
 #ifndef UCHAR_MAX
-#define UCHAR_MAX	(0xFF)
+	#define UCHAR_MAX	(0xFF)
 #endif // UCHAR_MAX
 
 #ifndef U8_MAX
-#define U8_MAX		UCHAR_MAX
+	#define U8_MAX		UCHAR_MAX
 #endif // U8_MAX
 
 #ifndef SHORT_MIN
-#define SHORT_MIN	(-32768)
+	#define SHORT_MIN	(-32768)
 #endif // SHORT_MIN
 
 #ifndef S16_MIN
-#define S16_MIN		SHORT_MIN
+	#define S16_MIN		SHORT_MIN
 #endif // S8_MIN
 
 #ifndef SHORT_MAX
-#define SHORT_MAX	(32767)
+	#define SHORT_MAX	(32767)
 #endif // SHORT_MAX
 
 #ifndef S16_MAX
-#define S16_MAX		SHORT_MAX
+	#define S16_MAX		SHORT_MAX
 #endif // S8_MAX
 
 #ifndef USHORT_MAX
-#define USHORT_MAX	(0xFFFF)
+	#define USHORT_MAX	(0xFFFF)
 #endif // USHORT_MAX
 
 #ifndef U16_MAX
-#define U16_MAX		USHORT_MAX
+	#define U16_MAX		USHORT_MAX
 #endif // S8_MAX
 
 #ifndef INT_MIN
-#define INT_MIN		(-2147483648)
+	#define INT_MIN		(-2147483648)
 #endif // INT_MIN
 
 #ifndef LONG_MIN
-#define LONG_MIN	INT_MIN
+	#define LONG_MIN	INT_MIN
 #endif // LONG_MIN
 
 #ifndef S32_MIN
-#define S32_MIN		INT_MIN
+	#define S32_MIN		INT_MIN
 #endif // S32_MIN
 
 #ifndef INT_MAX
-#define	INT_MAX		(2147483647)
+	#define	INT_MAX		(2147483647)
 #endif // INT_MAX
 
 #ifndef LONG_MAX
-#define LONG_MAX	INT_MAX
+	#define LONG_MAX	INT_MAX
 #endif // LONG_MAX
 
 #ifndef S32_MAX
-#define S32_MAX		INT_MAX
+	#define S32_MAX		INT_MAX
 #endif // S32_MAX
 
 #ifndef UINT_MAX
-#define	UINT_MAX	(0xFFFFFFFF)
+	#define	UINT_MAX	(0xFFFFFFFF)
 #endif // UINT_MAX
 
 #ifndef ULONG_MAX
-#define ULONG_MAX	UINT_MAX
+	#define ULONG_MAX	UINT_MAX
 #endif // ULONG_MAX
 
 #ifndef U32_MAX
-#define U32_MAX		UINT_MAX
+	#define U32_MAX		UINT_MAX
 #endif // U32_MAX
 
 #ifndef LLONG_MIN
-#define LLONG_MIN	(9223372036854775807i64)
+	#define LLONG_MIN	(9223372036854775807i64)
 #endif // LLONG_MIN
 
 #ifndef S64_MIN
-#define S64_MIN		LLONG_MIN
+	#define S64_MIN		LLONG_MIN
 #endif // S64_MIN
 
 #ifndef LLONG_MAX
-#define LLONG_MAX	(9223372036854775808i64)
+	#define LLONG_MAX	(9223372036854775808i64)
 #endif // LLONG_MAX
 
 #ifndef S64_MAX
-#define S64_MAX		LLONG_MAX
+	#define S64_MAX		LLONG_MAX
 #endif // S64_MAX
 
 #ifndef ULLONG_MAX
-#define ULLONG_MAX	(0xFFFFFFFFFFFFFFFFui64)
+	#define ULLONG_MAX	(0xFFFFFFFFFFFFFFFFui64)
 #endif // ULLONG_MAX
 
 #ifndef U64_MAX
-#define U64_MAX		ULLONG_MAX
+	#define U64_MAX		ULLONG_MAX
 #endif // U64_MAX
+
+#ifndef INFINITE
+	#define INFINITE (0xFFFFFFFF)
+#endif // INFINITE
 
 #define BIT(bit) (1<<bit)
 #define BIT0 BIT(0)
@@ -221,21 +259,26 @@ typedef unsigned __int64 u64;
 #define BIT30 BIT(30)
 #define BIT31 BIT(31)
 
+#define S8_SIGN_BIT BIT7
+#define S16_SIGN_BIT BIT15
+#define S32_SIGN_BIT BIT31
+#define FLOAT_SIGN_BIT BIT31
+
 __forceinline void Prefetch_Impl(void* pMem)
 {
 #if SSE_AVAILABLE
-	_mm_prefetch((const s8*)pMem, _MM_HINT_NTA);
+	//_mm_prefetch((const s8*)pMem, _MM_HINT_NTA);
 #else // if !SSE_AVAILABLE
 	CompileTimeAssert(false, "Do NOT use Prefetch_Impl Directly, Use Prefetch Instead!");
 #endif // !SSE_AVAILABLE
 }
 
 #ifndef Prefetch
-#if SSE_AVAILABLE
-#define Prefetch(p) Prefetch_Impl(p) 
-#else // if !SSE_AVAILABLE
-#define Prefetch(p) __noop
-#endif // !SSE_AVAILABLE
+	#if SSE_AVAILABLE
+		#define Prefetch(p) Prefetch_Impl(p) 
+	#else // if !SSE_AVAILABLE
+		#define Prefetch(p) 
+	#endif // !SSE_AVAILABLE
 #endif // Prefetch
 
 #endif

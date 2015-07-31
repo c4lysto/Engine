@@ -1,14 +1,11 @@
-#ifndef UTILITIES_INCLUDE_H
-#define UTILITIES_INCLUDE_H
+#ifndef _RECON_UTILITIES_INCLUDE_H_
+#define _RECON_UTILITIES_INCLUDE_H_
 
-#define USING_WINDOWS ((defined(WIN32) && WIN32) || (defined(_WIN64) && _WIN64))
+#define USING_WINDOWS ((defined(WIN32) && WIN32) || (defined(RECON_OS_WINDOWS && RECON_OS_64BIT) && RECON_OS_WINDOWS && RECON_OS_64BIT))
 
 #if 1
 #include <Windows.h>
 #endif
-
-#include <utility>
-using std::move;
 
 #pragma warning(disable : 4127) // Conditional Expression is Constant
 #pragma warning(disable : 4512) // Assignment Operator Was Implicitly Defined As Deleted
@@ -17,7 +14,6 @@ using std::move;
 #pragma warning(disable : 4714) // marked as __forceinline not inlined
 
 #include "GlobalDefines.h"
-#include "HashString.h"
 #include "Debugging/DebugHelp.h"
 
-#endif //UTILITIES_INCLUDE_H
+#endif //_RECON_UTILITIES_INCLUDE_H_

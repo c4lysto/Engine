@@ -1,6 +1,9 @@
 #include "HashString.h"
 #include "Debugging\DebugHelp.h"
 
+namespace recon
+{
+
 HashString::HashString(const char* szString)
 {
 	m_Hash = ComputeHash(szString);
@@ -52,3 +55,5 @@ u32 HashString::ComputeHash(const char* szString)
 
 	return hash;
 }
+
+} // namespace recon

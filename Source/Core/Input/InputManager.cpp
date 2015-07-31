@@ -6,6 +6,11 @@
 #include <tchar.h>
 using namespace std;
 
+recon::InputManager g_InputManager;
+
+namespace recon
+{
+
 #define RID_USAGE_PAGE_GENERIC (USHORT(0x01))
 #define RID_USAGE_PAGE_GAME (USHORT(0x05)) /*Not Sure Quite What This Means Yet...*/
 
@@ -23,8 +28,6 @@ using namespace std;
 #define MOUSE_BUTTON_UP_MASK (0x2AA)
 
 #define USE_BUFFERED_INPUT (0)
-
-InputManager g_InputManager;
 
 InputManager::InputManager() : 
 m_ucModifiers((u8)InputModifier::None),
@@ -80,9 +83,9 @@ bool InputManager::Initialize(HWND hWnd)
 		return false;
 	}
 
-	m_NewInputEvent = SysCreateEvent();
+	SysCreateEvent(m_NewInputEvent);
 
-	m_InputThread.StartThread(CreateFunctionPointer(this, &InputManager::InputThreadProc), nullptr, THREAD_PRIO_NORMAL, "Input Thread");
+	m_InputThread.StartThread(CreateFunctionPointer(this, &InputManager::InputThreadProc), nullptr, SysThreadPriority::Normal, "Input Thread");
 	m_InputHook.Init(HOOK_GETMESSAGE, InputManager::InputHookCallback);
 
 	return true;
@@ -159,7 +162,7 @@ void InputManager::SetDeviceChange(WPARAM wParam, LPARAM lParam)
 
 void InputManager::ProcessInputEvent(WPARAM wParam, LPARAM lParam)
 {
-	//LocalCriticalSection inputCS(m_InputCS);
+	//SysLocalCriticalSection inputCS(m_InputCS);
 
 #if USE_BUFFERED_INPUT
 	UINT unSize = 0;
@@ -254,7 +257,7 @@ void InputManager::ProcessInput()
 	DisplayCurrentEvents();
 #endif // DEBUG
 
-	LocalCriticalSection currInputCS(m_CurrentInputCS);
+	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
 
 	list<InputCurrentEventContainer::iterator> lEventsToDelete;
 
@@ -411,7 +414,7 @@ void InputManager::CreateMouseEvent(PRAWINPUT pInput)
 
 void InputManager::PostButtonEvent(InputEvent& inputEvent, bool bIsDown)
 {
-	LocalCriticalSection currInputCS(m_CurrentInputCS);
+	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
 
 	InputEvent* pDownEvent = GetCurrentInputEvent(inputEvent);
 
@@ -443,7 +446,7 @@ void InputManager::PostInputEvent(const InputEvent* pInputEvent)
 {
 	if(pInputEvent)
 	{
-		LocalCriticalSection currInputCS(m_CurrentInputCS);
+		SysLocalCriticalSection currInputCS(m_CurrentInputCS);
 
 		InputEvent* pCurrEvent = GetCurrentInputEvent(*pInputEvent);
 
@@ -464,7 +467,7 @@ void InputManager::PostInputEvent(const InputEvent* pInputEvent)
 
 void InputManager::ClearAllCurrentInput()
 {
-	LocalCriticalSection currInputCS(m_CurrentInputCS);
+	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
 
 	for(InputCurrentEventContainer::iterator iter = m_lCurrentEvents.begin(); iter != m_lCurrentEvents.end(); ++iter)
 	{
@@ -603,7 +606,7 @@ void InputManager::DisplayCurrentEvents()
 {
 	//system("cls");
 
-	LocalCriticalSection currInputCS(m_CurrentInputCS);
+	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
 
 	for(InputCurrentEventContainer::iterator iter = m_lCurrentEvents.begin(); iter != m_lCurrentEvents.end(); ++iter)
 	{
@@ -613,3 +616,5 @@ void InputManager::DisplayCurrentEvents()
 	}
 }
 #endif
+
+} // namespace recon

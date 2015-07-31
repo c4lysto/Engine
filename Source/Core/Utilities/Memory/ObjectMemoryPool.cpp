@@ -2,6 +2,9 @@
 
 #include <malloc.h>
 
+namespace recon
+{
+
 ObjectPoolManager::MemoryPoolList ObjectPoolManager::m_MemoryPools;
 
 template<typename classType, u8 alignment>
@@ -139,3 +142,5 @@ void ObjectPoolManager::RegisterMemoryPool(IMemPool* pMemPool)
 		}
 	}
 }
+
+} // namespace recon

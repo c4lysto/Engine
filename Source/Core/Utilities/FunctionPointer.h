@@ -1,5 +1,10 @@
-#ifndef FUNCTIONPOINTER_H
-#define FUNCTIONPOINTER_H
+#ifndef _RECON_FUNCTIONPOINTER_H_
+#define _RECON_FUNCTIONPOINTER_H_
+
+#include "UtilitiesInclude.h"
+
+namespace recon
+{
 
 template<typename retType, typename... tArgs>
 class _FuncPtrBase
@@ -370,12 +375,12 @@ public:
 
 #define CREATE_FUNC_PTR_WRAP(createFuncWrap, callConv, constQualifier) createFuncWrap(callConv, constQualifier)
 
-#if _WIN64
+#if RECON_OS_64BIT
 #define CREATE_FUNC_PTR_WRAP_ALL(createFuncWrap, constQualifier) \
 		CREATE_FUNC_PTR_WRAP(createFuncWrap, __cdecl, constQualifier) \
 		CREATE_FUNC_PTR_WRAP(createFuncWrap, __vectorcall, constQualifier) //\
 		CREATE_FUNC_PTR_WRAP(createFuncWrap, __clrcall, constQualifier)
-#else // if !_WIN64
+#else // if !RECON_OS_64BIT
 #define CREATE_FUNC_PTR_WRAP_ALL(createFuncWrap, constQualifier) \
 		CREATE_FUNC_PTR_WRAP(createFuncWrap, __stdcall, constQualifier) \
 		CREATE_FUNC_PTR_WRAP(createFuncWrap, __cdecl, constQualifier) \
@@ -383,7 +388,7 @@ public:
 		CREATE_FUNC_PTR_WRAP(createFuncWrap, __vectorcall, constQualifier) \
 		CREATE_FUNC_PTR_WRAP(createFuncWrap, __thiscall, constQualifier) //\
 		CREATE_FUNC_PTR_WRAP(createFuncWrap, __clrcall, constQualifier)
-#endif // !_WIN64
+#endif // !RECON_OS_64BIT
 
 // START - Static Function Pointers
 
@@ -448,4 +453,6 @@ CREATE_FUNC_PTR_WRAP_ALL(CREATE_MEMBER_FUNC_WRAP, const)
 
 #pragma warning(default : 4003)
 
-#endif // FUNCTIONPOINTER_H
+} // namespace recon
+
+#endif // _RECON_FUNCTIONPOINTER_H_

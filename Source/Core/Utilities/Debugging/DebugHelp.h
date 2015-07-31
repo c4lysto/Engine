@@ -67,6 +67,14 @@
 #endif // !DEBUG
 #endif // ifndef Verify
 
+#ifndef Warning
+	#if DEBUG
+		#define Warning(message, ...) DisplayDebugString(message, __VA_ARGS__)
+	#else // !DEBUG
+		#define Warning(message, ...) 
+	#endif
+#endif // // indef Warning
+
 #ifndef CompileTimeAssert
 #define CompileTimeAssert(contition, message) static_assert(!!(contition), message)
 #endif // ifndef CompileTimeAssert

@@ -1,6 +1,9 @@
-#ifndef SYSSYNCOBJECT_H
-#define SYSSYNCOBJECT_H
+#ifndef _RECON_SYSSYNCOBJECT_H_
+#define _RECON_SYSSYNCOBJECT_H_
 #include "UtilitiesInclude.h"
+
+namespace recon
+{
 
 class SysSyncObject
 {
@@ -25,11 +28,11 @@ public:
 class SysSyncObjectMultiple
 {
 private:
-#ifdef WIN32
+#ifdef RECON_OS_WINDOWS
 	static const size_t MAX_WAIT_HANDLES = MAXIMUM_WAIT_OBJECTS;
 #else
 	static const size_t MAX_WAIT_HANDLES = 64;
-#endif // WIN32
+#endif
 
 private:
 	int m_nNumWaitHandles;
@@ -48,4 +51,6 @@ public:
 	bool WaitAny();
 };
 
-#endif // SYSSYNCOBJECT_H
+} // namespace recon
+
+#endif // _RECON_SYSSYNCOBJECT_H_

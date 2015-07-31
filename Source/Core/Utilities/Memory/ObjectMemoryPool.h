@@ -1,5 +1,5 @@
-#ifndef OBJECT_MEMORY_POOL
-#define OBJECT_MEMORY_POOL
+#ifndef _RECON_OBJECT_MEMORY_POOL_H_
+#define _RECON_OBJECT_MEMORY_POOL_H_
 
 #include <list>
 
@@ -17,6 +17,9 @@ public: \
 	{ \
 		if(pMem) m_##className##_MemPool ->Free((className*)pMem); \
 	}
+
+namespace recon
+{
 
 class IMemPool
 {
@@ -82,4 +85,6 @@ public:
 
 };
 
-#endif // OBJECT_MEMORY_POOL
+} // namespace recon
+
+#endif // _RECON_OBJECT_MEMORY_POOL_H_

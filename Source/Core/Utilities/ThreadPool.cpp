@@ -1,30 +1,17 @@
 #include "ThreadPool.h"
+#include <sstream>
+
+namespace recon
+{
 
 ThreadPool::ThreadPool()
 {
-	m_JobSemaphore = SysCreateSemaphore();
+	SysCreateSemaphore(m_JobSemaphore);
 }
 
 ThreadPool::~ThreadPool()
 {
 	Shutdown();
-}
-
-void ThreadPool::AddThread(SysThread* pThread)
-{
-	if(pThread)
-	{
-		for(vector<SysThread*>::const_iterator iter = m_vThreads.begin(); iter != m_vThreads.end(); ++iter)
-		{
-			if(*iter == pThread)
-				return;
-		}
-
-		m_vThreads.push_back(pThread);
-		m_GroupSyncObject.AddSyncObject(*pThread);
-
-		pThread->StartThread(WorkerThreadProc, this, THREAD_PRIO_NORMAL);
-	}
 }
 
 void ThreadPool::WorkerThreadProc(void* pArgs)
@@ -33,20 +20,18 @@ void ThreadPool::WorkerThreadProc(void* pArgs)
 	{
 		ThreadPool* pThreadPool = (ThreadPool*)pArgs;
 		JobArgs jobArgs;
-		
+
 		if(pThreadPool)
 		{
 			while(true)
 			{
-				jobArgs = pThreadPool->GetWork();
-
-				if(!jobArgs.m_pProc.IsNull())
+				if(pThreadPool->GetWork(jobArgs))
 				{
 					SysSetThreadPriority(jobArgs.m_ePriority);
 
 					(jobArgs.m_pProc)(jobArgs.m_pArgs);
 
-					SysSetThreadPriority(THREAD_PRIO_NORMAL);
+					SysSetThreadPriority(SysThreadPriority::Normal);
 				}
 				else
 				{
@@ -57,52 +42,44 @@ void ThreadPool::WorkerThreadProc(void* pArgs)
 	}
 }
 
-ThreadPool::JobArgs ThreadPool::GetWork()
+bool ThreadPool::GetWork(ThreadPool::JobArgs& jobArgs)
 {
 	m_JobSemaphore.Wait();
 
-	LocalCriticalSection jobCS(m_JobCS);
+	SysLocalCriticalSection jobCS(m_JobCS);
 
-	JobArgs pJob = m_qJobs.front();
-	m_qJobs.pop();
+	bool bValidJob = false;
 
-	return pJob;
+	if (!m_qJobs.empty())
+	{
+		jobArgs = m_qJobs.front();
+		bValidJob = true;
+	}
+
+	return bValidJob;
 }
 
-void ThreadPool::Init(size_t poolSize)
+void ThreadPool::Init(size_t poolSize, const char* szPoolName /*= "Thread Pool"*/)
 {
 	// Pool Has Already Been Initialized, Don't Be Stupid
 	if(m_vThreads.size() == 0)
 	{
 		for(size_t i = 0; i < poolSize; ++i)
 		{
-			AddThread(new SysThread);
+			std::ostringstream threadName;
+			threadName << szPoolName << "(" << i << ")";
+			m_vThreads.push_back(SysThread(WorkerThreadProc, this, SysThreadPriority::Normal, threadName.str().c_str()));
 		}
 	}
 }
 
 void ThreadPool::Shutdown()
 {
-	// Add Empty Work in the work Queue to trigger worker threads to stop
-	for(size_t i = 0; i < m_vThreads.size(); ++i)
-	{
-		AddWork(nullptr, nullptr);
-	}
+	ClearWorkQueue();
 
 	for(size_t i = 0; i < m_vThreads.size(); ++i)
 	{
-		if(m_vThreads[i])
-		{
-			m_vThreads[i]->EndThread();
-		}
-	}
-
-	// Wait For All The Threads To Finish
-	m_GroupSyncObject.Wait();
-
-	for(size_t i = 0; i < m_vThreads.size(); ++i)
-	{
-		SAFE_DELETE(m_vThreads[i]);
+		m_vThreads[i].Wait();
 	}
 
 	m_vThreads.clear();
@@ -110,11 +87,25 @@ void ThreadPool::Shutdown()
 	SysCloseSemaphore(m_JobSemaphore);
 }
 
-void ThreadPool::AddWork(SysThreadProc pProc, void* pArgs, eThreadPriority ePriority /*= THREAD_PRIO_NORMAL*/)
+void ThreadPool::AddWork(SysThreadProc pProc, void* pArgs, SysThreadPriority ePriority /*= SysThreadPriority::Normal*/)
 {
-	LocalCriticalSection jobCS(m_JobCS);
+	SysLocalCriticalSection jobCS(m_JobCS);
 
 	m_qJobs.push(JobArgs(pProc, pArgs, ePriority));
 
-	m_JobSemaphore.Signal();
+	m_JobSemaphore.Unlock();
 }
+
+void ThreadPool::ClearWorkQueue()
+{
+	SysLocalCriticalSection jobCS(m_JobCS);
+
+	while(!m_qJobs.empty())
+	{
+		m_qJobs.pop();
+	}
+
+	m_JobSemaphore.Unlock();
+}
+
+} // namespace recon

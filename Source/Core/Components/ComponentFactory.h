@@ -1,9 +1,12 @@
-#ifndef COMPONENT_FACTORY_H
-#define COMPONENT_FACTORY_H
+#ifndef _RECON_COMPONENT_FACTORY_H_
+#define _RECON_COMPONENT_FACTORY_H_
 
 #include "Component.h"
 
 #include <map>
+
+namespace recon
+{
 
 class ComponentFactory
 {
@@ -33,6 +36,8 @@ public:
 	void ReturnComponent(ComponentClass* pComponent);
 };
 
-extern ComponentFactory gComponentFactory;
+} // namespace recon
 
-#endif // COMPONENT_FACTORY_H
+extern recon::ComponentFactory gComponentFactory;
+
+#endif // _RECON_COMPONENT_FACTORY_H_

@@ -1,9 +1,6 @@
 #ifndef GLOBALMATHFUNCS_H
 #define GLOBALMATHFUNCS_H
 
-//#ifndef GLOBALMATHFUNCS_INL
-//#define GLOBALMATHFUNCS_INL
-
 #include "MathDeclarations.h"
 
 #ifndef MATHLIB_H
@@ -32,8 +29,31 @@ Vec2f_Out Lerp(Vec2f_In lhs, Vec2f_In rhs, const float& fLambda);
 Vec3f_Out Lerp(Vec3f_In lhs, Vec3f_In rhs, const float& fLambda);
 Vec4f_Out Lerp(Vec4f_In lhs, Vec4f_In rhs, const float& fLambda);
 
+s8 Abs(const s8& iScalar);
+s16 Abs(const s16& iScalar);
+s32 Abs(const s32& iScalar);
+s64 Abs(const s64& iScalar);
 float Abs(const float& fScalar);
 double Abs(const double& fScalar);
+Vec2f_Out Abs(Vec2f_In vVector);
+Vec3f_Out Abs(Vec3f_In vVector);
+Vec4f_Out Abs(Vec4f_In vVector);
+
+float Sqrt(const float& fScalar);
+double Sqrt(const double& fScalar);
+Vec2f_Out Sqrt(Vec2f_In vVector);
+Vec3f_Out Sqrt(Vec3f_In vVector);
+Vec4f_Out Sqrt(Vec4f_In vVector);
+
+float SqrtSafe(const float& fScalar, const float& safeVal = 0.0f);
+double SqrtSafe(const double& fScalar, const double& safeVal = 0.0);
+Vec2f_Out SqrtSafe(Vec2f_In vVector, Vec2f_In vSafeVec = Vec2f(I_ZERO));
+Vec3f_Out SqrtSafe(Vec3f_In vVector, Vec3f_In vSafeVec = Vec3f(I_ZERO));
+Vec4f_Out SqrtSafe(Vec4f_In vVector, Vec4f_In vSafeVec = Vec4f(I_ZERO));
+
+template<VecElem splat> Vec2f_Out Splat(Vec2f_In lhs);
+template<VecElem splat> Vec3f_Out Splat(Vec3f_In lhs);
+template<VecElem splat> Vec4f_Out Splat(Vec4f_In lhs);
 
 template<VecElem pX, VecElem pY> Vec2f_Out Permute(Vec2f_In lhs);
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3f_Out Permute(Vec3f_In lhs);
@@ -42,6 +62,56 @@ template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4f_Out Permute(Vec4f
 template<VecElem pX, VecElem pY> Vec2f_Out Permute(Vec2f_In lhs, Vec2f_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3f_Out Permute(Vec3f_In lhs, Vec3f_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4f_Out Permute(Vec4f_In lhs, Vec4f_In rhs);
+
+s32 SignMask(Vec2f_In vVector);
+s32 SignMask(Vec3f_In vVector);
+s32 SignMask(Vec4f_In vVector);
+
+Vec2f_Out SelectTF(Vec2f_In lhs, Vec2f_In rhs, Vec2f_In condition);
+Vec3f_Out SelectTF(Vec3f_In lhs, Vec3f_In rhs, Vec3f_In condition);
+Vec4f_Out SelectTF(Vec4f_In lhs, Vec4f_In rhs, Vec4f_In condition);
+
+
+// Trigonometry
+
+float Sin(const float& fRadians);
+double Sin(const double& fRadians);
+Vec2f_Out Sin(Vec2f_In vRadians);
+Vec3f_Out Sin(Vec3f_In vRadians);
+Vec4f_Out Sin(Vec4f_In vRadians);
+
+float ASin(const float& fRadians);
+double ASin(const double& fRadians);
+Vec2f_Out ASin(Vec2f_In vRadians);
+Vec3f_Out ASin(Vec3f_In vRadians);
+Vec4f_Out ASin(Vec4f_In vRadians);
+
+float Cos(const float& fRadians);
+double Cos(const double& fRadians);
+Vec2f_Out Cos(Vec2f_In vRadians);
+Vec3f_Out Cos(Vec3f_In vRadians);
+Vec4f_Out Cos(Vec4f_In vRadians);
+
+float ACos(const float& fRadians);
+double ACos(const double& fRadians);
+Vec2f_Out ACos(Vec2f_In vRadians);
+Vec3f_Out ACos(Vec3f_In vRadians);
+Vec4f_Out ACos(Vec4f_In vRadians);
+
+float Tan(const float& fRadians);
+double Tan(const double& fRadians);
+Vec2f_Out Tan(Vec2f_In vRadians);
+Vec3f_Out Tan(Vec3f_In vRadians);
+Vec4f_Out Tan(Vec4f_In vRadians);
+
+float ATan(const float& fRadians);
+double ATan(const double& fRadians);
+Vec2f_Out ATan(Vec2f_In vRadians);
+Vec3f_Out ATan(Vec3f_In vRadians);
+Vec4f_Out ATan(Vec4f_In vRadians);
+
+// Returns: Vec2f(Sin(), Cos());
+Vec2f_Out SinCos(const float& fRadians);
 
 
 // Comparison Functions
@@ -205,21 +275,35 @@ Vec2f_Out FloatToInt(Vec2f_In vVector);
 Vec3f_Out FloatToInt(Vec3f_In vVector);
 Vec4f_Out FloatToInt(Vec4f_In vVector);
 
+float Floor(const float& fScalar);
+double Floor(const double& fScalar);
 Vec2f_Out Floor(Vec2f_In vVector);
 Vec3f_Out Floor(Vec3f_In vVector);
 Vec4f_Out Floor(Vec4f_In vVector);
 
+float Ceil(const float& fScalar);
+double Ceil(const double& fScalar);
 Vec2f_Out Ceil(Vec2f_In vVector);
 Vec3f_Out Ceil(Vec3f_In vVector);
 Vec4f_Out Ceil(Vec4f_In vVector);
 
+float Trunc(const float& fScalar);
+double Trunc(const double& fScalar);
 Vec2f_Out Trunc(Vec2f_In vVector);
 Vec3f_Out Trunc(Vec3f_In vVector);
 Vec4f_Out Trunc(Vec4f_In vVector);
 
+float Round(const float& fScalar);
+double Round(const double& fScalar);
 Vec2f_Out Round(Vec2f& vVector);
 Vec3f_Out Round(Vec3f_In vVector);
 Vec4f_Out Round(Vec4f_In vVector);
+
+float Log2(const float& fScalar);
+double Log2(const double& fScalar);
+Vec2f_Out Log2(Vec2f_In vVector);
+Vec3f_Out Log2(Vec3f_In vVector);
+Vec4f_Out Log2(Vec4f_In vVector);
 
 Mat44f_Out Lerp(Mat44f_In MatrixA, Mat44f_In MatrixB, const float fLambda);
 
@@ -256,6 +340,13 @@ Vec3V_Out Lerp(Vec3V_In lhs, Vec3V_In rhs, ScalarV_In vLambda);
 Vec4V_Out Lerp(Vec4V_In lhs, Vec4V_In rhs, ScalarV_In vLambda);
 
 ScalarV_Out Abs(ScalarV_In vScalar);
+Vec2V_Out Abs(Vec2V_In vVector);
+Vec3V_Out Abs(Vec3V_In vVector);
+Vec4V_Out Abs(Vec4V_In vVector);
+
+template<VecElem splat> Vec2V_Out Splat(Vec2V_In lhs);
+template<VecElem splat> Vec3V_Out Splat(Vec3V_In lhs);
+template<VecElem splat> Vec4V_Out Splat(Vec4V_In lhs);
 
 template<VecElem pX, VecElem pY> Vec2V_Out Permute(Vec2V_In lhs);
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3V_Out Permute(Vec3V_In lhs);
@@ -265,11 +356,54 @@ template<VecElem pX, VecElem pY> Vec2V_Out Permute(Vec2V_In lhs, Vec2V_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3V_Out Permute(Vec3V_In lhs, Vec3V_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4V_Out Permute(Vec4V_In lhs, Vec4V_In rhs);
 
+s32 SignMask(Vec2V_In vVector);
+s32 SignMask(Vec3V_In vVector);
+s32 SignMask(Vec4V_In vVector);
+
+Vec2V_Out SelectTF(Vec2V_In lhs, Vec2V_In rhs, Vec2V_In condition);
+Vec3V_Out SelectTF(Vec3V_In lhs, Vec3V_In rhs, Vec3V_In condition);
+Vec4V_Out SelectTF(Vec4V_In lhs, Vec4V_In rhs, Vec4V_In condition);
+
 template<VecElem elem> ScalarV_Out ScalarVFromElement(Vector_In vVector);
 template<VecElem elem> ScalarV_Out ScalarVFromElement(Vec2V_In vVector);
 template<VecElem elem> ScalarV_Out ScalarVFromElement(Vec3V_In vVector);
 template<VecElem elem> ScalarV_Out ScalarVFromElement(Vec4V_In vVector);
 
+
+// Trigonometry Functions:
+
+ScalarV_Out Sin(ScalarV_In vRadians);
+Vec2V_Out Sin(Vec2V_In vRadians);
+Vec3V_Out Sin(Vec3V_In vRadians);
+Vec4V_Out Sin(Vec4V_In vRadians);
+
+ScalarV_Out ASin(ScalarV_In vRadians);
+Vec2f_Out ASin(Vec2f_In vRadians);
+Vec3f_Out ASin(Vec3f_In vRadians);
+Vec4f_Out ASin(Vec4f_In vRadians);
+
+ScalarV_Out Cos(ScalarV_In vRadians);
+Vec2f_Out Cos(Vec2f_In vRadians);
+Vec3f_Out Cos(Vec3f_In vRadians);
+Vec4f_Out Cos(Vec4f_In vRadians);
+
+ScalarV_Out ACos(ScalarV_In vRadians);
+Vec2f_Out ACos(Vec2f_In vRadians);
+Vec3f_Out ACos(Vec3f_In vRadians);
+Vec4f_Out ACos(Vec4f_In vRadians);
+
+ScalarV_Out Tan(ScalarV_In vRadians);
+Vec2f_Out Tan(Vec2f_In vRadians);
+Vec3f_Out Tan(Vec3f_In vRadians);
+Vec4f_Out Tan(Vec4f_In vRadians);
+
+ScalarV_Out ATan(ScalarV_In vRadians);
+Vec2f_Out ATan(Vec2f_In vRadians);
+Vec3f_Out ATan(Vec3f_In vRadians);
+Vec4f_Out ATan(Vec4f_In vRadians);
+
+// Returns: Vec2V(Sin(), Cos(), Sin(), Cos());
+Vec2V_Out SinCos(ScalarV_In vRadians);
 
 
 // Comparison Functions:
@@ -359,6 +493,14 @@ VEC_CMP_DECL_VEC4(IsLessThanOrEqualInt, Vec4V)
 // Vector Math Functions
 
 ScalarV_Out Sqrt(ScalarV_In vScalar);
+Vec2V_Out Sqrt(Vec2V_In vVector);
+Vec3V_Out Sqrt(Vec3V_In vVector);
+Vec4V_Out Sqrt(Vec4V_In vVector);
+
+ScalarV_Out SqrtSafe(ScalarV_In vScalar, ScalarV_In safeVec = ScalarV(I_ZERO));
+Vec2V_Out SqrtSafe(Vec2V_In vVector, Vec2V_In safeVec = Vec2V(I_ZERO));
+Vec3V_Out SqrtSafe(Vec3V_In vVector, Vec3V_In safeVec = Vec3V(I_ZERO));
+Vec4V_Out SqrtSafe(Vec4V_In vVector, Vec4V_In safeVec = Vec4V(I_ZERO));
 
 ScalarV Dot(Vec2V_In vVectorA, Vec2V_In vVectorB);
 ScalarV Dot(Vec3V_In vVectorA, Vec3V_In vVectorB);
@@ -386,41 +528,55 @@ Vec4V_Out Normalize(Vec4V_In vVector);
 //Mat33V_Out Normalize(Mat33V_In mMatrix);
 Mat44V_Out Normalize(Mat44V_In mMatrix);
 
+ScalarV_Out AddInt(ScalarV_In lhs, ScalarV_In rhs);
 Vec2V_Out AddInt(Vec2V_In lhs, Vec2V_In rhs);
 Vec3V_Out AddInt(Vec3V_In lhs, Vec3V_In rhs);
 Vec4V_Out AddInt(Vec4V_In lhs, Vec4V_In rhs);
 
+ScalarV_Out SubtractInt(ScalarV_In lhs, ScalarV_In rhs);
 Vec2V_Out SubtractInt(Vec2V_In lhs, Vec2V_In rhs);
 Vec3V_Out SubtractInt(Vec3V_In lhs, Vec3V_In rhs);
 Vec4V_Out SubtractInt(Vec4V_In lhs, Vec4V_In rhs);
 
+ScalarV_Out MultiplyInt(ScalarV_In lhs, ScalarV_In rhs);
 Vec2V_Out MultiplyInt(Vec2V_In lhs, Vec2V_In rhs);
 Vec3V_Out MultiplyInt(Vec3V_In lhs, Vec3V_In rhs);
 Vec4V_Out MultiplyInt(Vec4V_In lhs, Vec4V_In rhs);
 
+ScalarV_Out IntToFloat(ScalarV_In vVector);
 Vec2V_Out IntToFloat(Vec2V_In vVector);
 Vec3V_Out IntToFloat(Vec3V_In vVector);
 Vec4V_Out IntToFloat(Vec4V_In vVector);
 
+ScalarV_Out FloatToInt(ScalarV_In vVector);
 Vec2V_Out FloatToInt(Vec2V_In vVector);
 Vec3V_Out FloatToInt(Vec3V_In vVector);
 Vec4V_Out FloatToInt(Vec4V_In vVector);
 
+ScalarV_Out Floor(ScalarV_In vVector);
 Vec2V_Out Floor(Vec2V_In vVector);
 Vec3V_Out Floor(Vec3V_In vVector);
 Vec4V_Out Floor(Vec4V_In vVector);
 
+ScalarV_Out Ceil(ScalarV_In vVector);
 Vec2V_Out Ceil(Vec2V_In vVector);
 Vec3V_Out Ceil(Vec3V_In vVector);
 Vec4V_Out Ceil(Vec4V_In vVector);
 
+ScalarV_Out Trunc(ScalarV_In vVector);
 Vec2V_Out Trunc(Vec2V_In vVector);
 Vec3V_Out Trunc(Vec3V_In vVector);
 Vec4V_Out Trunc(Vec4V_In vVector);
 
+ScalarV_Out Round(ScalarV_In vVector);
 Vec2V_Out Round(Vec2V_In vVector);
 Vec3V_Out Round(Vec3V_In vVector);
 Vec4V_Out Round(Vec4V_In vVector);
+
+ScalarV_Out Log2(ScalarV_In vScalar);
+Vec2V_Out Log2(Vec2V_In vVector);
+Vec3V_Out Log2(Vec3V_In vVector);
+Vec4V_Out Log2(Vec4V_In vVector);
 
 Mat44V_Out Lerp(Mat44V_In MatrixA, Mat44V_In MatrixB, ScalarV_In vLambda);
 
@@ -485,8 +641,6 @@ public:
 	template<VecElem index0, VecElem index1, VecElem index2>
 	bool IsTrue() const;
 };
-
-//#endif //GLOBALMATHFUNCS_INL
 
 #include "GlobalMathFuncs.inl"
 

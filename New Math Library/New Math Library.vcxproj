@@ -37,6 +37,11 @@
     <ClInclude Include="..\Source\Core\Math Lib\Vec4V.h" />
     <ClInclude Include="..\Source\Core\Math Lib\VecCmpResult.h" />
     <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h" />
+    <ClInclude Include="..\Source\Core\Physics\AABB.h" />
+    <ClInclude Include="..\Source\Core\Physics\GlobalPhysicsFuncs.h" />
+    <ClInclude Include="..\Source\Core\Physics\Plane.h" />
+    <ClInclude Include="..\Source\Core\Physics\Ray.h" />
+    <ClInclude Include="..\Source\Core\Physics\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\Core\Math Lib\GlobalMathFuncs.inl" />
@@ -54,6 +59,11 @@
     <None Include="..\Source\Core\Math Lib\Vec4f.inl" />
     <None Include="..\Source\Core\Math Lib\Vec4V.inl" />
     <None Include="..\Source\Core\Math Lib\VectorWrapper.inl" />
+    <None Include="..\Source\Core\Physics\AABB.inl" />
+    <None Include="..\Source\Core\Physics\GlobalPhysicsFuncs.inl" />
+    <None Include="..\Source\Core\Physics\Plane.inl" />
+    <None Include="..\Source\Core\Physics\Ray.inl" />
+    <None Include="..\Source\Core\Physics\Sphere.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3C69EFDB-7DFC-4C91-9230-D6C8CDD88425}</ProjectGuid>

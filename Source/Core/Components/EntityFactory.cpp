@@ -2,6 +2,9 @@
 #include "ComponentFactory.h"
 #include "Entity.h"
 
+namespace recon
+{
+
 EntityFactory::EntityFactory()
 {
 
@@ -34,9 +37,9 @@ void EntityFactory::RegisterEntity(const EntityDesc& entityDesc)
 	}
 }
 
-CEntity* EntityFactory::CreateEntityFromDesc(const EntityDesc& entityDesc)
+Entity* EntityFactory::CreateEntityFromDesc(const EntityDesc& entityDesc)
 {
-	CEntity* pEntity = new CEntity;
+	Entity* pEntity = new Entity;
 
 	for(EntityDesc::CoreComponentList::const_iterator iter = entityDesc.m_CoreComponents.begin(); iter != entityDesc.m_CoreComponents.end(); ++iter)
 	{
@@ -56,16 +59,16 @@ void EntityFactory::Init(const char* szDirectory)
 
 }
 
-CEntity* EntityFactory::CreateEntity(const char* szName)
+Entity* EntityFactory::CreateEntity(const char* szName)
 {
 	return szName ? CreateEntity(HashString(szName)) : nullptr;
 }
 
-CEntity* EntityFactory::CreateEntity(const HashString& hashName)
+Entity* EntityFactory::CreateEntity(const HashString& hashName)
 {
 	EntityDescContainer::const_iterator iter = m_EntityDescs.find(hashName);
 
-	CEntity* pEntity = nullptr;
+	Entity* pEntity = nullptr;
 
 	if(iter != m_EntityDescs.end())
 	{
@@ -77,3 +80,5 @@ CEntity* EntityFactory::CreateEntity(const HashString& hashName)
 
 	return pEntity;
 }
+
+} // namespace recon

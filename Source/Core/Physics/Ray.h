@@ -1,5 +1,8 @@
-#ifndef RAY_H
-#define RAY_H
+#ifndef _RECON_RAY_H_
+#define _RECON_RAY_H_
+
+namespace recon
+{
 
 class Ray;
 
@@ -41,4 +44,6 @@ public:
 
 #include "Ray.inl"
 
-#endif // RAY_H
+} // namespace recon
+
+#endif // _RECON_RAY_H_

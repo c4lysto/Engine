@@ -35,3 +35,4 @@ Input Manager/x64/Debug/vc120.idb
 *.tlog
 *.pdb
 Component System/x64/Debug/Entity.obj
+*.cache

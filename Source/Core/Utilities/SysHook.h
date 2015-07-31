@@ -1,10 +1,13 @@
-#ifndef SYSHOOK_H
-#define SYSHOOK_H
+#ifndef _RECON_SYSHOOK_H_
+#define _RECON_SYSHOOK_H_
 
 #include <Windows.h>
 #include "Debugging\DebugHelp.h"
 
 typedef LRESULT (__stdcall *SysHookCallback)(int, WPARAM, LPARAM);
+
+namespace recon
+{
 
 enum eHookType
 {
@@ -46,4 +49,6 @@ public:
 	void Shutdown();
 };
 
-#endif // SYSHOOK_H
+} // namespace recon
+
+#endif // _RECON_SYSHOOK_H_

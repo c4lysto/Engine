@@ -42,7 +42,7 @@ class Vec4f
 	__forceinline void funcName(inType rhs) { modifiedVal = rhs; }
 
 #define VEC4_MUTATOR_MOVE(funcName, inType, modifiedVal) \
-	__forceinline void funcName(inType&& rhs) { modifiedVal = move(rhs); }
+	__forceinline void funcName(inType&& rhs) { modifiedVal = std::move(rhs); }
 
 private:
 	union
@@ -80,9 +80,9 @@ public:
 
 #if SSE_AVAILABLE
 	explicit Vec4f(Vector_In vVector);
-#if !_WIN64
+#if !RECON_OS_64BIT
 	explicit Vec4f(Vector&& vVector);
-#endif // !_WIN64
+#endif // !RECON_OS_64BIT
 #endif //SSE_AVAILABLE
 
 #if defined(VEC4_ACCESSOR) && defined(VEC4_ACCESSOR_CONST)
@@ -162,6 +162,25 @@ public:
 	DEFINE_VEC4_ENUM_CONSTRUCTOR(eTwoPIInitializer, TWO_PI)
 	DEFINE_VEC4_ENUM_CONSTRUCTOR(eFLTMINInitializer, FLT_MIN)
 	DEFINE_VEC4_ENUM_CONSTRUCTOR(eFLTMAXInitializer, FLT_MAX)
+
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegOneInitializer, -1.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegTwoInitializer, -2.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegThreeInitializer, -3.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegFourInitializer, -4.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegFiveInitializer, -5.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegSixInitializer, -6.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegSevenInitializer, -7.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegEightInitializer, -8.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegNineInitializer, -9.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegTenInitializer, -10.0f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegQuarterInitializer, -0.25f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegHalfInitializer, -0.5f)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegPIInitializer, -PI)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegHalfPIInitializer, -PI_OVER_2)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegTwoPIInitializer, -TWO_PI)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegFLTMINInitializer, -FLT_MIN)
+	DEFINE_VEC4_ENUM_CONSTRUCTOR(eNegFLTMAXInitializer, -FLT_MAX)
+
 	DEFINE_VEC4_ENUM_VAL_CONSTRUCTOR(eXAxisInitializer, 1.0f, 0.0f, 0.0f, 0.0f)
 	DEFINE_VEC4_ENUM_VAL_CONSTRUCTOR(eYAxisInitializer, 0.0f, 1.0f, 0.0f, 0.0f)
 	DEFINE_VEC4_ENUM_VAL_CONSTRUCTOR(eZAxisInitializer, 0.0f, 0.0f, 1.0f, 0.0f)
@@ -171,39 +190,41 @@ public:
 #undef DEFINE_VEC4_ENUM_VAL_CONSTRUCTOR
 #endif //DEFINE_VEC4_ENUM_CONSTRUCTOR
 
-	Vec3f GetXYZ() {return position;}
+	Vec3f_Out GetXYZ() {return position;}
 
-	Vec4f operator-();
+	Vec4f_Out operator-();
 
 	Vec4f_Ref operator=(Vec4f_In vVector);
 	Vec4f_Ref operator=(Vec4f&& vVector);
 
-	Vec4f operator-(Vec4f_In vVector) const;
-	Vec4f_Ref operator-=(Vec4f_In vVector);
+	Vec4f_Out operator-(Vec4f_In vVector) const;
+	void operator-=(Vec4f_In vVector);
 
-	Vec4f operator+(Vec4f_In vVector) const;
-	Vec4f_Ref operator+=(Vec4f_In vVector);
+	Vec4f_Out operator+(Vec4f_In vVector) const;
+	void operator+=(Vec4f_In vVector);
 
-	Vec4f operator/(const float& fScalar) const;
-	Vec4f_Ref operator/=(const float& fScalar);
+	Vec4f_Out operator/(const float& fScalar) const;
+	void operator/=(const float& fScalar);
+	Vec4f_Out operator/(Vec4f_In vVector) const;
+	void operator/=(Vec4f_In vVector);
 
-	Vec4f operator*(const float& fScalar) const;
-	Vec4f_Ref operator*=(const float& fScalar);
-	friend Vec4f operator*(const float& fScalar, Vec4f_In vVector);
-	Vec4f operator*(Vec4f_In vVector) const;
-	Vec4f_Ref operator*=(Vec4f_In vVector);
+	Vec4f_Out operator*(const float& fScalar) const;
+	void operator*=(const float& fScalar);
+	friend Vec4f_Out operator*(const float& fScalar, Vec4f_In vVector);
+	Vec4f_Out operator*(Vec4f_In vVector) const;
+	void operator*=(Vec4f_In vVector);
 
 	bool operator==(Vec4f_In vVector);
 	bool operator!=(Vec4f_In vVector);
 
 	Vec4f_Out operator&(Vec4f_In vVector) const;
-	Vec4f_Ref operator&=(Vec4f_In vVector);
+	void operator&=(Vec4f_In vVector);
 
 	Vec4f_Out operator|(Vec4f_In vVector) const;
-	Vec4f_Ref operator|=(Vec4f_In vVector);
+	void operator|=(Vec4f_In vVector);
 
 	Vec4f_Out operator^(Vec4f_In vVector) const;
-	Vec4f_Ref operator^=(Vec4f_In vVector);
+	void operator^=(Vec4f_In vVector);
 
 	Vec4f_Out operator~() const;
 

@@ -1,41 +1,54 @@
 #ifndef MATHDECLARATIONS_H
 #define MATHDECLARATIONS_H
 
-#if WIN32 || _WIN64
-#include <Windows.h>
-#endif
-
-#include <DirectXMath.h>
-using DirectX::XMMATRIX;
+#include <cmath>
+#include <utility>
 
 #ifndef SSE_AVAILABLE
-#if defined(_M_IX86) || defined(_M_AMD64)
-#define SSE_AVAILABLE 1
-#else
-#define SSE_AVAILABLE 0
-#endif
+	#if defined(_M_IX86) || defined(_M_AMD64)
+		#define SSE_AVAILABLE 1
+	#else
+		#define SSE_AVAILABLE 0
+	#endif
 #endif // SSE_AVAILABLE
 
 // Initializer Enums
-enum eZeroInitializer		{ I_ZERO };
-enum eOneInitializer		{ I_ONE };
-enum eTwoInitializer		{ I_TWO };
-enum eThreeInitializer		{ I_THREE };
-enum eFourInitializer		{ I_FOUR };
-enum eFiveInitializer		{ I_FIVE };
-enum eSixInitializer		{ I_SIX };
-enum eSevenInitializer		{ I_SEVEN };
-enum eEightInitializer		{ I_EIGHT };
-enum eNineInitializer		{ I_NINE };
-enum eTenInitializer		{ I_TEN };
-enum ePIInitializer			{ I_PI };
-enum eTwoPIInitializer		{ I_TWOPI };
-enum eHalfPIInitializer		{ I_HALFPI };
-enum eQuarterInitializer	{ I_QUARTER };
-enum eHalfInitializer		{ I_HALF };
-enum eIdentityInitializer	{ I_IDENTITY };
-enum eFLTMINInitializer		{ I_FLT_MIN };
-enum eFLTMAXInitializer		{ I_FLT_MAX };
+enum eZeroInitializer		{ I_ZERO	};
+enum eOneInitializer		{ I_ONE		};
+enum eTwoInitializer		{ I_TWO		};
+enum eThreeInitializer		{ I_THREE	};
+enum eFourInitializer		{ I_FOUR	};
+enum eFiveInitializer		{ I_FIVE	};
+enum eSixInitializer		{ I_SIX		};
+enum eSevenInitializer		{ I_SEVEN	};
+enum eEightInitializer		{ I_EIGHT	};
+enum eNineInitializer		{ I_NINE	};
+enum eTenInitializer		{ I_TEN		};
+enum ePIInitializer			{ I_PI		};
+enum eTwoPIInitializer		{ I_TWOPI	};
+enum eHalfPIInitializer		{ I_HALFPI	};
+enum eQuarterInitializer	{ I_QUARTER	};
+enum eHalfInitializer		{ I_HALF	};
+enum eFLTMINInitializer		{ I_FLT_MIN	};
+enum eFLTMAXInitializer		{ I_FLT_MAX	};
+
+enum eNegOneInitializer			{ I_NEG_ONE		};
+enum eNegTwoInitializer			{ I_NEG_TWO		};
+enum eNegThreeInitializer		{ I_NEG_THREE	};
+enum eNegFourInitializer		{ I_NEG_FOUR	};
+enum eNegFiveInitializer		{ I_NEG_FIVE	};
+enum eNegSixInitializer			{ I_NEG_SIX		};
+enum eNegSevenInitializer		{ I_NEG_SEVEN	};
+enum eNegEightInitializer		{ I_NEG_EIGHT	};
+enum eNegNineInitializer		{ I_NEG_NINE	};
+enum eNegTenInitializer			{ I_NEG_TEN		};
+enum eNegPIInitializer			{ I_NEG_PI		};
+enum eNegTwoPIInitializer		{ I_NEG_TWOPI	};
+enum eNegHalfPIInitializer		{ I_NEG_HALFPI	};
+enum eNegQuarterInitializer		{ I_NEG_QUARTER	};
+enum eNegHalfInitializer		{ I_NEG_HALF	};
+enum eNegFLTMINInitializer		{ I_NEG_FLT_MIN	};
+enum eNegFLTMAXInitializer		{ I_NEG_FLT_MAX	};
 
 enum eXAxisInitializer		{ I_X_AXIS };
 enum eYAxisInitializer		{ I_Y_AXIS };
@@ -48,6 +61,7 @@ enum eXRotationInitializer	{ I_ROTATION_X };
 enum eYRotationInitializer	{ I_ROTATION_Y };
 enum eZRotationInitializer	{ I_ROTATION_Z };
 
+enum eIdentityInitializer		{ I_IDENTITY };
 enum eMatrixPositionInitializer	{ I_MAT_POS };
 
 enum class VecElem
@@ -65,6 +79,62 @@ enum class VecElem
 	Y2 = (0x10 | Y1),
 	Z2 = (0x10 | Z1),
 	W2 = (0x10 | W1)
+};
+
+enum class FloatToIntRep : u32
+{
+	// Positives
+	Zero				= 0x00000000,
+	One					= 0x3F800000,
+	Two					= 0x40000000,
+	Three				= 0x40400000,
+	Four				= 0x40800000,
+	Five				= 0x40A00000,
+	Six					= 0x40C00000,
+	Seven				= 0x40E00000,
+	Eight				= 0x41000000,
+	Nine				= 0x41100000,
+	Ten					= 0x41200000,
+	Pi					= 0x40490FDB,
+	One_Over_Pi			= 0x3EA2F983,
+	Two_Pi				= 0x40C90FDB,
+	One_Over_Two_Pi		= 0x3E22F983,
+	Half_Pi				= 0x3FC90FDB,
+	One_Over_Half_Pi	= 0x3F22F983,
+	Quarter				= 0x3E800000,
+	Half				= 0x3F000000,
+	Flt_Min				= 0x00800000,
+	Flt_Max				= 0x7F7FFFFF,
+	Infinity			= 0x7F800000,
+	NaN					= 0x7FC00000,
+
+	// Negatives
+	Neg_One					= 0xBF800000,
+	Neg_Two					= 0xC0000000,
+	Neg_Three				= 0xC0400000,
+	Neg_Four				= 0xC0800000,
+	Neg_Five				= 0xC0A00000,
+	Neg_Six					= 0xC0C00000,
+	Neg_Seven				= 0xC0E00000,
+	Neg_Eight				= 0xC1000000,
+	Neg_Nine				= 0xC1100000,
+	Neg_Ten					= 0xC1200000,
+	Neg_Pi					= 0xC0490FDB,
+	Neg_One_Over_Pi			= 0xBEA2F983,
+	Neg_Two_Pi				= 0xC0C90FDB,
+	Neg_One_Over_Two_Pi		= 0xBE22F983,
+	Neg_Half_Pi				= 0xBFC90FDB,
+	Neg_One_Over_Half_Pi	= 0xBF22F983,
+	Neg_Quarter				= 0xBE800000,
+	Neg_Half				= 0xBF000000,
+	Neg_Flt_Min				= 0x80800000,
+	Neg_Flt_Max				= 0xFF7FFFFF,
+	Neg_Infinity			= 0xFF800000,
+	Neg_NaN					= 0xFFC00000,
+
+	// Misc
+	Sign_Bit				= 0x80000000,
+	Abs_Mask				= 0x7FFFFFFF
 };
 
 class Vec2f;
@@ -166,7 +236,7 @@ class Mat44V;
 #endif
 
 #ifndef FLT_EPSILON
-#define FLT_EPSILON     (1.192092896e-07F)
+#define FLT_EPSILON 1.192092896e-07F
 #endif
 
 #ifndef FLT_MAX

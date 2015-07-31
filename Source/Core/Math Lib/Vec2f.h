@@ -73,6 +73,25 @@ public:
 	DEFINE_VEC2_ENUM_CONSTRUCTOR(eTwoPIInitializer, TWO_PI)
 	DEFINE_VEC2_ENUM_CONSTRUCTOR(eFLTMINInitializer, FLT_MIN)
 	DEFINE_VEC2_ENUM_CONSTRUCTOR(eFLTMAXInitializer, FLT_MAX)
+
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegOneInitializer, -1.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegTwoInitializer, -2.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegThreeInitializer, -3.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegFourInitializer, -4.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegFiveInitializer, -5.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegSixInitializer, -6.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegSevenInitializer, -7.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegEightInitializer, -8.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegNineInitializer, -9.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegTenInitializer, -10.0f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegQuarterInitializer, -0.25f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegHalfInitializer, -0.5f)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegPIInitializer, -PI)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegHalfPIInitializer, -PI_OVER_2)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegTwoPIInitializer, -TWO_PI)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegFLTMINInitializer, -FLT_MIN)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eNegFLTMAXInitializer, -FLT_MAX)
+
 	DEFINE_VEC2_ENUM_VAL_CONSTRUCTOR(eXAxisInitializer, 1.0f, 0.0f)
 	DEFINE_VEC2_ENUM_VAL_CONSTRUCTOR(eYAxisInitializer, 0.0f, 1.0f)
 #undef DEFINE_VEC2_ENUM_CONSTRUCTOR
@@ -89,7 +108,7 @@ public:
 #if SSE_AVAILABLE
 	explicit Vec2f(Vector_In vVector);
 
-#if !_WIN64
+#if !RECON_OS_64BIT
 	explicit Vec2f(Vector&& vVector);
 #endif
 #endif
@@ -129,35 +148,39 @@ public:
 #error VEC2 MUTATORS NOT DEFINED
 #endif
 
-	Vec2f operator-() const;
+	Vec2f_Out operator-() const;
 
 	Vec2f_Ref operator=(Vec2f_In vVector);
 	Vec2f_Ref operator=(Vec2f&& vVector);
 
-	Vec2f operator+(Vec2f_In vVector) const;
-	Vec2f_Ref operator+=(Vec2f_In vVector);
+	Vec2f_Out operator+(Vec2f_In vVector) const;
+	void operator+=(Vec2f_In vVector);
 
-	Vec2f operator-(Vec2f_In vVector) const;
-	Vec2f_Ref operator-=(Vec2f_In vVector);
+	Vec2f_Out operator-(Vec2f_In vVector) const;
+	void operator-=(Vec2f_In vVector);
 
-	Vec2f operator*(const float& fScalar) const;
-	friend Vec2f operator*(const float& fScalar, Vec2f_In vVector);
-	Vec2f_Ref operator*=(const float& fScalar);
+	Vec2f_Out operator*(const float& fScalar) const;
+	friend Vec2f_Out operator*(const float& fScalar, Vec2f_In vVector);
+	void operator*=(const float& fScalar);
+	Vec2f_Out operator*(Vec2f_In vVector) const;
+	void operator*=(Vec2f_In vVector);
 
-	Vec2f operator/(const float& fScalar) const;
-	Vec2f_Ref operator/=(const float& fScalar);
+	Vec2f_Out operator/(const float& fScalar) const;
+	void operator/=(const float& fScalar);
+	Vec2f_Out operator/(Vec2f_In vVector) const;
+	void operator/=(Vec2f_In vVector);
 
 	bool operator==(Vec2f_In vVector);
 	bool operator!=(Vec2f_In vVector);
 
 	Vec2f_Out operator&(Vec2f_In vVector) const;
-	Vec2f_Ref operator&=(Vec2f_In vVector);
+	void operator&=(Vec2f_In vVector);
 
 	Vec2f_Out operator|(Vec2f_In vVector) const;
-	Vec2f_Ref operator|=(Vec2f_In vVector);
+	void operator|=(Vec2f_In vVector);
 
 	Vec2f_Out operator^(Vec2f_In vVector) const;
-	Vec2f_Ref operator^=(Vec2f_In vVector);
+	void operator^=(Vec2f_In vVector);
 
 	Vec2f_Out operator~() const;
 

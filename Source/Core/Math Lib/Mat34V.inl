@@ -19,10 +19,10 @@ __forceinline Mat34V::Mat34V(Mat34V_In mMatrix) :
 }
 
 __forceinline Mat34V::Mat34V(Mat34V&& mMatrix) : 
-	xAxis(move(mMatrix.xAxis)),
-	yAxis(move(mMatrix.yAxis)),
-	zAxis(move(mMatrix.zAxis)),
-	wAxis(move(mMatrix.wAxis))
+	xAxis(std::move(mMatrix.xAxis)),
+	yAxis(std::move(mMatrix.yAxis)),
+	zAxis(std::move(mMatrix.zAxis)),
+	wAxis(std::move(mMatrix.wAxis))
 {
 }
 
@@ -109,17 +109,29 @@ __forceinline Mat34V_ConstRef Mat34V::operator=(Mat34V&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
-		xAxis = move(mMatrix.xAxis);
-		yAxis = move(mMatrix.yAxis);
-		zAxis = move(mMatrix.zAxis);
-		wAxis = move(mMatrix.wAxis);
+		xAxis = std::move(mMatrix.xAxis);
+		yAxis = std::move(mMatrix.yAxis);
+		zAxis = std::move(mMatrix.zAxis);
+		wAxis = std::move(mMatrix.wAxis);
 	}
 	return *this;
 }
 
-__forceinline Vec3V_Out operator*(Vec3V_ConstRef vPos, Mat34V_In mMatrix)
+inline Vec3V_Out operator*(Vec3V_ConstRef vPos, Mat34V_In mMatrix)
 {
-	return ::operator*(Vec4V(vPos, ScalarV(I_ONE)), mMatrix);
+	Vector tmp1, tmp2;
+	Vector vPosVec(vPos.GetVector());
+
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(vPosVec);
+	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(vPosVec);
+	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(vPosVec);
+	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	// Add on mMatrix.row4 since, vPos.w is expected to be 1
+	tmp2 = VectorAdd(mMatrix.row4, tmp2);
+
+	return Vec3V(tmp2);
 }
 
 __forceinline Vec3V_Ref operator*=(Vec3V_Ref vPos, Mat34V_In mMatrix)
@@ -130,14 +142,15 @@ __forceinline Vec3V_Ref operator*=(Vec3V_Ref vPos, Mat34V_In mMatrix)
 inline Vec3V_Out operator*(Vec4V_ConstRef vPos, Mat34V_In mMatrix)
 {
 	Vector tmp1, tmp2;
+	Vector vPosVec(vPos.GetVector());
 
-	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(vPos.GetVector());
+	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(vPosVec);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
-	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(vPos.GetVector());
+	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(vPosVec);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
-	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(vPos.GetVector());
+	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(vPosVec);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
-	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(vPos.GetVector());
+	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(vPosVec);
 	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
 
 	return Vec3V(tmp2);
@@ -207,7 +220,7 @@ __forceinline void Mat34V::SetScale(Vec3V_In vScale)
 	zAxis = ::Normalize(zAxis) * vScale.GetZ();
 }
 
-__forceinline Vec3V Mat34V::GetScale() const
+__forceinline Vec3V_Out Mat34V::GetScale() const
 {
 	Vec3V retVal(Mag(xAxis), Mag(yAxis), Mag(zAxis));
 	return retVal;
