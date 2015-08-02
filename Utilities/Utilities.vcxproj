@@ -32,10 +32,10 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Core\Utilities\Atomic.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Function.h" />
     <ClInclude Include="..\Source\Core\Utilities\SysCriticalSection.h" />
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugHelp.h" />
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugWindow.h" />
-    <ClInclude Include="..\Source\Core\Utilities\FunctionPointer.h" />
     <ClInclude Include="..\Source\Core\Utilities\GlobalDefines.h" />
     <ClInclude Include="..\Source\Core\Utilities\HashString.h" />
     <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h" />

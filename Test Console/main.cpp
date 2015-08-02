@@ -12,19 +12,20 @@ using namespace std;
 #include "Math Lib\MathLib.h"
 #include "Utilities\ThreadPool.h"
 //#include "Utilities\SmartPointer.h"
-#include "Utilities\FunctionPointer.h"
+#include "Utilities\Function.h"
 #include "Utilities\HashString.h"
 #include <mutex>
 //#include "../Utilities/DebugHelp.h"
 
 #include <DirectXMath.h>
-
 #include <bitset>
+
+using namespace recon;
 
 #define TEST_SETS 1
 #define TEST_REPS 1000000000
 
-int __stdcall TestThisBitch(int& nVal)
+int TestThisBitch(int& nVal)
 {
 	//cout << "Val: " << nVal << endl;
 	cout << "TestThisBitch() Called!" << endl;
@@ -33,7 +34,7 @@ int __stdcall TestThisBitch(int& nVal)
 
 struct TstThreadArgs
 {
-	char operation[256];
+	int operation[256];
 	char vals1[256];
 	char vals2[256];
 
@@ -47,11 +48,31 @@ struct TstThreadArgs
 		}
 	}
 
-	int TstMethod(int& nVal) const
+	TstThreadArgs(const TstThreadArgs& rhs)
+	{
+		for(int i = 0; i < 256; ++i)
+		{
+			operation[i] = rand() & 3;
+			vals1[i] = (rand() & 15) + 1;
+			vals2[i] = (rand() & 15) + 1;
+		}
+	}
+
+	int __cdecl TstMethod(int& nVal)
 	{
 		//cout << "Val: " << nVal << endl;
 		cout << "TstMethod() Called!" << endl;
 		nVal = -1;
+
+		return -1;
+	}
+
+	int __cdecl TstMethodConst(int& nVal) const
+	{
+		//cout << "Val: " << nVal << endl;
+		cout << "TstMethodConst() Called!" << endl;
+		nVal = -1;
+
 		return -1;
 	}
 
@@ -79,7 +100,7 @@ float TstGlobal()
 
 typedef float (TstThreadArgs::*tstFunc)(void);
 
-void CallFuncPtr(recon::FunctionPointer<int, int&> funcPtr)
+void CallFuncPtr(Function<int(int&)> funcPtr)
 {
 	int val;
 	funcPtr(val);
@@ -249,6 +270,7 @@ int main()
 	//testThis = &TstThreadArgs::TstMethod;
 
 	TstThreadArgs* pTstArgs = new TstThreadArgs;
+	TstThreadArgs localTstArgs;
 
 	//(pTstArgs->*testThis)();
 	//(((TstThreadArgs*)nullptr)->*testThis)();
@@ -257,34 +279,137 @@ int main()
 	//func.SetInvokingObject(pTstArgs);
 	//int retVal = func(250);
 
-	recon::ThreadPool tstThreadPool;//s[10];
+	ThreadPool tstThreadPool;//s[10];
 	tstThreadPool.Init(2);
 
 	//CallFuncPtr(TestThisBitch);
 
 	int tstVal = 250;
+	const TstThreadArgs* pConstTstArgs = pTstArgs;
+
 
 	/*Vec2V five(5.0f), ten(I_ONE);
 	Vec2V fifty = five * ten;*/
 
-	Vector myVec = VectorExp2(VectorSet(TWO_PI));
-	DirectX::XMVECTOR dxVec = DirectX::XMVectorExp2(DirectX::XMVectorSet(TWO_PI, TWO_PI, TWO_PI, TWO_PI));
+	//Vector myVec = VectorExp2(VectorSet(TWO_PI));
+	//DirectX::XMVECTOR dxVec = DirectX::XMVectorExp2(DirectX::XMVectorSet(TWO_PI, TWO_PI, TWO_PI, TWO_PI));
 
 	//std::function<int(int)> memFunc;
+
+	//std::function<int(int&)> memFunc;
+
 	//memFunc = std::bind(&TstThreadArgs::TstMethod, pTstArgs, std::placeholders::_1);
 	//FunctionPointer<int, int&> memFunc;
-	//memFunc = CreateFunctionPointer(pTstArgs, &TstThreadArgs::TstMethod);
+	//memFunc = CreateFunctionPointer(pConstTstArgs, &TstThreadArgs::TstMethod);
+	//pTstArgs = nullptr;
 	//memFunc(tstVal);
 
 	s8 tstA = 50, tstB = -100;
 	s8 tstABResult = Abs(tstA);
 	tstABResult = Abs(tstB);
+	//Function<int(int&)> myMemFunc = &TstThreadArgs::TstMethod;
 
-	std::function<int(int&)> globalFunc = TestThisBitch;
+	int(*nullFuncPtr)(int&) = nullptr;
+
+	std::function<int(int&)> globalFunc = [&](int passedVal) -> int {std::cout << "TstVal: " << tstVal << std::endl << "Passed Val: " << passedVal << std::endl; return passedVal; };
+
 	//StaticFunctionPointer<int, int&> globalFunc = TestThisBitch;
 	//memFunc = globalFunc;
 	//memFunc(250);
-	//globalFunc(tstVal);
+	int tstVal2 = 50;
+	globalFunc(tstVal2);
+
+	globalFunc = &::TestThisBitch;
+	globalFunc(tstVal2);
+
+	globalFunc = [&](int& passedVal) -> int {std::cout << "TstVal: " << tstVal << std::endl << "Passed Val: " << passedVal << std::endl; return passedVal; };
+	globalFunc(tstVal2);
+
+	globalFunc = [](int& passedVal) -> int {std::cout << /*"TstVal: " << tstVal << std::endl << */"Passed Val: " << passedVal << std::endl; return passedVal; };
+	globalFunc(tstVal2);
+
+	globalFunc = [=](int& passedVal) -> int {std::cout << "TstVal: " << tstVal << std::endl << "Passed Val: " << passedVal << std::endl; return passedVal; };
+	globalFunc(tstVal2);
+
+	//globalFunc = nullFuncPtr;
+	//globalFunc(tstVal2);
+
+	system("cls");
+
+
+	Function<int(int&)> myGlobalFunc = [&](int& passedVal) -> int {std::cout << "TstVal: " << tstVal << std::endl << "Passed Val: " << passedVal << std::endl; return passedVal; };
+	myGlobalFunc(tstVal2);
+
+	myGlobalFunc = &::TestThisBitch;
+	myGlobalFunc(tstVal2);
+
+	myGlobalFunc = std::move(Function<int(int&)>([&](int& passedVal) -> int {std::cout << "Move Tested" << std::endl; return passedVal; }));
+	myGlobalFunc(tstVal2);
+
+	myGlobalFunc = [&](int& passedVal) -> int {std::cout << "TstVal: " << tstVal << std::endl << "Passed Val: " << passedVal << std::endl; return passedVal; };
+	myGlobalFunc(tstVal2);
+
+	myGlobalFunc = [](int& passedVal) -> int {std::cout << /*"TstVal: " << tstVal << std::endl << */"Passed Val: " << passedVal << std::endl; return passedVal; };
+	myGlobalFunc(tstVal2);
+
+	myGlobalFunc = [=](int& passedVal) -> int {std::cout << "TstVal: " << tstVal << std::endl << "Passed Val: " << passedVal << std::endl; return passedVal; };
+	myGlobalFunc(tstVal2);
+
+	Function<int(int&)> myMemFunc = Function<int(int&)>(localTstArgs, &TstThreadArgs::TstMethod);
+	//pTstArgs = nullptr;
+	myMemFunc(tstVal2);
+
+	myGlobalFunc = myMemFunc;
+	myGlobalFunc(tstVal2);
+
+	StaticFunction<int(int&)> staticFunc(TestThisBitch);
+	staticFunc(tstVal2);
+
+	staticFunc = [](int& passedVal) -> int {std::cout << /*"TstVal: " << tstVal << std::endl <<*/ "Passed Val: " << passedVal << std::endl; return passedVal; };
+	staticFunc(tstVal2);
+
+	myGlobalFunc = staticFunc;
+	myGlobalFunc(tstVal2);
+
+	myGlobalFunc = nullFuncPtr;
+	if(myGlobalFunc)
+	{
+		myGlobalFunc(tstVal2);
+	}
+
+	myGlobalFunc = nullptr;
+	if(myGlobalFunc)
+	{
+		myGlobalFunc(tstVal2);
+	}
+
+	MemberFunction<TstThreadArgs, int(int&)> memberFunc(pTstArgs, &TstThreadArgs::TstMethod);
+	memberFunc(tstVal2);
+
+	memberFunc = nullptr;
+
+	memberFunc = MemberFunction<TstThreadArgs, int(int&)>(pConstTstArgs, &TstThreadArgs::TstMethodConst);
+	memberFunc(tstVal2);
+
+	memberFunc.SetInvokingObject(pTstArgs);
+	memberFunc(tstVal2);
+
+	memberFunc = MemberFunction<TstThreadArgs, int(int&)>(pTstArgs, &TstThreadArgs::TstMethodConst);
+	memberFunc(tstVal2);
+
+	memberFunc = nullptr;
+
+	if(memberFunc)
+	{
+		memberFunc(tstVal2);
+	}
+
+	myGlobalFunc = Function<int(int&)>(memberFunc);
+	myGlobalFunc(tstVal2);
+
+	myGlobalFunc = memberFunc;
+	myGlobalFunc(tstVal2);
+
 
 	//StaticFunctionPointer<int, int&> tmp = TestThisBitch;
 	//tmp(tstVal);

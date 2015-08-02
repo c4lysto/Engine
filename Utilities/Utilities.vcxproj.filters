@@ -65,9 +65,6 @@
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\FunctionPointer.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\GlobalDefines.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -106,6 +103,9 @@
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\SysCriticalSection.h">
       <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Function.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

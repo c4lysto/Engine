@@ -3,7 +3,7 @@
 
 #include "../Utilities/UtilitiesInclude.h"
 #include "../Math Lib/MathLib.h"
-#include "../Utilities/FunctionPointer.h"
+#include "../Utilities/Function.h"
 
 #if RECON_OS_64BIT
 typedef long long QWORD;
@@ -14,10 +14,10 @@ namespace recon
 
 enum class InputState : unsigned char
 {
-	Pressed	= 0x0,
+	Pressed		= 0x0,
 	Down		= 0x1,
 	Released	= 0x2,
-	Changed	= 0x4
+	Changed		= 0x4
 };
 
 enum class InputDevice : unsigned char
@@ -35,13 +35,13 @@ enum class InputDevice : unsigned char
 
 enum class InputModifier : unsigned char
 {
-	None		= 0,
+	None	= 0,
 	LCtrl	= 0x1,
 	LShift	= 0x2,
-	LAlt		= 0x4,
+	LAlt	= 0x4,
 	RCtrl	= 0x8,
 	RShift	= 0x10,
-	RAlt		= 0x20,
+	RAlt	= 0x20,
 
 	Ctrl	= (LCtrl | RCtrl),
 	Shift	= (LShift | RShift),
@@ -259,8 +259,8 @@ struct InputMouseMoveEvent : public InputEvent
 	}
 };
 
-} // namespace recon
+typedef Function<void(const InputEvent&)> InputCallbackfn;
 
-typedef recon::FunctionPointer<void, const recon::InputEvent&> InputCallbackfn;
+} // namespace recon
 
 #endif

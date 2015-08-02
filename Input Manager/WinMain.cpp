@@ -81,7 +81,7 @@ WPARAM RunMessageLoop()
 
 	while(RunSingleLoop(retVal))
 	{
-
+		Sleep(2);
 	}
 
 	return retVal;
@@ -132,6 +132,21 @@ LRESULT CALLBACK WindowProc(HWND hWnd, UINT msg, WPARAM wParam, LPARAM lParam)
 	case WM_DESTROY:
 		{
 			PostQuitMessage(0);
+		}
+		break;
+
+	case WM_ACTIVATE:
+		{
+			if(wParam != WA_INACTIVE)
+			{
+				g_InputManager.OnWindowFocusActivate();
+				//cout << "ACTIVE\n";
+			}
+			else
+			{
+				g_InputManager.OnWindowFocusDeactivate();
+				//cout << "INACTIVE\n";
+			}
 		}
 		break;
 	}
@@ -209,7 +224,7 @@ LONG WINAPI WriteDumpFile(_EXCEPTION_POINTERS* exceptions)
 {
 	HANDLE hFile = ::CreateFile(_T("dumpfile.mdmp"), GENERIC_WRITE, FILE_SHARE_WRITE, NULL, CREATE_ALWAYS,FILE_ATTRIBUTE_NORMAL, NULL );
 
-	if (hFile!=INVALID_HANDLE_VALUE)
+	if(hFile != INVALID_HANDLE_VALUE)
 	{
 		_MINIDUMP_EXCEPTION_INFORMATION ExInfo;
 

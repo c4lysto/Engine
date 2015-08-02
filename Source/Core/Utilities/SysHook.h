@@ -6,10 +6,11 @@
 
 typedef LRESULT (__stdcall *SysHookCallback)(int, WPARAM, LPARAM);
 
+
 namespace recon
 {
 
-enum eHookType
+enum class sysHookType
 {
 	HOOK_CALLWNDPROC = 4,		// Hooks before the system sends them to the destination window procedure: See "CallWndProc" hook procedure on msdn for details on callback
 	HOOK_CALLWNDPROCRET = 12,	// Hook that monitors messages after they have been processed by the destination window procedure.
@@ -45,7 +46,7 @@ public:
 	SysHook();
 	~SysHook();
 
-	void Init(eHookType hookType, SysHookCallback hookCallback);
+	void Init(sysHookType hookType, SysHookCallback hookCallback);
 	void Shutdown();
 };
 

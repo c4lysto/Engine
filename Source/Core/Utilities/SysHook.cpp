@@ -14,7 +14,7 @@ SysHook::~SysHook()
 	Shutdown();
 }
 
-void SysHook::Init(eHookType hookType, SysHookCallback hookCallback)
+void SysHook::Init(sysHookType hookType, SysHookCallback hookCallback)
 {
 	if(hookCallback)
 	{
@@ -22,7 +22,7 @@ void SysHook::Init(eHookType hookType, SysHookCallback hookCallback)
 
 		if(Verify(GetModuleHandleEx(GET_MODULE_HANDLE_EX_FLAG_PIN, nullptr, (HMODULE*)&pModule), "SysHook - Failed To Get Module Handle"))
 		{
-			m_pHook = SetWindowsHookEx(hookType, ((HOOKPROC)hookCallback), (HMODULE)nullptr/*pModule*/, GetCurrentThreadId());
+			m_pHook = SetWindowsHookEx((int)hookType, ((HOOKPROC)hookCallback), (HMODULE)nullptr/*pModule*/, GetCurrentThreadId());
 			Assert(m_pHook, "SysHook - Failed To Create Hook!");
 		}
 	}

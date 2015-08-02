@@ -71,12 +71,16 @@ typedef unsigned __int64 u64;
 	#endif
 #endif 
 
-#ifndef SAFE_RELEASE
-	#define SAFE_RELEASE(rel) { if(rel) {rel->Release(); rel = nullptr;}}
+#ifndef SAFE_DELETE
+	#define SAFE_DELETE(del) do{ delete del; del = nullptr; } while(0)
 #endif
 
-#ifndef SAFE_DELETE
-	#define SAFE_DELETE(del) { if(del) {delete del; del = nullptr;} }
+#ifndef SAFE_CHECK_DELETE
+	#define SAFE_CHECK_DELETE(del) do{ if(del) {delete del; del = nullptr;} } while(0)
+#endif
+
+#ifndef SAFE_RELEASE
+	#define SAFE_RELEASE(rel) do{ if(rel) {rel->Release(); rel = nullptr;} } while(0)
 #endif
 
 #ifndef NUMELEM

@@ -1,13 +1,15 @@
 #ifndef _RECON_SYSTHREAD_H_
 #define _RECON_SYSTHREAD_H_
 
-#include "FunctionPointer.h"
+#include "Function.h"
 #include <thread>
+
 
 namespace recon
 {
 
-typedef FunctionPointer<void, void*> SysThreadProc;
+typedef Function<void(void*)> SysThreadProc;
+
 class SysEvent;
 
 enum class SysThreadPriority

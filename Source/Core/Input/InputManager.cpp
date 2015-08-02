@@ -34,7 +34,7 @@ m_ucModifiers((u8)InputModifier::None),
 m_ucConnectedDevices((int)InputDevice::Mouse | (int)InputDevice::Keyboard), 
 m_WindowHandle(nullptr)
 {
-
+	m_IsInputThreadRunning.clear();
 }
 
 InputManager::~InputManager()
@@ -49,8 +49,10 @@ void InputManager::Shutdown()
 	{
 		m_PendingInputEvents.pop();
 	}
-	m_NewInputEvent.Signal();
 	m_PendingInputCS.Unlock();
+
+	m_IsInputThreadRunning.clear();
+	m_NewInputEvent.Signal();
 
 	ClearAllCurrentInput();
 
@@ -85,8 +87,8 @@ bool InputManager::Initialize(HWND hWnd)
 
 	SysCreateEvent(m_NewInputEvent);
 
-	m_InputThread.StartThread(CreateFunctionPointer(this, &InputManager::InputThreadProc), nullptr, SysThreadPriority::Normal, "Input Thread");
-	m_InputHook.Init(HOOK_GETMESSAGE, InputManager::InputHookCallback);
+	m_InputThread.StartThread(recon::SysThreadProc(this, &InputManager::InputThreadProc), nullptr, SysThreadPriority::Normal, "Input Thread");
+	m_InputHook.Init(sysHookType::HOOK_GETMESSAGE, InputManager::InputHookCallback);
 
 	return true;
 }
@@ -136,7 +138,10 @@ void InputManager::OnWindowFocusActivate()
 
 void InputManager::OnWindowFocusDeactivate()
 {
-	ClearAllCurrentInput();
+	if(m_IsInputThreadRunning._My_flag)
+	{
+		ClearAllCurrentInput();
+	}
 }
 
 void InputManager::SetDeviceChange(WPARAM wParam, LPARAM lParam)
@@ -209,33 +214,34 @@ void InputManager::ProcessInputEvent(WPARAM wParam, LPARAM lParam)
 #else
 	UINT unSize;
 
-	GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &unSize, sizeof(RAWINPUTHEADER));
-
-	if (unSize)
+	if(!GetRawInputData((HRAWINPUT)lParam, RID_INPUT, NULL, &unSize, sizeof(RAWINPUTHEADER)))
 	{
-		char* pData = new char[unSize];
-
-		if (GetRawInputData((HRAWINPUT)lParam, RID_INPUT, pData, &unSize, sizeof(RAWINPUTHEADER)) != (UINT)-1)
+		if(unSize)
 		{
-			RAWINPUT* pInput = (RAWINPUT*)pData;
+			char* pData = new char[unSize];
 
-			switch (pInput->header.dwType)
+			if(GetRawInputData((HRAWINPUT)lParam, RID_INPUT, pData, &unSize, sizeof(RAWINPUTHEADER)) != (UINT)-1)
 			{
-			case RIM_TYPEMOUSE:
-				{
-					CreateMouseEvent(pInput);
-				}
-				break;
+				RAWINPUT* pInput = (RAWINPUT*)pData;
 
-			case RIM_TYPEKEYBOARD:
+				switch(pInput->header.dwType)
 				{
-					CreateKeyboardEvent(pInput);
+					case RIM_TYPEMOUSE:
+					{
+						CreateMouseEvent(pInput);
+					}
+					break;
+
+					case RIM_TYPEKEYBOARD:
+					{
+						CreateKeyboardEvent(pInput);
+					}
+					break;
 				}
-				break;
 			}
-		}
 
-		delete[] pData;
+			delete[] pData;
+		}
 	}
 #endif
 }
@@ -259,7 +265,10 @@ void InputManager::ProcessInput()
 
 	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
 
-	list<InputCurrentEventContainer::iterator> lEventsToDelete;
+	std::list<InputCurrentEventContainer::iterator> lEventsToDelete;
+
+	if(m_lCurrentEvents.size() > 1)
+		int xn = 0;
 
 	for(InputCurrentEventContainer::iterator inputEventIter = m_lCurrentEvents.begin(); inputEventIter != m_lCurrentEvents.end(); ++inputEventIter)
 	{
@@ -298,7 +307,7 @@ void InputManager::ProcessInput()
 		}
 	}
 
-	for(list<InputCurrentEventContainer::iterator>::iterator iter = lEventsToDelete.begin(); iter != lEventsToDelete.end(); ++iter)
+	for(std::list<InputCurrentEventContainer::iterator>::iterator iter = lEventsToDelete.begin(); iter != lEventsToDelete.end(); ++iter)
 	{
 		m_lCurrentEvents.erase(*iter);
 	}
@@ -369,6 +378,11 @@ void InputManager::SetInputModifier(InputModifier eModifier, bool bSet)
 	if(Verify(eModifier > InputModifier::None && eModifier <= InputModifier::RAlt, "Input Manager - Trying To Set An Invalid Modifier"))
 	{
 		m_ucModifiers = bSet ? (m_ucModifiers | (int)eModifier) : (m_ucModifiers & ~(int)eModifier);
+
+		for(InputCurrentEventContainer::const_iterator iter = m_lCurrentEvents.cbegin(); iter != m_lCurrentEvents.cend(); ++iter)
+		{
+			//(*iter)->m_eModifiers = (InputModifier)m_ucModifiers;
+		}
 	}
 }
 
@@ -481,27 +495,24 @@ void InputManager::ClearAllCurrentInput()
 
 void InputManager::InputThreadProc(void* pArgs)
 {
-	volatile bool bRunning = true;
-	while(bRunning)
+	m_IsInputThreadRunning.test_and_set();
+
+	while(m_IsInputThreadRunning._My_flag)
 	{
 		m_NewInputEvent.Wait();
 
 		m_PendingInputCS.Lock();
 
-		if(m_PendingInputEvents.size() > 0)
+		while(m_PendingInputEvents.size())
 		{
 			PendingInputEvent inputEvent = m_PendingInputEvents.front();
 			m_PendingInputEvents.pop();
-			m_PendingInputCS.Unlock();
 
 			ProcessInputEvent(inputEvent.wParam, inputEvent.lParam);
 			cout << "Event Posted!\n";
 		}
-		else
-		{
-			m_PendingInputCS.Unlock();
-			bRunning = false;
-		}
+
+		m_PendingInputCS.Unlock();
 	}
 }
 

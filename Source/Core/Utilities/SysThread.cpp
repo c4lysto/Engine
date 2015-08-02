@@ -32,7 +32,7 @@ bool SysThread::StartThread(SysThreadProc pThreadProc, void* pArgs, SysThreadPri
 
 	if(Verify(GetThreadHandle() != nullptr, "Thread is Already Active, Start Thread will not do anything."))
 	{
-		if(Verify(!pThreadProc.IsNull(), "No Function Set for the starting thread"))
+		if(Verify(pThreadProc, "No Function Set for the starting thread"))
 		{
 
 			m_ThreadArgs.m_pThreadFunc = pThreadProc;

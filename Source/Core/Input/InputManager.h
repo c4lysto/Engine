@@ -8,23 +8,18 @@
 #include "../Utilities/SysHook.h"
 #include "../Utilities/SysEvent.h"
 
+#include <atomic>
 #include <map>
-using std::map;
-using std::pair;
-
 #include <list>
-using std::list;
-
 #include <queue>
-using std::queue;
 
 namespace recon
 {
 
 class InputManager
 {
-	typedef list<InputEvent*> InputCurrentEventContainer;
-	typedef map<InputEvent, InputCallbackfn> InputCallbackContainer;
+	typedef std::list<InputEvent*> InputCurrentEventContainer;
+	typedef std::map<InputEvent, InputCallbackfn> InputCallbackContainer;
 
 private:
 	struct PendingInputEvent
@@ -32,7 +27,7 @@ private:
 		WPARAM wParam;
 		LPARAM lParam;
 	};
-	typedef queue<PendingInputEvent> PendingInputEventContainer;
+	typedef std::queue<PendingInputEvent> PendingInputEventContainer;
 
 
 private:
@@ -42,6 +37,7 @@ private:
 	SysCriticalSection m_PendingInputCS;
 	SysCriticalSection m_CurrentInputCS;
 	SysHook m_InputHook;
+	std::atomic_flag m_IsInputThreadRunning;
 
 	unsigned char m_ucModifiers;
 	unsigned char m_ucConnectedDevices;
