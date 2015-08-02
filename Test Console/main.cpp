@@ -8,7 +8,6 @@ using namespace std;
 #include <list>
 
 #include "Utilities\Timer.h"
-#include "Utilities\Atomic.h"
 #include "Math Lib\MathLib.h"
 #include "Utilities\ThreadPool.h"
 //#include "Utilities\SmartPointer.h"

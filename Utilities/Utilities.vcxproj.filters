@@ -25,17 +25,20 @@
     <Filter Include="Source Files\Memory">
       <UniqueIdentifier>{5e6670c8-fe15-427b-8df4-179eab500a2b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Header Files\Misc">
+      <UniqueIdentifier>{80a3327c-90d3-4baf-acf6-974f65511e2a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Debugging">
+      <UniqueIdentifier>{354fe6c7-e39e-4396-a27d-199c5adde5c2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Debugging">
+      <UniqueIdentifier>{49568e9d-07ef-49a8-93a3-d4a6bce303e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Misc">
+      <UniqueIdentifier>{43ca4299-61a6-46a4-9b5f-d8ad8902b77a}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\Source\Core\Utilities\Debugging\DebugWindow.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\HashString.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\SysHook.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Core\Utilities\SysThread.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
@@ -57,21 +60,21 @@
     <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\Debugging\DebugWindow.cpp">
+      <Filter>Source Files\Debugging</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\HashString.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\SysHook.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\Timer.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugHelp.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugWindow.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\GlobalDefines.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\HashString.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\SysHook.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\UtilitiesInclude.h">
@@ -105,7 +108,28 @@
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\Function.h">
-      <Filter>Header Files</Filter>
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugHelp.h">
+      <Filter>Header Files\Debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugWindow.h">
+      <Filter>Header Files\Debugging</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\HashString.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\SysHook.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\BitSet.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Color.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Timer.h">
+      <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
