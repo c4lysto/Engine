@@ -633,10 +633,10 @@ public:
 	bool IsTrueAll() const;
 
 	template<VecElem index>
-	FORCEINLINE bool IsTrue() const;
+	__forceinline bool IsTrue() const;
 
 	template<VecElem index0, VecElem index1>
-	FORCEINLINE bool IsTrue() const;
+	__forceinline bool IsTrue() const;
 
 	template<VecElem index0, VecElem index1, VecElem index2>
 	bool IsTrue() const;

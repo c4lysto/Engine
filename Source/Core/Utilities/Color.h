@@ -58,14 +58,14 @@ public:
 	inline void SetA(s32 A) {a = (u8)Clamp(A,0,255);}
 	inline void SetA(float A) {SetR(s32(Saturate(A)*255.0f));}
 
-	FORCEINLINE void Set(u32 color) {m_Color = color;}
+	__forceinline void Set(u32 color) {m_Color = color;}
 
-	FORCEINLINE void Set(s32 R, s32 G, s32 B, s32 A)
+	__forceinline void Set(s32 R, s32 G, s32 B, s32 A)
 	{
 		SetR(R); SetG(G); SetB(B); SetA(A);
 	}
 
-	FORCEINLINE void Set(float R, float G, float B, float A)
+	__forceinline void Set(float R, float G, float B, float A)
 	{
 		SetR(R); SetG(G); SetB(B); SetA(A);
 	}

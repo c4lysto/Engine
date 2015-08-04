@@ -19,18 +19,18 @@ typedef Vec3f float3;
 class Vec3f
 {
 #define DEFINE_VEC3_ENUM_VAL_CONSTRUCTOR(enumeration, xVal, yVal, zVal) \
-	explicit FORCEINLINE Vec3f(enumeration) : x(xVal), y(yVal), z(zVal) {}
+	explicit __forceinline Vec3f(enumeration) : x(xVal), y(yVal), z(zVal) {}
 
 #define DEFINE_VEC3_ENUM_CONSTRUCTOR(enumeration, valueToInit) DEFINE_VEC3_ENUM_VAL_CONSTRUCTOR(enumeration, valueToInit, valueToInit, valueToInit)
 
 #define VEC3_ACCESSOR(retType, funcName, retVal) \
-	FORCEINLINE retType funcName() { return retVal; }
+	__forceinline retType funcName() { return retVal; }
 
 #define VEC3_ACCESSOR_CONST(retType, funcName, retVal) \
-	FORCEINLINE retType funcName() const { return retVal; }
+	__forceinline retType funcName() const { return retVal; }
 
 #define VEC3_MUTATOR(funcName, inType, modifiedVal) \
-	FORCEINLINE void funcName(inType rhs) { modifiedVal = rhs; }
+	__forceinline void funcName(inType rhs) { modifiedVal = rhs; }
 
 
 private:

@@ -19,19 +19,19 @@ typedef Vec2f float2;
 class Vec2f
 {
 #define DEFINE_VEC2_ENUM_VAL_CONSTRUCTOR(enumeration, xVal, yVal)\
-	explicit FORCEINLINE Vec2f(enumeration) : x(xVal), y(yVal) {}
+	explicit __forceinline Vec2f(enumeration) : x(xVal), y(yVal) {}
 
 #define DEFINE_VEC2_ENUM_CONSTRUCTOR(enumeration, valueToInit)\
-	explicit FORCEINLINE Vec2f(enumeration) : x(valueToInit), y(valueToInit){}
+	explicit __forceinline Vec2f(enumeration) : x(valueToInit), y(valueToInit){}
 
 #define VEC2_ACCESSOR(retType, funcName, retVal) \
-	FORCEINLINE retType funcName() { return retVal; }
+	__forceinline retType funcName() { return retVal; }
 
 #define VEC2_ACCESSOR_CONST(retType, funcName, retVal) \
-	FORCEINLINE retType funcName() const { return retVal; }
+	__forceinline retType funcName() const { return retVal; }
 
 #define VEC2_MUTATOR(funcName, inType, modifiedVal) \
-	FORCEINLINE void funcName(inType rhs) { modifiedVal = rhs; }
+	__forceinline void funcName(inType rhs) { modifiedVal = rhs; }
 
 
 private:

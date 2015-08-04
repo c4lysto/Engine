@@ -1,5 +1,5 @@
 
-FORCEINLINE Mat33V::Mat33V(const float& fXx, const float& fXy, const float& fXz,
+__forceinline Mat33V::Mat33V(const float& fXx, const float& fXy, const float& fXz,
 							 const float& fYx, const float& fYy, const float& fYz,
 							 const float& fZx, const float& fZy, const float& fZz) :
 	xAxis(fXx, fXy, fXz),
@@ -8,21 +8,21 @@ FORCEINLINE Mat33V::Mat33V(const float& fXx, const float& fXy, const float& fXz,
 {
 }
 
-FORCEINLINE Mat33V::Mat33V(Mat33V_In mMatrix) : 
+__forceinline Mat33V::Mat33V(Mat33V_In mMatrix) : 
 	xAxis(mMatrix.xAxis),
 	yAxis(mMatrix.yAxis),
 	zAxis(mMatrix.zAxis)
 {
 }
 
-FORCEINLINE Mat33V::Mat33V(Mat33V&& mMatrix) :
+__forceinline Mat33V::Mat33V(Mat33V&& mMatrix) :
 	xAxis(std::move(mMatrix.xAxis)),
 	yAxis(std::move(mMatrix.yAxis)),
 	zAxis(std::move(mMatrix.zAxis))
 {
 }
 
-FORCEINLINE Mat33V::Mat33V(eIdentityInitializer UNUSED_PARAM(eIdentity)) :
+__forceinline Mat33V::Mat33V(eIdentityInitializer UNUSED_PARAM(eIdentity)) :
 	xAxis(g_IdentityX3V),
 	yAxis(g_IdentityY3V),
 	zAxis(g_IdentityZ3V)
@@ -81,7 +81,7 @@ inline Mat33V_Ref Mat33V::operator=(Mat33V&& mMatrix)
 	return *this;
 }
 
-FORCEINLINE Mat33V_Out Mat33V::operator*(Mat33V_In mMatrix) const
+__forceinline Mat33V_Out Mat33V::operator*(Mat33V_In mMatrix) const
 {
 	Mat33V result(*this);
 	result *= mMatrix;
@@ -172,28 +172,28 @@ inline Vec3V_Out operator*(Vec3V_ConstRef vVector, Mat33V_In mMatrix)
 #endif
 }
 
-FORCEINLINE Vec3V_Ref operator*=(Vec3V_Ref vVector, Mat33V_In mMatrix)
+__forceinline Vec3V_Ref operator*=(Vec3V_Ref vVector, Mat33V_In mMatrix)
 {
 	vVector = vVector * mMatrix;
 	return vVector;
 }
 
-FORCEINLINE Mat33V_Out Mat33V::operator+(Mat33V_In rhs) const
+__forceinline Mat33V_Out Mat33V::operator+(Mat33V_In rhs) const
 {
 	return Mat33V(xAxis + rhs.xAxis, yAxis + rhs.yAxis, zAxis + rhs.zAxis);
 }
 
-FORCEINLINE void Mat33V::operator+=(Mat33V_In rhs)
+__forceinline void Mat33V::operator+=(Mat33V_In rhs)
 {
 	xAxis += rhs.xAxis; yAxis += rhs.yAxis; zAxis += rhs.zAxis;
 }
 
-FORCEINLINE Mat33V_Out Mat33V::operator-(Mat33V_In rhs) const
+__forceinline Mat33V_Out Mat33V::operator-(Mat33V_In rhs) const
 {
 	return Mat33V(xAxis - rhs.xAxis, yAxis - rhs.yAxis, zAxis - rhs.zAxis);
 }
 
-FORCEINLINE void Mat33V::operator-=(Mat33V_In rhs)
+__forceinline void Mat33V::operator-=(Mat33V_In rhs)
 {
 	xAxis -= rhs.xAxis; yAxis -= rhs.yAxis; zAxis -= rhs.zAxis;
 }
@@ -216,26 +216,26 @@ inline void Mat33V::Rotate_LocalZ(ScalarV_In vRadians)
 	*this = tmp * (*this);
 }
 
-FORCEINLINE void Mat33V::Scale(Vec3V_In vScale)
+__forceinline void Mat33V::Scale(Vec3V_In vScale)
 {
 	xAxis *= vScale.GetX();
 	yAxis *= vScale.GetY();
 	zAxis *= vScale.GetZ();
 }
 
-FORCEINLINE void Mat33V::SetScale(Vec3V_In vScale)
+__forceinline void Mat33V::SetScale(Vec3V_In vScale)
 {
 	xAxis = ::Normalize(xAxis) * vScale.GetX();
 	yAxis = ::Normalize(yAxis) * vScale.GetY();
 	zAxis = ::Normalize(zAxis) * vScale.GetZ();
 }
 
-FORCEINLINE Vec3V_Out Mat33V::GetScale() const
+__forceinline Vec3V_Out Mat33V::GetScale() const
 {
 	return Vec3V(Mag(xAxis), Mag(yAxis), Mag(zAxis));
 }
 
-FORCEINLINE void Mat33V::Transpose()
+__forceinline void Mat33V::Transpose()
 {
 	Vector tmpX = VectorPermute<VecElem::X1, VecElem::X2, VecElem::Z1, VecElem::W1>(row1, row2);
 	tmpX = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::X2, VecElem::W1>(tmpX, row3);
@@ -247,7 +247,7 @@ FORCEINLINE void Mat33V::Transpose()
 	row2 = tmpY;
 }
 
-FORCEINLINE void Mat33V::Normalize()
+__forceinline void Mat33V::Normalize()
 {
 	xAxis = ::Normalize(xAxis);
 	yAxis = ::Normalize(yAxis);

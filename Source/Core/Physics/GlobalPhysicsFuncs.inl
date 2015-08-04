@@ -2,7 +2,7 @@
 
 // Sphere Intersections:
 
-FORCEINLINE bool TestSphereToSphere(Sphere_In lhs, Sphere_In rhs)
+__forceinline bool TestSphereToSphere(Sphere_In lhs, Sphere_In rhs)
 {
 	Vec3V vCenterToCenter = lhs.GetCenter() - rhs.GetCenter();
 	ScalarV vRadiiSq = lhs.GetRadiusSq() + rhs.GetRadiusSq();
@@ -18,7 +18,7 @@ FORCEINLINE bool TestSphereToSphere(Sphere_In lhs, Sphere_In rhs)
 //	return vRadiiSq >= vDistSq;
 //}
 
-FORCEINLINE bool TestSphereToPlane(Sphere_In vSphere, Plane_In vPlane)
+__forceinline bool TestSphereToPlane(Sphere_In vSphere, Plane_In vPlane)
 {
 	Vec3V vPlanePosToCenter = vSphere.GetCenter() - vPlane.GetPos();
 	return vSphere.GetRadiusSq() <= Abs(Dot(vPlanePosToCenter, vPlane.GetNormal()));
@@ -34,7 +34,7 @@ inline bool TestSphereToRay(Sphere_In vSphere, Ray_In vRay)
 
 // Returns True For Any Sort Of Intersection
 // vOverlap - Will Return Negative If The Sphere Is Behind The Plane
-//FORCEINLINE bool TestSphereToPlane(Sphere_In vSphere, Plane_In vPlane, ScalarV_Ref vOverlap)
+//__forceinline bool TestSphereToPlane(Sphere_In vSphere, Plane_In vPlane, ScalarV_Ref vOverlap)
 //{
 //	Vec3V vPlanePosToCenter = vSphere.GetCenter() - vPlane.GetPlanePos();
 //	vOverlap = Dot(vPlanePosToCenter, vPlane.GetNormal());
@@ -44,12 +44,12 @@ inline bool TestSphereToRay(Sphere_In vSphere, Ray_In vRay)
 
 // Plane Intersections:
 
-FORCEINLINE bool TestPlaneToSphere(Plane_In vPlane, Sphere_In vSphere)
+__forceinline bool TestPlaneToSphere(Plane_In vPlane, Sphere_In vSphere)
 {
 	return TestSphereToPlane(vSphere, vPlane);
 }
 
-//FORCEINLINE bool TestPlaneToSphere(Plane_In vPlane, Sphere_In vSphere, ScalarV_Ref vOverlap)
+//__forceinline bool TestPlaneToSphere(Plane_In vPlane, Sphere_In vSphere, ScalarV_Ref vOverlap)
 //{
 //	return IntersectSphereToPlane(vSphere, vPlane, vOverlap);
 //}
@@ -57,7 +57,7 @@ FORCEINLINE bool TestPlaneToSphere(Plane_In vPlane, Sphere_In vSphere)
 
 // Ray Intersections:
 
-FORCEINLINE bool TestRayToSphere(Ray_In vRay, Sphere_In vSphere)
+__forceinline bool TestRayToSphere(Ray_In vRay, Sphere_In vSphere)
 {
 	return TestSphereToRay(vSphere, vRay);
 }
@@ -65,7 +65,7 @@ FORCEINLINE bool TestRayToSphere(Ray_In vRay, Sphere_In vSphere)
 
 // AABB Intersections:
 
-FORCEINLINE bool TestAABBToAABB(AABB_In lhs, AABB_In rhs)
+__forceinline bool TestAABBToAABB(AABB_In lhs, AABB_In rhs)
 {
 	return (IsGreaterThanOrEqualXYZ(lhs.GetMax(), rhs.GetMin()) & IsLessThanOrEqualXYZ(lhs.GetMin(), rhs.GetMax())) != 0;
 }

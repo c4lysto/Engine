@@ -21,28 +21,28 @@ class Vec4f
 {
 #if SSE_AVAILABLE && 0
 #define DEFINE_VEC4_ENUM_CONSTRUCTOR(enumeration, valueToInit)\
-	explicit FORCEINLINE Vec4f(enumeration)\
+	explicit __forceinline Vec4f(enumeration)\
 	{\
 		VectorStoreU(VectorSet(valueToInit), vector); \
 	}
 #else
 #define DEFINE_VEC4_ENUM_VAL_CONSTRUCTOR(enumeration, xVal, yVal, zVal, wVal)\
-	explicit FORCEINLINE Vec4f(enumeration) : x(xVal), y(yVal), z(zVal), w(wVal){}
+	explicit __forceinline Vec4f(enumeration) : x(xVal), y(yVal), z(zVal), w(wVal){}
 
 #define DEFINE_VEC4_ENUM_CONSTRUCTOR(enumeration, valueToInit) DEFINE_VEC4_ENUM_VAL_CONSTRUCTOR(enumeration, valueToInit, valueToInit, valueToInit, valueToInit)
 #endif //SSE_AVAILABLE
 
 #define VEC4_ACCESSOR(retType, funcName, retVal) \
-	FORCEINLINE retType funcName() { return retVal; }
+	__forceinline retType funcName() { return retVal; }
 
 #define VEC4_ACCESSOR_CONST(retType, funcName, retVal) \
-	FORCEINLINE retType funcName() const { return retVal; }
+	__forceinline retType funcName() const { return retVal; }
 
 #define VEC4_MUTATOR(funcName, inType, modifiedVal) \
-	FORCEINLINE void funcName(inType rhs) { modifiedVal = rhs; }
+	__forceinline void funcName(inType rhs) { modifiedVal = rhs; }
 
 #define VEC4_MUTATOR_MOVE(funcName, inType, modifiedVal) \
-	FORCEINLINE void funcName(inType&& rhs) { modifiedVal = std::move(rhs); }
+	__forceinline void funcName(inType&& rhs) { modifiedVal = std::move(rhs); }
 
 private:
 	union

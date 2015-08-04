@@ -45,10 +45,10 @@ public:
 	bool IsTrueAll() const {return (m_Result & ((1 << (int)VecElem::X) | (1 << (int)VecElem::Y) | (1 << (int)VecElem::Z) | (1 << (int)VecElem::W))) != 0;}
 
 	template<VecElem index>
-	FORCEINLINE bool IsTrue() const { CompileTimeAssert(index > = VecElem::X && index <= VecElem::W, "Invalid VecCmpResult Index!"); return (m_Result & (1 << index)) != 0; }
+	__forceinline bool IsTrue() const { CompileTimeAssert(index > = VecElem::X && index <= VecElem::W, "Invalid VecCmpResult Index!"); return (m_Result & (1 << index)) != 0; }
 
 	template<VecElem index0, VecElem index1>
-	FORCEINLINE bool IsTrue() const 
+	__forceinline bool IsTrue() const 
 	{ 
 		CompileTimeAssert((index0 >= VecElem::X && index0 <= VecElem::W) &&
 			(index1 >= VecElem::X && index1 <= VecElem::W), "Invalid VecCmpResult Index!"); 

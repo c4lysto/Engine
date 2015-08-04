@@ -11,7 +11,7 @@
 #pragma warning(disable : 4512) // Assignment Operator Was Implicitly Defined As Deleted
 #pragma warning(disable : 4010) // Single-Line Comment Contains Line-Continuation Character
 #pragma warning(disable : 4201) // nonstandard extension used : nameless struct/union
-#pragma warning(disable : 4714) // marked as FORCEINLINE not inlined
+#pragma warning(disable : 4714) // marked as __forceinline not inlined
 
 #include "GlobalDefines.h"
 #include "Debugging/DebugHelp.h"

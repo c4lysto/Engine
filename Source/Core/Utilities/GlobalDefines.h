@@ -77,16 +77,17 @@ typedef uint64_t u64;
 	#endif
 #endif 
 
-#ifndef FORCEINLINE
+#ifndef FORCEINLINE_DEFINED
+	#define FORCEINLINE_DEFINED
 	#if RECON_MSC_COMPILER
-		#define FORCEINLINE __forceinline
+		#define __forceinline __forceinline
 	#elif RECON_GCC_COMPILER
-		#define FORCEINLINE __attribute__((always_inline))
+		#define __forceinline __attribute__((always_inline))
 	#else
-		#warning "#define FORCEINLINE NOT SUPPORTED FOR THIS COMPILER TYPE 'inline' will be used in place of forceinline"
-		#define FORCEINLINE inline
+		#warning "#define __forceinline NOT SUPPORTED FOR THIS COMPILER TYPE 'inline' will be used in place of __forceinline"
+		#define __forceinline inline
 	#endif
-#endif // FORCEINLINE
+#endif // FORCEINLINE_DEFINED
 
 #ifndef SAFE_DELETE
 	#define SAFE_DELETE(del) do{ delete del; del = nullptr; } while(0)
@@ -285,7 +286,7 @@ typedef uint64_t u64;
 #define S32_SIGN_BIT BIT31
 #define FLOAT_SIGN_BIT BIT31
 
-FORCEINLINE void Prefetch_Impl(void* pMem)
+__forceinline void Prefetch_Impl(void* pMem)
 {
 #if SSE_AVAILABLE
 	//_mm_prefetch((const s8*)pMem, _MM_HINT_NTA);

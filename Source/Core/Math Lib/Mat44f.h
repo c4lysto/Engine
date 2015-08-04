@@ -21,13 +21,13 @@ class Mat34f;
 class Mat44f
 {
 #define Mat44_ACCESSOR(retType, name, retVal) \
-	FORCEINLINE retType name() { return retVal; }
+	__forceinline retType name() { return retVal; }
 
 #define Mat44_ACCESSOR_CONST(retType, name, retVal) \
-	FORCEINLINE retType name() const { return retVal; }
+	__forceinline retType name() const { return retVal; }
 
 #define MAT44_MUTATOR(name, inType, modifiedVal) \
-	FORCEINLINE void name(inType rhs) { modifiedVal = rhs; }
+	__forceinline void name(inType rhs) { modifiedVal = rhs; }
 
 
 private:

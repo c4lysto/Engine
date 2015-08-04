@@ -9,12 +9,12 @@ class BitSet
 private:
 	u8 m_Bits[((numBits-1) >> 3) + 1];
 
-	FORCEINLINE u8& GetAssociatedByte(u32 bit)
+	__forceinline u8& GetAssociatedByte(u32 bit)
 	{
 		return m_Bits[bit >> 3];
 	}
 
-	FORCEINLINE u32 GetLocalBit(u32 bit)
+	__forceinline u32 GetLocalBit(u32 bit)
 	{
 		return (1 << (bit & 0x7));
 	}
@@ -25,42 +25,42 @@ public:
 		ClearAllBits();
 	}
 
-	FORCEINLINE void SetBit(u32 bit)
+	__forceinline void SetBit(u32 bit)
 	{
 		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		GetAssociatedByte(bit) |= GetLocalBit(bit);
 	}
 
-	FORCEINLINE void ClearBit(u32 bit)
+	__forceinline void ClearBit(u32 bit)
 	{
 		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		GetAssociatedByte(bit) &= ~GetLocalBit(bit);
 	}
 
-	FORCEINLINE void SetBit(u32 bit, bool bSetBit)
+	__forceinline void SetBit(u32 bit, bool bSetBit)
 	{
 		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		bSetBit ? SetBit(bit) : ClearBit(bit);
 	}
 
-	FORCEINLINE bool IsSet(u32 bit)
+	__forceinline bool IsSet(u32 bit)
 	{
 		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		GetAssociatedByte(bit) & GetLocalBit(bit);
 	}
 
-	FORCEINLINE void ToggleBit(u32 bit)
+	__forceinline void ToggleBit(u32 bit)
 	{
 		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		GetAssociatedByte(bit) ^= GetLocalBit(bit);
 	}
 
-	FORCEINLINE void ClearAllBits()
+	__forceinline void ClearAllBits()
 	{
 		memset(m_Bits, 0, sizeof(m_Bits));
 	}
 
-	FORCEINLINE void SetAllBits()
+	__forceinline void SetAllBits()
 	{
 		memset(m_Bits, 0xFF, sizeof(m_Bits));
 	}

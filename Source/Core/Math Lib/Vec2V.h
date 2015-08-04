@@ -28,23 +28,23 @@ typedef Vec2V float2V;
 ALIGN(16) class Vec2V
 {
 #define DEFINE_VEC2V_ENUM_VAL_CONSTRUCTOR(enumeration, xIntRep, yIntRep)\
-	explicit FORCEINLINE Vec2V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)FloatToIntRep::Zero, (u32)FloatToIntRep::Zero>(); }
+	explicit __forceinline Vec2V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)FloatToIntRep::Zero, (u32)FloatToIntRep::Zero>(); }
 
 #define DEFINE_VEC2V_ENUM_CONSTRUCTOR(enumeration, intRep)\
-	explicit FORCEINLINE Vec2V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
+	explicit __forceinline Vec2V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
 
 #define VEC2V_ACCESSOR(retType, funcName, retVal) \
-	FORCEINLINE retType funcName() { return retVal; }
+	__forceinline retType funcName() { return retVal; }
 
 #define VEC2V_ACCESSOR_CONST(retType, funcName, retVal) \
-	FORCEINLINE retType funcName() const { return retVal; }
+	__forceinline retType funcName() const { return retVal; }
 
 #define VEC2V_ACCESSOR_SCALARV_CONST(funcName, elementIndex) \
-	FORCEINLINE ScalarV_Out funcName() const \
+	__forceinline ScalarV_Out funcName() const \
 		{ return ScalarV(VectorPermute< VecElem::##elementIndex , VecElem::##elementIndex , VecElem::##elementIndex , VecElem::##elementIndex >(row)); }
 
 #define VEC2V_MUTATOR(funcName, inType, modifiedVal) \
-	FORCEINLINE void funcName(inType rhs) { modifiedVal = rhs; }
+	__forceinline void funcName(inType rhs) { modifiedVal = rhs; }
 
 
 private:

@@ -22,7 +22,7 @@ typedef ScalarV_Ref ScalarV_InOut;
 class ScalarV
 {
 #define DEFINE_SCALARV_ENUM_CONSTRUCTOR(enumeration, intRep) \
-	explicit FORCEINLINE ScalarV(enumeration) {	row = VectorSetConstant<(u32)intRep>();	}
+	explicit __forceinline ScalarV(enumeration) {	row = VectorSetConstant<(u32)intRep>();	}
 
 private:
 
