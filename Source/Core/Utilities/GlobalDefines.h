@@ -79,11 +79,9 @@ typedef uint64_t u64;
 
 #ifndef FORCEINLINE_DEFINED
 	#define FORCEINLINE_DEFINED
-	#if RECON_MSC_COMPILER
-		#define __forceinline __forceinline
-	#elif RECON_GCC_COMPILER
+	#if RECON_GCC_COMPILER
 		#define __forceinline __attribute__((always_inline))
-	#else
+	#elif !RECON_MSC_COMPILER
 		#warning "#define __forceinline NOT SUPPORTED FOR THIS COMPILER TYPE 'inline' will be used in place of __forceinline"
 		#define __forceinline inline
 	#endif
