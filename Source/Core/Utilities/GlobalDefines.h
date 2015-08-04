@@ -3,14 +3,16 @@
 
 #include "FeatureLevelDefines.h"
 
-typedef __int8 s8;
-typedef unsigned __int8 u8;
-typedef __int16 s16;
-typedef unsigned __int16 u16;
-typedef __int32 s32;
-typedef unsigned __int32 u32;
-typedef __int64 s64;
-typedef unsigned __int64 u64;
+#include <inttypes.h>
+
+typedef int8_t s8;
+typedef uint8_t u8;
+typedef int16_t s16;
+typedef uint16_t u16;
+typedef int32_t s32;
+typedef uint32_t u32;
+typedef int64_t s64;
+typedef uint64_t u64;
 
 // Too Risky To Redefine NULL!
 //#if !defined(__cplusplus) || (defined(_MSC_VER) && _MSC_VER < 1600)
@@ -118,7 +120,7 @@ typedef unsigned __int64 u64;
 #define LONG_LONG_MASK (0xFFFFFFFFFFFFFFFFLL)
 
 #ifndef CHAR_MIN
-	#define CHAR_MIN	(-128)
+	#define CHAR_MIN	(-128i8)
 #endif // CHAR_MIN
 
 #ifndef S8_MIN
@@ -126,7 +128,7 @@ typedef unsigned __int64 u64;
 #endif // S8_MIN
 
 #ifndef CHAR_MAX
-	#define CHAR_MAX	(127)
+	#define CHAR_MAX	(127i8)
 #endif // CHAR_MAX
 
 #ifndef S8_MAX
@@ -134,7 +136,7 @@ typedef unsigned __int64 u64;
 #endif // S8_MAX
 
 #ifndef UCHAR_MAX
-	#define UCHAR_MAX	(0xFF)
+	#define UCHAR_MAX	(0xFFui8)
 #endif // UCHAR_MAX
 
 #ifndef U8_MAX
@@ -142,7 +144,7 @@ typedef unsigned __int64 u64;
 #endif // U8_MAX
 
 #ifndef SHORT_MIN
-	#define SHORT_MIN	(-32768)
+	#define SHORT_MIN	(-32768i16)
 #endif // SHORT_MIN
 
 #ifndef S16_MIN
@@ -150,7 +152,7 @@ typedef unsigned __int64 u64;
 #endif // S8_MIN
 
 #ifndef SHORT_MAX
-	#define SHORT_MAX	(32767)
+	#define SHORT_MAX	(32767i16)
 #endif // SHORT_MAX
 
 #ifndef S16_MAX
@@ -158,7 +160,7 @@ typedef unsigned __int64 u64;
 #endif // S8_MAX
 
 #ifndef USHORT_MAX
-	#define USHORT_MAX	(0xFFFF)
+	#define USHORT_MAX	(0xFFFFui16)
 #endif // USHORT_MAX
 
 #ifndef U16_MAX
@@ -166,7 +168,7 @@ typedef unsigned __int64 u64;
 #endif // S8_MAX
 
 #ifndef INT_MIN
-	#define INT_MIN		(-2147483648)
+	#define INT_MIN		(-2147483648i32)
 #endif // INT_MIN
 
 #ifndef LONG_MIN
@@ -178,7 +180,7 @@ typedef unsigned __int64 u64;
 #endif // S32_MIN
 
 #ifndef INT_MAX
-	#define	INT_MAX		(2147483647)
+	#define	INT_MAX		(2147483647i32)
 #endif // INT_MAX
 
 #ifndef LONG_MAX
@@ -190,7 +192,7 @@ typedef unsigned __int64 u64;
 #endif // S32_MAX
 
 #ifndef UINT_MAX
-	#define	UINT_MAX	(0xFFFFFFFF)
+	#define	UINT_MAX	(0xFFFFFFFFui32)
 #endif // UINT_MAX
 
 #ifndef ULONG_MAX
@@ -202,7 +204,7 @@ typedef unsigned __int64 u64;
 #endif // U32_MAX
 
 #ifndef LLONG_MIN
-	#define LLONG_MIN	(9223372036854775807i64)
+	#define LLONG_MIN	(-9223372036854775808i64)
 #endif // LLONG_MIN
 
 #ifndef S64_MIN
@@ -210,7 +212,7 @@ typedef unsigned __int64 u64;
 #endif // S64_MIN
 
 #ifndef LLONG_MAX
-	#define LLONG_MAX	(9223372036854775808i64)
+	#define LLONG_MAX	(9223372036854775807i64)
 #endif // LLONG_MAX
 
 #ifndef S64_MAX
@@ -226,7 +228,7 @@ typedef unsigned __int64 u64;
 #endif // U64_MAX
 
 #ifndef INFINITE
-	#define INFINITE (0xFFFFFFFF)
+	#define INFINITE	(0xFFFFFFFF)
 #endif // INFINITE
 
 #define BIT(bit) (1<<bit)
