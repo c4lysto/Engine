@@ -9,13 +9,13 @@ typedef u64 ComponentID;
 #define INVALID_COMPONENT_ID ((ComponentID)-1)
 
 template<typename ComponentClass>
-__forceinline ComponentID GetComponentID() \
+FORCEINLINE ComponentID GetComponentID() \
 { \
 	return (ComponentID)typeid(ComponentClass).hash_code(); \
 }
 
 template<typename ComponentClass>
-__forceinline const char* GetComponentName() \
+FORCEINLINE const char* GetComponentName() \
 { \
 	return typeid(ComponentClass).name(); \
 }
@@ -40,8 +40,8 @@ public:
 	// Runtime Check, Slower Than Using COMPONENT_ID()/COMPONENT_NAME()
 	// and should only be used if we do not know the type of the component
 	// at compile time
-	__forceinline ComponentID GetID() {return typeid(*this).hash_code();}
-	__forceinline const char* GetName() {return typeid(*this).name();}
+	FORCEINLINE ComponentID GetID() {return typeid(*this).hash_code();}
+	FORCEINLINE const char* GetName() {return typeid(*this).name();}
 
 	virtual ~IComponent() = 0 {m_pEntity = nullptr;}
 

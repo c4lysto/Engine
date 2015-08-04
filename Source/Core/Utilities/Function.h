@@ -58,7 +58,7 @@ public:
 	_IntermediateStaticFuncPtr(const _FuncPtrType& pFunc) : _FuncPointerContainer(pFunc) {}
 	virtual ~_IntermediateStaticFuncPtr() {}
 
-	virtual __forceinline _RetType CallFunc(_tArgs&&... args) const override
+	virtual FORCEINLINE _RetType CallFunc(_tArgs&&... args) const override
 	{
 		return (Get())(std::forward<_tArgs...>(args...));
 	}
@@ -82,7 +82,7 @@ public:
 
 	virtual ~_IntermediateMemberFuncPtr() {};
 
-	virtual __forceinline _RetType CallFunc(_tArgs&&... args) const override
+	virtual FORCEINLINE _RetType CallFunc(_tArgs&&... args) const override
 	{
 		return CallFunc_Internal(m_InvokingObject, std::forward<_tArgs...>(args...));
 	}
@@ -94,25 +94,25 @@ public:
 
 private:
 	template<typename _ClassName>
-	__forceinline _RetType CallFunc_Internal(_ClassName& classObj, _tArgs&&... args) const
+	FORCEINLINE _RetType CallFunc_Internal(_ClassName& classObj, _tArgs&&... args) const
 	{
 		return (classObj.*Get())(std::forward<_tArgs...>(args...));
 	}
 
 	template<typename _ClassName>
-	__forceinline _RetType CallFunc_Internal(const _ClassName& classObj, _tArgs&&... args) const
+	FORCEINLINE _RetType CallFunc_Internal(const _ClassName& classObj, _tArgs&&... args) const
 	{
 		return (classObj.*Get())(std::forward<_tArgs...>(args...));
 	}
 
 	template<typename _ClassName>
-	__forceinline _RetType CallFunc_Internal(_ClassName* classObj, _tArgs&&... args) const
+	FORCEINLINE _RetType CallFunc_Internal(_ClassName* classObj, _tArgs&&... args) const
 	{
 		return (classObj->*Get())(std::forward<_tArgs...>(args...));
 	}
 
 	template<typename _ClassName>
-	__forceinline _RetType CallFunc_Internal(const _ClassName* classObj, _tArgs&&... args) const
+	FORCEINLINE _RetType CallFunc_Internal(const _ClassName* classObj, _tArgs&&... args) const
 	{
 		return (classObj->*Get())(std::forward<_tArgs...>(args...));
 	}
@@ -177,7 +177,7 @@ protected:
 		m_pIntermediateFuncPtr = _IntermediateFuncPtrCreation::Create<classObjType, funcPtrType, _RetType, _tArgs...>(std::forward<classObjType>(classObj), std::forward<funcPtrType>(funcPtr));
 	}
 
-	__forceinline void Copy(const _MyType& rhs)
+	FORCEINLINE void Copy(const _MyType& rhs)
 	{
 		SAFE_DELETE(m_pIntermediateFuncPtr);
 		if(rhs.m_pIntermediateFuncPtr)
@@ -204,7 +204,7 @@ public:
 		SAFE_DELETE(m_pIntermediateFuncPtr);
 	}
 
-	__forceinline _MyType& operator=(const _MyType& rhs)
+	FORCEINLINE _MyType& operator=(const _MyType& rhs)
 	{
 		if(this != &rhs)
 		{
@@ -213,7 +213,7 @@ public:
 		return *this;
 	}
 
-	__forceinline _MyType& operator=(_MyType&& rhs)
+	FORCEINLINE _MyType& operator=(_MyType&& rhs)
 	{
 		if(this != &rhs)
 		{
@@ -225,13 +225,13 @@ public:
 		return *this;
 	}
 
-	__forceinline ReturnType operator()(_tArgs... args) const
+	FORCEINLINE ReturnType operator()(_tArgs... args) const
 	{
 		Assert(m_pIntermediateFuncPtr, "_FuncPtrBase - Invalid Function Implementation!");
 		return m_pIntermediateFuncPtr->CallFunc(std::forward<_tArgs...>(args...));
 	}
 
-	__forceinline operator bool() const {return m_pIntermediateFuncPtr != nullptr; }
+	FORCEINLINE operator bool() const {return m_pIntermediateFuncPtr != nullptr; }
 };
 
 template<typename _FuncPtrType>
@@ -307,20 +307,20 @@ public:
 		return *this;
 	}
 
-	__forceinline _MyType& operator=(nullptr_t)
+	FORCEINLINE _MyType& operator=(nullptr_t)
 	{
 		m_pFunc = nullptr;
 		return *this;
 	}
 
 	template<typename funcPtrType>
-	__forceinline _MyType& operator=(funcPtrType&& rhs)
+	FORCEINLINE _MyType& operator=(funcPtrType&& rhs)
 	{
 		m_pFunc = rhs;
 		return *this;
 	}
 
-	__forceinline operator PointerType() const
+	FORCEINLINE operator PointerType() const
 	{
 		return m_pFunc;
 	}
@@ -409,14 +409,14 @@ public:
 		return *this;
 	}
 
-	__forceinline void SetInvokingObject(const _ClassName* pInvokingObject) { m_pInvokingObject = (_ClassName*)pInvokingObject; }
-	__forceinline void SetInvokingObject(_ClassName* pInvokingObject) { m_pInvokingObject = pInvokingObject; }
+	FORCEINLINE void SetInvokingObject(const _ClassName* pInvokingObject) { m_pInvokingObject = (_ClassName*)pInvokingObject; }
+	FORCEINLINE void SetInvokingObject(_ClassName* pInvokingObject) { m_pInvokingObject = pInvokingObject; }
 
-	__forceinline PointerType Get() { return m_pFunc; }
+	FORCEINLINE PointerType Get() { return m_pFunc; }
 
-	__forceinline operator bool() const { return m_pFunc != nullptr; }
+	FORCEINLINE operator bool() const { return m_pFunc != nullptr; }
 
-	__forceinline ReturnType operator()(_tArgs... args) const
+	FORCEINLINE ReturnType operator()(_tArgs... args) const
 	{
 		Assert(m_pFunc, "_MemberFunctionImplementation - Invalid Function Pointer!");
 		return (m_pInvokingObject->*m_pFunc)(args...);

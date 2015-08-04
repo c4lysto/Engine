@@ -19,13 +19,13 @@ typedef Mat33V float3x3V;
 class Mat33V
 {
 #define MAT33V_ACCESSOR(retType, name, retVal) \
-	__forceinline retType name() { return retVal; }
+	FORCEINLINE retType name() { return retVal; }
 
 #define MAT33V_ACCESSOR_CONST(retType, name, retVal) \
-	__forceinline retType name() const { return retVal; }
+	FORCEINLINE retType name() const { return retVal; }
 
 #define MAT33V_MUTATOR(name, inType, modifiedVal) \
-	__forceinline void name(inType rhs) { modifiedVal = rhs; }
+	FORCEINLINE void name(inType rhs) { modifiedVal = rhs; }
 
 private:
 	union

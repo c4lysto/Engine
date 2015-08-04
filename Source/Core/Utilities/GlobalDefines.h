@@ -35,7 +35,8 @@ typedef uint64_t u64;
 	#elif RECON_GCC_COMPILER
 		#define ALIGN(byteAlign) __attribute__((aligned(byteAlign)))
 	#else
-		#error "#define ALIGN NOT SUPPORTED FOR THIS COMPILER TYPE!"
+		#warning "#define ALIGN NOT SUPPORTED FOR THIS COMPILER TYPE!"
+		#define ALIGN(byteAlign)
 	#endif
 #endif
 
@@ -49,7 +50,8 @@ typedef uint64_t u64;
 	#elif RECON_GCC_COMPILER
 		#define GLOBALCONST extern const __attribute__((weak))
 	#else
-		#error "#define GLOBALCONST NOT SUPPORTED FOR THIS COMPILER TYPE!"
+		#warning "#define GLOBALCONST NOT SUPPORTED FOR THIS COMPILER TYPE!"
+		#define GLOBALCONST
 	#endif
 #endif
 
@@ -59,7 +61,8 @@ typedef uint64_t u64;
 	#elif RECON_GCC_COMPILER
 		#define THREADLOCAL __thread
 	#else
-		#error "#define THREADLOCAL NOT SUPPORTED FOR THIS COMPILER TYPE!"
+		#warning "#define THREADLOCAL NOT SUPPORTED FOR THIS COMPILER TYPE!"
+		#define THREADLOCAL
 	#endif
 #endif
 
@@ -69,9 +72,21 @@ typedef uint64_t u64;
 	#elif RECON_GCC_COMPILER
 		#define NOINLINE __attribute__((noinline))
 	#else
-		#error "#define NOINLINE NOT SUPPORTED FOR THIS COMPILER TYPE!"
+		#warning "#define NOINLINE NOT SUPPORTED FOR THIS COMPILER TYPE!"
+		#define NOINLINE
 	#endif
 #endif 
+
+#ifndef FORCEINLINE
+	#if RECON_MSC_COMPILER
+		#define FORCEINLINE __forceinline
+	#elif RECON_GCC_COMPILER
+		#define FORCEINLINE __attribute__((always_inline))
+	#else
+		#warning "#define FORCEINLINE NOT SUPPORTED FOR THIS COMPILER TYPE 'inline' will be used in place of forceinline"
+		#define FORCEINLINE inline
+	#endif
+#endif // FORCEINLINE
 
 #ifndef SAFE_DELETE
 	#define SAFE_DELETE(del) do{ delete del; del = nullptr; } while(0)
@@ -270,7 +285,7 @@ typedef uint64_t u64;
 #define S32_SIGN_BIT BIT31
 #define FLOAT_SIGN_BIT BIT31
 
-__forceinline void Prefetch_Impl(void* pMem)
+FORCEINLINE void Prefetch_Impl(void* pMem)
 {
 #if SSE_AVAILABLE
 	//_mm_prefetch((const s8*)pMem, _MM_HINT_NTA);

@@ -23,23 +23,23 @@ typedef Vec4V float4V;
 ALIGN(16) class Vec4V
 {
 #define DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(enumeration, xIntRep, yIntRep, zIntRep, wIntRep) \
-	explicit __forceinline Vec4V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)wIntRep>(); }
+	explicit FORCEINLINE Vec4V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)wIntRep>(); }
 
 #define DEFINE_VEC4V_ENUM_CONSTRUCTOR(enumeration, intRep) \
-	explicit __forceinline Vec4V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
+	explicit FORCEINLINE Vec4V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
 
 #define VEC4V_ACCESSOR(retType, funcName, retVal) \
-	__forceinline retType funcName() { return retVal; }
+	FORCEINLINE retType funcName() { return retVal; }
 
 #define VEC4V_ACCESSOR_CONST(retType, funcName, retVal) \
-	__forceinline retType funcName() const { return retVal; }
+	FORCEINLINE retType funcName() const { return retVal; }
 
 #define VEC4V_ACCESSOR_SCALARV_CONST(element) \
-	__forceinline ScalarV_Out Get##element () const \
+	FORCEINLINE ScalarV_Out Get##element () const \
 		{ return ScalarV(VectorPermute<VecElem::##element , VecElem::##element , VecElem::##element , VecElem::##element >(row)); }
 
 #define VEC4V_MUTATOR(funcName, inType, modifiedVal) \
-	__forceinline void funcName(inType rhs) { modifiedVal = rhs; }
+	FORCEINLINE void funcName(inType rhs) { modifiedVal = rhs; }
 
 
 	friend class Mat44V;
@@ -88,7 +88,7 @@ public:
 	VEC4V_ACCESSOR_CONST(const float&, GetYRef, y)
 	VEC4V_ACCESSOR_CONST(const float&, GetZRef, z)
 	VEC4V_ACCESSOR_CONST(const float&, GetWRef, w)
-	__forceinline Vec3V GetXYZ() const {return Vec3V(row);}
+	FORCEINLINE Vec3V GetXYZ() const {return Vec3V(row);}
 
 	VEC4V_ACCESSOR_CONST(Vector_Out, GetVector, row);
 
@@ -114,8 +114,8 @@ public:
 	VEC4V_MUTATOR(SetZ, const float&, z)
 	VEC4V_MUTATOR(SetW, const float&, w)
 
-	__forceinline void SetXYZ(Vec3V_In rhs) {row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(rhs.GetVector(), row);}
-	//__forceinline void SetXYZ(Vec3V&& rhs) {row = VectorSet(rhs.x, rhs.y, rhs.z, w);}
+	FORCEINLINE void SetXYZ(Vec3V_In rhs) {row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(rhs.GetVector(), row);}
+	//FORCEINLINE void SetXYZ(Vec3V&& rhs) {row = VectorSet(rhs.x, rhs.y, rhs.z, w);}
 
 #undef VEC4V_MUTATOR
 #else

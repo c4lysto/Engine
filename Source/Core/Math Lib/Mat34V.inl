@@ -1,5 +1,5 @@
 
-__forceinline Mat34V::Mat34V(const float& fXx, const float& fXy, const float& fXz,
+FORCEINLINE Mat34V::Mat34V(const float& fXx, const float& fXy, const float& fXz,
 							 const float& fYx, const float& fYy, const float& fYz,
 							 const float& fZx, const float& fZy, const float& fZz,
 							 const float& fWx, const float& fWy, const float& fWz) :
@@ -10,7 +10,7 @@ __forceinline Mat34V::Mat34V(const float& fXx, const float& fXy, const float& fX
 {
 }
 
-__forceinline Mat34V::Mat34V(Mat34V_In mMatrix) : 
+FORCEINLINE Mat34V::Mat34V(Mat34V_In mMatrix) : 
 	xAxis(mMatrix.xAxis),
 	yAxis(mMatrix.yAxis),
 	zAxis(mMatrix.zAxis),
@@ -18,7 +18,7 @@ __forceinline Mat34V::Mat34V(Mat34V_In mMatrix) :
 {
 }
 
-__forceinline Mat34V::Mat34V(Mat34V&& mMatrix) : 
+FORCEINLINE Mat34V::Mat34V(Mat34V&& mMatrix) : 
 	xAxis(std::move(mMatrix.xAxis)),
 	yAxis(std::move(mMatrix.yAxis)),
 	zAxis(std::move(mMatrix.zAxis)),
@@ -26,7 +26,7 @@ __forceinline Mat34V::Mat34V(Mat34V&& mMatrix) :
 {
 }
 
-__forceinline Mat34V::Mat34V(Vec3V_In vXAxis,
+FORCEINLINE Mat34V::Mat34V(Vec3V_In vXAxis,
 							 Vec3V_In vYAxis,
 							 Vec3V_In vZAxis,
 							 Vec3V_In vWAxis) : 
@@ -75,7 +75,7 @@ inline Mat34V::Mat34V(eZRotationInitializer UNUSED_PARAM(eZRotation), const floa
 	yAxis = Vec3V(-fSinAngle, fCosAngle, 0.0f);
 }
 
-__forceinline Mat34V::Mat34V(eMatrixPositionInitializer UNUSED_PARAM(eMatrixPos), Vec3V_In vPos) :
+FORCEINLINE Mat34V::Mat34V(eMatrixPositionInitializer UNUSED_PARAM(eMatrixPos), Vec3V_In vPos) :
 	xAxis(I_X_AXIS),
 	yAxis(I_Y_AXIS),
 	zAxis(I_Z_AXIS),
@@ -83,17 +83,17 @@ __forceinline Mat34V::Mat34V(eMatrixPositionInitializer UNUSED_PARAM(eMatrixPos)
 {
 }
 
-//__forceinline Mat34V::operator XMMATRIX() const
+//FORCEINLINE Mat34V::operator XMMATRIX() const
 //{
 //	return *(XMMATRIX*)this;
 //}
 //
-//__forceinline Mat34V::operator XMMATRIX*() const
+//FORCEINLINE Mat34V::operator XMMATRIX*() const
 //{
 //	return (XMMATRIX*)this;
 //}
 
-__forceinline Mat34V_ConstRef Mat34V::operator=(Mat34V_In mMatrix)
+FORCEINLINE Mat34V_ConstRef Mat34V::operator=(Mat34V_In mMatrix)
 {
 	if(this != &mMatrix)
 	{
@@ -105,7 +105,7 @@ __forceinline Mat34V_ConstRef Mat34V::operator=(Mat34V_In mMatrix)
 	return *this;
 }
 
-__forceinline Mat34V_ConstRef Mat34V::operator=(Mat34V&& mMatrix)
+FORCEINLINE Mat34V_ConstRef Mat34V::operator=(Mat34V&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
@@ -134,7 +134,7 @@ inline Vec3V_Out operator*(Vec3V_ConstRef vPos, Mat34V_In mMatrix)
 	return Vec3V(tmp2);
 }
 
-__forceinline Vec3V_Ref operator*=(Vec3V_Ref vPos, Mat34V_In mMatrix)
+FORCEINLINE Vec3V_Ref operator*=(Vec3V_Ref vPos, Mat34V_In mMatrix)
 {
 	vPos = ::operator*(vPos, mMatrix);
 }
@@ -156,89 +156,89 @@ inline Vec3V_Out operator*(Vec4V_ConstRef vPos, Mat34V_In mMatrix)
 	return Vec3V(tmp2);
 }
 
-__forceinline Mat34V_Out Mat34V::operator+(Mat34V_In rhs) const
+FORCEINLINE Mat34V_Out Mat34V::operator+(Mat34V_In rhs) const
 {
 	return Mat34V(xAxis + rhs.xAxis, yAxis + rhs.yAxis, zAxis + rhs.zAxis, wAxis + rhs.wAxis);
 }
 
-__forceinline void Mat34V::operator+=(Mat34V_In rhs)
+FORCEINLINE void Mat34V::operator+=(Mat34V_In rhs)
 {
 	xAxis += rhs.xAxis; yAxis += rhs.yAxis; zAxis += rhs.zAxis; wAxis += rhs.wAxis;
 }
 
-__forceinline Mat34V_Out Mat34V::operator-(Mat34V_In rhs) const
+FORCEINLINE Mat34V_Out Mat34V::operator-(Mat34V_In rhs) const
 {
 	return Mat34V(xAxis - rhs.xAxis, yAxis - rhs.yAxis, zAxis - rhs.zAxis, wAxis - rhs.wAxis);
 }
 
-__forceinline void Mat34V::operator-=(Mat34V_In rhs)
+FORCEINLINE void Mat34V::operator-=(Mat34V_In rhs)
 {
 	xAxis -= rhs.xAxis; yAxis -= rhs.yAxis; zAxis -= rhs.zAxis; wAxis -= rhs.wAxis;
 }
 
-__forceinline void Mat34V::Rotate_GlobalX(const float& fRadians)
+FORCEINLINE void Mat34V::Rotate_GlobalX(const float& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44V(I_ROTATION_X, fRadians));
 }
 
-__forceinline void Mat34V::Rotate_GlobalY(const float& fRadians)
+FORCEINLINE void Mat34V::Rotate_GlobalY(const float& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44V(I_ROTATION_Y, fRadians));
 }
 
-__forceinline void Mat34V::Rotate_GlobalZ(const float& fRadians)
+FORCEINLINE void Mat34V::Rotate_GlobalZ(const float& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44V(I_ROTATION_Z, fRadians));
 }
 
-__forceinline void Mat34V::Rotate_LocalX(const float& fRadians)
+FORCEINLINE void Mat34V::Rotate_LocalX(const float& fRadians)
 {
 	*this = Mat44ToMat34(Mat44V(I_ROTATION_X, fRadians) * Mat34ToMat44(*this));
 }
 
-__forceinline void Mat34V::Rotate_LocalY(const float& fRadians)
+FORCEINLINE void Mat34V::Rotate_LocalY(const float& fRadians)
 {
 	*this = Mat44ToMat34(Mat44V(I_ROTATION_Y, fRadians) * Mat34ToMat44(*this));
 }
 
-__forceinline void Mat34V::Rotate_LocalZ(const float& fRadians)
+FORCEINLINE void Mat34V::Rotate_LocalZ(const float& fRadians)
 {
 	*this = Mat44ToMat34(Mat44V(I_ROTATION_Z, fRadians) * Mat34ToMat44(*this));
 }
 
-__forceinline void Mat34V::Scale(Vec3V_In vScale)
+FORCEINLINE void Mat34V::Scale(Vec3V_In vScale)
 {
 	xAxis = xAxis * vScale.GetX();
 	yAxis = yAxis * vScale.GetY();
 	zAxis = zAxis * vScale.GetZ();
 }
 
-__forceinline void Mat34V::SetScale(Vec3V_In vScale)
+FORCEINLINE void Mat34V::SetScale(Vec3V_In vScale)
 {
 	xAxis = ::Normalize(xAxis) * vScale.GetX();
 	yAxis = ::Normalize(yAxis) * vScale.GetY();
 	zAxis = ::Normalize(zAxis) * vScale.GetZ();
 }
 
-__forceinline Vec3V_Out Mat34V::GetScale() const
+FORCEINLINE Vec3V_Out Mat34V::GetScale() const
 {
 	Vec3V retVal(Mag(xAxis), Mag(yAxis), Mag(zAxis));
 	return retVal;
 }
 
-__forceinline void Mat34V::Translate(Vec3V_In vTranslation)
+FORCEINLINE void Mat34V::Translate(Vec3V_In vTranslation)
 {
 	wAxis = wAxis + vTranslation;
 }
 
-__forceinline void Mat34V::Transpose3x3()
+FORCEINLINE void Mat34V::Transpose3x3()
 {
 	std::swap(xAxis.GetYRef(), yAxis.GetXRef());
 	std::swap(xAxis.GetZRef(), zAxis.GetXRef());
 	std::swap(yAxis.GetZRef(), zAxis.GetYRef());
 }
 
-__forceinline void Mat34V::Normalize()
+FORCEINLINE void Mat34V::Normalize()
 {
 	xAxis.Normalize();
 	yAxis.Normalize();

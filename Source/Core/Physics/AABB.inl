@@ -1,91 +1,91 @@
 
-__forceinline AABB::AABB() {}
+FORCEINLINE AABB::AABB() {}
 
-__forceinline AABB::AABB(Vec3V_In vMin, Vec3V_In vMax) : m_vMin(vMin), m_vMax(vMax) {}
+FORCEINLINE AABB::AABB(Vec3V_In vMin, Vec3V_In vMax) : m_vMin(vMin), m_vMax(vMax) {}
 
-__forceinline AABB::AABB(Sphere_In vSurroundingSphere)
+FORCEINLINE AABB::AABB(Sphere_In vSurroundingSphere)
 {
 	SetFromSurroundingSphere(vSurroundingSphere);
 }
 
 // Will Overwrite User Data 1
-__forceinline void AABB::SetMin(Vec3V_In vMin)
+FORCEINLINE void AABB::SetMin(Vec3V_In vMin)
 {
 	m_vMin = vMin;
 }
 
-__forceinline Vec3V_Out AABB::GetMin() const
+FORCEINLINE Vec3V_Out AABB::GetMin() const
 {
 	return m_vMin;
 }
 
-__forceinline Vec3V_Ref AABB::GetMinRef()
+FORCEINLINE Vec3V_Ref AABB::GetMinRef()
 {
 	return m_vMin;
 }
 
-__forceinline Vec3V_ConstRef AABB::GetMinRef() const
+FORCEINLINE Vec3V_ConstRef AABB::GetMinRef() const
 {
 	return m_vMin;
 }
 
 // Will Overwrite User Data 2
-__forceinline void AABB::SetMax(Vec3V_In vMax)
+FORCEINLINE void AABB::SetMax(Vec3V_In vMax)
 {
 	m_vMax = vMax;
 }
 
-__forceinline Vec3V_Out AABB::GetMax() const
+FORCEINLINE Vec3V_Out AABB::GetMax() const
 {
 	return m_vMax;
 }
 
-__forceinline Vec3V_Ref AABB::GetMaxRef()
+FORCEINLINE Vec3V_Ref AABB::GetMaxRef()
 {
 	return m_vMax;
 }
 
-__forceinline Vec3V_ConstRef AABB::GetMaxRef() const
+FORCEINLINE Vec3V_ConstRef AABB::GetMaxRef() const
 {
 	return m_vMax;
 }
 
-__forceinline Vec3V_Out AABB::GetDimensions() const
+FORCEINLINE Vec3V_Out AABB::GetDimensions() const
 {
 	return m_vMax - m_vMin;
 }
 
-__forceinline Vec3V_Out AABB::GetHalfDimensions() const
+FORCEINLINE Vec3V_Out AABB::GetHalfDimensions() const
 {
 	return GetDimensions() * ScalarV(I_HALF);
 }
 
-__forceinline void AABB::SetUserData1(ScalarV_In vData)
+FORCEINLINE void AABB::SetUserData1(ScalarV_In vData)
 {
 	m_vMin.SetW(vData);
 }
 
-__forceinline ScalarV_Out AABB::GetUserData1() const
+FORCEINLINE ScalarV_Out AABB::GetUserData1() const
 {
 	return m_vMin.GetW();
 }
 
-__forceinline void AABB::SetUserData2(ScalarV_In vData)
+FORCEINLINE void AABB::SetUserData2(ScalarV_In vData)
 {
 	m_vMax.SetW(vData);
 }
 
-__forceinline ScalarV_Out AABB::GetUserData2() const
+FORCEINLINE ScalarV_Out AABB::GetUserData2() const
 {
 	return m_vMax.GetW();
 }
 
-__forceinline Vec3V_Out AABB::GetDimensions() const
+FORCEINLINE Vec3V_Out AABB::GetDimensions() const
 {
 	return m_vMax - m_vMin;
 }
 
-__forceinline void AABB::SetFromSurroundingSphere(Sphere_In vSurroundingSphere)
+FORCEINLINE void AABB::SetFromSurroundingSphere(Sphere_In vSurroundingSphere)
 {
 	Vec3V vSphereCenter = vSurroundingSphere.GetCenter();
 	m_vMin = vSphereCenter - Vec3V(vSurroundingSphere.GetRadius());

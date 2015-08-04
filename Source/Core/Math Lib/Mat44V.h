@@ -22,13 +22,13 @@ class Mat34V;
 ALIGN(16) class Mat44V
 {
 #define Mat44V_ACCESSOR(retType, name, retVal) \
-	__forceinline retType name() { return retVal; }
+	FORCEINLINE retType name() { return retVal; }
 
 #define Mat44V_ACCESSOR_CONST(retType, name, retVal) \
-	__forceinline retType name() const { return retVal; }
+	FORCEINLINE retType name() const { return retVal; }
 
 #define Mat44V_MUTATOR(name, inType, modifiedVal) \
-	__forceinline void name(inType rhs) { modifiedVal = rhs; }
+	FORCEINLINE void name(inType rhs) { modifiedVal = rhs; }
 
 
 private:

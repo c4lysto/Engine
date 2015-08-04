@@ -202,14 +202,14 @@ private:
 	Vector row;
 
 public:
-	__forceinline explicit ScalarTstV(Vector vec) : row(vec){}
+	FORCEINLINE explicit ScalarTstV(Vector vec) : row(vec){}
 
-	__forceinline explicit ScalarTstV(eOneInitializer)
+	FORCEINLINE explicit ScalarTstV(eOneInitializer)
 	{
 		row = VectorSetConstant<(u32)FloatToIntRep::One, (u32)FloatToIntRep::One, (u32)FloatToIntRep::One, (u32)FloatToIntRep::One>();
 	}
 
-	__forceinline explicit ScalarTstV(eFiveInitializer)
+	FORCEINLINE explicit ScalarTstV(eFiveInitializer)
 	{
 		row = VectorSetConstant<(u32)FloatToIntRep::Five, (u32)FloatToIntRep::Five, (u32)FloatToIntRep::Five, (u32)FloatToIntRep::Five>();
 	}

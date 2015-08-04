@@ -26,26 +26,26 @@ typedef Vec3V float3V;
 ALIGN(16) class Vec3V
 {
 #define DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(enumeration, xIntRep, yIntRep, zIntRep)\
-	explicit __forceinline Vec3V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)FloatToIntRep::Zero>(); }
+	explicit FORCEINLINE Vec3V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)FloatToIntRep::Zero>(); }
 
 #define DEFINE_VEC3V_ENUM_CONSTRUCTOR(enumeration, intRep)\
-	explicit __forceinline Vec3V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
+	explicit FORCEINLINE Vec3V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
 
 #define DEFINE_VEC3V_ENUM_VEC_CONSTRUCTOR(enumeration, vec)\
-	explicit __forceinline Vec3V(enumeration) { row = vec.row; }
+	explicit FORCEINLINE Vec3V(enumeration) { row = vec.row; }
 
 #define VEC3V_ACCESSOR(retType, funcName, retVal) \
-	__forceinline retType funcName() { return retVal; }
+	FORCEINLINE retType funcName() { return retVal; }
 
 #define VEC3V_ACCESSOR_SCALARV_CONST(element) \
-	__forceinline ScalarV_Out Get##element () const \
+	FORCEINLINE ScalarV_Out Get##element () const \
 	{ return ScalarV(VectorPermute<VecElem::##element , VecElem::##element , VecElem::##element , VecElem::##element >(row)); }
 
 #define VEC3V_ACCESSOR_CONST(retType, funcName, retVal) \
-	__forceinline retType funcName() const { return retVal; }
+	FORCEINLINE retType funcName() const { return retVal; }
 
 #define VEC3V_MUTATOR(funcName, inType, modifiedVal) \
-	__forceinline void funcName(inType rhs) { modifiedVal = rhs; }
+	FORCEINLINE void funcName(inType rhs) { modifiedVal = rhs; }
 
 	friend class Vec4V;
 

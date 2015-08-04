@@ -21,13 +21,13 @@ typedef Mat34f float3x4;
 class Mat34f
 {
 #define MAT34F_ACCESSOR(retType, name, retVal) \
-	__forceinline retType name() { return retVal; }
+	FORCEINLINE retType name() { return retVal; }
 
 #define MAT34F_ACCESSOR_CONST(retType, name, retVal) \
-	__forceinline retType name() const { return retVal; }
+	FORCEINLINE retType name() const { return retVal; }
 
 #define MAT34F_MUTATOR(name, inType, modifiedVal) \
-	__forceinline void name(inType rhs) { modifiedVal = rhs; }
+	FORCEINLINE void name(inType rhs) { modifiedVal = rhs; }
 
 
 private:
