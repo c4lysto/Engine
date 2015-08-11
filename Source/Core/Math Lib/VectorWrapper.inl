@@ -40,7 +40,7 @@ __forceinline Vector_Out VectorSet(const int& iX, const int& iY, const int& iZ, 
 // Used to load Aligned Data
 __forceinline Vector_Out VectorLoad(const float* const alignedFloat4Ptr)
 {
-	Assert(((((u64)alignedFloat4Ptr) & 15) == 0), "VectorLoad - Float Pointer MUST be 16-byte aligned!");
+	Assertf(((((u64)alignedFloat4Ptr) & 15) == 0), "VectorLoad - Float Pointer MUST be 16-byte aligned!");
 	return _mm_load_ps(alignedFloat4Ptr);
 }
 
@@ -53,7 +53,7 @@ __forceinline Vector_Out VectorLoadU(const float* const unalignedFloat4Ptr)
 // Used to store in Aligned Data
 __forceinline void VectorStore(Vector_In lhs, float* alignedFloat4Ptr)
 {
-	Assert(((((u64)alignedFloat4Ptr) & 15) == 0), "VectorStore - Float Pointer MUST be 16-byte aligned!");
+	Assertf(((((u64)alignedFloat4Ptr) & 15) == 0), "VectorStore - Float Pointer MUST be 16-byte aligned!");
 	_mm_store_ps(alignedFloat4Ptr, lhs);
 }
 
@@ -66,7 +66,7 @@ __forceinline void VectorStoreU(Vector_In lhs, float* unalignedFloat4Ptr)
 template<VecElem index>
 __forceinline float VectorExtractFloat(Vector_In vec)
 {
-	CompileTimeAssert(index >= VecElem::X && index <= VecElem::W, "Invalid Permute X-Index. Must be between X & W!");
+	static_assert(index >= VecElem::X && index <= VecElem::W, "Invalid Permute X-Index. Must be between X & W!");
 	return _mm_cvtss_f32(VectorPermute<index, index, index, index>(vec));
 }
 
@@ -75,7 +75,7 @@ template<> __forceinline float VectorExtractFloat<VecElem::X>(Vector_In vec) {re
 template<VecElem index>
 __forceinline int VectorExtractInt(Vector_In vec)
 {
-	CompileTimeAssert(index >= VecElem::X && index <= VecElem::W, "Invalid Permute X-Index. Must be between X & W!");
+	static_assert(index >= VecElem::X && index <= VecElem::W, "Invalid Permute X-Index. Must be between X & W!");
 	return _mm_extract_epi32(VEC_FLOAT_TO_INT(vec), (int)index);
 }
 
@@ -89,29 +89,29 @@ __forceinline int VectorExtractInt(Vector_In vec)
 template<VecElem splat>
 __forceinline Vector_Out VectorSplat(Vector_In vec)
 {
-	CompileTimeAssert(splat >= VecElem::X && splat <= VecElem::W, "Invalid Splat Index. Must be between VecElem::X & VecElem::W!");
+	static_assert(splat >= VecElem::X && splat <= VecElem::W, "Invalid Splat Index. Must be between VecElem::X & VecElem::W!");
 	return _mm_shuffle_ps(vec, vec, PERM_SHUFFLE(splat, splat, splat, splat));
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
 __forceinline Vector_Out VectorPermute(Vector_In vec)
 {
-	CompileTimeAssert(pX >= VecElem::X && pX <= VecElem::W, "Invalid Permute X-Index. Must be between VecElem::X & VecElem::W!");
-	CompileTimeAssert(pY >= VecElem::X && pY <= VecElem::W, "Invalid Permute Y-Index. Must be between VecElem::X & VecElem::W!");
-	CompileTimeAssert(pZ >= VecElem::X && pZ <= VecElem::W, "Invalid Permute Z-Index. Must be between VecElem::X & VecElem::W!");
-	CompileTimeAssert(pW >= VecElem::X && pW <= VecElem::W, "Invalid Permute W-Index. Must be between VecElem::X & VecElem::W!");
+	static_assert(pX >= VecElem::X && pX <= VecElem::W, "Invalid Permute X-Index. Must be between VecElem::X & VecElem::W!");
+	static_assert(pY >= VecElem::X && pY <= VecElem::W, "Invalid Permute Y-Index. Must be between VecElem::X & VecElem::W!");
+	static_assert(pZ >= VecElem::X && pZ <= VecElem::W, "Invalid Permute Z-Index. Must be between VecElem::X & VecElem::W!");
+	static_assert(pW >= VecElem::X && pW <= VecElem::W, "Invalid Permute W-Index. Must be between VecElem::X & VecElem::W!");
 	return _mm_shuffle_ps(vec, vec, PERM_SHUFFLE(pX, pY, pZ, pW));
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
 __forceinline Vector_Out VectorPermute(Vector_In lhs, Vector_In rhs)
 {
-	CompileTimeAssert((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2), "Invalid Permute X-Index. Must be between VecElem::X1 & VecElem::W2!");
-	CompileTimeAssert((pY >= VecElem::X1 && pY <= VecElem::W1) || (pY >= VecElem::X2 && pY <= VecElem::W2), "Invalid Permute Y-Index. Must be between VecElem::X1 & VecElem::W2!");
-	CompileTimeAssert((pZ >= VecElem::X1 && pZ <= VecElem::W1) || (pZ >= VecElem::X2 && pZ <= VecElem::W2), "Invalid Permute Z-Index. Must be between VecElem::X1 & VecElem::W2!");
-	CompileTimeAssert((pW >= VecElem::X1 && pW <= VecElem::W1) || (pW >= VecElem::X2 && pW <= VecElem::W2), "Invalid Permute W-Index. Must be between VecElem::X1 & VecElem::W2!");
+	static_assert((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2), "Invalid Permute X-Index. Must be between VecElem::X1 & VecElem::W2!");
+	static_assert((pY >= VecElem::X1 && pY <= VecElem::W1) || (pY >= VecElem::X2 && pY <= VecElem::W2), "Invalid Permute Y-Index. Must be between VecElem::X1 & VecElem::W2!");
+	static_assert((pZ >= VecElem::X1 && pZ <= VecElem::W1) || (pZ >= VecElem::X2 && pZ <= VecElem::W2), "Invalid Permute Z-Index. Must be between VecElem::X1 & VecElem::W2!");
+	static_assert((pW >= VecElem::X1 && pW <= VecElem::W1) || (pW >= VecElem::X2 && pW <= VecElem::W2), "Invalid Permute W-Index. Must be between VecElem::X1 & VecElem::W2!");
 
-	CompileTimeAssert(!((pX < VecElem::X2 && pY < VecElem::X2 && pZ < VecElem::X2 && pW < VecElem::X2) ||
+	static_assert(!((pX < VecElem::X2 && pY < VecElem::X2 && pZ < VecElem::X2 && pW < VecElem::X2) ||
 		(pX > VecElem::W1 && pY > VecElem::W1 && pZ > VecElem::W1 && pW > VecElem::W1)), "All Components Are From The Same Vector, Use 'Permute(Vector_In vec)' Instead");
 
 	if((pX < VecElem::X2 && pY < VecElem::X2) &&			// Permute<Vec1, Vec1, Vec2, Vec2>
@@ -202,7 +202,7 @@ __forceinline Vector_Out VectorPermute(Vector_In lhs, Vector_In rhs)
 	}
 	else
 	{
-		//CompileTimeAssert(false, "Unhandled Permute Case!");
+		//static_assert(false, "Unhandled Permute Case!");
 		return _mm_setzero_ps();
 	}
 }

@@ -227,7 +227,7 @@ public:
 
 	__forceinline ReturnType operator()(_tArgs... args) const
 	{
-		Assert(m_pIntermediateFuncPtr, "_FuncPtrBase - Invalid Function Implementation!");
+		Assertf(m_pIntermediateFuncPtr, "_FuncPtrBase - Invalid Function Implementation!");
 		return m_pIntermediateFuncPtr->CallFunc(std::forward<_tArgs...>(args...));
 	}
 
@@ -418,7 +418,7 @@ public:
 
 	__forceinline ReturnType operator()(_tArgs... args) const
 	{
-		Assert(m_pFunc, "_MemberFunctionImplementation - Invalid Function Pointer!");
+		Assertf(m_pFunc, "_MemberFunctionImplementation - Invalid Function Pointer!");
 		return (m_pInvokingObject->*m_pFunc)(args...);
 	}
 };

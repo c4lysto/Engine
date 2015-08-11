@@ -90,8 +90,7 @@ Vec2V_Out Rand::Draw2(float fMin, float fMax)
 
 Vec2V_Out Rand::Draw2(Vec2V_In vMin, Vec2V_In vMax)
 {
-	Vec2V oneOver2Pow23MinusOne(1.1920930376163765926810017443897e-7f);
-
+	const Vec2V oneOver2Pow23MinusOne(1.1920930376163765926810017443897e-7f);
 	Vec2V floatMask(IntToFloat(Draw2() & Vec2VInt((1<<23)-1)) * oneOver2Pow23MinusOne);
 	return floatMask * (vMax - vMin) + vMin;
 }
@@ -110,9 +109,8 @@ Vec3V_Out Rand::Draw3(float fMin, float fMax)
 
 Vec3V_Out Rand::Draw3(Vec3V_In vMin, Vec3V_In vMax)
 {
-	Vec3V oneOver2Pow23MinusOne(1.1920930376163765926810017443897e-7f);
-	Vec3V maskedDraw(Draw3() & Vec3VInt((1<<23)-1));
-	Vec3V floatMask(IntToFloat(maskedDraw) * oneOver2Pow23MinusOne);
+	const Vec3V oneOver2Pow23MinusOne(1.1920930376163765926810017443897e-7f);
+	Vec3V floatMask(IntToFloat(Draw3() & Vec3VInt((1 << 23) - 1)) * oneOver2Pow23MinusOne);
 	return floatMask * (vMax - vMin) + vMin;
 }
 
@@ -130,9 +128,8 @@ Vec4V_Out Rand::Draw4(float fMin, float fMax)
 
 Vec4V_Out Rand::Draw4(Vec4V_In vMin, Vec4V_In vMax)
 {
-	Vec4V oneOver2Pow23MinusOne(1.1920930376163765926810017443897e-7f);
-	Vec4V maskedDraw(Draw4() & Vec4VInt((1<<23)-1));
-	Vec4V floatMask(IntToFloat(maskedDraw) * oneOver2Pow23MinusOne);
+	const Vec4V oneOver2Pow23MinusOne(1.1920930376163765926810017443897e-7f);
+	Vec4V floatMask(IntToFloat(Draw4() & Vec4VInt((1 << 23) - 1)) * oneOver2Pow23MinusOne);
 	return floatMask * (vMax - vMin) + vMin;
 }
 

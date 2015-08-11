@@ -30,9 +30,9 @@ bool SysThread::StartThread(SysThreadProc pThreadProc, void* pArgs, SysThreadPri
 {
 	bool bThreadStarted = false;
 
-	if(Verify(GetThreadHandle() != nullptr, "Thread is Already Active, Start Thread will not do anything."))
+	if(Verifyf(GetThreadHandle() != nullptr, "Thread is Already Active, Start Thread will not do anything."))
 	{
-		if(Verify(pThreadProc, "No Function Set for the starting thread"))
+		if(Verifyf(pThreadProc, "No Function Set for the starting thread"))
 		{
 
 			m_ThreadArgs.m_pThreadFunc = pThreadProc;
@@ -70,12 +70,12 @@ unsigned int __stdcall SysThread::DefaultThreadProc(void* pArgs)
 		nProcRetVal = 0;
 	}
 
-#if __ASSERT
+#if RECON_ASSERT
 	if(nProcRetVal == (u32)-1)
 	{
-		Assert(false, "Failed To Properly Start Thread! pArgs must be NULL for some reason!");
+		Assertf(false, "Failed To Properly Start Thread! pArgs must be NULL for some reason!");
 	}
-#endif // __ASSERT
+#endif // RECON_ASSERT
 
 	return nProcRetVal;
 }
@@ -122,7 +122,7 @@ void SysSetThreadName(const char* szName, SysThread* pThread /*= nullptr*/)
 
 void SysSetThreadPriority(SysThreadPriority threadPriority, SysThread* pThread /*= nullptr*/)
 {
-	if (Verify((threadPriority == SysThreadPriority::Idle || threadPriority == SysThreadPriority::Critical) ||
+	if (Verifyf((threadPriority == SysThreadPriority::Idle || threadPriority == SysThreadPriority::Critical) ||
 		(threadPriority >= SysThreadPriority::Low && threadPriority <= SysThreadPriority::High), "SysSetThreadPriority() - Invalid Thread Priority"))
 	{
 		SetThreadPriority(pThread ? pThread->GetThreadHandle() : GetCurrentThread(), (int)threadPriority);

@@ -25,7 +25,7 @@ ObjectMemoryPool<classType, alignment>::~ObjectMemoryPool()
 template<typename classType, u8 alignment>
 void ObjectMemoryPool<classType, alignment>::Init(u32 poolSize)
 {
-	Assert(poolSize, "Cannot Allocate A Memory Mool Of Size 0!!!");
+	Assertf(poolSize, "Cannot Allocate A Memory Mool Of Size 0!!!");
 
 	u32 objectCount = poolSize / sizeof(classType);
 	objectCount += (u32)((poolSize % objectCount) != 0);
@@ -48,7 +48,7 @@ void ObjectMemoryPool<classType, alignment>::Shutdown()
 template<typename classType, u8 alignment>
 classType* ObjectMemoryPool<classType, alignment>::Allocate()
 {
-	if(Verify(m_pHead, "Object Memory Pool Is Out Of Free Entries! Increase Pool Size!"))
+	if(Verifyf(m_pHead, "Object Memory Pool Is Out Of Free Entries! Increase Pool Size!"))
 	{
 		classType* pObject = m_pHead->pData;
 
@@ -70,7 +70,7 @@ void ObjectMemoryPool<classType, alignment>::Free(classType* pObject)
 {
 	if(pObject)
 	{
-		Assert(pObject >= m_pPool && pObject < m_pPoolEnd, "Trying to Free Memory That Doesn't Exist In This Memory Pool");
+		Assertf(pObject >= m_pPool && pObject < m_pPoolEnd, "Trying to Free Memory That Doesn't Exist In This Memory Pool");
 
 		pObject->~classType();
 
@@ -101,14 +101,14 @@ void ObjectMemoryPool<classType, alignment>::InitializeFreeList(u32 objectCount)
 		pCurrNode = pCurrNode->pNext;
 	}
 
-#if __ASSERT
+#if RECON_ASSERT
 	m_pPoolEnd = pEndNode;
-#endif // __ASSERT
+#endif // RECON_ASSERT
 }
 
 void ObjectPoolManager::RegisterMemoryPool(IMemPool* pMemPool)
 {
-	if(Verify(pMemPool, "Trying To Register An Invalid Object Memory Pool!"))
+	if(Verifyf(pMemPool, "Trying To Register An Invalid Object Memory Pool!"))
 	{
 		for(MemoryPoolList::const_iterator iter = m_MemoryPools.begin(); iter != m_MemoryPools.end(); ++iter)
 		{

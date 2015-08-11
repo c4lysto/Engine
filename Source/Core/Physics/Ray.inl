@@ -25,13 +25,13 @@ __forceinline Vec3V_ConstRef Ray::GetOriginRef() const
 
 __forceinline void Ray::SetDir(Vec3V_In vDir)
 {
-	Assert(Abs(Mag(vDir)-ScalarV(I_ONE)) > ScalarV(FLT_EPSILON), "Ray Dir Is Not Normlized!");
+	Assertf(Abs(Mag(vDir)-ScalarV(I_ONE)) > ScalarV(FLT_EPSILON), "Ray Dir Is Not Normlized!");
 	m_vDir = vDir;
 }
 
 __forceinline Vec3V_Out Ray::GetDir() const
 {
-	Assert(Abs(Mag(m_vDir)-ScalarV(I_ONE)) > ScalarV(FLT_EPSILON), "Ray Dir Is Not Normlized!");
+	Assertf(Abs(Mag(m_vDir)-ScalarV(I_ONE)) > ScalarV(FLT_EPSILON), "Ray Dir Is Not Normlized!");
 	return m_vDir;
 }
 

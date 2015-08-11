@@ -222,39 +222,39 @@ __forceinline Vec4f_Out Splat(Vec4f_In lhs)
 template<VecElem pX, VecElem pY>
 __forceinline Vec2f_Out Permute(Vec2f_In lhs)
 {
-	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::Y) &&
+	static_assert(	(pX >= VecElem::X && pX <= VecElem::Y) &&
 						(pY >= VecElem::X && pY <= VecElem::Y), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
-	CompileTimeAssert(	!(pX == VecElem::X && pY == VecElem::Y), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+	static_assert(	!(pX == VecElem::X && pY == VecElem::Y), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec2f(lhs[(int)pX], lhs[(int)pY]);
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ>
 __forceinline Vec3f_Out Permute(Vec3f_In lhs)
 {
-	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::Z) &&
+	static_assert(	(pX >= VecElem::X && pX <= VecElem::Z) &&
 						(pY >= VecElem::X && pY <= VecElem::Z) &&
 						(pZ >= VecElem::X && pY <= VecElem::Z), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Z!");
-	CompileTimeAssert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+	static_assert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec3f(lhs[(int)pX], lhs[(int)pY], lhs[(int)pZ]);
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> 
 __forceinline Vec4f_Out Permute(Vec4f_In lhs)
 {
-	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::W) &&
+	static_assert(	(pX >= VecElem::X && pX <= VecElem::W) &&
 						(pY >= VecElem::X && pY <= VecElem::W) &&
 						(pZ >= VecElem::X && pY <= VecElem::W) &&
 						(pW >= VecElem::X && pY <= VecElem::W), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::W!");
-	CompileTimeAssert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z && pW == VecElem::W), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+	static_assert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z && pW == VecElem::W), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec4f(lhs[(int)pX], lhs[(int)pY], lhs[(int)pZ], lhs[(int)pW]);
 }
 
 template<VecElem pX, VecElem pY>
 __forceinline Vec2f_Out Permute(Vec2f_In lhs, Vec2f_In rhs)
 {
-	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::Y1) || (pX >= VecElem::X2 && pX <= VecElem::Y2)) &&
+	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::Y1) || (pX >= VecElem::X2 && pX <= VecElem::Y2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::Y1) || (pY >= VecElem::X2 && pY <= VecElem::Y2)), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
-	CompileTimeAssert(	!((pX == VecElem::X1 && pY == VecElem::Y1) || 
+	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1) || 
 						  (pX == VecElem::X2 && pY == VecElem::Y2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	const float* vectors[] = {lhs.GetVector(), rhs.GetVector()};
 	return Vec2f(vectors[(int)pX>>4][(int)pX&0x3], vectors[(int)pY>>4][(int)pY&0x3]);
@@ -263,10 +263,10 @@ __forceinline Vec2f_Out Permute(Vec2f_In lhs, Vec2f_In rhs)
 template<VecElem pX, VecElem pY, VecElem pZ>
 __forceinline Vec3f_Out Permute(Vec3f_In lhs, Vec3f_In rhs)
 {
-	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::Z1) || (pX >= VecElem::X2 && pX <= VecElem::Z2)) &&
+	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::Z1) || (pX >= VecElem::X2 && pX <= VecElem::Z2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::Z1) || (pY >= VecElem::X2 && pY <= VecElem::Z2)) &&
 						((pZ >= VecElem::X1 && pZ <= VecElem::Z1) || (pZ >= VecElem::X2 && pZ <= VecElem::Z2)), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
-	CompileTimeAssert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1) || 
+	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1) || 
 						  (pX == VecElem::X2 && pY == VecElem::Y2 && pZ == VecElem::Z2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	const float* vectors[] = {lhs.GetVector(), rhs.GetVector()};
 	return Vec3f(vectors[(int)pX>>4][(int)pX&0x3], vectors[(int)pY>>4][(int)pY&0x3], vectors[(int)pZ>>4][(int)pZ&0x3]);
@@ -275,11 +275,11 @@ __forceinline Vec3f_Out Permute(Vec3f_In lhs, Vec3f_In rhs)
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> 
 __forceinline Vec4f_Out Permute(Vec4f_In lhs, Vec4f_In rhs)
 {
-	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2)) &&
+	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::W1) || (pY >= VecElem::X2 && pY <= VecElem::W2)) &&
 						((pZ >= VecElem::X1 && pZ <= VecElem::W1) || (pZ >= VecElem::X2 && pZ <= VecElem::W2)) &&
 						((pW >= VecElem::X1 && pW <= VecElem::W1) || (pW >= VecElem::X2 && pW <= VecElem::W2)), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
-	CompileTimeAssert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1 && pW == VecElem::W1) || 
+	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1 && pW == VecElem::W1) || 
 						  (pX == VecElem::X2 && pY == VecElem::Y2 && pZ == VecElem::Z2 && pW == VecElem::W2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	const float* vectors[] = {lhs.GetVector(), rhs.GetVector()};
 	return Vec4f(vectors[(int)pX>>4][(int)pX&0x3], vectors[(int)pY>>4][(int)pY&0x3], vectors[(int)pZ>>4][(int)pZ&0x3], vectors[(int)pW>>4][(int)pW&0x3]);
@@ -852,23 +852,23 @@ __forceinline Mat44f_Out Normalize(Mat44f_In mMatrix)
 
 __forceinline Vec2f_Out IntToFloat(Vec2f_In vVector)
 {
-	return Vec2f((float)*reinterpret_cast<const int*>(&vVector.GetXRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetYRef()));
+	return Vec2f((float)vVector.GetXiRef(), 
+				 (float)vVector.GetYiRef());
 }
 
 __forceinline Vec3f_Out IntToFloat(Vec3f_In vVector)
 {
-	return Vec3f((float)*reinterpret_cast<const int*>(&vVector.GetXRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetYRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetZRef()));
+	return Vec3f((float)vVector.GetXiRef(), 
+				 (float)vVector.GetYiRef(), 
+				 (float)vVector.GetZiRef());
 }
 
 __forceinline Vec4f_Out IntToFloat(Vec4f_In vVector)
 {
-	return Vec4f((float)*reinterpret_cast<const int*>(&vVector.GetXRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetYRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetZRef()),
-				 (float)*reinterpret_cast<const int*>(&vVector.GetWRef()));
+	return Vec4f((float)vVector.GetXiRef(), 
+				 (float)vVector.GetYiRef(), 
+				 (float)vVector.GetZiRef(),
+				 (float)vVector.GetWiRef());
 }
 
 __forceinline Vec2f_Out FloatToInt(Vec2f_In vVector)
@@ -988,13 +988,13 @@ __forceinline Vec4f_Out Round(Vec4f_In vVector)
 
 __forceinline float Log2(const float& fScalar)
 {
-	Assert(fScalar, "Log2 - fScalar Cannot Be Zero!");
+	Assertf(fScalar > 0.0f, "Log2 - fScalar Cannot Be Less Than Zero!");
 	return log2f(fScalar);
 }
 
 __forceinline double Log2(const double& fScalar)
 {
-	Assert(fScalar, "Log2 - fScalar Cannot Be Zero!");
+	Assertf(fScalar > 0.0f, "Log2 - fScalar Cannot Be Less Than Zero!");
 	return log2(fScalar);
 }
 
@@ -1123,7 +1123,7 @@ inline Mat44f_Out MatrixInverse(Mat44f_In mMatrix)
 	Vec4f det4fTmp = Vec4f(I_ONE) / det4f;
 	det4f = ((det4fTmp + det4fTmp) - (det4f * (det4fTmp * det4fTmp)));
 	const float& det = det4f.GetXRef();
-	if (Verify(det != 0.0f, "Matrix Inverse - Determinant == 0, Cannot Perform Matrix Inverse!!!"))
+	if (Verifyf(det != 0.0f, "Matrix Inverse - Determinant == 0, Cannot Perform Matrix Inverse!!!"))
 	{
 		minor0 = det * minor0;
 		minor1 = det * minor1;
@@ -1198,7 +1198,7 @@ __forceinline float CalculateGaussianWeight(s32 nOffset, float fSigma)
 }
 
 // unRadius - Number of Pixels to Blur In a Single Direction Including the Center Pixel
-inline void CalculateGaussianWeights(_Out_writes_all_(unRadius) float* pGaussianWeights, u32 unRadius, float fLimit)
+inline void CalculateGaussianWeights(float* pGaussianWeights, u32 unRadius, float fLimit)
 {
 	u32 i;
 	float fCurrWeight;
@@ -1282,38 +1282,38 @@ __forceinline Vec4V_Out Splat(Vec4V_In lhs)
 template<VecElem pX, VecElem pY>
 __forceinline Vec2V_Out Permute(Vec2V_In lhs)
 {
-	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::Y) &&
+	static_assert(	(pX >= VecElem::X && pX <= VecElem::Y) &&
 						(pY >= VecElem::X && pY <= VecElem::Y), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
-	CompileTimeAssert(	!(pX == VecElem::X && pY == VecElem::Y), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+	static_assert(	!(pX == VecElem::X && pY == VecElem::Y), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec2V(VectorPermute<pX, pY, VecElem::Z, VecElem::W>(lhs.GetVector()));
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ>
 __forceinline Vec3V_Out Permute(Vec3V_In lhs)
 {
-	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::Z) &&
+	static_assert(	(pX >= VecElem::X && pX <= VecElem::Z) &&
 						(pY >= VecElem::X && pY <= VecElem::Z) &&
 						(pZ >= VecElem::X && pY <= VecElem::Z), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Z!");
-	CompileTimeAssert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+	static_assert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec3V(VectorPermute<pX, pY, pZ, VecElem::W>(lhs.GetVector()));
 }
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
 __forceinline Vec4V_Out Permute(Vec4V_In lhs)
 {
-	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::W) &&
+	static_assert(	(pX >= VecElem::X && pX <= VecElem::W) &&
 						(pY >= VecElem::X && pY <= VecElem::W) &&
 						(pZ >= VecElem::X && pY <= VecElem::W) &&
 						(pW >= VecElem::X && pY <= VecElem::W), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::W!");
-	CompileTimeAssert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z && pW == VecElem::W), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+	static_assert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z && pW == VecElem::W), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec4V(VectorPermute<pX, pY, pZ, pW>(lhs.GetVector()));
 }
 
 template<VecElem pX, VecElem pY>
 __forceinline Vec2V_Out Permute(Vec2V_In lhs, Vec2V_In rhs)
 {
-	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::Y1) || (pX >= VecElem::X2 && pX <= VecElem::Y2)) &&
+	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::Y1) || (pX >= VecElem::X2 && pX <= VecElem::Y2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::Y1) || (pY >= VecElem::X2 && pY <= VecElem::Y2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
-	CompileTimeAssert(	!((pX == VecElem::X1 && pY == VecElem::Y1) || 
+	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1) || 
 						  (pX == VecElem::X2 && pY == VecElem::Y2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec2V(VectorPermute<pX, pY, VecElem::Z1, VecElem::W1>(lhs.GetVector(), rhs.GetVector()));
 }
@@ -1321,10 +1321,10 @@ __forceinline Vec2V_Out Permute(Vec2V_In lhs, Vec2V_In rhs)
 template<VecElem pX, VecElem pY, VecElem pZ>
 __forceinline Vec3V_Out Permute(Vec3V_In lhs, Vec3V_In rhs)
 {
-	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::Z1) || (pX >= VecElem::X2 && pX <= VecElem::Z2)) &&
+	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::Z1) || (pX >= VecElem::X2 && pX <= VecElem::Z2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::Z1) || (pY >= VecElem::X2 && pY <= VecElem::Z2)) &&
 						((pZ >= VecElem::X1 && pZ <= VecElem::Z1) || (pZ >= VecElem::X2 && pZ <= VecElem::Z2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
-	CompileTimeAssert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1) || 
+	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1) || 
 						  (pX == VecElem::X2 && pY == VecElem::Y2 && pZ == VecElem::Z2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec3V(VectorPermute<pX, pY, pZ, VecElem::W1>(lhs.GetVector(), rhs.GetVector()));
 }
@@ -1332,11 +1332,11 @@ __forceinline Vec3V_Out Permute(Vec3V_In lhs, Vec3V_In rhs)
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
 __forceinline Vec4V_Out Permute(Vec4V_In lhs, Vec4V_In rhs)
 {
-	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2)) &&
+	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::W1) || (pY >= VecElem::X2 && pY <= VecElem::W2)) &&
 						((pZ >= VecElem::X1 && pZ <= VecElem::W1) || (pZ >= VecElem::X2 && pZ <= VecElem::W2)) &&
 						((pW >= VecElem::X1 && pW <= VecElem::W1) || (pW >= VecElem::X2 && pW <= VecElem::W2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
-	CompileTimeAssert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1 && pW == VecElem::W1) || 
+	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1 && pW == VecElem::W1) || 
 						  (pX == VecElem::X2 && pY == VecElem::Y2 && pZ == VecElem::Z2 && pW == VecElem::W2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec4V(VectorPermute<pX, pY, pZ, pW>(lhs.GetVector(), rhs.GetVector()));
 }
@@ -1374,7 +1374,7 @@ __forceinline Vec4V_Out SelectTF(Vec4V_In lhs, Vec4V_In rhs, Vec4V_In condition)
 template<VecElem elem> 
 __forceinline ScalarV_Out ScalarVFromElement(Vector_In vVector)
 {
-	CompileTimeAssert(elem >= VecElem::X && elem <= VecElem::W, "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::W!");
+	static_assert(elem >= VecElem::X && elem <= VecElem::W, "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::W!");
 	return ScalarV(VectorPermute<elem, elem, elem, elem>(vVector));
 }
 
@@ -2085,7 +2085,7 @@ __forceinline Mat44V_Out MatrixInverse(Mat44V_In mMatrix)
 	Vec4V det4VTmp = Vec4V(I_ONE) / det4V;
 	det4V = ((det4VTmp + det4VTmp) - (det4V * (det4VTmp * det4VTmp)));
 	ScalarV det = ScalarVFromElement<VecElem::X>(det4V);
-	if (Verify(det, "Matrix Inverse - Determinant == 0, Cannot Perform Matrix Inverse!!!"))
+	if (Verifyf(det, "Matrix Inverse - Determinant == 0, Cannot Perform Matrix Inverse!!!"))
 	{
 		minor0 = det * minor0;
 		minor1 = det * minor1;
@@ -2187,12 +2187,12 @@ __forceinline bool VecCmpResult::IsTrueAny() const { return GetResultMask() != 0
 __forceinline bool VecCmpResult::IsTrueAll() const { return (GetResultMask() & ((1 << (int)VecElem::X) | (1 << (int)VecElem::Y) | (1 << (int)VecElem::Z) | (1 << (int)VecElem::W))) != 0; }
 
 template<VecElem index>
-__forceinline bool VecCmpResult::IsTrue() const { CompileTimeAssert(index > = VecElem::X && index <= VecElem::W, "Invalid VecCmpResult Index!"); return (GetResultMask() & (1 << index)) != 0; }
+__forceinline bool VecCmpResult::IsTrue() const { static_assert(index > = VecElem::X && index <= VecElem::W, "Invalid VecCmpResult Index!"); return (GetResultMask() & (1 << index)) != 0; }
 
 template<VecElem index0, VecElem index1>
 __forceinline bool VecCmpResult::IsTrue() const
 {
-	CompileTimeAssert((index0 >= VecElem::X && index0 <= VecElem::W) && \
+	static_assert((index0 >= VecElem::X && index0 <= VecElem::W) && \
 		(index1 >= VecElem::X && index1 <= VecElem::W), "Invalid VecCmpResult Index!");
 	return (GetResultMask() & ((1 << index0) | (1 << index1))) != 0;
 }
@@ -2200,7 +2200,7 @@ __forceinline bool VecCmpResult::IsTrue() const
 template<VecElem index0, VecElem index1, VecElem index2>
 __forceinline bool VecCmpResult::IsTrue() const
 {
-	CompileTimeAssert((index0 >= VecElem::X && index0 <= VecElem::W) && \
+	static_assert((index0 >= VecElem::X && index0 <= VecElem::W) && \
 		(index1 >= VecElem::X && index1 <= VecElem::W) && \
 		(index2 >= VecElem::X && index2 <= VecElem::W), "Invalid VecCmpResult Index!");
 	return (GetResultMask() & ((1 << index0) | (1 << index1) | (1 << index2))) != 0;

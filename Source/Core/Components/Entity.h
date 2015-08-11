@@ -27,7 +27,7 @@ private:
 private:
 	EntityID m_ID;
 
-#if DEBUG
+#if RECON_DEBUG
 	string m_szEntityName;
 #endif
 

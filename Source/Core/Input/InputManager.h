@@ -62,7 +62,7 @@ private:
 
 	void InputThreadProc(void* pArgs);
 
-#if DEBUG
+#if RECON_DEBUG
 	void DisplayCurrentEvents();
 #endif
 

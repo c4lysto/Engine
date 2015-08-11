@@ -51,7 +51,7 @@ private:
 	void* m_pPool;
 	PoolIterator* m_pHead;
 
-#if __ASSERT
+#if RECON_ASSERT
 	void* m_pPoolEnd;
 #endif // 
 

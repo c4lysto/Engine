@@ -17,7 +17,7 @@ EntityFactory::~EntityFactory()
 
 void EntityFactory::RegisterEntity(const EntityDesc& entityDesc)
 {
-	if(Verify(entityDesc.m_Name.size(), "Trying To Register An Entity With An Invalid Name"))
+	if(Verifyf(entityDesc.m_Name.size(), "Trying To Register An Entity With An Invalid Name"))
 	{
 		HashString hashName(entityDesc.m_Name.c_str());
 
@@ -25,12 +25,12 @@ void EntityFactory::RegisterEntity(const EntityDesc& entityDesc)
 		{
 			m_EntityDescs[hashName] = entityDesc;
 		}
-#if __ASSERT
+#if RECON_ASSERT
 		else
 		{
 			EntityDescContainer::const_iterator currEntry = m_EntityDescs.find(hashName);
 
-			Assert(false, "Hash Name Collision For Newly Registered Entity! Curr Entry: '%s' New Entry: '%s'", 
+			Assertf(false, "Hash Name Collision For Newly Registered Entity! Curr Entry: '%s' New Entry: '%s'", 
 						currEntry->second.m_Name.c_str(), entityDesc.m_Name.c_str());
 		}
 #endif // ASSERT

@@ -1,5 +1,8 @@
 #ifndef _RECON_SYS_CRITICAL_SECTION_H_
 #define _RECON_SYS_CRITICAL_SECTION_H_
+
+#include <Windows.h>
+
 #include "UtilitiesInclude.h"
 
 namespace recon

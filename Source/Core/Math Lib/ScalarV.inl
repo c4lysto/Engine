@@ -10,7 +10,7 @@ __forceinline ScalarV::ScalarV(ScalarV&& vVector)
 __forceinline ScalarV::ScalarV(Vector_In vVector)
 {
 	row = vVector;
-	Assert(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
+	Assertf(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
 }
 
 __forceinline ScalarV::ScalarV(const float& fVal)
@@ -66,7 +66,7 @@ __forceinline ScalarV_Ref ScalarV::operator=(ScalarV_In rhs)
 	if(this != &rhs)
 	{
 		row = rhs.row;
-		Assert(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
+		Assertf(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
 	}
 	return *this;
 }

@@ -331,7 +331,7 @@ Mat44f_Out MakeTextureMatrixOffset(u32 unWidth, u32 unHeight);
 float CalculateGaussianWeight(s32 nOffset, float fSigma = 1.0f);
 
 // unRadius - Number of Pixels to Blur In a Single Direction Including the Center Pixel
-inline void CalculateGaussianWeights(_Out_writes_all_(unRadius) float* pGaussianWeights, u32 unRadius, float fLimit = 1.0f);
+inline void CalculateGaussianWeights(float* pGaussianWeights, u32 unRadius, float fLimit = 1.0f);
 
 #if SSE_AVAILABLE
 ScalarV_Out Lerp(ScalarV_In lhs, ScalarV_In rhs, ScalarV_In vLambda);

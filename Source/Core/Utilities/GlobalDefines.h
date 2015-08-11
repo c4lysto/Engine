@@ -14,12 +14,9 @@ typedef uint32_t u32;
 typedef int64_t s64;
 typedef uint64_t u64;
 
-// Too Risky To Redefine NULL!
-//#if !defined(__cplusplus) || (defined(_MSC_VER) && _MSC_VER < 1600)
-//	#define NULL 0
-//#else
-//	#define NULL nullptr
-//#endif
+typedef float f32;
+typedef double f64;
+
 
 #ifndef SSE_AVAILABLE
 	#if defined(_M_IX86) || defined(_M_AMD64)
@@ -127,122 +124,38 @@ typedef uint64_t u64;
 
 #define ONE_OVER_255 (1.0f/255.0f)
 
-#define CHAR_MASK (0xFFL)
-#define SHORT_MASK (0xFFFFL)
-#define INT_MASK (0xFFFFFFFFL)
+#define CHAR_MASK (0xFFui8)
+#define U8_MASK CHAR_MASK
+
+#define SHORT_MASK (0xFFFFui16)
+#define U16_MASK SHORT_MASK
+
+#define INT_MASK (0xFFFFFFFFui32)
 #define LONG_MASK INT_MASK
-#define LONG_LONG_MASK (0xFFFFFFFFFFFFFFFFLL)
+#define U32_MASK INT_MASK
 
-#ifndef CHAR_MIN
-	#define CHAR_MIN	(-128i8)
-#endif // CHAR_MIN
+#define LONG_LONG_MASK (0xFFFFFFFFFFFFFFFFui64)
+#define U64_MASK LONG_LONG_MASK
 
-#ifndef S8_MIN
-	#define S8_MIN		CHAR_MIN
-#endif // S8_MIN
 
-#ifndef CHAR_MAX
-	#define CHAR_MAX	(127i8)
-#endif // CHAR_MAX
+#define S8_MIN		(-128i8)
+#define S8_MAX		(127i8)
+#define U8_MAX		(0xFFui8)
 
-#ifndef S8_MAX
-	#define S8_MAX		CHAR_MAX
-#endif // S8_MAX
+#define S16_MIN		(-32768i16)
+#define S16_MAX		(32767i16)
+#define U16_MAX		(0xFFFFui16)
 
-#ifndef UCHAR_MAX
-	#define UCHAR_MAX	(0xFFui8)
-#endif // UCHAR_MAX
+#define S32_MIN		(-2147483648i32)
+#define S32_MAX		(2147483647i32)
+#define U32_MAX		(0xFFFFFFFFui32)
 
-#ifndef U8_MAX
-	#define U8_MAX		UCHAR_MAX
-#endif // U8_MAX
-
-#ifndef SHORT_MIN
-	#define SHORT_MIN	(-32768i16)
-#endif // SHORT_MIN
-
-#ifndef S16_MIN
-	#define S16_MIN		SHORT_MIN
-#endif // S8_MIN
-
-#ifndef SHORT_MAX
-	#define SHORT_MAX	(32767i16)
-#endif // SHORT_MAX
-
-#ifndef S16_MAX
-	#define S16_MAX		SHORT_MAX
-#endif // S8_MAX
-
-#ifndef USHORT_MAX
-	#define USHORT_MAX	(0xFFFFui16)
-#endif // USHORT_MAX
-
-#ifndef U16_MAX
-	#define U16_MAX		USHORT_MAX
-#endif // S8_MAX
-
-#ifndef INT_MIN
-	#define INT_MIN		(-2147483648i32)
-#endif // INT_MIN
-
-#ifndef LONG_MIN
-	#define LONG_MIN	INT_MIN
-#endif // LONG_MIN
-
-#ifndef S32_MIN
-	#define S32_MIN		INT_MIN
-#endif // S32_MIN
-
-#ifndef INT_MAX
-	#define	INT_MAX		(2147483647i32)
-#endif // INT_MAX
-
-#ifndef LONG_MAX
-	#define LONG_MAX	INT_MAX
-#endif // LONG_MAX
-
-#ifndef S32_MAX
-	#define S32_MAX		INT_MAX
-#endif // S32_MAX
-
-#ifndef UINT_MAX
-	#define	UINT_MAX	(0xFFFFFFFFui32)
-#endif // UINT_MAX
-
-#ifndef ULONG_MAX
-	#define ULONG_MAX	UINT_MAX
-#endif // ULONG_MAX
-
-#ifndef U32_MAX
-	#define U32_MAX		UINT_MAX
-#endif // U32_MAX
-
-#ifndef LLONG_MIN
-	#define LLONG_MIN	(-9223372036854775808i64)
-#endif // LLONG_MIN
-
-#ifndef S64_MIN
-	#define S64_MIN		LLONG_MIN
-#endif // S64_MIN
-
-#ifndef LLONG_MAX
-	#define LLONG_MAX	(9223372036854775807i64)
-#endif // LLONG_MAX
-
-#ifndef S64_MAX
-	#define S64_MAX		LLONG_MAX
-#endif // S64_MAX
-
-#ifndef ULLONG_MAX
-	#define ULLONG_MAX	(0xFFFFFFFFFFFFFFFFui64)
-#endif // ULLONG_MAX
-
-#ifndef U64_MAX
-	#define U64_MAX		ULLONG_MAX
-#endif // U64_MAX
+#define S64_MIN		(-9223372036854775808i64)
+#define S64_MAX		(9223372036854775807i64)
+#define U64_MAX		(0xFFFFFFFFFFFFFFFFui64)
 
 #ifndef INFINITE
-	#define INFINITE	(0xFFFFFFFF)
+	#define INFINITE	0xFFFFFFFF
 #endif // INFINITE
 
 #define BIT(bit) (1<<bit)
@@ -282,23 +195,9 @@ typedef uint64_t u64;
 #define S8_SIGN_BIT BIT7
 #define S16_SIGN_BIT BIT15
 #define S32_SIGN_BIT BIT31
-#define FLOAT_SIGN_BIT BIT31
+#define S64_SIGN_BIT BIT(63)
 
-__forceinline void Prefetch_Impl(void* pMem)
-{
-#if SSE_AVAILABLE
-	//_mm_prefetch((const s8*)pMem, _MM_HINT_NTA);
-#else // if !SSE_AVAILABLE
-	CompileTimeAssert(false, "Do NOT use Prefetch_Impl Directly, Use Prefetch Instead!");
-#endif // !SSE_AVAILABLE
-}
-
-#ifndef Prefetch
-	#if SSE_AVAILABLE
-		#define Prefetch(p) Prefetch_Impl(p) 
-	#else // if !SSE_AVAILABLE
-		#define Prefetch(p) 
-	#endif // !SSE_AVAILABLE
-#endif // Prefetch
+#define F32_SIGN_BIT BIT31
+#define f64_SIGN_BIT BIT(63)
 
 #endif

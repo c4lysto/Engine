@@ -1,29 +1,25 @@
 #include "Timer.h"
 
-s64 TimeCounter::ms_CPUFrequency = 0;
-float TimeCounter::ms_ConversionToSeconds = 0.0f;
-float TimeCounter::ms_ConversionToMilliseconds = 0.0f;
-
-TimeCounter Timer::ms_PrevTime;
-TimeCounter Timer::ms_CurrTime;
-float Timer::ms_fDeltaTime = 0.0f;
-
-void Timer::Init()
+namespace recon
 {
-	TimeCounter::Init();
+	Timer GameClock::ms_Timers[];
 
-	ms_PrevTime = ms_CurrTime = UpdateCounter();
-	ms_PrevTime = ms_CurrTime;
-}
+	COMMENT(static) void GameClock::Init()
+	{
 
-void Timer::UpdateDeltaTime()
-{
-	ms_fDeltaTime = (ms_CurrTime - ms_PrevTime).InSeconds();
-}
+	}
 
-void Timer::Update()
-{
-	ms_PrevTime = ms_CurrTime;
-	ms_CurrTime = UpdateCounter();
-	UpdateDeltaTime();
-}
+	COMMENT(static) void GameClock::Update(float fTimeDialation /*= 1.0f*/)
+	{
+		ms_Timers[(u32)GameTimer::LastFrame] = ms_Timers[(u32)GameTimer::UnDialated];
+
+		Timer::TimePoint currTimePoint = Timer::Now();
+
+		Timer& normalTimer = ms_Timers[(u32)GameTimer::UnDialated];
+		normalTimer.Update(currTimePoint);
+
+		Timer& dialatedTimer = ms_Timers[(u32)GameTimer::Dialated];
+		dialatedTimer.UpdateWithDialation(currTimePoint, fTimeDialation);
+	}
+
+} // namespace recon

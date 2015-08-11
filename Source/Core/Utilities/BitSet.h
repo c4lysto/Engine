@@ -4,7 +4,7 @@
 template<u32 numBits>
 class BitSet
 {
-	CompileTimeAssert(numBits>0, "Bit Set - Invalid Bit Set Size!");
+	static_assert(numBits>0, "Bit Set - Invalid Bit Set Size!");
 
 private:
 	u8 m_Bits[((numBits-1) >> 3) + 1];
@@ -27,31 +27,31 @@ public:
 
 	__forceinline void SetBit(u32 bit)
 	{
-		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
+		Assertf(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		GetAssociatedByte(bit) |= GetLocalBit(bit);
 	}
 
 	__forceinline void ClearBit(u32 bit)
 	{
-		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
+		Assertf(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		GetAssociatedByte(bit) &= ~GetLocalBit(bit);
 	}
 
 	__forceinline void SetBit(u32 bit, bool bSetBit)
 	{
-		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
+		Assertf(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		bSetBit ? SetBit(bit) : ClearBit(bit);
 	}
 
 	__forceinline bool IsSet(u32 bit)
 	{
-		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
+		Assertf(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		GetAssociatedByte(bit) & GetLocalBit(bit);
 	}
 
 	__forceinline void ToggleBit(u32 bit)
 	{
-		Assert(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
+		Assertf(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
 		GetAssociatedByte(bit) ^= GetLocalBit(bit);
 	}
 

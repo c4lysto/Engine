@@ -35,7 +35,7 @@ u32 HashString::ComputeHash(const char* szString)
 	// One-At-A-Time Hash Taken From:
 	// http://burtleburtle.net/bob/hash/doobs.html
 
-	//Assert(szString, "Hash String - Invalid String for Hash Computation!");
+	//Assertf(szString, "Hash String - Invalid String for Hash Computation!");
 
 	u32 hash = 0;
 

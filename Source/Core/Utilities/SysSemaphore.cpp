@@ -42,7 +42,7 @@ void SysCreateSemaphore(SysSemaphore& sysSemaphore, int nInitialCount /*= 0*/)
 	SysCloseSemaphore(sysSemaphore);
 
 	SysSemaphore::Handle pSemaphore = CreateSemaphore(nullptr, nInitialCount, LONG_MAX, nullptr);
-	Assert(pSemaphore, "Failed To Create Semaphore!");
+	Assertf(pSemaphore, "Failed To Create Semaphore!");
 
 	if(pSemaphore)
 		sysSemaphore.m_Semaphore = pSemaphore;

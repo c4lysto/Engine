@@ -259,9 +259,9 @@ void InputManager::AddInputRequest(WPARAM wParam, LPARAM lParam)
 
 void InputManager::ProcessInput()
 {
-#if DEBUG
+#if RECON_DEBUG
 	DisplayCurrentEvents();
-#endif // DEBUG
+#endif // RECON_DEBUG
 
 	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
 
@@ -375,7 +375,7 @@ void InputManager::HandleModifierInput(const InputEvent& inputEvent)
 
 void InputManager::SetInputModifier(InputModifier eModifier, bool bSet)
 {
-	if(Verify(eModifier > InputModifier::None && eModifier <= InputModifier::RAlt, "Input Manager - Trying To Set An Invalid Modifier"))
+	if(Verifyf(eModifier > InputModifier::None && eModifier <= InputModifier::RAlt, "Input Manager - Trying To Set An Invalid Modifier"))
 	{
 		m_ucModifiers = bSet ? (m_ucModifiers | (int)eModifier) : (m_ucModifiers & ~(int)eModifier);
 
@@ -612,7 +612,7 @@ LRESULT __stdcall InputManager::InputHookCallback(int code, WPARAM wParam, LPARA
 	return CallNextHookEx(nullptr, code, wParam, lParam);
 }
 
-#if DEBUG
+#if RECON_DEBUG
 void InputManager::DisplayCurrentEvents()
 {
 	//system("cls");

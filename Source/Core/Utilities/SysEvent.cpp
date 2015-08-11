@@ -42,7 +42,7 @@ void SysCreateEvent(SysEvent& sysEvent, bool bInitiallySignaled /*= false*/)
 	SysCloseEvent(sysEvent);
 
 	SysEvent::Handle pEvent = CreateEvent(false, false, bInitiallySignaled, nullptr);
-	Assert(pEvent, "Failed To Create SysEvent!");
+	Assertf(pEvent, "Failed To Create SysEvent!");
 
 	if(pEvent)
 		sysEvent.m_Event = pEvent;

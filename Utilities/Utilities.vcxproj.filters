@@ -45,9 +45,6 @@
     <ClCompile Include="..\Source\Core\Utilities\ThreadPool.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\SysSyncObject.cpp">
-      <Filter>Source Files\Threading</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Core\Utilities\SysSemaphore.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
@@ -84,9 +81,6 @@
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\SysThread.h">
-      <Filter>Header Files\Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\SysSyncObject.h">
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\SysSemaphore.h">
@@ -129,6 +123,9 @@
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\Timer.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Random.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
