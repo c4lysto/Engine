@@ -89,87 +89,87 @@ __forceinline Vec4f_Out Vec4f::operator-()
 	return Vec4fInt(iX ^ 0x80000000, iY ^ 0x80000000, iZ ^ 0x80000000, iW ^ 0x80000000);
 }
 
-__forceinline Vec4f_Ref Vec4f::operator=(Vec4f_In vVector)
+__forceinline Vec4f_Ref RECON_VEC_CALLCONV Vec4f::operator=(Vec4f_In vVector)
 {
 	x = vVector.x; y = vVector.y; z = vVector.z; w = vVector.w;
 	return *this;
 }
 
-__forceinline Vec4f_Ref Vec4f::operator=(Vec4f&& vVector)
+__forceinline Vec4f_Ref RECON_VEC_CALLCONV Vec4f::operator=(Vec4f&& vVector)
 {
 	x = vVector.x; y = vVector.y; z = vVector.z; w = vVector.w;
 	return *this;
 }
 
-__forceinline Vec4f_Out Vec4f::operator-(Vec4f_In vVector) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator-(Vec4f_In vVector) const
 {
 	return Vec4f(x - vVector.x, y - vVector.y, z - vVector.z, w - vVector.w);
 }
 
-__forceinline void Vec4f::operator-=(Vec4f_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator-=(Vec4f_In vVector)
 {
 	x -= vVector.x; y -= vVector.y; z -= vVector.z; w -= vVector.w;
 }
 
-__forceinline Vec4f_Out Vec4f::operator+(Vec4f_In vVector) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator+(Vec4f_In vVector) const
 {
 	return Vec4f(x + vVector.x, y + vVector.y, z + vVector.z, w + vVector.w);
 }
 
-__forceinline void Vec4f::operator+=(Vec4f_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator+=(Vec4f_In vVector)
 {
 	x += vVector.x; y += vVector.y; z += vVector.z; w += vVector.w;
 }
 
-__forceinline Vec4f_Out Vec4f::operator/(const float& fScalar) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator/(const float& fScalar) const
 {
 	float fInvScalar = 1.0f / fScalar;
 	return Vec4f(x * fInvScalar, y * fInvScalar, z * fInvScalar, w * fInvScalar);
 }
 
-__forceinline void Vec4f::operator/=(const float& fScalar)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator/=(const float& fScalar)
 {
 	float fInvScalar = 1.0f / fScalar;
 	x *= fInvScalar; y *= fInvScalar; z *= fInvScalar; w *= fInvScalar;
 }
 
-__forceinline Vec4f_Out Vec4f::operator/(Vec4f_In vVector) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator/(Vec4f_In vVector) const
 {
 	return Vec4f(x/vVector.x, y/vVector.y, z/vVector.z, w/vVector.w);
 }
 
-__forceinline void Vec4f::operator/=(Vec4f_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator/=(Vec4f_In vVector)
 {
 	x /= vVector.x; y /= vVector.y; z /= vVector.z; w /= vVector.w;
 }
 
-__forceinline Vec4f_Out Vec4f::operator*(Vec4f_In vVector) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator*(Vec4f_In vVector) const
 {
 	return Vec4f(x * vVector.x, y * vVector.y, z * vVector.z, w * vVector.w);
 }
 
-__forceinline void Vec4f::operator*=(Vec4f_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator*=(Vec4f_In vVector)
 {
 	x *= vVector.x;	y *= vVector.y;	z *= vVector.z;	w *= vVector.w;
 }
 
-__forceinline Vec4f_Out Vec4f::operator*(const float& fScalar) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator*(const float& fScalar) const
 {
 	return Vec4f(x * fScalar, y * fScalar, z * fScalar, w * fScalar);
 }
 
-__forceinline void Vec4f::operator*=(const float& fScalar)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator*=(const float& fScalar)
 {
 	x *= fScalar; y *= fScalar; z *= fScalar; w *= fScalar;
 }
 
-__forceinline Vec4f operator*(const float& fScalar, Vec4f_In vVector)
+__forceinline Vec4f RECON_VEC_CALLCONV operator*(const float& fScalar, Vec4f_In vVector)
 {
 	return Vec4f(vVector.x * fScalar, vVector.y * fScalar, vVector.z * fScalar, vVector.w * fScalar);
 }
 
 
-__forceinline bool Vec4f::operator==(Vec4f_In vVector)
+__forceinline bool RECON_VEC_CALLCONV Vec4f::operator==(Vec4f_In vVector)
 {
 	if(iX != vVector.iX)
 		return false;
@@ -182,7 +182,7 @@ __forceinline bool Vec4f::operator==(Vec4f_In vVector)
 	return true;
 }
 
-__forceinline bool Vec4f::operator!=(Vec4f_In vVector)
+__forceinline bool RECON_VEC_CALLCONV Vec4f::operator!=(Vec4f_In vVector)
 {
 	if(iX != vVector.iX)
 		return true;
@@ -195,32 +195,32 @@ __forceinline bool Vec4f::operator!=(Vec4f_In vVector)
 	return false;
 }
 
-__forceinline Vec4f_Out Vec4f::operator&(Vec4f_In vVector) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator&(Vec4f_In vVector) const
 {
 	return Vec4fInt(iX & vVector.iX, iY & vVector.iY, iZ & vVector.iZ, iW & vVector.iW);
 }
 
-__forceinline void Vec4f::operator&=(Vec4f_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator&=(Vec4f_In vVector)
 {
 	iX &= vVector.iX; iY &= vVector.iY; iZ &= vVector.iZ; iW &= vVector.iW;
 }
 
-__forceinline Vec4f_Out Vec4f::operator|(Vec4f_In vVector) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator|(Vec4f_In vVector) const
 {
 	return Vec4fInt(iX | vVector.iX, iY | vVector.iY, iZ | vVector.iZ, iW | vVector.iW);
 }
 
-__forceinline void Vec4f::operator|=(Vec4f_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator|=(Vec4f_In vVector)
 {
 	iX |= vVector.iX; iY |= vVector.iY; iZ |= vVector.iZ; iW |= vVector.iW;
 }
 
-__forceinline Vec4f_Out Vec4f::operator^(Vec4f_In vVector) const
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4f::operator^(Vec4f_In vVector) const
 {
 	return Vec4fInt(iX ^ vVector.iX, iY ^ vVector.iY, iZ ^ vVector.iZ, iW ^ vVector.iW);
 }
 
-__forceinline void Vec4f::operator^=(Vec4f_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec4f::operator^=(Vec4f_In vVector)
 {
 	iX ^= vVector.iX; iY ^= vVector.iY; iZ ^= vVector.iZ; iW ^= vVector.iW;
 }
@@ -240,12 +240,12 @@ __forceinline float& Vec4f::operator[](int index)
 	return vector[index];
 }
 
-__forceinline Vec4f_Out Vec4fInt(const s32& intVal)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4fInt(const s32& intVal)
 {
 	return Vec4f(*reinterpret_cast<const float*>(&intVal));
 }
 
-__forceinline Vec4f_Out Vec3fInt(const s32& intX, const s32& intY, const s32& intZ, const s32& intW)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Vec4fInt(const s32& intX, const s32& intY, const s32& intZ, const s32& intW)
 {
 	return Vec4f(*reinterpret_cast<const float*>(&intX), *reinterpret_cast<const float*>(&intY), *reinterpret_cast<const float*>(&intZ), *reinterpret_cast<const float*>(&intW));
 }

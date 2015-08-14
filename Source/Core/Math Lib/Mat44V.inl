@@ -330,32 +330,28 @@ __forceinline void Mat44V::Transpose3x3()
 
 __forceinline void Mat44V::Normalize()
 {
-	xAxis.Normalize();
-	yAxis.Normalize();
-	zAxis.Normalize();
+	xAxis = ::Normalize(xAxis);
+	yAxis = ::Normalize(yAxis);
+	zAxis = ::Normalize(zAxis);
 }
 
 inline void Mat44V::LookAt(Vec3V_In mPos, Vec3V_In vWorldUp)
 {
-	Vec3V vecToPos = mPos - wAxis.GetXYZ();
-	vecToPos.Normalize();
+	Vec3V vecToPos = ::Normalize(mPos - wAxis.GetXYZ());
 
 	// zAxis
 	zAxis.SetXYZ(vecToPos);
 
 	// xAxis;
-	xAxis.SetXYZ(Cross(vWorldUp, zAxis.GetXYZ()));
-	xAxis.Normalize();
+	xAxis.SetXYZ(::Normalize(Cross(vWorldUp, zAxis.GetXYZ())));
 
 	// yAxis;
-	yAxis.SetXYZ(Cross(zAxis.GetXYZ(), xAxis.GetXYZ()));
-	yAxis.Normalize();
+	yAxis.SetXYZ(::Normalize(Cross(zAxis.GetXYZ(), xAxis.GetXYZ())));
 }
 
 inline void Mat44V::TurnTo(Vec3V_In vPos, const float& fDeltaTime, float fTurnModifier)
 {
-	Vec3V vecToPos = vPos - wAxis.GetXYZ();
-	vecToPos.Normalize();
+	Vec3V vecToPos = vPos - ::Normalize(wAxis.GetXYZ());
 
 	float protection = Dot(vecToPos, zAxis.GetXYZ());
 

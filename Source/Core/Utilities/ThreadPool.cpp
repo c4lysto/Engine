@@ -6,7 +6,7 @@ namespace recon
 
 ThreadPool::ThreadPool()
 {
-	SysCreateSemaphore(m_JobSemaphore);
+	
 }
 
 ThreadPool::~ThreadPool()
@@ -44,9 +44,9 @@ void ThreadPool::WorkerThreadProc(void* pArgs)
 
 bool ThreadPool::GetWork(ThreadPool::JobArgs& jobArgs)
 {
-	m_JobSemaphore.Wait();
+	m_JobSemaphore.Acquire();
 
-	SysLocalCriticalSection jobCS(m_JobCS);
+	SysAutoCriticalSection jobCS(m_JobCS);
 
 	bool bValidJob = false;
 
@@ -83,29 +83,27 @@ void ThreadPool::Shutdown()
 	}
 
 	m_vThreads.clear();
-
-	SysCloseSemaphore(m_JobSemaphore);
 }
 
 void ThreadPool::AddWork(SysThreadProc pProc, void* pArgs, SysThreadPriority ePriority /*= SysThreadPriority::Normal*/)
 {
-	SysLocalCriticalSection jobCS(m_JobCS);
+	SysAutoCriticalSection jobCS(m_JobCS);
 
 	m_qJobs.push(JobArgs(pProc, pArgs, ePriority));
 
-	m_JobSemaphore.Unlock();
+	m_JobSemaphore.Release();
 }
 
 void ThreadPool::ClearWorkQueue()
 {
-	SysLocalCriticalSection jobCS(m_JobCS);
+	SysAutoCriticalSection jobCS(m_JobCS);
 
 	while(!m_qJobs.empty())
 	{
 		m_qJobs.pop();
 	}
 
-	m_JobSemaphore.Unlock();
+	m_JobSemaphore.Release((u32)m_vThreads.size());
 }
 
 } // namespace recon

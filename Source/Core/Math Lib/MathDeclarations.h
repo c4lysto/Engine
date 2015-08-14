@@ -12,6 +12,16 @@
 	#endif
 #endif // SSE_AVAILABLE
 
+#if RECON_MSC_COMPILER && RECON_OS_WINDOWS
+	#if RECON_OS_64BIT
+		#define RECON_VEC_CALLCONV __vectorcall
+	#elif RECON_OS_32BIT
+		#define RECON_VEC_CALLCONV __fastcall
+	#endif // RECON_OS_32BIT
+#else
+	#define RECON_VEC_CALLCONV
+#endif
+
 // Initializer Enums
 enum eZeroInitializer		{ I_ZERO	};
 enum eOneInitializer		{ I_ONE		};

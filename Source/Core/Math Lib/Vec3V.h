@@ -38,7 +38,7 @@ ALIGN(16) class Vec3V
 	__forceinline retType funcName() { return retVal; }
 
 #define VEC3V_ACCESSOR_SCALARV_CONST(element) \
-	__forceinline ScalarV_Out Get##element () const \
+	__forceinline ScalarV_Out RECON_VEC_CALLCONV Get##element() const \
 	{ return ScalarV(VectorPermute<VecElem::##element , VecElem::##element , VecElem::##element , VecElem::##element >(row)); }
 
 #define VEC3V_ACCESSOR_CONST(retType, funcName, retVal) \
@@ -139,7 +139,7 @@ public:
 	VEC3V_ACCESSOR_CONST(const float&, GetWRef, w)
 
 	// Returns the Vector Intrinsic Data Type
-	VEC3V_ACCESSOR_CONST(Vector_Out, GetVector, row)
+	VEC3V_ACCESSOR_CONST(Vector_Out, RECON_VEC_CALLCONV GetVector, row)
 
 	VEC3V_ACCESSOR(float&, GetXRef, x)
 	VEC3V_ACCESSOR(float&, GetYRef, y)
@@ -153,10 +153,10 @@ public:
 #endif
 
 #if defined(VEC3V_MUTATOR)
-	void SetX(ScalarV_In vX);
-	void SetY(ScalarV_In vY);
-	void SetZ(ScalarV_In vZ);
-	void SetW(ScalarV_In vW);
+	void RECON_VEC_CALLCONV SetX(ScalarV_In vX);
+	void RECON_VEC_CALLCONV SetY(ScalarV_In vY);
+	void RECON_VEC_CALLCONV SetZ(ScalarV_In vZ);
+	void RECON_VEC_CALLCONV SetW(ScalarV_In vW);
 
 	VEC3V_MUTATOR(SetX, const float&, x)
 	VEC3V_MUTATOR(SetY, const float&, y)
@@ -169,67 +169,62 @@ public:
 
 	Vec3V_Out operator-() const;
 
-	Vec3V_Out operator=(Vec3V_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator=(Vec3V_In vVector);
 #if !RECON_OS_64BIT
-	Vec3V_Out operator=(Vec3V&& vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator=(Vec3V&& vVector);
 #endif // !RECON_OS_64BIT
-	Vec3V_Out operator=(Vector_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator=(Vector_In vVector);
 
-	void operator*=(ScalarV_In vScalar);
-	void operator*=(Vec3V_In rhs);
+	void RECON_VEC_CALLCONV operator*=(ScalarV_In vScalar);
+	void RECON_VEC_CALLCONV operator*=(Vec3V_In rhs);
 
-	Vec3V_Out operator/(ScalarV_In vScalar) const;
-	Vec3V_Out operator/(Vec3V_In rhs) const;
+	Vec3V_Out RECON_VEC_CALLCONV operator/(ScalarV_In vScalar) const;
+	Vec3V_Out RECON_VEC_CALLCONV operator/(Vec3V_In rhs) const;
 
-	void operator/=(ScalarV_In vScalar);
-	void operator/=(Vec3V_In rhs);
+	void RECON_VEC_CALLCONV operator/=(ScalarV_In vScalar);
+	void RECON_VEC_CALLCONV operator/=(Vec3V_In rhs);
 
-	Vec3V_Out operator*(ScalarV_In vScalar) const;
-	friend Vec3V_Out operator*(ScalarV_Ref vScalar, Vec3V_In vVector);
-	Vec3V_Out operator*(Vec3V_In rhs) const;
+	Vec3V_Out RECON_VEC_CALLCONV operator*(ScalarV_In vScalar) const;
+	friend Vec3V_Out RECON_VEC_CALLCONV operator*(ScalarV_Ref vScalar, Vec3V_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator*(Vec3V_In rhs) const;
 
-	void operator+=(Vec3V_In vVector);
-	Vec3V_Out operator+(Vec3V_In vVector) const;
+	void RECON_VEC_CALLCONV operator+=(Vec3V_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator+(Vec3V_In vVector) const;
 
-	void operator-=(Vec3V_In vVector);
-	Vec3V_Out operator-(Vec3V_In vVector) const;
+	void RECON_VEC_CALLCONV operator-=(Vec3V_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator-(Vec3V_In vVector) const;
 
-	bool operator==(Vec3V_In vVector) const;
+	bool RECON_VEC_CALLCONV operator==(Vec3V_In vVector) const;
 
-	bool operator!=(Vec3V_In vVector) const;
+	bool RECON_VEC_CALLCONV operator!=(Vec3V_In vVector) const;
 
-	Vec3V_Out operator&(Vec3V_In vVector) const;
-	void operator&=(Vec3V_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator&(Vec3V_In vVector) const;
+	void RECON_VEC_CALLCONV operator&=(Vec3V_In vVector);
 
-	Vec3V_Out operator|(Vec3V_In vVector) const;
-	void operator|=(Vec3V_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator|(Vec3V_In vVector) const;
+	void RECON_VEC_CALLCONV operator|=(Vec3V_In vVector);
 
-	Vec3V_Out operator^(Vec3V_In vVector) const;
-	void operator^=(Vec3V_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator^(Vec3V_In vVector) const;
+	void RECON_VEC_CALLCONV operator^=(Vec3V_In vVector);
 
 	Vec3V_Out operator~() const;
 
 	const float& operator[](int index) const;
 	float& operator[](int index);
-
-	Vec3V_Out Normalize();
 };
 
-ScalarV Dot(Vec3V_In lhs, Vec3V_In rhs);
+ScalarV RECON_VEC_CALLCONV Dot(Vec3V_In lhs, Vec3V_In rhs);
 
-ScalarV Mag(Vec3V_In vVector);
-ScalarV Length(Vec3V_In vVector);
-ScalarV MagSq(Vec3V_In vVector);
-ScalarV LengthSq(Vec3V_In vVector);
+ScalarV RECON_VEC_CALLCONV Mag(Vec3V_In vVector);
+ScalarV RECON_VEC_CALLCONV Length(Vec3V_In vVector);
+ScalarV RECON_VEC_CALLCONV MagSq(Vec3V_In vVector);
+ScalarV RECON_VEC_CALLCONV LengthSq(Vec3V_In vVector);
 
-Vec3V_Out Normalize(Vec3V_In vVector);
-Vec3V_Out Cross(Vec3V_In vVectorA, Vec3V_In vVectorB);
+Vec3V_Out RECON_VEC_CALLCONV Normalize(Vec3V_In vVector);
+Vec3V_Out RECON_VEC_CALLCONV Cross(Vec3V_In vVectorA, Vec3V_In vVectorB);
 
-Vec3V_Out Vec3VInt(int intVal);
-Vec3V_Out Vec3VInt(int intX, int intY, int intZ);
-
-Vec3V_Out Vec3VIntToFloat(Vec3V_In vec);
-Vec3V_Out Vec3VFloatToInt(Vec3V_In vec);
+Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(int intVal);
+Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(int intX, int intY, int intZ);
 
 
 GLOBALCONST Vec3V g_IdentityX3V = Vec3V(I_X_AXIS);

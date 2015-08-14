@@ -1,97 +1,225 @@
 
+#define SIGNED_INT_BRANCHLESS_MAX(b) \
+	template<> __forceinline s##b Max(const s##b & lhs, const s##b & rhs) \
+{ \
+	s##b diff = lhs - rhs; \
+	return lhs - (diff & (diff >> (b - 1))); \
+}
+
 template<typename Type>
-__forceinline Type Max(Type lhs, Type rhs)
+__forceinline Type Max(const Type& lhs, const Type& rhs)
 {
 	return (lhs > rhs) ? lhs : rhs;
 }
 
-template<> __forceinline s8 Max(s8 lhs, s8 rhs) \
-{ \
-	s8 diff = lhs - rhs; \
-	return lhs - (diff & (diff >> 7)); \
-}
+SIGNED_INT_BRANCHLESS_MAX(8)
+SIGNED_INT_BRANCHLESS_MAX(16)
+SIGNED_INT_BRANCHLESS_MAX(32)
+SIGNED_INT_BRANCHLESS_MAX(64)
+#undef SIGNED_INT_BRANCHLESS_MAX
 
-template<> __forceinline s16 Max(s16 lhs, s16 rhs) \
-{ \
-	s16 diff = lhs - rhs; \
-	return lhs - (diff & (diff >> 15)); \
-}
 
-template<> __forceinline s32 Max(s32 lhs, s32 rhs) \
+#define SIGNED_INT_BRANCHLESS_MIN(b) \
+	template<> __forceinline s##b Min(const s##b & lhs, const s##b & rhs) \
 { \
-	s32 diff = lhs - rhs; \
-	return lhs - (diff & (diff >> 31)); \
-}
-
-template<> __forceinline s64 Max(s64 lhs, s64 rhs) \
-{ \
-	s64 diff = lhs - rhs; \
-	return lhs - (diff & (diff >> 63)); \
+	s##b diff = lhs - rhs; \
+	return rhs + (diff & (diff >> (b - 1))); \
 }
 
 template<typename Type>
-__forceinline Type Min(Type lhs, Type rhs)
+__forceinline Type Min(const Type& lhs, const Type& rhs)
 {
 	return (lhs < rhs) ? lhs : rhs;
 }
 
-template<> __forceinline s8 Min(s8 lhs, s8 rhs) \
-{ \
-	s8 diff = lhs - rhs; \
-	return rhs + (diff & (diff >> 7)); \
-}
+SIGNED_INT_BRANCHLESS_MIN(8)
+SIGNED_INT_BRANCHLESS_MIN(16)
+SIGNED_INT_BRANCHLESS_MIN(32)
+SIGNED_INT_BRANCHLESS_MIN(64)
+#undef SIGNED_INT_BRANCHLESS_MIN
 
-template<> __forceinline s16 Min(s16 lhs, s16 rhs) \
-{ \
-	s16 diff = lhs - rhs; \
-	return rhs + (diff & (diff >> 15)); \
-}
-
-template<> __forceinline s32 Min(s32 lhs, s32 rhs) \
-{ \
-	s32 diff = lhs - rhs; \
-	return rhs + (diff & (diff >> 31)); \
-}
-
-template<> __forceinline s64 Min(s64 lhs, s64 rhs) \
-{ \
-	s64 diff = lhs - rhs; \
-	return rhs + (diff & (diff >> 63)); \
-}
 
 template<typename Type>
-__forceinline Type Clamp(Type val, Type minVal, Type maxVal)
+__forceinline Type Clamp(const Type& val, const Type& minVal, const Type& maxVal)
 {
 	return Max(Min(val, maxVal), minVal);
 }
 
 template<typename Type>
-__forceinline Type Saturate(Type val)
+__forceinline Type Saturate(const Type& val)
 {
-	return Clamp(val, Type(0.0f), Type(1.0f));
+	return Clamp(val, Type(0), Type(1));
 }
 
-__forceinline float Lerp(const float& lhs, const float& rhs, const float& fLambda)
+
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Max(Vec2f_In lhs, Vec2f_In rhs)
+{
+	return Vec2f(Max(lhs.GetXRef(), rhs.GetXRef()), \
+				 Max(lhs.GetYRef(), rhs.GetYRef()));
+}
+
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Max(Vec3f_In lhs, Vec3f_In rhs)
+{
+	return Vec3f(Max(lhs.GetXRef(), rhs.GetXRef()), \
+				 Max(lhs.GetYRef(), rhs.GetYRef()), \
+				 Max(lhs.GetZRef(), rhs.GetZRef()));
+}
+
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Max(Vec4f_In lhs, Vec4f_In rhs)
+{
+	return Vec4f(Max(lhs.GetXRef(), rhs.GetXRef()), \
+				 Max(lhs.GetYRef(), rhs.GetYRef()), \
+				 Max(lhs.GetZRef(), rhs.GetZRef()), \
+				 Max(lhs.GetWRef(), rhs.GetWRef()));
+}
+
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Min(Vec2f_In lhs, Vec2f_In rhs)
+{
+	return Vec2f(Min(lhs.GetXRef(), rhs.GetXRef()), \
+				 Min(lhs.GetYRef(), rhs.GetYRef()));
+}
+
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Min(Vec3f_In lhs, Vec3f_In rhs)
+{
+	return Vec3f(Min(lhs.GetXRef(), rhs.GetXRef()), \
+				 Min(lhs.GetYRef(), rhs.GetYRef()), \
+				 Min(lhs.GetZRef(), rhs.GetZRef()));
+}
+
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Min(Vec4f_In lhs, Vec4f_In rhs)
+{
+	return Vec4f(Min(lhs.GetXRef(), rhs.GetXRef()), \
+				 Min(lhs.GetYRef(), rhs.GetYRef()), \
+				 Min(lhs.GetZRef(), rhs.GetZRef()), \
+				 Min(lhs.GetWRef(), rhs.GetWRef()));
+}
+
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Clamp(Vec2f_In val, Vec2f_In minVal, Vec2f_In maxVal)
+{
+	return Vec2f(Clamp(val.GetXRef(), minVal.GetXRef(), maxVal.GetXRef()), \
+				 Clamp(val.GetYRef(), minVal.GetYRef(), maxVal.GetYRef()));
+}
+
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Clamp(Vec3f_In val, Vec3f_In minVal, Vec3f_In maxVal)
+{
+	return Vec3f(Clamp(val.GetXRef(), minVal.GetXRef(), maxVal.GetXRef()), \
+				 Clamp(val.GetYRef(), minVal.GetYRef(), maxVal.GetYRef()), \
+				 Clamp(val.GetZRef(), minVal.GetZRef(), maxVal.GetZRef()));
+}
+
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Clamp(Vec4f_In val, Vec4f_In minVal, Vec4f_In maxVal)
+{
+	return Vec4f(Clamp(val.GetXRef(), minVal.GetXRef(), maxVal.GetXRef()), \
+				 Clamp(val.GetYRef(), minVal.GetYRef(), maxVal.GetYRef()), \
+				 Clamp(val.GetZRef(), minVal.GetZRef(), maxVal.GetZRef()), \
+				 Clamp(val.GetWRef(), minVal.GetWRef(), maxVal.GetWRef()));
+}
+
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Saturate(Vec2f_In vVector)
+{
+	return Vec2f(Saturate(vVector.GetXRef()), \
+				 Saturate(vVector.GetYRef()));
+}
+
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Saturate(Vec3f_In vVector)
+{
+	return Vec3f(Saturate(vVector.GetXRef()), \
+				 Saturate(vVector.GetYRef()), \
+				 Saturate(vVector.GetZRef()));
+}
+
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Saturate(Vec4f_In vVector)
+{
+	return Vec4f(Saturate(vVector.GetXRef()), \
+				 Saturate(vVector.GetYRef()), \
+				 Saturate(vVector.GetZRef()), \
+				 Saturate(vVector.GetWRef()));
+}
+
+__forceinline Vec2f_Out RECON_VEC_CALLCONV MaxInt(Vec2f_In lhs, Vec2f_In rhs)
+{
+	return Vec2fInt(Max(lhs.GetXiRef(), rhs.GetXiRef()), \
+					Max(lhs.GetYiRef(), rhs.GetYiRef()));
+}
+
+__forceinline Vec3f_Out RECON_VEC_CALLCONV MaxInt(Vec3f_In lhs, Vec3f_In rhs)
+{
+	return Vec3fInt(Max(lhs.GetXiRef(), rhs.GetXiRef()), \
+					Max(lhs.GetYiRef(), rhs.GetYiRef()), \
+					Max(lhs.GetZiRef(), rhs.GetZiRef()));
+}
+
+__forceinline Vec4f_Out RECON_VEC_CALLCONV MaxInt(Vec4f_In lhs, Vec4f_In rhs)
+{
+	return Vec4fInt(Max(lhs.GetXiRef(), rhs.GetXiRef()), \
+					Max(lhs.GetYiRef(), rhs.GetYiRef()), \
+					Max(lhs.GetZiRef(), rhs.GetZiRef()), \
+					Max(lhs.GetWiRef(), rhs.GetWiRef()));
+}
+
+__forceinline Vec2f_Out RECON_VEC_CALLCONV MinInt(Vec2f_In lhs, Vec2f_In rhs)
+{
+	return Vec2fInt(Min(lhs.GetXiRef(), rhs.GetXiRef()), \
+					Min(lhs.GetYiRef(), rhs.GetYiRef()));
+}
+
+__forceinline Vec3f_Out RECON_VEC_CALLCONV MinInt(Vec3f_In lhs, Vec3f_In rhs)
+{
+	return Vec3fInt(Min(lhs.GetXiRef(), rhs.GetXiRef()), \
+					Min(lhs.GetYiRef(), rhs.GetYiRef()), \
+					Min(lhs.GetZiRef(), rhs.GetZiRef()));
+}
+
+__forceinline Vec4f_Out RECON_VEC_CALLCONV MinInt(Vec4f_In lhs, Vec4f_In rhs)
+{
+	return Vec4fInt(Min(lhs.GetXiRef(), rhs.GetXiRef()), \
+					Min(lhs.GetYiRef(), rhs.GetYiRef()), \
+					Min(lhs.GetZiRef(), rhs.GetZiRef()), \
+					Min(lhs.GetWiRef(), rhs.GetWiRef()));
+}
+
+__forceinline Vec2f_Out RECON_VEC_CALLCONV ClampInt(Vec2f_In val, Vec2f_In minVal, Vec2f_In maxVal)
+{
+	return Vec2fInt(Clamp(val.GetXiRef(), minVal.GetXiRef(), maxVal.GetXiRef()), \
+					Clamp(val.GetYiRef(), minVal.GetYiRef(), maxVal.GetYiRef()));
+}
+
+__forceinline Vec3f_Out RECON_VEC_CALLCONV ClampInt(Vec3f_In val, Vec3f_In minVal, Vec3f_In maxVal)
+{
+	return Vec3fInt(Clamp(val.GetXiRef(), minVal.GetXiRef(), maxVal.GetXiRef()), \
+					Clamp(val.GetYiRef(), minVal.GetYiRef(), maxVal.GetYiRef()), \
+					Clamp(val.GetZiRef(), minVal.GetZiRef(), maxVal.GetZiRef()));
+}
+
+__forceinline Vec4f_Out RECON_VEC_CALLCONV ClampInt(Vec4f_In val, Vec4f_In minVal, Vec4f_In maxVal)
+{
+	return Vec4fInt(Clamp(val.GetXiRef(), minVal.GetXiRef(), maxVal.GetXiRef()), \
+					Clamp(val.GetYiRef(), minVal.GetYiRef(), maxVal.GetYiRef()), \
+					Clamp(val.GetZiRef(), minVal.GetZiRef(), maxVal.GetZiRef()), \
+					Clamp(val.GetWiRef(), minVal.GetWiRef(), maxVal.GetWiRef()));
+}
+
+__forceinline float RECON_VEC_CALLCONV Lerp(const float& lhs, const float& rhs, const float& fLambda)
 {
 	return lhs + (rhs - lhs) * fLambda;
 }
 
-__forceinline double Lerp(const double& lhs, const double& rhs, const double& fLambda)
+__forceinline double RECON_VEC_CALLCONV Lerp(const double& lhs, const double& rhs, const double& fLambda)
 {
 	return lhs + (rhs - lhs) * fLambda;
 }
 
-__forceinline Vec2f_Out Lerp(Vec2f_In lhs, Vec2f_In rhs, const float& fLambda)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Lerp(Vec2f_In lhs, Vec2f_In rhs, const float& fLambda)
 {
 	return lhs + (rhs - lhs) * fLambda;
 }
 
-__forceinline Vec3f_Out Lerp(Vec3f_In lhs, Vec3f_In rhs, const float& fLambda)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Lerp(Vec3f_In lhs, Vec3f_In rhs, const float& fLambda)
 {
 	return lhs + (rhs - lhs) * fLambda;
 }
 
-__forceinline Vec4f_Out Lerp(Vec4f_In lhs, Vec4f_In rhs, const float& fLambda)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Lerp(Vec4f_In lhs, Vec4f_In rhs, const float& fLambda)
 {
 	return lhs + (rhs - lhs) * fLambda;
 }
@@ -130,17 +258,17 @@ __forceinline double Abs(const double& fScalar)
 	return abs(fScalar);
 }
 
-__forceinline Vec2f_Out Abs(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Abs(Vec2f_In vVector)
 {
 	return Vec2f(Abs(vVector.GetXRef()), Abs(vVector.GetYRef()));
 }
 
-__forceinline Vec3f_Out Abs(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Abs(Vec3f_In vVector)
 {
 	return Vec3f(Abs(vVector.GetXRef()), Abs(vVector.GetYRef()), Abs(vVector.GetZRef()));
 }
 
-__forceinline Vec4f_Out Abs(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Abs(Vec4f_In vVector)
 {
 	return Vec4f(Abs(vVector.GetXRef()), Abs(vVector.GetYRef()), Abs(vVector.GetZRef()), Abs(vVector.GetWRef()));
 }
@@ -155,17 +283,17 @@ __forceinline double Sqrt(const double& fScalar)
 	return sqrt(fScalar);
 }
 
-__forceinline Vec2f_Out Sqrt(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Sqrt(Vec2f_In vVector)
 {
 	return Vec2f(Sqrt(vVector.GetXRef()), Sqrt(vVector.GetYRef()));
 }
 
-__forceinline Vec3f_Out Sqrt(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Sqrt(Vec3f_In vVector)
 {
 	return Vec3f(Sqrt(vVector.GetXRef()), Sqrt(vVector.GetYRef()), Sqrt(vVector.GetZRef()));
 }
 
-__forceinline Vec4f_Out Sqrt(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Sqrt(Vec4f_In vVector)
 {
 	return Vec4f(Sqrt(vVector.GetXRef()), Sqrt(vVector.GetYRef()), Sqrt(vVector.GetZRef()), Sqrt(vVector.GetWRef()));
 }
@@ -180,20 +308,20 @@ __forceinline double SqrtSafe(const double& fScalar, const double& safeVal /*= 0
 	return fScalar != 0.0 ? Sqrt(fScalar) : safeVal;
 }
 
-__forceinline Vec2f_Out SqrtSafe(Vec2f_In vVector, Vec2f_In vSafeVec /*= Vec2f(I_ZERO)*/)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV SqrtSafe(Vec2f_In vVector, Vec2f_In vSafeVec /*= Vec2f(I_ZERO)*/)
 {
 	return Vec2f(SqrtSafe(vVector.GetXRef(), vSafeVec.GetXRef()), \
 				 SqrtSafe(vVector.GetYRef(), vSafeVec.GetYRef()));
 }
 
-__forceinline Vec3f_Out SqrtSafe(Vec3f_In vVector, Vec3f_In vSafeVec /*= Vec3f(I_ZERO)*/)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV SqrtSafe(Vec3f_In vVector, Vec3f_In vSafeVec /*= Vec3f(I_ZERO)*/)
 {
 	return Vec3f(SqrtSafe(vVector.GetXRef(), vSafeVec.GetXRef()), \
 				 SqrtSafe(vVector.GetYRef(), vSafeVec.GetYRef()), \
 				 SqrtSafe(vVector.GetZRef(), vSafeVec.GetZRef()));
 }
 
-__forceinline Vec4f_Out SqrtSafe(Vec4f_In vVector, Vec4f_In vSafeVec /*= Vec4f(I_ZERO)*/)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV SqrtSafe(Vec4f_In vVector, Vec4f_In vSafeVec /*= Vec4f(I_ZERO)*/)
 {
 	return Vec4f(SqrtSafe(vVector.GetXRef(), vSafeVec.GetXRef()), \
 				 SqrtSafe(vVector.GetYRef(), vSafeVec.GetYRef()), \
@@ -202,25 +330,25 @@ __forceinline Vec4f_Out SqrtSafe(Vec4f_In vVector, Vec4f_In vSafeVec /*= Vec4f(I
 }
 
 template<VecElem splat>
-__forceinline Vec2f_Out Splat(Vec2f_In lhs)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Splat(Vec2f_In lhs)
 {
 	return Permute<splat, splat>(lhs);
 }
 
 template<VecElem splat>
-__forceinline Vec3f_Out Splat(Vec3f_In lhs)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Splat(Vec3f_In lhs)
 {
 	return Permute<splat, splat, splat>(lhs);
 }
 
 template<VecElem splat>
-__forceinline Vec4f_Out Splat(Vec4f_In lhs)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Splat(Vec4f_In lhs)
 {
 	return Permute<splat, splat, splat, splat>(lhs);
 }
 
 template<VecElem pX, VecElem pY>
-__forceinline Vec2f_Out Permute(Vec2f_In lhs)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Permute(Vec2f_In lhs)
 {
 	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::Y) &&
 						(pY >= VecElem::X && pY <= VecElem::Y), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
@@ -229,7 +357,7 @@ __forceinline Vec2f_Out Permute(Vec2f_In lhs)
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ>
-__forceinline Vec3f_Out Permute(Vec3f_In lhs)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Permute(Vec3f_In lhs)
 {
 	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::Z) &&
 						(pY >= VecElem::X && pY <= VecElem::Z) &&
@@ -239,7 +367,7 @@ __forceinline Vec3f_Out Permute(Vec3f_In lhs)
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> 
-__forceinline Vec4f_Out Permute(Vec4f_In lhs)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Permute(Vec4f_In lhs)
 {
 	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::W) &&
 						(pY >= VecElem::X && pY <= VecElem::W) &&
@@ -250,7 +378,7 @@ __forceinline Vec4f_Out Permute(Vec4f_In lhs)
 }
 
 template<VecElem pX, VecElem pY>
-__forceinline Vec2f_Out Permute(Vec2f_In lhs, Vec2f_In rhs)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Permute(Vec2f_In lhs, Vec2f_In rhs)
 {
 	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::Y1) || (pX >= VecElem::X2 && pX <= VecElem::Y2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::Y1) || (pY >= VecElem::X2 && pY <= VecElem::Y2)), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
@@ -261,7 +389,7 @@ __forceinline Vec2f_Out Permute(Vec2f_In lhs, Vec2f_In rhs)
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ>
-__forceinline Vec3f_Out Permute(Vec3f_In lhs, Vec3f_In rhs)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Permute(Vec3f_In lhs, Vec3f_In rhs)
 {
 	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::Z1) || (pX >= VecElem::X2 && pX <= VecElem::Z2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::Z1) || (pY >= VecElem::X2 && pY <= VecElem::Z2)) &&
@@ -273,7 +401,7 @@ __forceinline Vec3f_Out Permute(Vec3f_In lhs, Vec3f_In rhs)
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> 
-__forceinline Vec4f_Out Permute(Vec4f_In lhs, Vec4f_In rhs)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Permute(Vec4f_In lhs, Vec4f_In rhs)
 {
 	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::W1) || (pY >= VecElem::X2 && pY <= VecElem::W2)) &&
@@ -285,20 +413,20 @@ __forceinline Vec4f_Out Permute(Vec4f_In lhs, Vec4f_In rhs)
 	return Vec4f(vectors[(int)pX>>4][(int)pX&0x3], vectors[(int)pY>>4][(int)pY&0x3], vectors[(int)pZ>>4][(int)pZ&0x3], vectors[(int)pW>>4][(int)pW&0x3]);
 }
 
-__forceinline s32 SignMask(Vec2f_In vVector)
+__forceinline s32 RECON_VEC_CALLCONV SignMask(Vec2f_In vVector)
 {
 	return s32(((vVector.GetXiRef() & BIT31) << (s32)VecElem::X) | \
 			   ((vVector.GetYiRef() & BIT31) << (s32)VecElem::Y));
 }
 
-__forceinline s32 SignMask(Vec3f_In vVector)
+__forceinline s32 RECON_VEC_CALLCONV SignMask(Vec3f_In vVector)
 {
 	return s32(((vVector.GetXiRef() & BIT31) << (s32)VecElem::X) | \
 			   ((vVector.GetYiRef() & BIT31) << (s32)VecElem::Y) | \
 			   ((vVector.GetZiRef() & BIT31) << (s32)VecElem::Z));
 }
 
-__forceinline s32 SignMask(Vec4f_In vVector)
+__forceinline s32 RECON_VEC_CALLCONV SignMask(Vec4f_In vVector)
 {
 	return s32(((vVector.GetXiRef() & BIT31) << (s32)VecElem::X) | \
 			   ((vVector.GetYiRef() & BIT31) << (s32)VecElem::Y) | \
@@ -306,20 +434,20 @@ __forceinline s32 SignMask(Vec4f_In vVector)
 			   ((vVector.GetWiRef() & BIT31) << (s32)VecElem::W));
 }
 
-__forceinline Vec2f_Out SelectTF(Vec2f_In lhs, Vec2f_In rhs, Vec2f_In condition)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV SelectTF(Vec2f_In lhs, Vec2f_In rhs, Vec2f_In condition)
 {
 	return Vec2f((condition.GetXiRef() & BIT31) ? lhs.GetXRef() : rhs.GetXRef(),
 				 (condition.GetYiRef() & BIT31) ? lhs.GetYRef() : rhs.GetYRef());
 }
 
-__forceinline Vec3f_Out SelectTF(Vec3f_In lhs, Vec3f_In rhs, Vec3f_In condition)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV SelectTF(Vec3f_In lhs, Vec3f_In rhs, Vec3f_In condition)
 {
 	return Vec3f((condition.GetXiRef() & BIT31) ? lhs.GetXRef() : rhs.GetXRef(),
 				 (condition.GetYiRef() & BIT31) ? lhs.GetYRef() : rhs.GetYRef(),
 				 (condition.GetZiRef() & BIT31) ? lhs.GetZRef() : rhs.GetZRef());
 }
 
-__forceinline Vec4f_Out SelectTF(Vec4f_In lhs, Vec4f_In rhs, Vec4f_In condition)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV SelectTF(Vec4f_In lhs, Vec4f_In rhs, Vec4f_In condition)
 {
 	return Vec4f((condition.GetXiRef() & BIT31) ? lhs.GetXRef() : rhs.GetXRef(),
 				 (condition.GetYiRef() & BIT31) ? lhs.GetYRef() : rhs.GetYRef(),
@@ -337,17 +465,17 @@ __forceinline double Sin(const double& fRadians)
 	return sin(fRadians);
 }
 
-__forceinline Vec2f_Out Sin(Vec2f_In vRadians)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Sin(Vec2f_In vRadians)
 {
 	return Vec2f(Sin(vRadians.GetXRef()), Sin(vRadians.GetYRef()));
 }
 
-__forceinline Vec3f_Out Sin(Vec3f_In vRadians)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Sin(Vec3f_In vRadians)
 {
 	return Vec3f(Sin(vRadians.GetXRef()), Sin(vRadians.GetYRef()), Sin(vRadians.GetZRef()));
 }
 
-__forceinline Vec4f_Out Sin(Vec4f_In vRadians)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Sin(Vec4f_In vRadians)
 {
 	return Vec4f(Sin(vRadians.GetXRef()), Sin(vRadians.GetYRef()), Sin(vRadians.GetZRef()), Sin(vRadians.GetWRef()));
 }
@@ -362,17 +490,17 @@ __forceinline double ASin(const double& fRadians)
 	return asin(fRadians);
 }
 
-__forceinline Vec2f_Out ASin(Vec2f_In vRadians)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV ASin(Vec2f_In vRadians)
 {
 	return Vec2f(ASin(vRadians.GetXRef()), ASin(vRadians.GetYRef()));
 }
 
-__forceinline Vec3f_Out ASin(Vec3f_In vRadians)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV ASin(Vec3f_In vRadians)
 {
 	return Vec3f(ASin(vRadians.GetXRef()), ASin(vRadians.GetYRef()), ASin(vRadians.GetZRef()));
 }
 
-__forceinline Vec4f_Out ASin(Vec4f_In vRadians)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV ASin(Vec4f_In vRadians)
 {
 	return Vec4f(ASin(vRadians.GetXRef()), ASin(vRadians.GetYRef()), ASin(vRadians.GetZRef()), ASin(vRadians.GetWRef()));
 }
@@ -387,17 +515,17 @@ __forceinline double Cos(const double& fRadians)
 	return cos(fRadians);
 }
 
-__forceinline Vec2f_Out Cos(Vec2f_In vRadians)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Cos(Vec2f_In vRadians)
 {
 	return Vec2f(Cos(vRadians.GetXRef()), Cos(vRadians.GetYRef()));
 }
 
-__forceinline Vec3f_Out Cos(Vec3f_In vRadians)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Cos(Vec3f_In vRadians)
 {
 	return Vec3f(Cos(vRadians.GetXRef()), Cos(vRadians.GetYRef()), Cos(vRadians.GetZRef()));
 }
 
-__forceinline Vec4f_Out Cos(Vec4f_In vRadians)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Cos(Vec4f_In vRadians)
 {
 	return Vec4f(Cos(vRadians.GetXRef()), Cos(vRadians.GetYRef()), Cos(vRadians.GetZRef()), Cos(vRadians.GetWRef()));
 }
@@ -412,17 +540,17 @@ __forceinline double ACos(const double& fRadians)
 	return acos(fRadians);
 }
 
-__forceinline Vec2f_Out ACos(Vec2f_In vRadians)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV ACos(Vec2f_In vRadians)
 {
 	return Vec2f(ACos(vRadians.GetXRef()), ACos(vRadians.GetYRef()));
 }
 
-__forceinline Vec3f_Out ACos(Vec3f_In vRadians)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV ACos(Vec3f_In vRadians)
 {
 	return Vec3f(ACos(vRadians.GetXRef()), ACos(vRadians.GetYRef()), ACos(vRadians.GetZRef()));
 }
 
-__forceinline Vec4f_Out ACos(Vec4f_In vRadians)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV ACos(Vec4f_In vRadians)
 {
 	return Vec4f(ACos(vRadians.GetXRef()), ACos(vRadians.GetYRef()), ACos(vRadians.GetZRef()), ACos(vRadians.GetWRef()));
 }
@@ -437,17 +565,17 @@ __forceinline double Tan(const double& fRadians)
 	return tan(fRadians);
 }
 
-__forceinline Vec2f_Out Tan(Vec2f_In vRadians)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Tan(Vec2f_In vRadians)
 {
 	return Vec2f(Tan(vRadians.GetXRef()), Tan(vRadians.GetYRef()));
 }
 
-__forceinline Vec3f_Out Tan(Vec3f_In vRadians)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Tan(Vec3f_In vRadians)
 {
 	return Vec3f(Tan(vRadians.GetXRef()), Tan(vRadians.GetYRef()), Tan(vRadians.GetZRef()));
 }
 
-__forceinline Vec4f_Out Tan(Vec4f_In vRadians)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Tan(Vec4f_In vRadians)
 {
 	return Vec4f(Tan(vRadians.GetXRef()), Tan(vRadians.GetYRef()), Tan(vRadians.GetZRef()), Tan(vRadians.GetWRef()));
 }
@@ -462,23 +590,23 @@ __forceinline double ATan(const double& fRadians)
 	return atan(fRadians);
 }
 
-__forceinline Vec2f_Out ATan(Vec2f_In vRadians)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV ATan(Vec2f_In vRadians)
 {
 	return Vec2f(ATan(vRadians.GetXRef()), ATan(vRadians.GetYRef()));
 }
 
-__forceinline Vec3f_Out ATan(Vec3f_In vRadians)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV ATan(Vec3f_In vRadians)
 {
 	return Vec3f(ATan(vRadians.GetXRef()), ATan(vRadians.GetYRef()), ATan(vRadians.GetZRef()));
 }
 
-__forceinline Vec4f_Out ATan(Vec4f_In vRadians)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV ATan(Vec4f_In vRadians)
 {
 	return Vec4f(ATan(vRadians.GetXRef()), ATan(vRadians.GetYRef()), ATan(vRadians.GetZRef()), ATan(vRadians.GetWRef()));
 }
 
 // Returns: Vec2f(Sin(), Cos());
-__forceinline Vec2f_Out SinCos(const float& fRadians)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV SinCos(const float& fRadians)
 {
 	return Vec2f(Sin(fRadians), Cos(fRadians));
 }
@@ -507,13 +635,13 @@ __forceinline Vec2f_Out SinCos(const float& fRadians)
 	, lhs.GetWRef() cmp rhs.GetWRef()
 
 #define VEC_CMP_DEFBASE(name, varType, cmpDef)	\
-	__forceinline VecCmpResult name(varType##_In lhs, varType##_In rhs) \
+	__forceinline VecCmpResult RECON_VEC_CALLCONV name(varType##_In lhs, varType##_In rhs) \
 { \
 	return VecCmpResult(cmpDef); \
 }
 
 #define VEC_CMP_DEF(name, amt, nameExt, varType) \
-	__forceinline bool name##nameExt(varType##_In lhs, varType##_In rhs) \
+	__forceinline bool RECON_VEC_CALLCONV name##nameExt(varType##_In lhs, varType##_In rhs) \
 { \
 	return VecCmpResult(name(lhs, rhs)) == CMP_MASK_##nameExt; \
 }
@@ -642,7 +770,7 @@ VEC_CMP_DEF_VEC4(IsLessThanOrEqualInt, <= , Vec4f)
 
 
 #define VEC_ARITH_DEF(name, varType, operations) \
-	__forceinline varType##_Out name(varType##_In lhs, varType##_In rhs) \
+	__forceinline varType##_Out RECON_VEC_CALLCONV name(varType##_In lhs, varType##_In rhs) \
 { \
 	return varType(operations); \
 }
@@ -670,7 +798,7 @@ VEC_ARITH_DEF_SIZE(Divide, / , 4)
 
 #undef	VEC_ARITH_DEF
 #define VEC_ARITH_DEF(name, varType, operations) \
-	__forceinline varType##_Out name(varType##_In lhs, varType##_In rhs) \
+	__forceinline varType##_Out RECON_VEC_CALLCONV name(varType##_In lhs, varType##_In rhs) \
 { \
 	return varType##Int(operations); \
 }
@@ -698,17 +826,17 @@ VEC_ARITH_DEF_SIZE(DivideInt, / , 3)
 VEC_ARITH_DEF_SIZE(DivideInt, / , 4)
 
 
-__forceinline float Dot(Vec2f_In vVectorA, Vec2f_In vVectorB)
+__forceinline float RECON_VEC_CALLCONV Dot(Vec2f_In vVectorA, Vec2f_In vVectorB)
 {
 	return (vVectorA.x * vVectorB.x) + (vVectorA.y * vVectorB.y);
 }
 
-__forceinline float Dot(Vec3f_In vVectorA, Vec3f_In vVectorB)
+__forceinline float RECON_VEC_CALLCONV Dot(Vec3f_In vVectorA, Vec3f_In vVectorB)
 {
 	return (vVectorA.x * vVectorB.x) + (vVectorA.y * vVectorB.y) + (vVectorA.z * vVectorB.z);
 }
 
-__forceinline float Dot(Vec4f_In vVectorA, Vec4f_In vVectorB)
+__forceinline float RECON_VEC_CALLCONV Dot(Vec4f_In vVectorA, Vec4f_In vVectorB)
 {
 #if SSE_AVAILABLE
 	Vector vec1 = VectorLoadU(vVectorA.GetVector());
@@ -721,17 +849,17 @@ __forceinline float Dot(Vec4f_In vVectorA, Vec4f_In vVectorB)
 #endif
 }
 
-__forceinline float Mag(Vec2f_In vVector)
+__forceinline float RECON_VEC_CALLCONV Mag(Vec2f_In vVector)
 {
 	return sqrtf(MagSq(vVector));
 }
 
-__forceinline float Mag(Vec3f_In vVector)
+__forceinline float RECON_VEC_CALLCONV Mag(Vec3f_In vVector)
 {
 	return sqrtf(MagSq(vVector));
 }
 
-__forceinline float Mag(Vec4f_In vVector)
+__forceinline float RECON_VEC_CALLCONV Mag(Vec4f_In vVector)
 {
 #if SSE_AVAILABLE
 	Vector vec = VectorLoadU(vVector.GetVector());
@@ -744,144 +872,133 @@ __forceinline float Mag(Vec4f_In vVector)
 #endif
 }
 
-__forceinline float Length(Vec2f_In vVector)
+__forceinline float RECON_VEC_CALLCONV Length(Vec2f_In vVector)
 {
 	return Mag(vVector);
 }
 
-__forceinline float Length(Vec3f_In vVector)
+__forceinline float RECON_VEC_CALLCONV Length(Vec3f_In vVector)
 {
 	return Mag(vVector);
 }
 
-__forceinline float Length(Vec4f_In vVector)
+__forceinline float RECON_VEC_CALLCONV Length(Vec4f_In vVector)
 {
 	return Mag(vVector);
 }
 
-__forceinline float MagSq(Vec2f_In vVector)
+__forceinline float RECON_VEC_CALLCONV MagSq(Vec2f_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline float MagSq(Vec3f_In vVector)
+__forceinline float RECON_VEC_CALLCONV MagSq(Vec3f_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline float MagSq(Vec4f_In vVector)
+__forceinline float RECON_VEC_CALLCONV MagSq(Vec4f_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline float LengthSq(Vec2f_In vVector)
+__forceinline float RECON_VEC_CALLCONV LengthSq(Vec2f_In vVector)
 {
 	return MagSq(vVector);
 }
 
-__forceinline float LengthSq(Vec3f_In vVector)
+__forceinline float RECON_VEC_CALLCONV LengthSq(Vec3f_In vVector)
 {
 	return MagSq(vVector);
 }
 
-__forceinline float LengthSq(Vec4f_In vVector)
+__forceinline float RECON_VEC_CALLCONV LengthSq(Vec4f_In vVector)
 {
 	return MagSq(vVector);
 }
 
-__forceinline Vec2f_Out Normalize(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Normalize(Vec2f_In vVector)
 {
-	float mag = Mag(vVector);
-	if(mag)
+	float magSq = MagSq(vVector);
+	if(magSq)
 	{
-		mag = 1 / mag;
-
-		return vVector * mag;
+		magSq = 1 / Sqrt(magSq);
+		return vVector * magSq;
 	}
 	return vVector;
 }
 
-__forceinline Vec3f_Out Normalize(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Normalize(Vec3f_In vVector)
 {
-	float mag = Mag(vVector);
+	float magSq = MagSq(vVector);
 
 	// protection against divide by zero
-	if(mag)
+	if(magSq)
 	{
-#if SSE_AVAILABLE
-		return Vec3f(VectorDivide(VectorLoadU(vVector.GetVector()), VectorSet(mag, mag, mag, 0.0f)));
-#else 
-		mag = 1 / mag;
-
-		return vVector * mag;
-#endif
+		magSq = 1 / Sqrt(magSq);
+		return vVector * magSq;
 	}
 
 	return vVector;
 }
 
-__forceinline Vec4f_Out Normalize(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Normalize(Vec4f_In vVector)
 {
-	float mag = Mag(vVector);
-	if(mag)
+	float magSq = MagSq(vVector);
+	if(magSq)
 	{
-#if SSE_AVAILABLE
-		return Vec4f(VectorDivide(VectorLoadU(vVector.GetVector()), VectorSet(mag)));
-#else
-		mag = 1 / mag;
-
-		return vVector * mag;
-#endif
+		magSq = 1 / Sqrt(magSq);
+		return vVector * magSq;
 	}
 	return vVector;
 }
 
-__forceinline Mat33f_Out Normalize(Mat33f_In mMatrix)
+__forceinline Mat33f_Out RECON_VEC_CALLCONV Normalize(Mat33f_In mMatrix)
 {
 	Mat33f tmp(mMatrix);
 	tmp.Normalize();
 	return tmp;
 }
 
-__forceinline Mat44f_Out Normalize(Mat44f_In mMatrix)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV Normalize(Mat44f_In mMatrix)
 {
 	Mat44f tmp(mMatrix);
 	tmp.Normalize();
 	return tmp;
 }
 
-__forceinline Vec2f_Out IntToFloat(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV IntToFloat(Vec2f_In vVector)
 {
-	return Vec2f((float)*reinterpret_cast<const int*>(&vVector.GetXRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetYRef()));
+	return Vec2f((float)vVector.GetXiRef(), 
+				 (float)vVector.GetYiRef());
 }
 
-__forceinline Vec3f_Out IntToFloat(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV IntToFloat(Vec3f_In vVector)
 {
-	return Vec3f((float)*reinterpret_cast<const int*>(&vVector.GetXRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetYRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetZRef()));
+	return Vec3f((float)vVector.GetXiRef(),
+				 (float)vVector.GetYiRef(),
+				 (float)vVector.GetZiRef());
 }
 
-__forceinline Vec4f_Out IntToFloat(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV IntToFloat(Vec4f_In vVector)
 {
-	return Vec4f((float)*reinterpret_cast<const int*>(&vVector.GetXRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetYRef()), 
-				 (float)*reinterpret_cast<const int*>(&vVector.GetZRef()),
-				 (float)*reinterpret_cast<const int*>(&vVector.GetWRef()));
+	return Vec4f((float)vVector.GetXiRef(),
+				 (float)vVector.GetYiRef(),
+				 (float)vVector.GetZiRef(),
+				 (float)vVector.GetWiRef());
 }
 
-__forceinline Vec2f_Out FloatToInt(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV FloatToInt(Vec2f_In vVector)
 {
 	return Vec2fInt((s32)vVector.GetXRef(), (s32)vVector.GetYRef());
 }
 
-__forceinline Vec3f_Out FloatToInt(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV FloatToInt(Vec3f_In vVector)
 {
 	return Vec3fInt((s32)vVector.GetXRef(), (s32)vVector.GetYRef(), (s32)vVector.GetZRef());
 }
 
-__forceinline Vec4f_Out FloatToInt(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV FloatToInt(Vec4f_In vVector)
 {
 	return Vec4fInt((s32)vVector.GetXRef(), (s32)vVector.GetYRef(), (s32)vVector.GetZRef(), (s32)vVector.GetWRef());
 }
@@ -896,19 +1013,19 @@ __forceinline double Floor(const double& fScalar)
 	return floor(fScalar);
 }
 
-__forceinline Vec2f_Out Floor(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Floor(Vec2f_In vVector)
 {
-	return Vec2f(floorf(vVector.GetXRef()), floorf(vVector.GetYRef()));
+	return Vec2f(Floor(vVector.GetXRef()), Floor(vVector.GetYRef()));
 }
 
-__forceinline Vec3f_Out Floor(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Floor(Vec3f_In vVector)
 {
-	return Vec3f(floorf(vVector.GetXRef()), floorf(vVector.GetYRef()), floorf(vVector.GetZRef()));
+	return Vec3f(Floor(vVector.GetXRef()), Floor(vVector.GetYRef()), Floor(vVector.GetZRef()));
 }
 
-__forceinline Vec4f_Out Floor(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Floor(Vec4f_In vVector)
 {
-	return Vec4f(floorf(vVector.GetXRef()), floorf(vVector.GetYRef()), floorf(vVector.GetZRef()), floorf(vVector.GetWRef()));
+	return Vec4f(Floor(vVector.GetXRef()), Floor(vVector.GetYRef()), Floor(vVector.GetZRef()), Floor(vVector.GetWRef()));
 }
 
 __forceinline float Ceil(const float& fScalar)
@@ -921,19 +1038,19 @@ __forceinline double Ceil(const double& fScalar)
 	return ceil(fScalar);
 }
 
-__forceinline Vec2f_Out Ceil(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Ceil(Vec2f_In vVector)
 {
-	return Vec2f(ceilf(vVector.GetXRef()), ceilf(vVector.GetYRef()));
+	return Vec2f(Ceil(vVector.GetXRef()), Ceil(vVector.GetYRef()));
 }
 
-__forceinline Vec3f_Out Ceil(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Ceil(Vec3f_In vVector)
 {
-	return Vec3f(ceilf(vVector.GetXRef()), ceilf(vVector.GetYRef()), ceilf(vVector.GetZRef()));
+	return Vec3f(Ceil(vVector.GetXRef()), Ceil(vVector.GetYRef()), Ceil(vVector.GetZRef()));
 }
 
-__forceinline Vec4f_Out Ceil(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Ceil(Vec4f_In vVector)
 {
-	return Vec4f(ceilf(vVector.GetXRef()), ceilf(vVector.GetYRef()), ceilf(vVector.GetZRef()), ceilf(vVector.GetWRef()));
+	return Vec4f(Ceil(vVector.GetXRef()), Ceil(vVector.GetYRef()), Ceil(vVector.GetZRef()), Ceil(vVector.GetWRef()));
 }
 
 __forceinline float Trunc(const float& fScalar)
@@ -946,17 +1063,17 @@ __forceinline double Trunc(const double& fScalar)
 	return double(s64(fScalar));
 }
 
-__forceinline Vec2f_Out Trunc(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Trunc(Vec2f_In vVector)
 {
 	return Vec2f(Trunc(vVector.GetXRef()), Trunc(vVector.GetYRef()));
 }
 
-__forceinline Vec3f_Out Trunc(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Trunc(Vec3f_In vVector)
 {
 	return Vec3f(Trunc(vVector.GetXRef()), Trunc(vVector.GetYRef()), Trunc(vVector.GetZRef()));
 }
 
-__forceinline Vec4f_Out Trunc(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Trunc(Vec4f_In vVector)
 {
 	return Vec4f(Trunc(vVector.GetXRef()), Trunc(vVector.GetYRef()), Trunc(vVector.GetZRef()), Trunc(vVector.GetWRef()));
 }
@@ -971,17 +1088,17 @@ __forceinline double Round(const double& fScalar)
 	return Floor(fScalar + 0.5);
 }
 
-__forceinline Vec2f_Out Round(Vec2f& vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Round(Vec2f& vVector)
 {
 	return Vec2f(Round(vVector.GetXRef()), Round(vVector.GetYRef()));
 }
 
-__forceinline Vec3f_Out Round(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Round(Vec3f_In vVector)
 {
 	return Vec3f(Round(vVector.GetXRef()), Round(vVector.GetYRef()), Round(vVector.GetZRef()));
 }
 
-__forceinline Vec4f_Out Round(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Round(Vec4f_In vVector)
 {
 	return Vec4f(Round(vVector.GetXRef()), Round(vVector.GetYRef()), Round(vVector.GetZRef()), Round(vVector.GetWRef()));
 }
@@ -998,22 +1115,22 @@ __forceinline double Log2(const double& fScalar)
 	return log2(fScalar);
 }
 
-__forceinline Vec2f_Out Log2(Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Log2(Vec2f_In vVector)
 {
 	return Vec2f(Log2(vVector.GetXRef()), Log2(vVector.GetYRef()));
 }
 
-__forceinline Vec3f_Out Log2(Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Log2(Vec3f_In vVector)
 {
 	return Vec3f(Log2(vVector.GetXRef()), Log2(vVector.GetYRef()), Log2(vVector.GetZRef()));
 }
 
-__forceinline Vec4f_Out Log2(Vec4f_In vVector)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV Log2(Vec4f_In vVector)
 {
 	return Vec4f(Log2(vVector.GetXRef()), Log2(vVector.GetYRef()), Log2(vVector.GetZRef()), Log2(vVector.GetWRef()));
 }
 
-__forceinline Mat44f_Out Lerp(Mat44f_In MatrixA, Mat44f_In MatrixB, const float fLambda)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV Lerp(Mat44f_In MatrixA, Mat44f_In MatrixB, const float fLambda)
 {
 	Mat44f result;
 	result.GetXAxisRef().SetXYZ(Lerp(MatrixA.GetXAxis().GetXYZ(), MatrixB.GetXAxis().GetXYZ(), fLambda));
@@ -1023,14 +1140,14 @@ __forceinline Mat44f_Out Lerp(Mat44f_In MatrixA, Mat44f_In MatrixB, const float 
 	return result;
 }
 
-__forceinline Vec3f_Out Cross(Vec3f_In lhs, Vec3f_In rhs)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Cross(Vec3f_In lhs, Vec3f_In rhs)
 {
 	return Vec3f(lhs.GetY() * rhs.GetZ() - lhs.GetZ() * rhs.GetY(),
 				 lhs.GetZ() * rhs.GetX() - lhs.GetX() * rhs.GetZ(),
 				 lhs.GetX() * rhs.GetY() - lhs.GetY() * rhs.GetX());
 }
 
-__forceinline Mat44f Mat34ToMat44(Mat34f_In mMatrix)
+__forceinline Mat44f RECON_VEC_CALLCONV Mat34ToMat44(Mat34f_In mMatrix)
 {
 	return Mat44f(Vec4f(mMatrix.GetXAxisRef(), 0.0f), \
 				  Vec4f(mMatrix.GetYAxisRef(), 0.0f), \
@@ -1038,7 +1155,7 @@ __forceinline Mat44f Mat34ToMat44(Mat34f_In mMatrix)
 				  Vec4f(mMatrix.GetWAxisRef(), 1.0f));
 }
 
-__forceinline Mat34f Mat44ToMat34(Mat44f_In mMatrix)
+__forceinline Mat34f RECON_VEC_CALLCONV Mat44ToMat34(Mat44f_In mMatrix)
 {
 	return Mat34f(mMatrix.GetXAxisRef().GetXYZ(), \
 				  mMatrix.GetYAxisRef().GetXYZ(), \
@@ -1046,7 +1163,7 @@ __forceinline Mat34f Mat44ToMat34(Mat44f_In mMatrix)
 				  mMatrix.GetWAxisRef().GetXYZ());
 }
 
-inline Mat44f_Out MatrixInverse(Mat44f_In mMatrix)
+inline Mat44f_Out RECON_VEC_CALLCONV MatrixInverse(Mat44f_In mMatrix)
 {
 	/*
 	Derived From The Intel Paper At:
@@ -1135,28 +1252,28 @@ inline Mat44f_Out MatrixInverse(Mat44f_In mMatrix)
 	return mMatrix;
 }
 
-__forceinline Mat33f_Out Transpose(Mat33f_In mMatrix)
+__forceinline Mat33f_Out RECON_VEC_CALLCONV Transpose(Mat33f_In mMatrix)
 {
 	Mat33f retVal(mMatrix);
 	retVal.Transpose();
 	return retVal;
 }
 
-__forceinline Mat44f_Out Transpose(Mat44f_In mMatrix)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV Transpose(Mat44f_In mMatrix)
 {
 	Mat44f retVal(mMatrix);
 	retVal.Transpose();
 	return retVal;
 }
 
-__forceinline Mat44f_Out Transpose3x3(Mat44f_In mMatrix)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV Transpose3x3(Mat44f_In mMatrix)
 {
 	Mat44f retVal(mMatrix);
 	retVal.Transpose3x3();
 	return retVal;
 }
 
-__forceinline Mat44f_Out RotateAround(Vec3f_In origin, Mat44f_In rotatorsMatrix, Mat44f_In rotationMatrix)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV RotateAround(Vec3f_In origin, Mat44f_In rotatorsMatrix, Mat44f_In rotationMatrix)
 {
 	Mat44f newMat(rotatorsMatrix);
 	newMat.Translate(-origin);
@@ -1165,7 +1282,7 @@ __forceinline Mat44f_Out RotateAround(Vec3f_In origin, Mat44f_In rotatorsMatrix,
 	return newMat;
 }
 
-__forceinline Mat44f_Out MakePerspectiveMatrix(float fFOV, float fAspectRatio, float fNearClip, float fFarClip)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV MakePerspectiveMatrix(float fFOV, float fAspectRatio, float fNearClip, float fFarClip)
 {
 	float yScale = 1 / tan(fFOV * 0.5f);
 	float xScale = yScale / fAspectRatio;
@@ -1176,7 +1293,7 @@ __forceinline Mat44f_Out MakePerspectiveMatrix(float fFOV, float fAspectRatio, f
 					0.0f,		0.0f,	(-fNearClip * fFarClip) / (fFarClip - fNearClip),	0.0f);
 }
 
-__forceinline Mat44f_Out MakeOrthographicMatrix(float fWidth, float fHeight, float fNear, float fFar)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(float fWidth, float fHeight, float fNear, float fFar)
 {
 	return Mat44f(	2.0f / fWidth,		0.0f,					0.0f,						0.0f,
 					0.0f,				2.0f / fHeight,			0.0f,						0.0f,
@@ -1184,7 +1301,7 @@ __forceinline Mat44f_Out MakeOrthographicMatrix(float fWidth, float fHeight, flo
 					0.0f,				0.0f,					-fNear / (fFar - fNear),	1.0f);
 }
 
-__forceinline Mat44f_Out MakeTextureMatrixOffset(u32 unWidth, u32 unHeight)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(u32 unWidth, u32 unHeight)
 {
 	return Mat44f(0.5f,						0.0f,						0.0f,	0.0f,
 				  0.0f,						-0.5f,						0.0f,	0.0f,
@@ -1221,66 +1338,207 @@ inline void CalculateGaussianWeights(_Out_writes_all_(unRadius) float* pGaussian
 }
 
 #if SSE_AVAILABLE
-__forceinline ScalarV_Out Lerp(ScalarV_In lhs, ScalarV_In rhs, ScalarV_In vLambda)
+
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Max(ScalarV_In lhs, ScalarV_In rhs)
+{
+	return ScalarV(VectorMax(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Max(Vec2V_In lhs, Vec2V_In rhs)
+{
+	return Vec2V(VectorMax(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Max(Vec3V_In lhs, Vec3V_In rhs)
+{
+	return Vec3V(VectorMax(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Max(Vec4V_In lhs, Vec4V_In rhs)
+{
+	return Vec4V(VectorMax(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Min(ScalarV_In lhs, ScalarV_In rhs)
+{
+	return ScalarV(VectorMin(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Min(Vec2V_In lhs, Vec2V_In rhs)
+{
+	return Vec2V(VectorMin(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Min(Vec3V_In lhs, Vec3V_In rhs)
+{
+	return Vec3V(VectorMin(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Min(Vec4V_In lhs, Vec4V_In rhs)
+{
+	return Vec4V(VectorMin(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Clamp(ScalarV_In val, ScalarV_In minVal, ScalarV_In maxVal)
+{
+	return ScalarV(VectorClamp(val.GetVector(), minVal.GetVector(), maxVal.GetVector()));
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Clamp(Vec2V_In val, Vec2V_In minVal, Vec2V_In maxVal)
+{
+	return Vec2V(VectorClamp(val.GetVector(), minVal.GetVector(), maxVal.GetVector()));
+}
+
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Clamp(Vec3V_In val, Vec3V_In minVal, Vec3V_In maxVal)
+{
+	return Vec3V(VectorClamp(val.GetVector(), minVal.GetVector(), maxVal.GetVector()));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Clamp(Vec4V_In val, Vec4V_In minVal, Vec4V_In maxVal)
+{
+	return Vec4V(VectorClamp(val.GetVector(), minVal.GetVector(), maxVal.GetVector()));
+}
+
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Saturate(ScalarV_In vVector)
+{
+	return Clamp(vVector, ScalarV(I_ZERO), ScalarV(I_ONE));
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Saturate(Vec2V_In vVector)
+{
+	return Clamp(vVector, Vec2V(I_ZERO), Vec2V(I_ONE));
+}
+
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Saturate(Vec3V_In vVector)
+{
+	return Clamp(vVector, Vec3V(I_ZERO), Vec3V(I_ONE));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Saturate(Vec4V_In vVector)
+{
+	return Clamp(vVector, Vec4V(I_ZERO), Vec4V(I_ONE));
+}
+
+__forceinline ScalarV_Out RECON_VEC_CALLCONV MaxInt(ScalarV_In lhs, ScalarV_In rhs)
+{
+	return ScalarV(VectorMaxInt(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV MaxInt(Vec2V_In lhs, Vec2V_In rhs)
+{
+	return Vec2V(VectorMaxInt(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec3V_Out RECON_VEC_CALLCONV MaxInt(Vec3V_In lhs, Vec3V_In rhs)
+{
+	return Vec3V(VectorMaxInt(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV MaxInt(Vec4V_In lhs, Vec4V_In rhs)
+{
+	return Vec4V(VectorMaxInt(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline ScalarV_Out RECON_VEC_CALLCONV MinInt(ScalarV_In lhs, ScalarV_In rhs)
+{
+	return ScalarV(VectorMinInt(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV MinInt(Vec2V_In lhs, Vec2V_In rhs)
+{
+	return Vec2V(VectorMinInt(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec3V_Out RECON_VEC_CALLCONV MinInt(Vec3V_In lhs, Vec3V_In rhs)
+{
+	return Vec3V(VectorMinInt(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV MinInt(Vec4V_In lhs, Vec4V_In rhs)
+{
+	return Vec4V(VectorMinInt(lhs.GetVector(), rhs.GetVector()));
+}
+
+__forceinline ScalarV_Out RECON_VEC_CALLCONV ClampInt(ScalarV_In val, ScalarV_In minVal, ScalarV_In maxVal)
+{
+	return ScalarV(VectorClampInt(val.GetVector(), minVal.GetVector(), maxVal.GetVector()));
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV ClampInt(Vec2V_In val, Vec2V_In minVal, Vec2V_In maxVal)
+{
+	return Vec2V(VectorClampInt(val.GetVector(), minVal.GetVector(), maxVal.GetVector()));
+}
+
+__forceinline Vec3V_Out RECON_VEC_CALLCONV ClampInt(Vec3V_In val, Vec3V_In minVal, Vec3V_In maxVal)
+{
+	return Vec3V(VectorClampInt(val.GetVector(), minVal.GetVector(), maxVal.GetVector()));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV ClampInt(Vec4V_In val, Vec4V_In minVal, Vec4V_In maxVal)
+{
+	return Vec4V(VectorClampInt(val.GetVector(), minVal.GetVector(), maxVal.GetVector()));
+}
+
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Lerp(ScalarV_In lhs, ScalarV_In rhs, ScalarV_In vLambda)
 {
 	return lhs + (rhs - lhs) * vLambda;
 }
 
-__forceinline Vec2V_Out Lerp(Vec2V_In lhs, Vec2V_In rhs, ScalarV_In vLambda)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Lerp(Vec2V_In lhs, Vec2V_In rhs, ScalarV_In vLambda)
 {
 	return lhs + (rhs - lhs) * vLambda;
 }
 
-__forceinline Vec3V_Out Lerp(Vec3V_In lhs, Vec3V_In rhs, ScalarV_In vLambda)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Lerp(Vec3V_In lhs, Vec3V_In rhs, ScalarV_In vLambda)
 {
 	return lhs + (rhs - lhs) * vLambda;
 }
 
-__forceinline Vec4V_Out Lerp(Vec4V_In lhs, Vec4V_In rhs, ScalarV_In vLambda)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Lerp(Vec4V_In lhs, Vec4V_In rhs, ScalarV_In vLambda)
 {
 	return lhs + (rhs - lhs) * vLambda;
 }
 
-__forceinline ScalarV_Out Abs(ScalarV_In vScalar)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Abs(ScalarV_In vScalar)
 {
 	return ScalarV(VectorAbs(vScalar.GetVector()));
 }
 
-__forceinline Vec2V_Out Abs(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Abs(Vec2V_In vVector)
 {
 	return Vec2V(VectorAbs(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out Abs(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Abs(Vec3V_In vVector)
 {
 	return Vec3V(VectorAbs(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out Abs(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Abs(Vec4V_In vVector)
 {
 	return Vec4V(VectorAbs(vVector.GetVector()));
 }
 
 template<VecElem splat>
-__forceinline Vec2V_Out Splat(Vec2V_In lhs)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Splat(Vec2V_In lhs)
 {
 	return Permute<splat, splat>(lhs);
 }
 
 template<VecElem splat>
-__forceinline Vec3V_Out Splat(Vec3V_In lhs)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Splat(Vec3V_In lhs)
 {
 	return Permute<splat, splat, splat>(lhs);
 }
 
 template<VecElem splat>
-__forceinline Vec4V_Out Splat(Vec4V_In lhs)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Splat(Vec4V_In lhs)
 {
 	return Permute<splat, splat, splat, splat>(lhs);
 }
 
 template<VecElem pX, VecElem pY>
-__forceinline Vec2V_Out Permute(Vec2V_In lhs)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Permute(Vec2V_In lhs)
 {
 	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::Y) &&
 						(pY >= VecElem::X && pY <= VecElem::Y), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
@@ -1289,7 +1547,7 @@ __forceinline Vec2V_Out Permute(Vec2V_In lhs)
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ>
-__forceinline Vec3V_Out Permute(Vec3V_In lhs)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Permute(Vec3V_In lhs)
 {
 	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::Z) &&
 						(pY >= VecElem::X && pY <= VecElem::Z) &&
@@ -1298,7 +1556,7 @@ __forceinline Vec3V_Out Permute(Vec3V_In lhs)
 	return Vec3V(VectorPermute<pX, pY, pZ, VecElem::W>(lhs.GetVector()));
 }
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
-__forceinline Vec4V_Out Permute(Vec4V_In lhs)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Permute(Vec4V_In lhs)
 {
 	CompileTimeAssert(	(pX >= VecElem::X && pX <= VecElem::W) &&
 						(pY >= VecElem::X && pY <= VecElem::W) &&
@@ -1309,7 +1567,7 @@ __forceinline Vec4V_Out Permute(Vec4V_In lhs)
 }
 
 template<VecElem pX, VecElem pY>
-__forceinline Vec2V_Out Permute(Vec2V_In lhs, Vec2V_In rhs)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Permute(Vec2V_In lhs, Vec2V_In rhs)
 {
 	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::Y1) || (pX >= VecElem::X2 && pX <= VecElem::Y2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::Y1) || (pY >= VecElem::X2 && pY <= VecElem::Y2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
@@ -1319,7 +1577,7 @@ __forceinline Vec2V_Out Permute(Vec2V_In lhs, Vec2V_In rhs)
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ>
-__forceinline Vec3V_Out Permute(Vec3V_In lhs, Vec3V_In rhs)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Permute(Vec3V_In lhs, Vec3V_In rhs)
 {
 	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::Z1) || (pX >= VecElem::X2 && pX <= VecElem::Z2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::Z1) || (pY >= VecElem::X2 && pY <= VecElem::Z2)) &&
@@ -1330,7 +1588,7 @@ __forceinline Vec3V_Out Permute(Vec3V_In lhs, Vec3V_In rhs)
 }
 
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
-__forceinline Vec4V_Out Permute(Vec4V_In lhs, Vec4V_In rhs)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Permute(Vec4V_In lhs, Vec4V_In rhs)
 {
 	CompileTimeAssert(	((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2)) &&
 						((pY >= VecElem::X1 && pY <= VecElem::W1) || (pY >= VecElem::X2 && pY <= VecElem::W2)) &&
@@ -1341,57 +1599,62 @@ __forceinline Vec4V_Out Permute(Vec4V_In lhs, Vec4V_In rhs)
 	return Vec4V(VectorPermute<pX, pY, pZ, pW>(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline s32 SignMask(Vec2V_In vVector)
+__forceinline s32 RECON_VEC_CALLCONV SignMask(Vec2V_In vVector)
 {
 	return VectorSignMask(vVector.GetVector()) & 0x3;
 }
 
-__forceinline s32 SignMask(Vec3V_In vVector)
+__forceinline s32 RECON_VEC_CALLCONV SignMask(Vec3V_In vVector)
 {
 	return VectorSignMask(vVector.GetVector()) & 0x7;
 }
 
-__forceinline s32 SignMask(Vec4V_In vVector)
+__forceinline s32 RECON_VEC_CALLCONV SignMask(Vec4V_In vVector)
 {
 	return VectorSignMask(vVector.GetVector()) & 0xF;
 }
 
-__forceinline Vec2V_Out SelectTF(Vec2V_In lhs, Vec2V_In rhs, Vec2V_In condition)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV SelectTF(ScalarV_In condition, ScalarV_In ifTrue, ScalarV_In ifFalse)
 {
-	return Vec2V(VectorSelectTF(lhs.GetVector(), rhs.GetVector(), condition.GetVector()));
+	return ScalarV(VectorSelectTF(ifTrue.GetVector(), ifFalse.GetVector(), condition.GetVector()));
 }
 
-__forceinline Vec3V_Out SelectTF(Vec3V_In lhs, Vec3V_In rhs, Vec3V_In condition)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV SelectTF(Vec2V_In condition, Vec2V_In ifTrue, Vec2V_In ifFalse)
 {
-	return Vec3V(VectorSelectTF(lhs.GetVector(), rhs.GetVector(), condition.GetVector()));
+	return Vec2V(VectorSelectTF(ifTrue.GetVector(), ifFalse.GetVector(), condition.GetVector()));
 }
 
-__forceinline Vec4V_Out SelectTF(Vec4V_In lhs, Vec4V_In rhs, Vec4V_In condition)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV SelectTF(Vec3V_In condition, Vec3V_In ifTrue, Vec3V_In ifFalse)
 {
-	return Vec4V(VectorSelectTF(lhs.GetVector(), rhs.GetVector(), condition.GetVector()));
+	return Vec3V(VectorSelectTF(ifTrue.GetVector(), ifFalse.GetVector(), condition.GetVector()));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV SelectTF(Vec4V_In condition, Vec4V_In ifTrue, Vec4V_In ifFalse)
+{
+	return Vec4V(VectorSelectTF(ifTrue.GetVector(), ifFalse.GetVector(), condition.GetVector()));
 }
 
 template<VecElem elem> 
-__forceinline ScalarV_Out ScalarVFromElement(Vector_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vector_In vVector)
 {
 	CompileTimeAssert(elem >= VecElem::X && elem <= VecElem::W, "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::W!");
 	return ScalarV(VectorPermute<elem, elem, elem, elem>(vVector));
 }
 
 template<VecElem elem> 
-__forceinline ScalarV_Out ScalarVFromElement(Vec2V_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vec2V_In vVector)
 {
 	return ScalarVFromElement<elem>(vVector.GetVector());
 }
 
 template<VecElem elem> 
-__forceinline ScalarV_Out ScalarVFromElement(Vec3V_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vec3V_In vVector)
 {
 	return ScalarVFromElement<elem>(vVector.GetVector());
 }
 
 template<VecElem elem> 
-__forceinline ScalarV_Out ScalarVFromElement(Vec4V_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vec4V_In vVector)
 {
 	return ScalarVFromElement<elem>(vVector.GetVector());
 }
@@ -1399,128 +1662,128 @@ __forceinline ScalarV_Out ScalarVFromElement(Vec4V_In vVector)
 
 // Trigonometry Functions:
 
-__forceinline ScalarV_Out Sin(ScalarV_In vRadians)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Sin(ScalarV_In vRadians)
 {
 	return ScalarV(VectorSin(vRadians.GetVector()));
 }
 
-__forceinline Vec2V_Out Sin(Vec2V_In vRadians)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Sin(Vec2V_In vRadians)
 {
 	return Vec2V(VectorSin(vRadians.GetVector()));
 }
 
-__forceinline Vec3V_Out Sin(Vec3V_In vRadians)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Sin(Vec3V_In vRadians)
 {
 	return Vec3V(VectorSin(vRadians.GetVector()));
 }
 
-__forceinline Vec4V_Out Sin(Vec4V_In vRadians)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Sin(Vec4V_In vRadians)
 {
 	return Vec4V(VectorSin(vRadians.GetVector()));
 }
 
-__forceinline ScalarV_Out ASin(ScalarV_In vRadians)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV ASin(ScalarV_In vRadians)
 {
 	return ScalarV(VectorASin(vRadians.GetVector()));
 }
 
-__forceinline Vec2V_Out ASin(Vec2V_In vRadians)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV ASin(Vec2V_In vRadians)
 {
 	return Vec2V(VectorASin(vRadians.GetVector()));
 }
 
-__forceinline Vec3V_Out ASin(Vec3V_In vRadians)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV ASin(Vec3V_In vRadians)
 {
 	return Vec3V(VectorASin(vRadians.GetVector()));
 }
 
-__forceinline Vec4V_Out ASin(Vec4V_In vRadians)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV ASin(Vec4V_In vRadians)
 {
 	return Vec4V(VectorASin(vRadians.GetVector()));
 }
 
-__forceinline ScalarV_Out Cos(ScalarV_In vRadians)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Cos(ScalarV_In vRadians)
 {
 	return ScalarV(VectorCos(vRadians.GetVector()));
 }
 
-__forceinline Vec2V_Out Cos(Vec2V_In vRadians)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Cos(Vec2V_In vRadians)
 {
 	return Vec2V(VectorCos(vRadians.GetVector()));
 }
 
-__forceinline Vec3V_Out Cos(Vec3V_In vRadians)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Cos(Vec3V_In vRadians)
 {
 	return Vec3V(VectorCos(vRadians.GetVector()));
 }
 
-__forceinline Vec4V_Out Cos(Vec4V_In vRadians)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Cos(Vec4V_In vRadians)
 {
 	return Vec4V(VectorCos(vRadians.GetVector()));
 }
 
-__forceinline ScalarV_Out ACos(ScalarV_In vRadians)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV ACos(ScalarV_In vRadians)
 {
 	return ScalarV(VectorACos(vRadians.GetVector()));
 }
 
-__forceinline Vec2V_Out ACos(Vec2V_In vRadians)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV ACos(Vec2V_In vRadians)
 {
 	return Vec2V(VectorACos(vRadians.GetVector()));
 }
 
-__forceinline Vec3V_Out ACos(Vec3V_In vRadians)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV ACos(Vec3V_In vRadians)
 {
 	return Vec3V(VectorACos(vRadians.GetVector()));
 }
 
-__forceinline Vec4V_Out ACos(Vec4V_In vRadians)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV ACos(Vec4V_In vRadians)
 {
 	return Vec4V(VectorACos(vRadians.GetVector()));
 }
 
-__forceinline ScalarV_Out Tan(ScalarV_In vRadians)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Tan(ScalarV_In vRadians)
 {
 	return ScalarV(VectorTan(vRadians.GetVector()));
 }
 
-__forceinline Vec2V_Out Tan(Vec2V_In vRadians)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Tan(Vec2V_In vRadians)
 {
 	return Vec2V(VectorTan(vRadians.GetVector()));
 }
 
-__forceinline Vec3V_Out Tan(Vec3V_In vRadians)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Tan(Vec3V_In vRadians)
 {
 	return Vec3V(VectorTan(vRadians.GetVector()));
 }
 
-__forceinline Vec4V_Out Tan(Vec4V_In vRadians)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Tan(Vec4V_In vRadians)
 {
 	return Vec4V(VectorTan(vRadians.GetVector()));
 }
 
-__forceinline ScalarV_Out ATan(ScalarV_In vRadians)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV ATan(ScalarV_In vRadians)
 {
 	return ScalarV(VectorATan(vRadians.GetVector()));
 }
 
-__forceinline Vec2V_Out ATan(Vec2V_In vRadians)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV ATan(Vec2V_In vRadians)
 {
 	return Vec2V(VectorATan(vRadians.GetVector()));
 }
 
-__forceinline Vec3V_Out ATan(Vec3V_In vRadians)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV ATan(Vec3V_In vRadians)
 {
 	return Vec3V(VectorATan(vRadians.GetVector()));
 }
 
-__forceinline Vec4V_Out ATan(Vec4V_In vRadians)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV ATan(Vec4V_In vRadians)
 {
 	return Vec4V(VectorATan(vRadians.GetVector()));
 }
 
 // Returns: Vec2V(Sin(), Cos(), Sin(), Cos());
-__forceinline Vec2V_Out SinCos(ScalarV_In vRadians)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV SinCos(ScalarV_In vRadians)
 {
 	return Vec2V(VectorSinCos(vRadians.GetVector()));
 }
@@ -1530,13 +1793,13 @@ __forceinline Vec2V_Out SinCos(ScalarV_In vRadians)
 // Comparison Functions
 
 #define VEC_CMP_DEFBASE(name, varType)	\
-	__forceinline varType##_Out name(varType##_In lhs, varType##_In rhs) \
+	__forceinline varType##_Out RECON_VEC_CALLCONV name(varType##_In lhs, varType##_In rhs) \
 { \
 	return varType(Vector##name(lhs.GetVector(), rhs.GetVector())); \
 }
 
 #define VEC_CMP_DEF(name, nameExt, varType) \
-	__forceinline bool name##nameExt(varType##_In lhs, varType##_In rhs) \
+	__forceinline bool RECON_VEC_CALLCONV name##nameExt(varType##_In lhs, varType##_In rhs) \
 { \
 	return Vector##name##nameExt(lhs.GetVector(), rhs.GetVector()); \
 }
@@ -1559,50 +1822,62 @@ __forceinline Vec2V_Out SinCos(ScalarV_In vRadians)
 	VEC_CMP_DEF_VEC3(name, varType) \
 	VEC_CMP_DEF4(name, varType)
 
+VEC_CMP_DEF_VEC2(IsEqual, ScalarV)
 VEC_CMP_DEF_VEC2(IsEqual, Vec2V)
 VEC_CMP_DEF_VEC3(IsEqual, Vec3V)
 VEC_CMP_DEF_VEC4(IsEqual, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsNotEqual, ScalarV)
 VEC_CMP_DEF_VEC2(IsNotEqual, Vec2V)
 VEC_CMP_DEF_VEC3(IsNotEqual, Vec3V)
 VEC_CMP_DEF_VEC4(IsNotEqual, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsGreaterThan, ScalarV)
 VEC_CMP_DEF_VEC2(IsGreaterThan, Vec2V)
 VEC_CMP_DEF_VEC3(IsGreaterThan, Vec3V)
 VEC_CMP_DEF_VEC4(IsGreaterThan, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsGreaterThanOrEqual, ScalarV)
 VEC_CMP_DEF_VEC2(IsGreaterThanOrEqual, Vec2V)
 VEC_CMP_DEF_VEC3(IsGreaterThanOrEqual, Vec3V)
 VEC_CMP_DEF_VEC4(IsGreaterThanOrEqual, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsLessThan, ScalarV)
 VEC_CMP_DEF_VEC2(IsLessThan, Vec2V)
 VEC_CMP_DEF_VEC3(IsLessThan, Vec3V)
 VEC_CMP_DEF_VEC4(IsLessThan, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsLessThanOrEqual, ScalarV)
 VEC_CMP_DEF_VEC2(IsLessThanOrEqual, Vec2V)
 VEC_CMP_DEF_VEC3(IsLessThanOrEqual, Vec3V)
 VEC_CMP_DEF_VEC4(IsLessThanOrEqual, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsEqualInt, ScalarV)
 VEC_CMP_DEF_VEC2(IsEqualInt, Vec2V)
 VEC_CMP_DEF_VEC3(IsEqualInt, Vec3V)
 VEC_CMP_DEF_VEC4(IsEqualInt, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsNotEqualInt, ScalarV)
 VEC_CMP_DEF_VEC2(IsNotEqualInt, Vec2V)
 VEC_CMP_DEF_VEC3(IsNotEqualInt, Vec3V)
 VEC_CMP_DEF_VEC4(IsNotEqualInt, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsGreaterThanInt, ScalarV)
 VEC_CMP_DEF_VEC2(IsGreaterThanInt, Vec2V)
 VEC_CMP_DEF_VEC3(IsGreaterThanInt, Vec3V)
 VEC_CMP_DEF_VEC4(IsGreaterThanInt, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsGreaterThanOrEqualInt, ScalarV)
 VEC_CMP_DEF_VEC2(IsGreaterThanOrEqualInt, Vec2V)
 VEC_CMP_DEF_VEC3(IsGreaterThanOrEqualInt, Vec3V)
 VEC_CMP_DEF_VEC4(IsGreaterThanOrEqualInt, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsLessThanInt, ScalarV)
 VEC_CMP_DEF_VEC2(IsLessThanInt, Vec2V)
 VEC_CMP_DEF_VEC3(IsLessThanInt, Vec3V)
 VEC_CMP_DEF_VEC4(IsLessThanInt, Vec4V)
 
+VEC_CMP_DEF_VEC2(IsLessThanOrEqualInt, ScalarV)
 VEC_CMP_DEF_VEC2(IsLessThanOrEqualInt, Vec2V)
 VEC_CMP_DEF_VEC3(IsLessThanOrEqualInt, Vec3V)
 VEC_CMP_DEF_VEC4(IsLessThanOrEqualInt, Vec4V)
@@ -1622,48 +1897,48 @@ VEC_CMP_DEF_VEC4(IsLessThanOrEqualInt, Vec4V)
 
 // Vector Math Functions
 
-__forceinline ScalarV_Out Sqrt(ScalarV_In vScalar)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Sqrt(ScalarV_In vScalar)
 {
 	return ScalarV(VectorSqrt(vScalar.GetVector()));
 }
 
-__forceinline Vec2V_Out Sqrt(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Sqrt(Vec2V_In vVector)
 {
 	return Vec2V(VectorSqrt(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out Sqrt(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Sqrt(Vec3V_In vVector)
 {
 	return Vec3V(VectorSqrt(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out Sqrt(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Sqrt(Vec4V_In vVector)
 {
 	return Vec4V(VectorSqrt(vVector.GetVector()));
 }
 
-__forceinline ScalarV_Out SqrtSafe(ScalarV_In vScalar, ScalarV_In safeVec /*= ScalarV(I_ZERO)*/)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV SqrtSafe(ScalarV_In vScalar, ScalarV_In safeVec /*= ScalarV(I_ZERO)*/)
 {
 	Vector NotZeroVecMask = VectorIsNotEqual(vScalar.GetVector(), VectorSet(0.0f));
 	Vector sqrtVal = VectorSqrt(vScalar.GetVector());
 	return ScalarV(VectorOr(VectorAnd(sqrtVal, NotZeroVecMask), VectorAndNot(safeVec.GetVector(), NotZeroVecMask)));
 }
 
-__forceinline Vec2V_Out SqrtSafe(Vec2V_In vVector, Vec2V_In safeVec /*= Vec2V(I_ZERO)*/)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV SqrtSafe(Vec2V_In vVector, Vec2V_In safeVec /*= Vec2V(I_ZERO)*/)
 {
 	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSet(0.0f));
 	Vector sqrtVal = VectorSqrt(vVector.GetVector());
 	return Vec2V(VectorOr(VectorAnd(sqrtVal, NotZeroVecMask), VectorAndNot(safeVec.GetVector(), NotZeroVecMask)));
 }
 
-__forceinline Vec3V_Out SqrtSafe(Vec3V_In vVector, Vec3V_In safeVec /*= Vec3V(I_ZERO)*/)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV SqrtSafe(Vec3V_In vVector, Vec3V_In safeVec /*= Vec3V(I_ZERO)*/)
 {
 	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSet(0.0f));
 	Vector sqrtVal = VectorSqrt(vVector.GetVector());
 	return Vec3V(VectorOr(VectorAnd(sqrtVal, NotZeroVecMask), VectorAndNot(safeVec.GetVector(), NotZeroVecMask)));
 }
 
-__forceinline Vec4V_Out SqrtSafe(Vec4V_In vVector, Vec4V_In safeVec /*= Vec4V(I_ZERO)*/)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV SqrtSafe(Vec4V_In vVector, Vec4V_In safeVec /*= Vec4V(I_ZERO)*/)
 {
 	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSet(0.0f));
 	Vector sqrtVal = VectorSqrt(vVector.GetVector());
@@ -1671,13 +1946,13 @@ __forceinline Vec4V_Out SqrtSafe(Vec4V_In vVector, Vec4V_In safeVec /*= Vec4V(I_
 }
 
 
-__forceinline ScalarV Dot(Vec2V_In vVectorA, Vec2V_In vVectorB)
+__forceinline ScalarV RECON_VEC_CALLCONV Dot(Vec2V_In vVectorA, Vec2V_In vVectorB)
 {
 	Vector tmp = VectorMultiply(vVectorA.GetVector(), vVectorB.GetVector());
 	return ScalarVFromElement<VecElem::X>(VectorHAdd(tmp, tmp));
 }
 
-__forceinline ScalarV Dot(Vec3V_In vVectorA, Vec3V_In vVectorB)
+__forceinline ScalarV RECON_VEC_CALLCONV Dot(Vec3V_In vVectorA, Vec3V_In vVectorB)
 {
 	Vector tmpRhs = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(vVectorB.GetVector(), VectorSet(0.0f));
 	Vector tmp = VectorMultiply(vVectorA.GetVector(), tmpRhs);
@@ -1685,299 +1960,299 @@ __forceinline ScalarV Dot(Vec3V_In vVectorA, Vec3V_In vVectorB)
 	return ScalarVFromElement<VecElem::X>(VectorHAdd(tmp, tmp));
 }
 
-__forceinline ScalarV Dot(Vec4V_In vVectorA, Vec4V_In vVectorB)
+__forceinline ScalarV RECON_VEC_CALLCONV Dot(Vec4V_In vVectorA, Vec4V_In vVectorB)
 {
 	Vector tmp = VectorMultiply(vVectorA.GetVector(), vVectorB.GetVector());
 	tmp = VectorHAdd(tmp, tmp);
 	return ScalarVFromElement<VecElem::X>(VectorHAdd(tmp, tmp));
 }
 
-__forceinline ScalarV Mag(Vec2V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV Mag(Vec2V_In vVector)
 {
 	return Sqrt(MagSq(vVector));
 }
 
-__forceinline ScalarV Mag(Vec3V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV Mag(Vec3V_In vVector)
 {
 	return Sqrt(MagSq(vVector));
 }
 
-__forceinline ScalarV Mag(Vec4V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV Mag(Vec4V_In vVector)
 {
 	return Sqrt(MagSq(vVector));
 }
 
-__forceinline ScalarV Length(Vec2V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV Length(Vec2V_In vVector)
 {
 	return Sqrt(LengthSq(vVector));
 }
 
-__forceinline ScalarV Length(Vec3V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV Length(Vec3V_In vVector)
 {
 	return Sqrt(LengthSq(vVector));
 }
 
-__forceinline ScalarV Length(Vec4V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV Length(Vec4V_In vVector)
 {
 	return Sqrt(LengthSq(vVector));
 }
 
-__forceinline ScalarV MagSq(Vec2V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV MagSq(Vec2V_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline ScalarV MagSq(Vec3V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV MagSq(Vec3V_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline ScalarV MagSq(Vec4V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV MagSq(Vec4V_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline ScalarV LengthSq(Vec2V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV LengthSq(Vec2V_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline ScalarV LengthSq(Vec3V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV LengthSq(Vec3V_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline ScalarV LengthSq(Vec4V_In vVector)
+__forceinline ScalarV RECON_VEC_CALLCONV LengthSq(Vec4V_In vVector)
 {
 	return Dot(vVector, vVector);
 }
 
-__forceinline Vec2V_Out Normalize(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Normalize(Vec2V_In vVector)
 {
-	Vec2V tmp(vVector);
-	return tmp.Normalize();
+	Vec2V magSq(MagSq(vVector));
+	return Vec2V(SelectTF(Vec2V(I_ZERO), vVector / magSq, IsGreaterThan(magSq, Vec2V(I_ZERO))));
 }
 
-__forceinline Vec3V_Out Normalize(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Normalize(Vec3V_In vVector)
 {
-	Vec3V tmp(vVector);
-	return tmp.Normalize();
+	Vec3V magSq(MagSq(vVector));
+	return Vec3V(SelectTF(Vec3V(I_ZERO), vVector / magSq, IsGreaterThan(magSq, Vec3V(I_ZERO))));
 }
 
-__forceinline Vec4V_Out Normalize(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Normalize(Vec4V_In vVector)
 {
-	Vec4V tmp(vVector);
-	return tmp.Normalize();
+	Vec4V magSq(MagSq(vVector));
+	return Vec4V(SelectTF(Vec4V(I_ZERO), vVector / magSq, IsGreaterThan(magSq, Vec4V(I_ZERO))));
 }
 
-//__forceinline Mat33V_Out Normalize(Mat33V_In mMatrix)
+//__forceinline Mat33V_Out RECON_VEC_CALLCONV Normalize(Mat33V_In mMatrix)
 //{
 //	Mat33V tmp(mMatrix);
 //	tmp.Normalize();
 //	return tmp;
 //}
 
-__forceinline Mat44V_Out Normalize(Mat44V_In mMatrix)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV Normalize(Mat44V_In mMatrix)
 {
 	Mat44V tmp(mMatrix);
 	tmp.Normalize();
 	return tmp;
 }
 
-__forceinline ScalarV_Out AddInt(ScalarV_In lhs, ScalarV_In rhs)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV AddInt(ScalarV_In lhs, ScalarV_In rhs)
 {
 	return ScalarV(VectorAddInt(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline Vec2V_Out AddInt(Vec2V_In lhs, Vec2V_In rhs)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV AddInt(Vec2V_In lhs, Vec2V_In rhs)
 {
 	return Vec2V(VectorAddInt(lhs.GetVector(), rhs.GetVector()));
 }
-__forceinline Vec3V_Out AddInt(Vec3V_In lhs, Vec3V_In rhs)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV AddInt(Vec3V_In lhs, Vec3V_In rhs)
 {
 	return Vec3V(VectorAddInt(lhs.GetVector(), rhs.GetVector()));
 }
-__forceinline Vec4V_Out AddInt(Vec4V_In lhs, Vec4V_In rhs)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV AddInt(Vec4V_In lhs, Vec4V_In rhs)
 {
 	return Vec4V(VectorAddInt(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline ScalarV_Out SubtractInt(ScalarV_In lhs, ScalarV_In rhs)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV SubtractInt(ScalarV_In lhs, ScalarV_In rhs)
 {
 	return ScalarV(VectorSubtractInt(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline Vec2V_Out SubtractInt(Vec2V_In lhs, Vec2V_In rhs)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV SubtractInt(Vec2V_In lhs, Vec2V_In rhs)
 {
 	return Vec2V(VectorSubtractInt(lhs.GetVector(), rhs.GetVector()));
 }
-__forceinline Vec3V_Out SubtractInt(Vec3V_In lhs, Vec3V_In rhs)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV SubtractInt(Vec3V_In lhs, Vec3V_In rhs)
 {
 	return Vec3V(VectorSubtractInt(lhs.GetVector(), rhs.GetVector()));
 }
-__forceinline Vec4V_Out SubtractInt(Vec4V_In lhs, Vec4V_In rhs)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV SubtractInt(Vec4V_In lhs, Vec4V_In rhs)
 {
 	return Vec4V(VectorSubtractInt(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline ScalarV_Out MultiplyInt(ScalarV_In lhs, ScalarV_In rhs)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV MultiplyInt(ScalarV_In lhs, ScalarV_In rhs)
 {
 	return ScalarV(VectorMultiplyInt(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline Vec2V_Out MultiplyInt(Vec2V_In lhs, Vec2V_In rhs)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV MultiplyInt(Vec2V_In lhs, Vec2V_In rhs)
 {
 	return Vec2V(VectorMultiplyInt(lhs.GetVector(), rhs.GetVector()));
 }
-__forceinline Vec3V_Out MultiplyInt(Vec3V_In lhs, Vec3V_In rhs)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV MultiplyInt(Vec3V_In lhs, Vec3V_In rhs)
 {
 	return Vec3V(VectorMultiplyInt(lhs.GetVector(), rhs.GetVector()));
 }
-__forceinline Vec4V_Out MultiplyInt(Vec4V_In lhs, Vec4V_In rhs)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV MultiplyInt(Vec4V_In lhs, Vec4V_In rhs)
 {
 	return Vec4V(VectorMultiplyInt(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline ScalarV_Out IntToFloat(ScalarV_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV IntToFloat(ScalarV_In vVector)
 {
 	return ScalarV(VectorIntToFloat(vVector.GetVector()));
 }
 
-__forceinline Vec2V_Out IntToFloat(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV IntToFloat(Vec2V_In vVector)
 {
 	return Vec2V(VectorIntToFloat(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out IntToFloat(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV IntToFloat(Vec3V_In vVector)
 {
 	return Vec3V(VectorIntToFloat(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out IntToFloat(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV IntToFloat(Vec4V_In vVector)
 {
 	return Vec4V(VectorIntToFloat(vVector.GetVector()));
 }
 
-__forceinline ScalarV_Out FloatToInt(ScalarV_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV FloatToInt(ScalarV_In vVector)
 {
 	return ScalarV(VectorFloatToInt(vVector.GetVector()));
 }
 
-__forceinline Vec2V_Out FloatToInt(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV FloatToInt(Vec2V_In vVector)
 {
 	return Vec2V(VectorFloatToInt(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out FloatToInt(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV FloatToInt(Vec3V_In vVector)
 {
 	return Vec3V(VectorFloatToInt(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out FloatToInt(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV FloatToInt(Vec4V_In vVector)
 {
 	return Vec4V(VectorFloatToInt(vVector.GetVector()));
 }
 
-__forceinline ScalarV_Out Floor(ScalarV_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Floor(ScalarV_In vVector)
 {
 	return ScalarV(VectorFloor(vVector.GetVector()));
 }
 
-__forceinline Vec2V_Out Floor(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Floor(Vec2V_In vVector)
 {
 	return Vec2V(VectorFloor(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out Floor(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Floor(Vec3V_In vVector)
 {
 	return Vec3V(VectorFloor(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out Floor(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Floor(Vec4V_In vVector)
 {
 	return Vec4V(VectorFloor(vVector.GetVector()));
 }
 
-__forceinline ScalarV_Out Ceil(ScalarV_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Ceil(ScalarV_In vVector)
 {
 	return ScalarV(VectorCeil(vVector.GetVector()));
 }
 
-__forceinline Vec2V_Out Ceil(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Ceil(Vec2V_In vVector)
 {
 	return Vec2V(VectorCeil(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out Ceil(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Ceil(Vec3V_In vVector)
 {
 	return Vec3V(VectorCeil(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out Ceil(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Ceil(Vec4V_In vVector)
 {
 	return Vec4V(VectorCeil(vVector.GetVector()));
 }
 
-__forceinline ScalarV_Out Trunc(ScalarV_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Trunc(ScalarV_In vVector)
 {
 	return ScalarV(VectorTrunc(vVector.GetVector()));
 }
 
-__forceinline Vec2V_Out Trunc(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Trunc(Vec2V_In vVector)
 {
 	return Vec2V(VectorTrunc(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out Trunc(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Trunc(Vec3V_In vVector)
 {
 	return Vec3V(VectorTrunc(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out Trunc(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Trunc(Vec4V_In vVector)
 {
 	return Vec4V(VectorTrunc(vVector.GetVector()));
 }
 
-__forceinline ScalarV_Out Round(ScalarV_In vVector)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Round(ScalarV_In vVector)
 {
 	return ScalarV(VectorRound(vVector.GetVector()));
 }
 
-__forceinline Vec2V_Out Round(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Round(Vec2V_In vVector)
 {
 	return Vec2V(VectorRound(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out Round(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Round(Vec3V_In vVector)
 {
 	return Vec3V(VectorRound(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out Round(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Round(Vec4V_In vVector)
 {
 	return Vec4V(VectorRound(vVector.GetVector()));
 }
 
-__forceinline ScalarV_Out Log2(ScalarV_In vScalar)
+__forceinline ScalarV_Out RECON_VEC_CALLCONV Log2(ScalarV_In vScalar)
 {
 	return ScalarV(VectorLog2(vScalar.GetVector()));
 }
-__forceinline Vec2V_Out Log2(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Log2(Vec2V_In vVector)
 {
 	return Vec2V(VectorLog2(vVector.GetVector()));
 }
 
-__forceinline Vec3V_Out Log2(Vec3V_In vVector)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Log2(Vec3V_In vVector)
 {
 	return Vec3V(VectorLog2(vVector.GetVector()));
 }
 
-__forceinline Vec4V_Out Log2(Vec4V_In vVector)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Log2(Vec4V_In vVector)
 {
 	return Vec4V(VectorLog2(vVector.GetVector()));
 }
 
-inline Mat44V_Out Lerp(Mat44V_In MatrixA, Mat44V_In MatrixB, ScalarV_In vLambda)
+inline Mat44V_Out RECON_VEC_CALLCONV Lerp(Mat44V_In MatrixA, Mat44V_In MatrixB, ScalarV_In vLambda)
 {
 	Mat44V result;
 	result.GetXAxisRef().SetXYZ(Lerp(MatrixA.GetXAxis().GetXYZ(), MatrixB.GetXAxis().GetXYZ(), vLambda));
@@ -1987,12 +2262,12 @@ inline Mat44V_Out Lerp(Mat44V_In MatrixA, Mat44V_In MatrixB, ScalarV_In vLambda)
 	return result;
 }
 
-__forceinline Vec3V_Out Cross(Vec3V_In lhs, Vec3V_In rhs)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Cross(Vec3V_In lhs, Vec3V_In rhs)
 {
 	return Vec3V(VectorCrossProduct(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline Mat44V Mat34ToMat44(Mat34V_In mMatrix)
+__forceinline Mat44V RECON_VEC_CALLCONV Mat34ToMat44(Mat34V_In mMatrix)
 {
 	return Mat44V(Vec4V(mMatrix.GetXAxisRef(), ScalarV(I_ZERO)), \
 				  Vec4V(mMatrix.GetYAxisRef(), ScalarV(I_ZERO)), \
@@ -2000,7 +2275,7 @@ __forceinline Mat44V Mat34ToMat44(Mat34V_In mMatrix)
 				  Vec4V(mMatrix.GetWAxisRef(), ScalarV(I_ONE)));
 }
 
-__forceinline Mat34V Mat44ToMat34(Mat44V_In mMatrix)
+__forceinline Mat34V RECON_VEC_CALLCONV Mat44ToMat34(Mat44V_In mMatrix)
 {
 	return Mat34V(mMatrix.GetXAxisRef().GetXYZ(), \
 				  mMatrix.GetYAxisRef().GetXYZ(), \
@@ -2008,7 +2283,7 @@ __forceinline Mat34V Mat44ToMat34(Mat44V_In mMatrix)
 				  mMatrix.GetWAxisRef().GetXYZ());
 }
 
-__forceinline Mat44V_Out MatrixInverse(Mat44V_In mMatrix)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV MatrixInverse(Mat44V_In mMatrix)
 {
 	/*
 		Derived From The Intel Paper At:
@@ -2096,21 +2371,21 @@ __forceinline Mat44V_Out MatrixInverse(Mat44V_In mMatrix)
 	return mMatrix;
 }
 
-__forceinline Mat44V_Out Transpose(Mat44V_In mMatrix)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV Transpose(Mat44V_In mMatrix)
 {
 	Mat44V retVal(mMatrix);
 	retVal.Transpose();
 	return retVal;
 }
 
-__forceinline Mat44V_Out Transpose3x3(Mat44V_In mMatrix)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV Transpose3x3(Mat44V_In mMatrix)
 {
 	Mat44V retVal(mMatrix);
 	retVal.Transpose3x3();
 	return retVal;
 }
 
-__forceinline Mat44V_Out RotateAround(Vec3V_In origin, Mat44V_In rotatorsMatrix, Mat44V_In rotationMatrix)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV RotateAround(Vec3V_In origin, Mat44V_In rotatorsMatrix, Mat44V_In rotationMatrix)
 {
 	Mat44V newMat(rotatorsMatrix);
 	newMat.Translate(-origin);
@@ -2119,7 +2394,7 @@ __forceinline Mat44V_Out RotateAround(Vec3V_In origin, Mat44V_In rotatorsMatrix,
 	return newMat;
 }
 
-__forceinline Mat44V_Out MakePerspectiveMatrixV(float fFOV, float fAspectRatio, float fNearClip, float fFarClip)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV MakePerspectiveMatrixV(float fFOV, float fAspectRatio, float fNearClip, float fFarClip)
 {
 	float yScale = 1 / tan(fFOV * 0.5f);
 	float xScale = yScale / fAspectRatio;
@@ -2130,7 +2405,7 @@ __forceinline Mat44V_Out MakePerspectiveMatrixV(float fFOV, float fAspectRatio, 
 					0.0f,		0.0f,	(-fNearClip * fFarClip) / (fFarClip - fNearClip),	0.0f);
 }
 
-__forceinline Mat44V_Out MakeOrthographicMatrixV(float fWidth, float fHeight, float fNear, float fFar)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV MakeOrthographicMatrixV(float fWidth, float fHeight, float fNear, float fFar)
 {
 	return Mat44V(	2.0f / fWidth,		0.0f,					0.0f,						0.0f,
 					0.0f,				2.0f / fHeight,			0.0f,						0.0f,
@@ -2138,7 +2413,7 @@ __forceinline Mat44V_Out MakeOrthographicMatrixV(float fWidth, float fHeight, fl
 					0.0f,				0.0f,					-fNear / (fFar - fNear),	1.0f);
 }
 
-__forceinline Mat44V_Out MakeTextureMatrixOffsetV(unsigned int unWidth, unsigned int unHeight)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV MakeTextureMatrixOffsetV(unsigned int unWidth, unsigned int unHeight)
 {
 	return Mat44V(0.5f,						0.0f,						0.0f,	0.0f,
 				  0.0f,						-0.5f,						0.0f,	0.0f,

@@ -35,7 +35,7 @@ ALIGN(16) class Vec4V
 	__forceinline retType funcName() const { return retVal; }
 
 #define VEC4V_ACCESSOR_SCALARV_CONST(element) \
-	__forceinline ScalarV_Out Get##element () const \
+	__forceinline ScalarV_Out RECON_VEC_CALLCONV Get##element() const \
 		{ return ScalarV(VectorPermute<VecElem::##element , VecElem::##element , VecElem::##element , VecElem::##element >(row)); }
 
 #define VEC4V_MUTATOR(funcName, inType, modifiedVal) \
@@ -88,9 +88,9 @@ public:
 	VEC4V_ACCESSOR_CONST(const float&, GetYRef, y)
 	VEC4V_ACCESSOR_CONST(const float&, GetZRef, z)
 	VEC4V_ACCESSOR_CONST(const float&, GetWRef, w)
-	__forceinline Vec3V GetXYZ() const {return Vec3V(row);}
+	__forceinline Vec3V RECON_VEC_CALLCONV GetXYZ() const { return Vec3V(row); }
 
-	VEC4V_ACCESSOR_CONST(Vector_Out, GetVector, row);
+	VEC4V_ACCESSOR_CONST(Vector_Out, RECON_VEC_CALLCONV GetVector, row);
 
 	VEC4V_ACCESSOR(float&, GetXRef, x)
 	VEC4V_ACCESSOR(float&, GetYRef, y)
@@ -104,10 +104,10 @@ public:
 #endif
 
 #if defined(VEC4V_MUTATOR)
-	void SetX(ScalarV_In vX);
-	void SetY(ScalarV_In vY);
-	void SetZ(ScalarV_In vZ);
-	void SetW(ScalarV_In vW);
+	void RECON_VEC_CALLCONV SetX(ScalarV_In vX);
+	void RECON_VEC_CALLCONV SetY(ScalarV_In vY);
+	void RECON_VEC_CALLCONV SetZ(ScalarV_In vZ);
+	void RECON_VEC_CALLCONV SetW(ScalarV_In vW);
 
 	VEC4V_MUTATOR(SetX, const float&, x)
 	VEC4V_MUTATOR(SetY, const float&, y)
@@ -171,46 +171,44 @@ public:
 
 	Vec4V_Out operator-() const;
 
-	Vec4V_Out operator=(Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator=(Vec4V_In vVector);
 #if !RECON_OS_64BIT
-	Vec4V_Out operator=(Vec4V&& vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator=(Vec4V&& vVector);
 #endif // !_WIN_64
 
-	Vec4V_Out operator-(Vec4V_In vVector) const;
-	void operator-=(Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator-(Vec4V_In vVector) const;
+	void RECON_VEC_CALLCONV operator-=(Vec4V_In vVector);
 
-	Vec4V_Out operator+(Vec4V_In vVector) const;
-	void operator+=(Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator+(Vec4V_In vVector) const;
+	void RECON_VEC_CALLCONV operator+=(Vec4V_In vVector);
 
-	Vec4V_Out operator/(ScalarV_In vScalar) const;
-	void operator/=(ScalarV_In vScalar);
-	Vec4V_Out operator/(Vec4V_In vVector) const;
-	void operator/=(Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator/(ScalarV_In vScalar) const;
+	void RECON_VEC_CALLCONV operator/=(ScalarV_In vScalar);
+	Vec4V_Out RECON_VEC_CALLCONV operator/(Vec4V_In vVector) const;
+	void RECON_VEC_CALLCONV operator/=(Vec4V_In vVector);
 
-	Vec4V_Out operator*(ScalarV_In vScalar) const;
-	void operator*=(ScalarV_In vScalar);
-	friend Vec4V_Out operator*(ScalarV_Ref vScalar, Vec4V_In vVector);
-	Vec4V_Out operator*(Vec4V_In vVector) const;
-	void operator*=(Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator*(ScalarV_In vScalar) const;
+	void RECON_VEC_CALLCONV operator*=(ScalarV_In vScalar);
+	friend Vec4V_Out RECON_VEC_CALLCONV operator*(ScalarV_Ref vScalar, Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator*(Vec4V_In vVector) const;
+	void RECON_VEC_CALLCONV operator*=(Vec4V_In vVector);
 
-	bool operator==(Vec4V_In vVector) const;
-	bool operator!=(Vec4V_In vVector) const;
+	bool RECON_VEC_CALLCONV operator==(Vec4V_In vVector) const;
+	bool RECON_VEC_CALLCONV operator!=(Vec4V_In vVector) const;
 
-	Vec4V_Out operator&(Vec4V_In vVector) const;
-	void operator&=(Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator&(Vec4V_In vVector) const;
+	void RECON_VEC_CALLCONV operator&=(Vec4V_In vVector);
 
-	Vec4V_Out operator|(Vec4V_In vVector) const;
-	void operator|=(Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator|(Vec4V_In vVector) const;
+	void RECON_VEC_CALLCONV operator|=(Vec4V_In vVector);
 
-	Vec4V_Out operator^(Vec4V_In vVector) const;
-	void operator^=(Vec4V_In vVector);
+	Vec4V_Out RECON_VEC_CALLCONV operator^(Vec4V_In vVector) const;
+	void RECON_VEC_CALLCONV operator^=(Vec4V_In vVector);
 
 	Vec4V_Out operator~() const;
 
 	const float& operator[](int index) const;
 	float& operator[](int index);
-
-	Vec4V_Out Normalize();
 };
 
 GLOBALCONST Vec4V g_IdentityX4V = Vec4V(I_X_AXIS);
@@ -219,18 +217,18 @@ GLOBALCONST Vec4V g_IdentityZ4V = Vec4V(I_Z_AXIS);
 GLOBALCONST Vec4V g_IdentityW4V = Vec4V(I_W_AXIS);
 GLOBALCONST Vec4V g_WorldUp4V	= Vec4V(I_UP_AXIS);
 
-Vec4V_Out Vec4VInt(int intVal);
-Vec4V_Out Vec4VInt(int intX, int intY, int intZ, int intW);
+Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(int intVal);
+Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(int intX, int intY, int intZ, int intW);
 
-ScalarV Dot(Vec4V_In lhs, Vec4V_In rhs);
+ScalarV_Out RECON_VEC_CALLCONV Dot(Vec4V_In lhs, Vec4V_In rhs);
 
-ScalarV Mag(Vec4V_In vVector);
-ScalarV Length(Vec4V_In vVector);
-ScalarV MagSq(Vec4V_In vVector);
-ScalarV LengthSq(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Mag(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Length(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV MagSq(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV LengthSq(Vec4V_In vVector);
 
-Vec4V_Out Normalize(Vec4V_In vVector);
-Vec4V_Out Cross(Vec4V_In vVectorA, Vec4V_In vVectorB);
+Vec4V_Out RECON_VEC_CALLCONV Normalize(Vec4V_In vVector);
+Vec4V_Out RECON_VEC_CALLCONV Cross(Vec4V_In vVectorA, Vec4V_In vVectorB);
 
 #include "Vec4V.inl"
 

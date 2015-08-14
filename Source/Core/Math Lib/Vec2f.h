@@ -150,37 +150,37 @@ public:
 
 	Vec2f_Out operator-() const;
 
-	Vec2f_Ref operator=(Vec2f_In vVector);
-	Vec2f_Ref operator=(Vec2f&& vVector);
+	Vec2f_Ref RECON_VEC_CALLCONV operator=(Vec2f_In vVector);
+	Vec2f_Ref RECON_VEC_CALLCONV operator=(Vec2f&& vVector);
 
-	Vec2f_Out operator+(Vec2f_In vVector) const;
-	void operator+=(Vec2f_In vVector);
+	Vec2f_Out RECON_VEC_CALLCONV operator+(Vec2f_In vVector) const;
+	void RECON_VEC_CALLCONV operator+=(Vec2f_In vVector);
 
-	Vec2f_Out operator-(Vec2f_In vVector) const;
-	void operator-=(Vec2f_In vVector);
+	Vec2f_Out RECON_VEC_CALLCONV operator-(Vec2f_In vVector) const;
+	void RECON_VEC_CALLCONV operator-=(Vec2f_In vVector);
 
-	Vec2f_Out operator*(const float& fScalar) const;
-	friend Vec2f_Out operator*(const float& fScalar, Vec2f_In vVector);
-	void operator*=(const float& fScalar);
-	Vec2f_Out operator*(Vec2f_In vVector) const;
-	void operator*=(Vec2f_In vVector);
+	Vec2f_Out RECON_VEC_CALLCONV operator*(const float& fScalar) const;
+	friend Vec2f_Out RECON_VEC_CALLCONV operator*(const float& fScalar, Vec2f_In vVector);
+	void RECON_VEC_CALLCONV operator*=(const float& fScalar);
+	Vec2f_Out RECON_VEC_CALLCONV operator*(Vec2f_In vVector) const;
+	void RECON_VEC_CALLCONV operator*=(Vec2f_In vVector);
 
-	Vec2f_Out operator/(const float& fScalar) const;
-	void operator/=(const float& fScalar);
-	Vec2f_Out operator/(Vec2f_In vVector) const;
-	void operator/=(Vec2f_In vVector);
+	Vec2f_Out RECON_VEC_CALLCONV operator/(const float& fScalar) const;
+	void RECON_VEC_CALLCONV operator/=(const float& fScalar);
+	Vec2f_Out RECON_VEC_CALLCONV operator/(Vec2f_In vVector) const;
+	void RECON_VEC_CALLCONV operator/=(Vec2f_In vVector);
 
-	bool operator==(Vec2f_In vVector);
-	bool operator!=(Vec2f_In vVector);
+	bool RECON_VEC_CALLCONV operator==(Vec2f_In vVector);
+	bool RECON_VEC_CALLCONV operator!=(Vec2f_In vVector);
 
-	Vec2f_Out operator&(Vec2f_In vVector) const;
-	void operator&=(Vec2f_In vVector);
+	Vec2f_Out RECON_VEC_CALLCONV operator&(Vec2f_In vVector) const;
+	void RECON_VEC_CALLCONV operator&=(Vec2f_In vVector);
 
-	Vec2f_Out operator|(Vec2f_In vVector) const;
-	void operator|=(Vec2f_In vVector);
+	Vec2f_Out RECON_VEC_CALLCONV operator|(Vec2f_In vVector) const;
+	void RECON_VEC_CALLCONV operator|=(Vec2f_In vVector);
 
-	Vec2f_Out operator^(Vec2f_In vVector) const;
-	void operator^=(Vec2f_In vVector);
+	Vec2f_Out RECON_VEC_CALLCONV operator^(Vec2f_In vVector) const;
+	void RECON_VEC_CALLCONV operator^=(Vec2f_In vVector);
 
 	Vec2f_Out operator~() const;
 
@@ -188,18 +188,18 @@ public:
 	float& operator[](int index);
 };
 
-Vec2f_Out Vec2fInt(const s32& intVal);
-Vec2f_Out Vec2fInt(const s32& intX, const s32& intY);
+Vec2f_Out RECON_VEC_CALLCONV Vec2fInt(const s32& intVal);
+Vec2f_Out RECON_VEC_CALLCONV Vec2fInt(const s32& intX, const s32& intY);
 
-float Dot(Vec2f_In lhs, Vec2f_In rhs);
+float RECON_VEC_CALLCONV Dot(Vec2f_In lhs, Vec2f_In rhs);
 
-float Mag(Vec2f_In vVector);
-float Length(Vec2f_In vVector);
-float MagSq(Vec2f_In vVector);
-float LengthSq(Vec2f_In vVector);
+float RECON_VEC_CALLCONV Mag(Vec2f_In vVector);
+float RECON_VEC_CALLCONV Length(Vec2f_In vVector);
+float RECON_VEC_CALLCONV MagSq(Vec2f_In vVector);
+float RECON_VEC_CALLCONV LengthSq(Vec2f_In vVector);
 
-Vec2f_Out Normalize(Vec2f_In vVector);
-Vec2f_Out Cross(Vec2f_In vVectorA, Vec2f_In vVectorB);
+Vec2f_Out RECON_VEC_CALLCONV Normalize(Vec2f_In vVector);
+Vec2f_Out RECON_VEC_CALLCONV Cross(Vec2f_In vVectorA, Vec2f_In vVectorB);
 
 #include "Vec2f.inl"
 

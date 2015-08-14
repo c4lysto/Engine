@@ -22,17 +22,11 @@
     <ClCompile Include="..\Source\Core\Utilities\Debugging\DebugWindow.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\HashString.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp" />
-    <ClCompile Include="..\Source\Core\Utilities\SysEvent.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\SysHook.cpp" />
-    <ClCompile Include="..\Source\Core\Utilities\SysMutex.cpp" />
-    <ClCompile Include="..\Source\Core\Utilities\SysSemaphore.cpp" />
-    <ClCompile Include="..\Source\Core\Utilities\SysSyncObject.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\SysThread.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\ThreadPool.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\Source\Core\Utilities\Atomic.h" />
-    <ClInclude Include="..\Source\Core\Utilities\SysCriticalSection.h" />
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugHelp.h" />
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugWindow.h" />
     <ClInclude Include="..\Source\Core\Utilities\FunctionPointer.h" />
@@ -43,13 +37,9 @@
     <ClInclude Include="..\Source\Core\Utilities\SysHook.h" />
     <ClInclude Include="..\Source\Core\Utilities\SysMutex.h" />
     <ClInclude Include="..\Source\Core\Utilities\SysSemaphore.h" />
-    <ClInclude Include="..\Source\Core\Utilities\SysSyncObject.h" />
     <ClInclude Include="..\Source\Core\Utilities\SysThread.h" />
     <ClInclude Include="..\Source\Core\Utilities\ThreadPool.h" />
     <ClInclude Include="..\Source\Core\Utilities\UtilitiesInclude.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Source\Core\Utilities\Atomic.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{10AE78BB-987D-4061-A1D4-8F4ADD9A86EB}</ProjectGuid>
