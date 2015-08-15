@@ -141,7 +141,7 @@ public:
 	void TurnTo(Vec3V_In vPos, const float& fDeltaTime, float fTurnModifier = 1.0f);
 };
 
-Mat44V_Out Mat34ToMat44(Mat34V_In mMatrix);
+Mat44V_Out RECON_VEC_CALLCONV Mat34ToMat44(Mat34V_In mMatrix);
 
 #include "Mat34V.inl"
 

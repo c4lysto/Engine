@@ -58,8 +58,6 @@ void InputManager::Shutdown()
 
 	m_InputHook.Shutdown();
 	m_InputThread.EndThread();
-
-	SysCloseEvent(m_NewInputEvent);
 }
 
 bool InputManager::Initialize(HWND hWnd)
@@ -84,8 +82,6 @@ bool InputManager::Initialize(HWND hWnd)
 		MessageBox(NULL, _T("Failed To Register Raw Input Devices"), _T(""), MB_OK | MB_ICONERROR);
 		return false;
 	}
-
-	SysCreateEvent(m_NewInputEvent);
 
 	m_InputThread.StartThread(recon::SysThreadProc(this, &InputManager::InputThreadProc), nullptr, SysThreadPriority::Normal, "Input Thread");
 	m_InputHook.Init(sysHookType::HOOK_GETMESSAGE, InputManager::InputHookCallback);
@@ -167,7 +163,7 @@ void InputManager::SetDeviceChange(WPARAM wParam, LPARAM lParam)
 
 void InputManager::ProcessInputEvent(WPARAM wParam, LPARAM lParam)
 {
-	//SysLocalCriticalSection inputCS(m_InputCS);
+	//SysAutoCriticalSection inputCS(m_InputCS);
 
 #if USE_BUFFERED_INPUT
 	UINT unSize = 0;
@@ -263,7 +259,7 @@ void InputManager::ProcessInput()
 	DisplayCurrentEvents();
 #endif // RECON_DEBUG
 
-	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
+	SysAutoCriticalSection currInputCS(m_CurrentInputCS);
 
 	std::list<InputCurrentEventContainer::iterator> lEventsToDelete;
 
@@ -428,7 +424,7 @@ void InputManager::CreateMouseEvent(PRAWINPUT pInput)
 
 void InputManager::PostButtonEvent(InputEvent& inputEvent, bool bIsDown)
 {
-	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
+	SysAutoCriticalSection currInputCS(m_CurrentInputCS);
 
 	InputEvent* pDownEvent = GetCurrentInputEvent(inputEvent);
 
@@ -460,7 +456,7 @@ void InputManager::PostInputEvent(const InputEvent* pInputEvent)
 {
 	if(pInputEvent)
 	{
-		SysLocalCriticalSection currInputCS(m_CurrentInputCS);
+		SysAutoCriticalSection currInputCS(m_CurrentInputCS);
 
 		InputEvent* pCurrEvent = GetCurrentInputEvent(*pInputEvent);
 
@@ -481,7 +477,7 @@ void InputManager::PostInputEvent(const InputEvent* pInputEvent)
 
 void InputManager::ClearAllCurrentInput()
 {
-	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
+	SysAutoCriticalSection currInputCS(m_CurrentInputCS);
 
 	for(InputCurrentEventContainer::iterator iter = m_lCurrentEvents.begin(); iter != m_lCurrentEvents.end(); ++iter)
 	{
@@ -617,7 +613,7 @@ void InputManager::DisplayCurrentEvents()
 {
 	//system("cls");
 
-	SysLocalCriticalSection currInputCS(m_CurrentInputCS);
+	SysAutoCriticalSection currInputCS(m_CurrentInputCS);
 
 	for(InputCurrentEventContainer::iterator iter = m_lCurrentEvents.begin(); iter != m_lCurrentEvents.end(); ++iter)
 	{

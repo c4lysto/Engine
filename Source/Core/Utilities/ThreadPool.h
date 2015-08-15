@@ -5,9 +5,9 @@
 #include <queue>
 #include <vector>
 
+#include "SysMutex.h"
 #include "SysThread.h"
 #include "SysSemaphore.h"
-#include "SysCriticalSection.h"
 
 namespace recon
 {

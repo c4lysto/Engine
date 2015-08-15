@@ -45,15 +45,6 @@
     <ClCompile Include="..\Source\Core\Utilities\ThreadPool.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\SysSemaphore.cpp">
-      <Filter>Source Files\Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\SysMutex.cpp">
-      <Filter>Source Files\Threading</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\SysEvent.cpp">
-      <Filter>Source Files\Threading</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp">
       <Filter>Source Files\Memory</Filter>
     </ClCompile>
@@ -95,12 +86,6 @@
     <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h">
       <Filter>Header Files\Memory</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\Atomic.h">
-      <Filter>Header Files\Threading</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\SysCriticalSection.h">
-      <Filter>Header Files\Threading</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\Function.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
@@ -128,10 +113,5 @@
     <ClInclude Include="..\Source\Core\Utilities\Random.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="..\Source\Core\Utilities\Atomic.inl">
-      <Filter>Resource Files</Filter>
-    </None>
   </ItemGroup>
 </Project>

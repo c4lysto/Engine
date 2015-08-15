@@ -136,7 +136,7 @@ public:
 	void OrthoNormalInvert();
 };
 
-Mat34f Mat44ToMat34(Mat44f_In mMatrix);
+Mat34f RECON_VEC_CALLCONV Mat44ToMat34(Mat44f_In mMatrix);
 
 #include "Mat44f.inl"
 

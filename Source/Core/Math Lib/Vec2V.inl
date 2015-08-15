@@ -43,22 +43,22 @@ __forceinline Vec2V::Vec2V(Vector&& rhs)
 }
 #endif // !RECON_OS_64BIT
 
-__forceinline void Vec2V::SetX(ScalarV_In xVal)
+__forceinline void RECON_VEC_CALLCONV Vec2V::SetX(ScalarV_In xVal)
 {
 	row = VectorPermute<VecElem::X2, VecElem::Y1, VecElem::Z1, VecElem::W1>(row, xVal.GetVector());
 }
 
-__forceinline void Vec2V::SetY(ScalarV_In yVal)
+__forceinline void RECON_VEC_CALLCONV Vec2V::SetY(ScalarV_In yVal)
 {
 	row = VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W1>(row, yVal.GetVector());
 }
 
-__forceinline void Vec2V::SetZ(ScalarV_In zVal)
+__forceinline void RECON_VEC_CALLCONV Vec2V::SetZ(ScalarV_In zVal)
 {
 	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(row, zVal.GetVector());
 }
 
-__forceinline void Vec2V::SetW(ScalarV_In wVal)
+__forceinline void RECON_VEC_CALLCONV Vec2V::SetW(ScalarV_In wVal)
 {
 	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(row, wVal.GetVector());
 }
@@ -68,14 +68,14 @@ __forceinline Vec2V_Out Vec2V::operator-() const
 	return Vec2V(VectorNegate(row));
 }
 
-__forceinline Vec2V_Out Vec2V::operator=(Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator=(Vec2V_In vVector)
 {
 	if(this != &vVector) { row = vVector.row; }
 	return *this;
 }
 
 #if !RECON_OS_64BIT
-__forceinline Vec2V_Out Vec2V::operator=(Vec2V&& vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator=(Vec2V&& vVector)
 {
 	if(this != vVector)
 		row = move(vVector.row);
@@ -83,163 +83,124 @@ __forceinline Vec2V_Out Vec2V::operator=(Vec2V&& vVector)
 }
 #endif // !RECON_OS_64BIT
 
-__forceinline Vec2V_Out Vec2V::operator+(Vec2V_In vVector) const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator+(Vec2V_In vVector) const
 {
 	return Vec2V(VectorAdd(row, vVector.row));
 }
 
-__forceinline void Vec2V::operator+=(Vec2V_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator+=(Vec2V_In vVector)
 {
 	row = VectorAdd(row, vVector.row);
 }
 
-__forceinline Vec2V_Out Vec2V::operator-(Vec2V_In vVector) const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator-(Vec2V_In vVector) const
 {
 	return Vec2V(VectorSubtract(row, vVector.row));
 }
 
-__forceinline void Vec2V::operator-=(Vec2V_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator-=(Vec2V_In vVector)
 {
 	row = VectorSubtract(row, vVector.row);
 }
 
-__forceinline Vec2V_Out Vec2V::operator*(Vec2V_In vVector) const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator*(Vec2V_In vVector) const
 {
 	return Vec2V(VectorMultiply(row, vVector.row));
 }
 
-__forceinline Vec2V Vec2V::operator*(ScalarV_In vScalar) const
+__forceinline Vec2V RECON_VEC_CALLCONV Vec2V::operator*(ScalarV_In vScalar) const
 {
 	return Vec2V(VectorMultiply(row, vScalar.GetVector()));
 }
 
-__forceinline Vec2V_Out operator*(ScalarV_Ref vScalar, Vec2V_In vVector)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV operator*(ScalarV_Ref vScalar, Vec2V_In vVector)
 {
 	return Vec2V(VectorMultiply(vVector.row, vScalar.GetVector()));
 }
 
-__forceinline void Vec2V::operator*=(ScalarV_In vScalar)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator*=(ScalarV_In vScalar)
 {
 	row = VectorMultiply(row, vScalar.GetVector());
 }
 
-__forceinline void Vec2V::operator*=(Vec2V_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator*=(Vec2V_In vVector)
 {
 	row = VectorMultiply(row, vVector.row);
 }
 
-__forceinline Vec2V_Out Vec2V::operator/(Vec2V_In vVector) const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator/(Vec2V_In vVector) const
 {
 	return Vec2V(VectorDivide(row, vVector.row));
 }
 
-__forceinline Vec2V_Out Vec2V::operator/(ScalarV_In vScalar) const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator/(ScalarV_In vScalar) const
 {
 	return Vec2V(VectorDivide(row, vScalar.GetVector()));
 }
 
-__forceinline void Vec2V::operator/=(Vec2V_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator/=(Vec2V_In vVector)
 {
 	row = VectorDivide(row, vVector.row);
 }
 
-__forceinline void Vec2V::operator/=(ScalarV_In vScalar)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator/=(ScalarV_In vScalar)
 {
 	row = VectorDivide(row, vScalar.GetVector());
 }
 
-__forceinline bool Vec2V::operator==(Vec2V_In vVector) const
+__forceinline bool RECON_VEC_CALLCONV Vec2V::operator==(Vec2V_In vVector) const
 {
 	return VectorIsEqualXY(row, vVector.row);
 }
 
-__forceinline bool Vec2V::operator!=(Vec2V_In vVector) const
+__forceinline bool RECON_VEC_CALLCONV Vec2V::operator!=(Vec2V_In vVector) const
 {
 	return VectorIsNotEqualXY(row, vVector.row);
 }
 
-__forceinline Vec2V_Out Vec2V::operator&(Vec2V_In vVector) const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator&(Vec2V_In vVector) const
 {
 	return Vec2V(VectorAnd(row, vVector.row));
 }
 
-__forceinline void Vec2V::operator&=(Vec2V_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator&=(Vec2V_In vVector)
 {
 	row = VectorAnd(row, vVector.row);
 }
 
-__forceinline Vec2V_Out Vec2V::operator|(Vec2V_In vVector) const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator|(Vec2V_In vVector) const
 {
 	return Vec2V(VectorOr(row, vVector.row));
 }
 
-__forceinline void Vec2V::operator|=(Vec2V_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator|=(Vec2V_In vVector)
 {
 	row = VectorOr(row, vVector.row);
 }
 
-__forceinline Vec2V_Out Vec2V::operator^(Vec2V_In vVector) const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator^(Vec2V_In vVector) const
 {
 	return Vec2V(VectorXOr(row, vVector.row));
 }
 
-__forceinline void Vec2V::operator^=(Vec2V_In vVector)
+__forceinline void RECON_VEC_CALLCONV Vec2V::operator^=(Vec2V_In vVector)
 {
 	row = VectorXOr(row, vVector.row);
 }
 
-__forceinline Vec2V_Out Vec2V::operator~() const
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator~() const
 {
 	return Vec2V(VectorNot(row));
 }
 
-__forceinline Vec2V_Out Vec2V::Normalize()
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(int intVal)
 {
-	ScalarV mag = Mag(*this);
-
-	// protection against divide by zero
-	if(mag)	{ row = VectorDivide(row, mag.GetVector()); }
-	return *this;
-}
-
-__forceinline Vec2V_Out Vec2VInt(int intVal)
-{
-#if SSE_AVAILABLE
 	return Vec2V(VectorSet(intVal));
-#else // if !SSE_AVAILABLE
-	return Vec2V(*reinterpret_cast<float*>(&intVal), *reinterpret_cast<float*>(&intVal));
-#endif // !SSE_AVAILABLE
 }
 
-__forceinline Vec2V_Out Vec2VInt(int intX, int intY)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(int intX, int intY)
 {
-#if SSE_AVAILABLE
 	return Vec2V(VectorSet(intX, intY, (int)VEC_FILL_VAL, (int)VEC_FILL_VAL));
-#else // if !SSE_AVAILABLE
-	return Vec2V(*reinterpret_cast<float*>(&intX), *reinterpret_cast<float*>(&intY));
-#endif // !SSE_AVAILABLE
-}
-
-__forceinline Vec2V_Out Vec2VIntToFloat(Vec2V_In vec)
-{
-#if SSE_AVAILABLE
-	return Vec2V(VectorIntToFloat(vec.GetVector()));
-#else // if !SSE_AVAILABLE
-	int intX = *reinterpret_cast<int*>(&vec.GetXRef());
-	int intY = *reinterpret_cast<int*>(&vec.GetYRef());
-	return Vec2V((float)intX, (float)intY);
-#endif // !SSE_AVAILABLE 
-}
-
-__forceinline Vec2V_Out Vec2VFloatToInt(Vec2V_In vec)
-{
-#if SSE_AVAILABLE
-	return Vec2V(VectorFloatToInt(vec.GetVector()));
-#else // if !SSE_AVAILABLE
-	int intX = (int)vec.GetXRef();
-	int intY = (int)vec.GetYRef();
-	return Vec2V(*reinterpret_cast<float*>(&intX), *reinterpret_cast<float*>(&intY));
-#endif // !SSE_AVAILABLE 
 }
 
 __forceinline const float& Vec2V::operator[](int index) const

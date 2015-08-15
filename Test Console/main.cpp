@@ -13,6 +13,8 @@ using namespace std;
 //#include "Utilities\SmartPointer.h"
 #include "Utilities\Function.h"
 #include "Utilities\HashString.h"
+#include "Utilities/SysMutex.h"
+#include "Utilities/SysEvent.h"
 #include <mutex>
 //#include "../Utilities/DebugHelp.h"
 
@@ -88,7 +90,6 @@ struct TstDerivedClass : public TstThreadArgs
 		cout << "TstDerivedClass::TstVirtual()" << endl;
 	}
 };
-
 
 void TstThreadProc(void* pArgs);
 float TstGlobal()
@@ -230,56 +231,11 @@ int main()
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetBreakAlloc(-1);
 
-	//LONG interlockedTst = 0;
-	//_InterlockedAdd(&interlockedTst, 1);
-
-	std::mutex mutexTst;
-
-	float matf[] = { 0.0f, 1.0f, 0.0f, 0.0f,
-					 0.0f, 0.0f, 1.0f, 0.0f,
-					 1.0f, 0.0f, 0.0f, 0.0f,
-					 100.0f, 50.0f, 25.0f, 1.0f };
-
-	IntelMatInverse(matf);
-
-	Mat44f mat(	0.0f, 1.0f, 0.0f, 0.0f,
-				0.0f, 0.0f, 1.0f, 0.0f,
-				1.0f, 0.0f, 0.0f, 0.0f,
-				100.0f, 50.0f, 25.0f, 1.0f);
-	Mat44V matV(0.0f, 1.0f, 0.0f, 0.0f,
-				0.0f, 0.0f, 1.0f, 0.0f,
-				1.0f, 0.0f, 0.0f, 0.0f,
-				100.0f, 50.0f, 25.0f, 1.0f);
-
-	//mat.Invert();
-	matV = MatrixInverse(matV);
-
-	//assert(!memcmp(matf, &mat, sizeof(Mat44f)));
-
-	//Timer timer;
-	//double totalTime = 0;
-	//Vec3f tst(1, 2, 3);
-	//Vec3f tst1(1, 0, 0);
-
-	//Vec4f vec1(1, 2, 3, 4);
-	//Vec4f vec2(1, 0, 0, 0);
-	//float result;
-
-	//tstFunc testThis;
-	//testThis = &TstThreadArgs::TstMethod;
-
 	TstThreadArgs* pTstArgs = new TstThreadArgs;
 	TstThreadArgs localTstArgs;
 
-	//(pTstArgs->*testThis)();
-	//(((TstThreadArgs*)nullptr)->*testThis)();
-
-	//auto func = FunctionPtr(&TstThreadArgs::TstMethod);
-	//func.SetInvokingObject(pTstArgs);
-	//int retVal = func(250);
-
 	ThreadPool tstThreadPool;//s[10];
-	tstThreadPool.Init(2);
+	tstThreadPool.Init(100);
 
 	//CallFuncPtr(TestThisBitch);
 
@@ -482,45 +438,52 @@ int TstThreadProc(void* pArgs)
 
 	tstThreadPool.Shutdown();
 	delete pTstArgs;
+	std::system("pause");
 	return 0;
 }
 
 void TstThreadProc(void* pArgs)
 {
-	TstThreadArgs* pTstThreadArgs = (TstThreadArgs*)pArgs;
+	/*testMutex.Lock();
+	testMutex.Lock();
+	std::cout << "I Am Printing Out This Large Message\nabcdefghijklmnopqrstuvwxyz1234567890ABCDEFGHIJKLMNOPQRSTUVWXYZ" << std::endl;
+	testMutex.Unlock();
+	testMutex.Unlock();*/
+
+	/*TstThreadArgs* pTstThreadArgs = (TstThreadArgs*)pArgs;
 
 	unsigned int finalVal = 0;
 
 	for(int i = 0; i < 256; ++i)
 	{
-		switch(pTstThreadArgs->operation[i])
-		{
-			case 0:
-			{
-				finalVal += pTstThreadArgs->vals1[i] + pTstThreadArgs->vals2[i];
-			}
-			break;
+	switch(pTstThreadArgs->operation[i])
+	{
+	case 0:
+	{
+	finalVal += pTstThreadArgs->vals1[i] + pTstThreadArgs->vals2[i];
+	}
+	break;
 
-			case 1:
-			{
-				finalVal += pTstThreadArgs->vals1[i] - pTstThreadArgs->vals2[i];
-			}
-			break;
+	case 1:
+	{
+	finalVal += pTstThreadArgs->vals1[i] - pTstThreadArgs->vals2[i];
+	}
+	break;
 
-			case 2:
-			{
-				finalVal += pTstThreadArgs->vals1[i] * pTstThreadArgs->vals2[i];
-			}
-			break;
+	case 2:
+	{
+	finalVal += pTstThreadArgs->vals1[i] * pTstThreadArgs->vals2[i];
+	}
+	break;
 
-			case 3:
-			{
-				finalVal += pTstThreadArgs->vals1[i] / pTstThreadArgs->vals2[i];
-			}
-			break;
-		}
+	case 3:
+	{
+	finalVal += pTstThreadArgs->vals1[i] / pTstThreadArgs->vals2[i];
+	}
+	break;
+	}
 
 	}
 
-	cout << "Final Val: " << finalVal << endl;
+	cout << "Final Val: " << finalVal << endl;*/
 }

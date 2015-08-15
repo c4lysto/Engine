@@ -3,10 +3,11 @@
 
 #include <Windows.h>
 #include "Input.h"
-#include "../Utilities/SysThread.h"
-#include "../Utilities/SysCriticalSection.h"
-#include "../Utilities/SysHook.h"
+
 #include "../Utilities/SysEvent.h"
+#include "../Utilities/SysHook.h"
+#include "../Utilities/SysMutex.h"
+#include "../Utilities/SysThread.h"
 
 #include <atomic>
 #include <map>

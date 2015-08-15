@@ -1,33 +1,27 @@
 #ifndef _RECON_SYSEVENT_H_
 #define _RECON_SYSEVENT_H_
 
-#include "UtilitiesInclude.h"
+#include "SysSemaphore.h"
 
 namespace recon
 {
 
-// Event Can Only Be Created Via SysCreateEvent(bool,bool)
-// Event Must Be Closed Via SysCloseEvent(SysEvent&)
 class SysEvent
 {
-public:
-	typedef void* Handle;
 
 private:
-	SysEvent::Handle m_Event;
+	SysSemaphore m_Semaphore;
 
 public:
-	SysEvent();
-	~SysEvent();
+	SysEvent() : m_Semaphore(1) { }
+	~SysEvent() { }
 
-	void Wait();
-	bool IsSignaled();
-	void Signal();
+	SysEvent(const SysEvent& rhs) = delete;
+	SysEvent& operator=(const SysEvent& rhs) = delete;
 
-public:
+	void Wait() { m_Semaphore.Acquire(); }
 
-	friend void SysCreateEvent(SysEvent& sysEvent, bool bInitiallySignaled = false);
-	friend void SysCloseEvent(SysEvent& sysEvent);
+	void Signal() { m_Semaphore.Release(); }
 };
 
 } // namespace recon

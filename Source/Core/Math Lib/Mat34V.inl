@@ -240,32 +240,28 @@ __forceinline void Mat34V::Transpose3x3()
 
 __forceinline void Mat34V::Normalize()
 {
-	xAxis.Normalize();
-	yAxis.Normalize();
-	zAxis.Normalize();
+	xAxis = ::Normalize(xAxis);
+	yAxis = ::Normalize(yAxis);
+	zAxis = ::Normalize(zAxis);
 }
 
 inline void Mat34V::LookAt(Vec3V_In mPos, Vec3V_In vWorldUp)
 {
-	Vec3V vecToPos = mPos - wAxis;
-	vecToPos.Normalize();
+	Vec3V vecToPos = ::Normalize(mPos - wAxis);
 
 	// zAxis
 	zAxis = vecToPos;
 
 	// xAxis;
-	xAxis = Cross(vWorldUp, zAxis);
-	xAxis.Normalize();
+	xAxis = ::Normalize(Cross(vWorldUp, zAxis));
 
 	// yAxis;
-	yAxis = Cross(zAxis, xAxis);
-	yAxis.Normalize();
+	yAxis = ::Normalize(Cross(zAxis, xAxis));
 }
 
 inline void Mat34V::TurnTo(Vec3V_In vPos, const float& fDeltaTime, float fTurnModifier)
 {
-	Vec3V vecToPos = vPos - wAxis;
-	vecToPos.Normalize();
+	Vec3V vecToPos = ::Normalize(vPos - wAxis);
 
 	float protection = Dot(vecToPos, zAxis);
 

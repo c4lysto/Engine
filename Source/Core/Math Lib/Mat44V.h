@@ -142,7 +142,7 @@ public:
 	void OrthoNormalInvert();
 };
 
-Mat34V Mat44ToMat34(Mat44V_In mMatrix);
+Mat34V RECON_VEC_CALLCONV Mat44ToMat34(Mat44V_In mMatrix);
 
 #include "Mat44V.inl"
 
