@@ -190,7 +190,7 @@ public:
 	{
 		if(rhs.m_pIntermediateFuncPtr)
 		{
-			m_pIntermediateFuncPtr = m_pIntermediateFuncPtr->CreateCopy();
+			m_pIntermediateFuncPtr = rhs.m_pIntermediateFuncPtr->CreateCopy();
 		}
 	}
 

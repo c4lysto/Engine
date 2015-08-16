@@ -1,7 +1,10 @@
-#ifndef COLOR_H
-#define COLOR_H
+#ifndef _RECON_COLOR_H_
+#define _RECON_COLOR_H_
 
 #include "GlobalDefines.h"
+
+namespace recon
+{
 
 class Color
 {
@@ -214,4 +217,6 @@ public:
 #define Color_Yellow				Color(255,255,0)
 #define Color_YellowGreen			Color(154,205,50)
 
-#endif // COLOR_H
+} // namespace recon
+
+#endif // _RECON_COLOR_H_

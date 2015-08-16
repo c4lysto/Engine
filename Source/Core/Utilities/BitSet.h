@@ -1,5 +1,8 @@
-#ifndef BITSET_H
-#define BITSET_H
+#ifndef _RECON_BITSET_H_
+#define _RECON_BITSET_H_
+
+namespace recon
+{
 
 template<u32 numBits>
 class BitSet
@@ -40,13 +43,14 @@ public:
 	__forceinline void SetBit(u32 bit, bool bSetBit)
 	{
 		Assertf(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
-		bSetBit ? SetBit(bit) : ClearBit(bit);
+		u8& associatedByte = GetAssociatedByte(bit);
+		associatedByte = (associatedByte & ~(1 << bit)) | (bSetBit << bit);
 	}
 
 	__forceinline bool IsSet(u32 bit)
 	{
 		Assertf(bit < numBits, "Bit Field - Trying to Set An Invalid Bit (%d), Max Bits: %d", bit, numBits);
-		GetAssociatedByte(bit) & GetLocalBit(bit);
+		return (GetAssociatedByte(bit) & GetLocalBit(bit)) != 0;
 	}
 
 	__forceinline void ToggleBit(u32 bit)
@@ -66,4 +70,6 @@ public:
 	}
 };
 
-#endif // BITSET_H
+}
+
+#endif // _RECON_BITSET_H_
