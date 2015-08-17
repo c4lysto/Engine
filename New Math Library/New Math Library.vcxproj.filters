@@ -75,9 +75,6 @@
     <ClInclude Include="..\Source\Core\Math Lib\Vec4V.h">
       <Filter>Header Files\Math Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\VecCmpResult.h">
-      <Filter>Header Files\Math Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h">
       <Filter>Header Files\Math Core</Filter>
     </ClInclude>

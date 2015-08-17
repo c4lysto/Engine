@@ -47,7 +47,7 @@ class Vec4f
 private:
 	union
 	{
-		float vector[4];
+		f32 vector[4];
 
 		union
 		{
@@ -57,11 +57,11 @@ private:
 			};
 			struct
 			{
-				float x, y, z, w;
+				f32 x, y, z, w;
 			};
 			struct
 			{
-				Vec3f position; float padW;
+				Vec3f position; f32 padW;
 			};
 		};
 	};
@@ -70,13 +70,13 @@ public:
 	Vec4f(){}
 	Vec4f(Vec4f_In vVector);
 	Vec4f(Vec4f&& vVector);
-	explicit Vec4f(const float& fVal);
-	explicit Vec4f(const float& fX, const float& fY, const float& fZ, const float& fW);
+	explicit Vec4f(const f32& fVal);
+	explicit Vec4f(const f32& fX, const f32& fY, const f32& fZ, const f32& fW);
 	explicit Vec4f(Vec2f_In vXY, Vec2f_In vZW);
-	explicit Vec4f(const float& fX, const float& fY, Vec2f_In vZW);
-	explicit Vec4f(Vec2f_In vXY, const float& fZ, const float& fW);
-	explicit Vec4f(const float& fX, Vec3f_In vYZW);
-	explicit Vec4f(Vec3f_In vVector, const float& fA);
+	explicit Vec4f(const f32& fX, const f32& fY, Vec2f_In vZW);
+	explicit Vec4f(Vec2f_In vXY, const f32& fZ, const f32& fW);
+	explicit Vec4f(const f32& fX, Vec3f_In vYZW);
+	explicit Vec4f(Vec3f_In vVector, const f32& fA);
 
 #if SSE_AVAILABLE
 	explicit Vec4f(Vector_In vVector);
@@ -86,10 +86,10 @@ public:
 #endif //SSE_AVAILABLE
 
 #if defined(VEC4_ACCESSOR) && defined(VEC4_ACCESSOR_CONST)
-	VEC4_ACCESSOR_CONST(float, GetX, x)
-	VEC4_ACCESSOR_CONST(float, GetY, y)
-	VEC4_ACCESSOR_CONST(float, GetZ, z)
-	VEC4_ACCESSOR_CONST(float, GetW, w)
+	VEC4_ACCESSOR_CONST(f32, GetX, x)
+	VEC4_ACCESSOR_CONST(f32, GetY, y)
+	VEC4_ACCESSOR_CONST(f32, GetZ, z)
+	VEC4_ACCESSOR_CONST(f32, GetW, w)
 	VEC4_ACCESSOR_CONST(Vec3f_Out, GetXYZ, position)
 
 	VEC4_ACCESSOR_CONST(s32, GetXi, iX)
@@ -97,11 +97,11 @@ public:
 	VEC4_ACCESSOR_CONST(s32, GetZi, iZ)
 	VEC4_ACCESSOR_CONST(s32, GetWi, iW)
 
-	VEC4_ACCESSOR_CONST(const float&, GetXRef, x)
-	VEC4_ACCESSOR_CONST(const float&, GetYRef, y)
-	VEC4_ACCESSOR_CONST(const float&, GetZRef, z)
-	VEC4_ACCESSOR_CONST(const float&, GetWRef, w)
-	VEC4_ACCESSOR_CONST(const float*, GetVector, vector);
+	VEC4_ACCESSOR_CONST(const f32&, GetXRef, x)
+	VEC4_ACCESSOR_CONST(const f32&, GetYRef, y)
+	VEC4_ACCESSOR_CONST(const f32&, GetZRef, z)
+	VEC4_ACCESSOR_CONST(const f32&, GetWRef, w)
+	VEC4_ACCESSOR_CONST(const f32*, GetVector, vector);
 
 	VEC4_ACCESSOR_CONST(const s32&, GetXiRef, iX)
 	VEC4_ACCESSOR_CONST(const s32&, GetYiRef, iY)
@@ -109,11 +109,11 @@ public:
 	VEC4_ACCESSOR_CONST(const s32&, GetWiRef, iW)
 
 
-	VEC4_ACCESSOR(float&, GetXRef, x)
-	VEC4_ACCESSOR(float&, GetYRef, y)
-	VEC4_ACCESSOR(float&, GetZRef, z)
-	VEC4_ACCESSOR(float&, GetWRef, w)
-	VEC4_ACCESSOR(float*, GetVector, vector)
+	VEC4_ACCESSOR(f32&, GetXRef, x)
+	VEC4_ACCESSOR(f32&, GetYRef, y)
+	VEC4_ACCESSOR(f32&, GetZRef, z)
+	VEC4_ACCESSOR(f32&, GetWRef, w)
+	VEC4_ACCESSOR(f32*, GetVector, vector)
 
 	VEC4_ACCESSOR(s32&, GetXiRef, iX)
 	VEC4_ACCESSOR(s32&, GetYiRef, iY)
@@ -126,10 +126,10 @@ public:
 #endif
 
 #if defined(VEC4_MUTATOR) && defined(VEC4_MUTATOR_MOVE)
-	VEC4_MUTATOR(SetX, const float&, x)
-	VEC4_MUTATOR(SetY, const float&, y)
-	VEC4_MUTATOR(SetZ, const float&, z)
-	VEC4_MUTATOR(SetW, const float&, w)
+	VEC4_MUTATOR(SetX, const f32&, x)
+	VEC4_MUTATOR(SetY, const f32&, y)
+	VEC4_MUTATOR(SetZ, const f32&, z)
+	VEC4_MUTATOR(SetW, const f32&, w)
 	VEC4_MUTATOR(SetXYZ, Vec3f_In, position)
 	VEC4_MUTATOR_MOVE(SetXYZ, Vec3f, position)
 
@@ -203,14 +203,14 @@ public:
 	Vec4f_Out RECON_VEC_CALLCONV operator+(Vec4f_In vVector) const;
 	void RECON_VEC_CALLCONV operator+=(Vec4f_In vVector);
 
-	Vec4f_Out RECON_VEC_CALLCONV operator/(const float& fScalar) const;
-	void RECON_VEC_CALLCONV operator/=(const float& fScalar);
+	Vec4f_Out RECON_VEC_CALLCONV operator/(const f32& fScalar) const;
+	void RECON_VEC_CALLCONV operator/=(const f32& fScalar);
 	Vec4f_Out RECON_VEC_CALLCONV operator/(Vec4f_In vVector) const;
 	void RECON_VEC_CALLCONV operator/=(Vec4f_In vVector);
 
-	Vec4f_Out RECON_VEC_CALLCONV operator*(const float& fScalar) const;
-	void RECON_VEC_CALLCONV operator*=(const float& fScalar);
-	friend Vec4f_Out RECON_VEC_CALLCONV operator*(const float& fScalar, Vec4f_In vVector);
+	Vec4f_Out RECON_VEC_CALLCONV operator*(const f32& fScalar) const;
+	void RECON_VEC_CALLCONV operator*=(const f32& fScalar);
+	friend Vec4f_Out RECON_VEC_CALLCONV operator*(const f32& fScalar, Vec4f_In vVector);
 	Vec4f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector) const;
 	void RECON_VEC_CALLCONV operator*=(Vec4f_In vVector);
 
@@ -228,8 +228,8 @@ public:
 
 	Vec4f_Out operator~() const;
 
-	const float& operator[](int index) const;
-	float& operator[](int index);
+	const f32& operator[](s32 index) const;
+	f32& operator[](s32 index);
 };
 
 Vec4f_Out RECON_VEC_CALLCONV Vec4fInt(const s32& intVal);
@@ -242,12 +242,12 @@ GLOBALCONST Vec4f g_IdentityZ4 = Vec4f(I_Z_AXIS);
 GLOBALCONST Vec4f g_IdentityW4 = Vec4f(I_W_AXIS);
 GLOBALCONST Vec4f g_WorldUp4   = Vec4f(I_UP_AXIS);
 
-float RECON_VEC_CALLCONV Dot(Vec4f_In lhs, Vec4f_In rhs);
+f32 RECON_VEC_CALLCONV Dot(Vec4f_In lhs, Vec4f_In rhs);
 
-float RECON_VEC_CALLCONV Mag(Vec4f_In vVector);
-float RECON_VEC_CALLCONV Length(Vec4f_In vVector);
-float RECON_VEC_CALLCONV MagSq(Vec4f_In vVector);
-float RECON_VEC_CALLCONV LengthSq(Vec4f_In vVector);
+f32 RECON_VEC_CALLCONV Mag(Vec4f_In vVector);
+f32 RECON_VEC_CALLCONV Length(Vec4f_In vVector);
+f32 RECON_VEC_CALLCONV MagSq(Vec4f_In vVector);
+f32 RECON_VEC_CALLCONV LengthSq(Vec4f_In vVector);
 
 Vec4f_Out RECON_VEC_CALLCONV Normalize(Vec4f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Cross(Vec4f_In vVectorA, Vec4f_In vVectorB);

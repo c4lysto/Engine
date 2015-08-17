@@ -47,14 +47,14 @@ ALIGN(16) class Vec4V
 private:
 	union
 	{
-		float floatArr[4];
+		f32 floatArr[4];
 		Vector row;
 
 		union
 		{
 			struct
 			{
-				float x, y, z, w;
+				f32 x, y, z, w;
 			};
 		};
 	};
@@ -65,8 +65,8 @@ public:
 #if !RECON_OS_64BIT
 	Vec4V(Vec4V&& vVector);
 #endif // !RECON_OS_64BIT
-	explicit Vec4V(const float& fVal);
-	explicit Vec4V(const float& fX, const float& fY, const float& fZ, const float& fW);
+	explicit Vec4V(const f32& fVal);
+	explicit Vec4V(const f32& fX, const f32& fY, const f32& fZ, const f32& fW);
 	explicit Vec4V(ScalarV_In vVal);
 	explicit Vec4V(ScalarV_In vX, ScalarV_In vY, ScalarV_In vZ, ScalarV_In vW);
 	explicit Vec4V(Vec2V_In vXY, Vec2V_In vZW);
@@ -84,18 +84,18 @@ public:
 	VEC4V_ACCESSOR_SCALARV_CONST(Y)
 	VEC4V_ACCESSOR_SCALARV_CONST(Z)
 	VEC4V_ACCESSOR_SCALARV_CONST(W)
-	VEC4V_ACCESSOR_CONST(const float&, GetXRef, x)
-	VEC4V_ACCESSOR_CONST(const float&, GetYRef, y)
-	VEC4V_ACCESSOR_CONST(const float&, GetZRef, z)
-	VEC4V_ACCESSOR_CONST(const float&, GetWRef, w)
+	VEC4V_ACCESSOR_CONST(const f32&, GetXRef, x)
+	VEC4V_ACCESSOR_CONST(const f32&, GetYRef, y)
+	VEC4V_ACCESSOR_CONST(const f32&, GetZRef, z)
+	VEC4V_ACCESSOR_CONST(const f32&, GetWRef, w)
 	__forceinline Vec3V RECON_VEC_CALLCONV GetXYZ() const { return Vec3V(row); }
 
 	VEC4V_ACCESSOR_CONST(Vector_Out, RECON_VEC_CALLCONV GetVector, row);
 
-	VEC4V_ACCESSOR(float&, GetXRef, x)
-	VEC4V_ACCESSOR(float&, GetYRef, y)
-	VEC4V_ACCESSOR(float&, GetZRef, z)
-	VEC4V_ACCESSOR(float&, GetWRef, w)
+	VEC4V_ACCESSOR(f32&, GetXRef, x)
+	VEC4V_ACCESSOR(f32&, GetYRef, y)
+	VEC4V_ACCESSOR(f32&, GetZRef, z)
+	VEC4V_ACCESSOR(f32&, GetWRef, w)
 #undef VEC4V_ACCESSOR
 #undef VEC4V_ACCESSOR_CONST
 #undef VEC4V_ACCESSOR_SCALARV_CONST
@@ -109,10 +109,10 @@ public:
 	void RECON_VEC_CALLCONV SetZ(ScalarV_In vZ);
 	void RECON_VEC_CALLCONV SetW(ScalarV_In vW);
 
-	VEC4V_MUTATOR(SetX, const float&, x)
-	VEC4V_MUTATOR(SetY, const float&, y)
-	VEC4V_MUTATOR(SetZ, const float&, z)
-	VEC4V_MUTATOR(SetW, const float&, w)
+	VEC4V_MUTATOR(SetX, const f32&, x)
+	VEC4V_MUTATOR(SetY, const f32&, y)
+	VEC4V_MUTATOR(SetZ, const f32&, z)
+	VEC4V_MUTATOR(SetW, const f32&, w)
 
 	__forceinline void SetXYZ(Vec3V_In rhs) {row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(rhs.GetVector(), row);}
 	//__forceinline void SetXYZ(Vec3V&& rhs) {row = VectorSet(rhs.x, rhs.y, rhs.z, w);}
@@ -207,8 +207,8 @@ public:
 
 	Vec4V_Out operator~() const;
 
-	const float& operator[](int index) const;
-	float& operator[](int index);
+	const f32& operator[](s32 index) const;
+	f32& operator[](s32 index);
 };
 
 GLOBALCONST Vec4V g_IdentityX4V = Vec4V(I_X_AXIS);
@@ -217,8 +217,8 @@ GLOBALCONST Vec4V g_IdentityZ4V = Vec4V(I_Z_AXIS);
 GLOBALCONST Vec4V g_IdentityW4V = Vec4V(I_W_AXIS);
 GLOBALCONST Vec4V g_WorldUp4V	= Vec4V(I_UP_AXIS);
 
-Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(int intVal);
-Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(int intX, int intY, int intZ, int intW);
+Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(s32 intVal);
+Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(s32 intX, s32 intY, s32 intZ, s32 intW);
 
 ScalarV_Out RECON_VEC_CALLCONV Dot(Vec4V_In lhs, Vec4V_In rhs);
 

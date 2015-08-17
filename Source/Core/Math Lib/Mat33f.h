@@ -30,12 +30,12 @@ class Mat33f
 private:
 	union
 	{
-		float m[9];
-		float ma[3][3];
+		f32 m[9];
+		f32 ma[3][3];
 
 		struct
 		{
-			float Xx, Xy, Xz,
+			f32 Xx, Xy, Xz,
 				  Yx, Yy, Yz,
 				  Zx, Zy, Zz;
 		};
@@ -48,18 +48,18 @@ private:
 
 public:
 	Mat33f(){}
-	explicit Mat33f(const float& fXx, const float& fXy, const float& fXz,
-					const float& fYx, const float& fYy, const float& fYz,
-					const float& fZx, const float& fZy, const float& fZz);
+	explicit Mat33f(const f32& fXx, const f32& fXy, const f32& fXz,
+					const f32& fYx, const f32& fYy, const f32& fYz,
+					const f32& fZx, const f32& fZy, const f32& fZz);
 	Mat33f(Mat33f_In rhs);
 	Mat33f(Mat33f&& rhs);
 	explicit Mat33f(Vec3f_In vXAxis,
 					Vec3f_In vYAxis,
 					Vec3f_In vZAxis);
 	explicit Mat33f(eIdentityInitializer eIdentity);
-	explicit Mat33f(eXRotationInitializer eXRotation, const float& fRotationInRadians);
-	explicit Mat33f(eYRotationInitializer eYRotation, const float& fRotationInRadians);
-	explicit Mat33f(eZRotationInitializer eZRotation, const float& fRotationInRadians);
+	explicit Mat33f(eXRotationInitializer eXRotation, const f32& fRotationInRadians);
+	explicit Mat33f(eYRotationInitializer eYRotation, const f32& fRotationInRadians);
+	explicit Mat33f(eZRotationInitializer eZRotation, const f32& fRotationInRadians);
 
 #if defined(MAT33F_ACCESSOR) && defined(MAT33F_ACCESSOR_CONST)
 	MAT33F_ACCESSOR_CONST(Vec3f_Out, GetXAxis, xAxis)
@@ -102,9 +102,9 @@ public:
 	Mat33f_Out operator-(Mat33f_In rhs) const;
 	void operator-=(Mat33f_In rhs);
 
-	void Rotate_LocalX(const float& fRadians);
-	void Rotate_LocalY(const float& fRadians);
-	void Rotate_LocalZ(const float& fRadians);
+	void Rotate_LocalX(const f32& fRadians);
+	void Rotate_LocalY(const f32& fRadians);
+	void Rotate_LocalZ(const f32& fRadians);
 
 	void Scale(Vec3f_In vScale);
 

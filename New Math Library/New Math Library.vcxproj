@@ -35,7 +35,6 @@
     <ClInclude Include="..\Source\Core\Math Lib\Vec3V.h" />
     <ClInclude Include="..\Source\Core\Math Lib\Vec4f.h" />
     <ClInclude Include="..\Source\Core\Math Lib\Vec4V.h" />
-    <ClInclude Include="..\Source\Core\Math Lib\VecCmpResult.h" />
     <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h" />
     <ClInclude Include="..\Source\Core\Physics\AABB.h" />
     <ClInclude Include="..\Source\Core\Physics\GlobalPhysicsFuncs.h" />

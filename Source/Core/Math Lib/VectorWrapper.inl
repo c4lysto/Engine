@@ -21,72 +21,72 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorSetConstant()
 	return VEC_INT_TO_FLOAT(_mm_setr_epi32((u32)xVal, (u32)yVal, (u32)zVal, (u32)wVal));
 }
 
-__forceinline Vector_Out RECON_VEC_CALLCONV VectorSet(const float& fVal)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorSet(const f32& fVal)
 {
 	return _mm_set1_ps(fVal);
 }
 
-__forceinline Vector_Out RECON_VEC_CALLCONV VectorSet(const float& fX, const float& fY, const float& fZ, const float& fW)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorSet(const f32& fX, const f32& fY, const f32& fZ, const f32& fW)
 {
 	return _mm_setr_ps(fX, fY, fZ, fW);
 }
 
-__forceinline Vector_Out RECON_VEC_CALLCONV VectorSet(const int& iVal)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorSet(const s32& iVal)
 {
 	return VEC_INT_TO_FLOAT(_mm_set1_epi32(iVal));
 }
 
-__forceinline Vector_Out RECON_VEC_CALLCONV VectorSet(const int& iX, const int& iY, const int& iZ, const int& iW)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorSet(const s32& iX, const s32& iY, const s32& iZ, const s32& iW)
 {
 	return VEC_INT_TO_FLOAT(_mm_setr_epi32(iX, iY, iZ, iW));
 }
 
 // Used to load Aligned Data
-__forceinline Vector_Out RECON_VEC_CALLCONV VectorLoad(const float* const alignedFloat4Ptr)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorLoad(const f32* const alignedFloat4Ptr)
 {
 	Assertf(((((u64)alignedFloat4Ptr) & 15) == 0), "VectorLoad - Float Pointer MUST be 16-byte aligned!");
 	return _mm_load_ps(alignedFloat4Ptr);
 }
 
 // Used to load Unaligned Data
-__forceinline Vector_Out RECON_VEC_CALLCONV VectorLoadU(const float* const unalignedFloat4Ptr)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorLoadU(const f32* const unalignedFloat4Ptr)
 {
 	return _mm_loadu_ps(unalignedFloat4Ptr);
 }
 
 // Used to store in Aligned Data
-__forceinline void RECON_VEC_CALLCONV VectorStore(Vector_In lhs, float* alignedFloat4Ptr)
+__forceinline void RECON_VEC_CALLCONV VectorStore(Vector_In lhs, f32* alignedFloat4Ptr)
 {
 	Assertf(((((u64)alignedFloat4Ptr) & 15) == 0), "VectorStore - Float Pointer MUST be 16-byte aligned!");
 	_mm_store_ps(alignedFloat4Ptr, lhs);
 }
 
 // Used to store in Unaligned Data
-__forceinline void RECON_VEC_CALLCONV VectorStoreU(Vector_In lhs, float* unalignedFloat4Ptr)
+__forceinline void RECON_VEC_CALLCONV VectorStoreU(Vector_In lhs, f32* unalignedFloat4Ptr)
 {
 	_mm_storeu_ps(unalignedFloat4Ptr, lhs);
 }
 
 template<VecElem index>
-__forceinline float RECON_VEC_CALLCONV VectorExtractFloat(Vector_In vec)
+__forceinline f32 RECON_VEC_CALLCONV VectorExtractFloat(Vector_In vec)
 {
 	static_assert(index >= VecElem::X && index <= VecElem::W, "Invalid Permute X-Index. Must be between X & W!");
 	return _mm_cvtss_f32(VectorPermute<index, index, index, index>(vec));
 }
 
-template<> __forceinline float RECON_VEC_CALLCONV VectorExtractFloat<VecElem::X>(Vector_In vec) { return _mm_cvtss_f32(vec); }
+template<> __forceinline f32 RECON_VEC_CALLCONV VectorExtractFloat<VecElem::X>(Vector_In vec) { return _mm_cvtss_f32(vec); }
 
 template<VecElem index>
-__forceinline int RECON_VEC_CALLCONV VectorExtractInt(Vector_In vec)
+__forceinline s32 RECON_VEC_CALLCONV VectorExtractInt(Vector_In vec)
 {
 	static_assert(index >= VecElem::X && index <= VecElem::W, "Invalid Permute X-Index. Must be between X & W!");
-	return _mm_extract_epi32(VEC_FLOAT_TO_INT(vec), (int)index);
+	return _mm_extract_epi32(VEC_FLOAT_TO_INT(vec), (s32)index);
 }
 
 
 // Permute Operations:
 
-#define SHUFFLE_MASKED(index) ((int)(index) & 0x3)
+#define SHUFFLE_MASKED(index) ((s32)(index) & 0x3)
 #define PERM_SHUFFLE(x, y, z, w) (_MM_FSHUFFLE(SHUFFLE_MASKED(x), SHUFFLE_MASKED(y), SHUFFLE_MASKED(z), SHUFFLE_MASKED(w)))
 #define BLEND_MASK(x, y, z, w) ((x) | ((y)<<1) | ((z)<<2) | ((w)<<3))
 
@@ -377,7 +377,7 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorRound(Vector_In vec)
 
 __forceinline Vector_Out RECON_VEC_CALLCONV VectorSign(Vector_In vec)
 {
-	return VectorOr(VectorAnd(vec, VectorSet((int)0x80000000)), VectorSet(1.0f));
+	return VectorOr(VectorAnd(vec, VectorSet((s32)0x80000000)), VectorSet(1.0f));
 }
 
 inline Vector_Out RECON_VEC_CALLCONV VectorLog2(Vector_In vec)
@@ -898,12 +898,12 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorXOr(Vector_In lhs, Vector_In r
 //	return VectorXOr(lhs, rhs);
 //}
 
-__forceinline Vector_Out RECON_VEC_CALLCONV VectorLeftShift(Vector_In vec, int nCount)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorLeftShift(Vector_In vec, s32 nCount)
 {
 	return VEC_INT_TO_FLOAT(_mm_slli_epi32(VEC_FLOAT_TO_INT(vec), nCount));
 }
 
-//__forceinline Vector_Out RECON_VEC_CALLCONV operator<<(Vector_In vec, int nCount)
+//__forceinline Vector_Out RECON_VEC_CALLCONV operator<<(Vector_In vec, s32 nCount)
 //{
 //	return VectorLeftShift(vec, nCount);
 //}
@@ -929,12 +929,12 @@ inline Vector_Out RECON_VEC_CALLCONV VectorLeftShift4(Vector_In vec, Vector_In s
 	return VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W2>(xy, zw);
 }
 
-__forceinline Vector_Out RECON_VEC_CALLCONV VectorRightShift(Vector_In vec, int nCount)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorRightShift(Vector_In vec, s32 nCount)
 {
 	return VEC_INT_TO_FLOAT(_mm_srli_epi32(VEC_FLOAT_TO_INT(vec), nCount));
 }
 
-//__forceinline Vector_Out RECON_VEC_CALLCONV operator>>(Vector_In vec, int nCount)
+//__forceinline Vector_Out RECON_VEC_CALLCONV operator>>(Vector_In vec, s32 nCount)
 //{
 //	return VectorRightShift(vec, nCount);
 //}
@@ -1178,13 +1178,13 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorCrossProduct(Vector_In lhs, Ve
 	return VectorSubtract(vec3, VectorMultiply(vec1, vec2));
 }
 
-__forceinline float RECON_VEC_CALLCONV VectorDot2(Vector_In lhs, Vector_In rhs)
+__forceinline f32 RECON_VEC_CALLCONV VectorDot2(Vector_In lhs, Vector_In rhs)
 {
 	Vector dp = VectorMultiply(lhs, rhs);
 	return VectorExtractFloat<VecElem::X>(VectorHAdd(dp, dp));
 }
 
-__forceinline float RECON_VEC_CALLCONV VectorDot3(Vector_In lhs, Vector_In rhs)
+__forceinline f32 RECON_VEC_CALLCONV VectorDot3(Vector_In lhs, Vector_In rhs)
 {
 	Vector rhsWZero = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::X2>(rhs, VectorSet(0.0f));
 	Vector dp = VectorMultiply(lhs, rhsWZero);
@@ -1192,7 +1192,7 @@ __forceinline float RECON_VEC_CALLCONV VectorDot3(Vector_In lhs, Vector_In rhs)
 	return VectorExtractFloat<VecElem::X>(VectorHAdd(result, result));
 }
 
-__forceinline float RECON_VEC_CALLCONV VectorDot4(Vector_In lhs, Vector_In rhs)
+__forceinline f32 RECON_VEC_CALLCONV VectorDot4(Vector_In lhs, Vector_In rhs)
 {
 	Vector dp = VectorMultiply(lhs, rhs);
 	Vector result = VectorHAdd(dp, dp);

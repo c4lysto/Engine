@@ -36,11 +36,11 @@ class Vec3f
 private:
 	union
 	{
-		float vector[3];
+		f32 vector[3];
 
 		struct
 		{
-			float x, y, z;
+			f32 x, y, z;
 		};
 
 		struct
@@ -51,10 +51,10 @@ private:
 
 public:
 	Vec3f(){}
-	explicit Vec3f(const float& fVal);
-	explicit Vec3f(const float& fX, const float& fY, const float& fZ);
-	explicit Vec3f(const float& fX, Vec2f_In vYZ);
-	explicit Vec3f(Vec2f_In vXY, const float& fZ);
+	explicit Vec3f(const f32& fVal);
+	explicit Vec3f(const f32& fX, const f32& fY, const f32& fZ);
+	explicit Vec3f(const f32& fX, Vec2f_In vYZ);
+	explicit Vec3f(Vec2f_In vXY, const f32& fZ);
 	Vec3f(Vec3f_In vVector);
 	Vec3f(Vec3f&& vVector);
 
@@ -114,13 +114,13 @@ public:
 #endif //DEFINE_VEC3_ENUM_CONSTRUCTOR
 
 #if defined(VEC3_ACCESSOR) && defined(VEC3_ACCESSOR_CONST)
-	VEC3_ACCESSOR_CONST(float, GetX, x)
-	VEC3_ACCESSOR_CONST(float, GetY, y)
-	VEC3_ACCESSOR_CONST(float, GetZ, z)
-	VEC3_ACCESSOR_CONST(const float&, GetXRef, x)
-	VEC3_ACCESSOR_CONST(const float&, GetYRef, y)
-	VEC3_ACCESSOR_CONST(const float&, GetZRef, z)
-	VEC3_ACCESSOR_CONST(const float*, GetVector, vector)
+	VEC3_ACCESSOR_CONST(f32, GetX, x)
+	VEC3_ACCESSOR_CONST(f32, GetY, y)
+	VEC3_ACCESSOR_CONST(f32, GetZ, z)
+	VEC3_ACCESSOR_CONST(const f32&, GetXRef, x)
+	VEC3_ACCESSOR_CONST(const f32&, GetYRef, y)
+	VEC3_ACCESSOR_CONST(const f32&, GetZRef, z)
+	VEC3_ACCESSOR_CONST(const f32*, GetVector, vector)
 
 	VEC3_ACCESSOR_CONST(s32, GetXi, iX)
 	VEC3_ACCESSOR_CONST(s32, GetYi, iY)
@@ -129,10 +129,10 @@ public:
 	VEC3_ACCESSOR_CONST(const s32&, GetYiRef, iY)
 	VEC3_ACCESSOR_CONST(const s32&, GetZiRef, iZ)
 
-	VEC3_ACCESSOR(float&, GetXRef, x)
-	VEC3_ACCESSOR(float&, GetYRef, y)
-	VEC3_ACCESSOR(float&, GetZRef, z)
-	VEC3_ACCESSOR(float*, GetVector, vector)
+	VEC3_ACCESSOR(f32&, GetXRef, x)
+	VEC3_ACCESSOR(f32&, GetYRef, y)
+	VEC3_ACCESSOR(f32&, GetZRef, z)
+	VEC3_ACCESSOR(f32*, GetVector, vector)
 
 	VEC3_ACCESSOR(s32&, GetXiRef, iX)
 	VEC3_ACCESSOR(s32&, GetYiRef, iY)
@@ -144,9 +144,9 @@ public:
 #endif
 
 #if defined(VEC3_MUTATOR)
-	VEC3_MUTATOR(SetX, const float&, x)
-	VEC3_MUTATOR(SetY, const float&, y)
-	VEC3_MUTATOR(SetZ, const float&, z)
+	VEC3_MUTATOR(SetX, const f32&, x)
+	VEC3_MUTATOR(SetY, const f32&, y)
+	VEC3_MUTATOR(SetZ, const f32&, z)
 
 	VEC3_MUTATOR(SetXi, const s32&, iX)
 	VEC3_MUTATOR(SetYi, const s32&, iY)
@@ -161,17 +161,17 @@ public:
 	Vec3f_Ref RECON_VEC_CALLCONV operator=(Vec3f_In vVector);
 	Vec3f_Ref RECON_VEC_CALLCONV operator=(Vec3f&& vVector);
 
-	void RECON_VEC_CALLCONV operator*=(const float& fScalar);
+	void RECON_VEC_CALLCONV operator*=(const f32& fScalar);
 	void RECON_VEC_CALLCONV operator*=(Vec3f_In vScale);
 
-	Vec3f_Out RECON_VEC_CALLCONV operator/(const float& fScalar) const;
+	Vec3f_Out RECON_VEC_CALLCONV operator/(const f32& fScalar) const;
 	Vec3f_Out RECON_VEC_CALLCONV operator/(Vec3f_In vScale) const;
 
-	void RECON_VEC_CALLCONV operator/=(const float& fScalar);
+	void RECON_VEC_CALLCONV operator/=(const f32& fScalar);
 	void RECON_VEC_CALLCONV operator/=(Vec3f_In vScale);
 
-	Vec3f_Out RECON_VEC_CALLCONV operator*(const float& fScalar) const;
-	friend Vec3f_Out RECON_VEC_CALLCONV operator*(const float& fScalar, Vec3f_In vVector);
+	Vec3f_Out RECON_VEC_CALLCONV operator*(const f32& fScalar) const;
+	friend Vec3f_Out RECON_VEC_CALLCONV operator*(const f32& fScalar, Vec3f_In vVector);
 	Vec3f_Out RECON_VEC_CALLCONV operator*(Vec3f_In vScale) const;
 
 	void RECON_VEC_CALLCONV operator+=(Vec3f_In vVector);
@@ -195,19 +195,19 @@ public:
 
 	Vec3f_Out operator~() const;
 
-	const float& operator[](int index) const;
-	float& operator[](int index);
+	const f32& operator[](s32 index) const;
+	f32& operator[](s32 index);
 };
 
 Vec3f_Out RECON_VEC_CALLCONV Vec3fInt(const s32& intVal);
 Vec3f_Out RECON_VEC_CALLCONV Vec3fInt(const s32& intX, const s32& intY, const s32& intZ);
 
-float RECON_VEC_CALLCONV Dot(Vec3f_In lhs, Vec3f_In rhs);
+f32 RECON_VEC_CALLCONV Dot(Vec3f_In lhs, Vec3f_In rhs);
 
-float RECON_VEC_CALLCONV Mag(Vec3f_In vVector);
-float RECON_VEC_CALLCONV Length(Vec3f_In vVector);
-float RECON_VEC_CALLCONV MagSq(Vec3f_In vVector);
-float RECON_VEC_CALLCONV LengthSq(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV Mag(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV Length(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV MagSq(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV LengthSq(Vec3f_In vVector);
 
 Vec3f_Out RECON_VEC_CALLCONV Normalize(Vec3f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Cross(Vec3f_In vVectorA, Vec3f_In vVectorB);

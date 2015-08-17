@@ -37,11 +37,11 @@ class Vec2f
 private:
 	union
 	{
-		float vector[2];
+		f32 vector[2];
 
 		struct
 		{
-			float x, y;
+			f32 x, y;
 		};
 
 		struct
@@ -102,8 +102,8 @@ public:
 
 	Vec2f(Vec2f_In vVector);
 	Vec2f(Vec2f&& vVector);
-	explicit Vec2f(const float& fVal);
-	Vec2f(const float& fX, const float& fY);
+	explicit Vec2f(const f32& fVal);
+	Vec2f(const f32& fX, const f32& fY);
 
 #if SSE_AVAILABLE
 	explicit Vec2f(Vector_In vVector);
@@ -114,20 +114,20 @@ public:
 #endif
 
 #if defined(VEC2_ACCESSOR) && defined(VEC2_ACCESSOR_CONST)
-	VEC2_ACCESSOR_CONST(float, GetX, x)
-	VEC2_ACCESSOR_CONST(float, GetY, y)
-	VEC2_ACCESSOR_CONST(const float&, GetXRef, x)
-	VEC2_ACCESSOR_CONST(const float&, GetYRef, y)
-	VEC2_ACCESSOR_CONST(const float*, GetVector, vector)
+	VEC2_ACCESSOR_CONST(f32, GetX, x)
+	VEC2_ACCESSOR_CONST(f32, GetY, y)
+	VEC2_ACCESSOR_CONST(const f32&, GetXRef, x)
+	VEC2_ACCESSOR_CONST(const f32&, GetYRef, y)
+	VEC2_ACCESSOR_CONST(const f32*, GetVector, vector)
 
 	VEC2_ACCESSOR_CONST(s32, GetXi, iX)
 	VEC2_ACCESSOR_CONST(s32, GetYi, iY)
 	VEC2_ACCESSOR_CONST(const s32&, GetXiRef, iX)
 	VEC2_ACCESSOR_CONST(const s32&, GetYiRef, iY)
 
-	VEC2_ACCESSOR(float&, GetXRef, x)
-	VEC2_ACCESSOR(float&, GetYRef, y)
-	VEC2_ACCESSOR(float*, GetVector, vector)
+	VEC2_ACCESSOR(f32&, GetXRef, x)
+	VEC2_ACCESSOR(f32&, GetYRef, y)
+	VEC2_ACCESSOR(f32*, GetVector, vector)
 
 	VEC2_ACCESSOR(s32&, GetXiRef, iX)
 	VEC2_ACCESSOR(s32&, GetYiRef, iY)
@@ -138,8 +138,8 @@ public:
 #endif
 
 #if defined(VEC2_MUTATOR)
-	VEC2_MUTATOR(SetX, const float&, x)
-	VEC2_MUTATOR(SetY, const float&, y)
+	VEC2_MUTATOR(SetX, const f32&, x)
+	VEC2_MUTATOR(SetY, const f32&, y)
 
 	VEC2_MUTATOR(SetXi, const s32&, iX)
 	VEC2_MUTATOR(SetYi, const s32&, iY)
@@ -159,14 +159,14 @@ public:
 	Vec2f_Out RECON_VEC_CALLCONV operator-(Vec2f_In vVector) const;
 	void RECON_VEC_CALLCONV operator-=(Vec2f_In vVector);
 
-	Vec2f_Out RECON_VEC_CALLCONV operator*(const float& fScalar) const;
-	friend Vec2f_Out RECON_VEC_CALLCONV operator*(const float& fScalar, Vec2f_In vVector);
-	void RECON_VEC_CALLCONV operator*=(const float& fScalar);
+	Vec2f_Out RECON_VEC_CALLCONV operator*(const f32& fScalar) const;
+	friend Vec2f_Out RECON_VEC_CALLCONV operator*(const f32& fScalar, Vec2f_In vVector);
+	void RECON_VEC_CALLCONV operator*=(const f32& fScalar);
 	Vec2f_Out RECON_VEC_CALLCONV operator*(Vec2f_In vVector) const;
 	void RECON_VEC_CALLCONV operator*=(Vec2f_In vVector);
 
-	Vec2f_Out RECON_VEC_CALLCONV operator/(const float& fScalar) const;
-	void RECON_VEC_CALLCONV operator/=(const float& fScalar);
+	Vec2f_Out RECON_VEC_CALLCONV operator/(const f32& fScalar) const;
+	void RECON_VEC_CALLCONV operator/=(const f32& fScalar);
 	Vec2f_Out RECON_VEC_CALLCONV operator/(Vec2f_In vVector) const;
 	void RECON_VEC_CALLCONV operator/=(Vec2f_In vVector);
 
@@ -184,19 +184,19 @@ public:
 
 	Vec2f_Out operator~() const;
 
-	const float& operator[](int index) const;
-	float& operator[](int index);
+	const f32& operator[](s32 index) const;
+	f32& operator[](s32 index);
 };
 
 Vec2f_Out RECON_VEC_CALLCONV Vec2fInt(const s32& intVal);
 Vec2f_Out RECON_VEC_CALLCONV Vec2fInt(const s32& intX, const s32& intY);
 
-float RECON_VEC_CALLCONV Dot(Vec2f_In lhs, Vec2f_In rhs);
+f32 RECON_VEC_CALLCONV Dot(Vec2f_In lhs, Vec2f_In rhs);
 
-float RECON_VEC_CALLCONV Mag(Vec2f_In vVector);
-float RECON_VEC_CALLCONV Length(Vec2f_In vVector);
-float RECON_VEC_CALLCONV MagSq(Vec2f_In vVector);
-float RECON_VEC_CALLCONV LengthSq(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV Mag(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV Length(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV MagSq(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV LengthSq(Vec2f_In vVector);
 
 Vec2f_Out RECON_VEC_CALLCONV Normalize(Vec2f_In vVector);
 Vec2f_Out RECON_VEC_CALLCONV Cross(Vec2f_In vVectorA, Vec2f_In vVectorB);

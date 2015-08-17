@@ -30,8 +30,8 @@ class Mat33V
 private:
 	union
 	{
-		float m[12];
-		float ma[3][4];
+		f32 m[12];
+		f32 ma[3][4];
 
 		struct  
 		{
@@ -46,9 +46,9 @@ private:
 
 public:
 	Mat33V(){}
-	explicit Mat33V(const float& fXx, const float& fXy, const float& fXz,
-					const float& fYx, const float& fYy, const float& fYz,
-					const float& fZx, const float& fZy, const float& fZz);
+	explicit Mat33V(const f32& fXx, const f32& fXy, const f32& fXz,
+					const f32& fYx, const f32& fYy, const f32& fYz,
+					const f32& fZx, const f32& fZy, const f32& fZz);
 	Mat33V(Mat33V_In rhs);
 	Mat33V(Mat33V&& rhs);
 	explicit Mat33V(Vec3V_In vXAxis,

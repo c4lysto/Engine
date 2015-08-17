@@ -70,6 +70,6 @@ public:
 	}
 };
 
-}
+} // namespace recon
 
 #endif // _RECON_BITSET_H_

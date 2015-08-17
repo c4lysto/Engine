@@ -10,12 +10,12 @@ __forceinline Vec2f::Vec2f(Vec2f&& vVector)
 	y = std::move(vVector.y);
 }
 
-__forceinline Vec2f::Vec2f(const float& fVal) : x(fVal), y(fVal)
+__forceinline Vec2f::Vec2f(const f32& fVal) : x(fVal), y(fVal)
 {
 
 }
 
-__forceinline Vec2f::Vec2f(const float& fX, const float& fY) : x(fX), y(fY)
+__forceinline Vec2f::Vec2f(const f32& fX, const f32& fY) : x(fX), y(fY)
 {
 	
 }
@@ -81,17 +81,17 @@ __forceinline Vec2f_Out Vec2f::operator-() const
 	return Vec2fInt(iX ^ 0x80000000, iY ^ 0x80000000);
 }
 
-__forceinline Vec2f_Out RECON_VEC_CALLCONV Vec2f::operator*(const float& fScalar) const
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Vec2f::operator*(const f32& fScalar) const
 {
 	return Vec2f(x * fScalar, y * fScalar);
 }
 
-__forceinline Vec2f_Out RECON_VEC_CALLCONV operator*(const float& fScalar, Vec2f_In vVector)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV operator*(const f32& fScalar, Vec2f_In vVector)
 {
 	return Vec2f(vVector.x * fScalar, vVector.y * fScalar);
 }
 
-__forceinline void RECON_VEC_CALLCONV Vec2f::operator*=(const float& fScalar)
+__forceinline void RECON_VEC_CALLCONV Vec2f::operator*=(const f32& fScalar)
 {
 	x *= fScalar; y *= fScalar;
 }
@@ -106,15 +106,15 @@ __forceinline void RECON_VEC_CALLCONV Vec2f::operator*=(Vec2f_In vVector)
 	x *= vVector.x; y *= vVector.y;
 }
 
-__forceinline Vec2f_Out RECON_VEC_CALLCONV Vec2f::operator/(const float& fScalar) const
+__forceinline Vec2f_Out RECON_VEC_CALLCONV Vec2f::operator/(const f32& fScalar) const
 {
-	float fInvScalar = 1 / fScalar;
+	f32 fInvScalar = 1 / fScalar;
 	return Vec2f(x * fInvScalar, y * fInvScalar);
 }
 
-__forceinline void RECON_VEC_CALLCONV Vec2f::operator/=(const float& fScalar)
+__forceinline void RECON_VEC_CALLCONV Vec2f::operator/=(const f32& fScalar)
 {
-	float fInvScalar = 1 / fScalar;
+	f32 fInvScalar = 1 / fScalar;
 	x *= fInvScalar; y *= fInvScalar;
 }
 
@@ -181,22 +181,22 @@ __forceinline Vec2f_Out Vec2f::operator~() const
 	return Vec2fInt(~iX, ~iY);
 }
 
-__forceinline const float& Vec2f::operator[](int index) const
+__forceinline const f32& Vec2f::operator[](s32 index) const
 {
 	return vector[index];
 }
 
-__forceinline float& Vec2f::operator[](int index)
+__forceinline f32& Vec2f::operator[](s32 index)
 {
 	return vector[index];
 }
 
 __forceinline Vec2f_Out RECON_VEC_CALLCONV Vec2fInt(const s32& intVal)
 {
-	return Vec2f(*reinterpret_cast<const float*>(&intVal));
+	return Vec2f(*reinterpret_cast<const f32*>(&intVal));
 }
 
 __forceinline Vec2f_Out RECON_VEC_CALLCONV Vec2fInt(const s32& intX, const s32& intY)
 {
-	return Vec2f(*reinterpret_cast<const float*>(&intX), *reinterpret_cast<const float*>(&intY));
+	return Vec2f(*reinterpret_cast<const f32*>(&intX), *reinterpret_cast<const f32*>(&intY));
 }

@@ -28,31 +28,31 @@ Vector_Out RECON_VEC_CALLCONV VectorSetConstant();
 template<u32 val0, u32 val1, u32 val2, u32 val3>
 Vector_Out RECON_VEC_CALLCONV VectorSetConstant();
 
-Vector_Out RECON_VEC_CALLCONV VectorSet(const float& fVal);
+Vector_Out RECON_VEC_CALLCONV VectorSet(const f32& fVal);
 
-Vector_Out RECON_VEC_CALLCONV VectorSet(const float& fX, const float& fY, const float& fZ, const float& fW);
+Vector_Out RECON_VEC_CALLCONV VectorSet(const f32& fX, const f32& fY, const f32& fZ, const f32& fW);
 
-Vector_Out RECON_VEC_CALLCONV VectorSet(const int& iVal);
+Vector_Out RECON_VEC_CALLCONV VectorSet(const s32& iVal);
 
-Vector_Out RECON_VEC_CALLCONV VectorSet(const int& iX, const int& iY, const int& iZ, const int& iW);
+Vector_Out RECON_VEC_CALLCONV VectorSet(const s32& iX, const s32& iY, const s32& iZ, const s32& iW);
 
 // Used to load Aligned Data
-Vector_Out RECON_VEC_CALLCONV VectorLoad(const float* const alignedFloat4Ptr);
+Vector_Out RECON_VEC_CALLCONV VectorLoad(const f32* const alignedFloat4Ptr);
 
 // Used to load Unaligned Data
-Vector_Out RECON_VEC_CALLCONV VectorLoadU(const float* const unalignedFloat4Ptr);
+Vector_Out RECON_VEC_CALLCONV VectorLoadU(const f32* const unalignedFloat4Ptr);
 
 // Used to store in Aligned Data
-void RECON_VEC_CALLCONV VectorStore(Vector_In vec, float* alignedFloat4Ptr);
+void RECON_VEC_CALLCONV VectorStore(Vector_In vec, f32* alignedFloat4Ptr);
 
 // Used to store in Unaligned Data
-void RECON_VEC_CALLCONV VectorStoreU(Vector_In vec, float* unalignedFloat4Ptr);
+void RECON_VEC_CALLCONV VectorStoreU(Vector_In vec, f32* unalignedFloat4Ptr);
 
 template<VecElem index>
-float RECON_VEC_CALLCONV VectorExtractFloat(Vector_In vec);
+f32 RECON_VEC_CALLCONV VectorExtractFloat(Vector_In vec);
 
 template<VecElem index>
-int RECON_VEC_CALLCONV VectorExtractInt(Vector_In vec);
+s32 RECON_VEC_CALLCONV VectorExtractInt(Vector_In vec);
 
 
 // Permute Operations:
@@ -164,15 +164,15 @@ Vector_Out RECON_VEC_CALLCONV VectorOr(Vector_In lhs, Vector_In rhs);
 Vector_Out RECON_VEC_CALLCONV VectorXOr(Vector_In lhs, Vector_In rhs);
 //Vector_Out operator^(Vector_In lhs, Vector_In rhs);
 
-Vector_Out RECON_VEC_CALLCONV VectorLeftShift(Vector_In vec, int nCount);
-//Vector_Out operator<<(Vector_In vec, int nCount);
+Vector_Out RECON_VEC_CALLCONV VectorLeftShift(Vector_In vec, s32 nCount);
+//Vector_Out operator<<(Vector_In vec, s32 nCount);
 
 // shiftCount is is expected to have integer data NOT floats
 // If all values of shiftCount are the same then you should use VectorLeftShift as it is MUCH faster
 Vector_Out RECON_VEC_CALLCONV VectorLeftShift4(Vector_In vec, Vector_In shiftCount);
 
-Vector_Out RECON_VEC_CALLCONV VectorRightShift(Vector_In vec, int nCount);
-//Vector_Out operator>>(Vector_In vec, int nCount);
+Vector_Out RECON_VEC_CALLCONV VectorRightShift(Vector_In vec, s32 nCount);
+//Vector_Out operator>>(Vector_In vec, s32 nCount);
 
 // shiftCount is is expected to have integer data NOT floats
 // If all values of shiftCount are the same then you should use VectorLeftShift as it is MUCH faster
@@ -249,9 +249,9 @@ Vector_Out RECON_VEC_CALLCONV VectorBitscanForward(Vector_In vec);
 
 Vector_Out RECON_VEC_CALLCONV VectorCrossProduct(Vector_In lhs, Vector_In rhs);
 
-float RECON_VEC_CALLCONV VectorDot2(Vector_In lhs, Vector_In rhs);
-float RECON_VEC_CALLCONV VectorDot3(Vector_In lhs, Vector_In rhs);
-float RECON_VEC_CALLCONV VectorDot4(Vector_In lhs, Vector_In rhs);
+f32 RECON_VEC_CALLCONV VectorDot2(Vector_In lhs, Vector_In rhs);
+f32 RECON_VEC_CALLCONV VectorDot3(Vector_In lhs, Vector_In rhs);
+f32 RECON_VEC_CALLCONV VectorDot4(Vector_In lhs, Vector_In rhs);
 
 #include "VectorWrapper.inl"
 

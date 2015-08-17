@@ -1,8 +1,8 @@
 
-__forceinline Mat34f::Mat34f(const float& fXx, const float& fXy, const float& fXz,
-							 const float& fYx, const float& fYy, const float& fYz,
-							 const float& fZx, const float& fZy, const float& fZz,
-							 const float& fWx, const float& fWy, const float& fWz) : 
+__forceinline Mat34f::Mat34f(const f32& fXx, const f32& fXy, const f32& fXz,
+							 const f32& fYx, const f32& fYy, const f32& fYz,
+							 const f32& fZx, const f32& fZy, const f32& fZz,
+							 const f32& fWx, const f32& fWy, const f32& fWz) : 
 	  xAxis(fXx, fXy, fXz),
 	  yAxis(fYx, fYy, fYz),
 	  zAxis(fZx, fZy, fZz),
@@ -34,32 +34,32 @@ __forceinline Mat34f::Mat34f(eIdentityInitializer eIdentity) :
 {
 }
 
-inline Mat34f::Mat34f(eXRotationInitializer eXRotation, const float& fRotationInRadians) :
+inline Mat34f::Mat34f(eXRotationInitializer eXRotation, const f32& fRotationInRadians) :
 	xAxis(I_X_AXIS),
 	wAxis(I_W_AXIS)
 {
-	float fSinAngle = sin(fRotationInRadians);
-	float fCosAngle = cos(fRotationInRadians);
+	f32 fSinAngle = sin(fRotationInRadians);
+	f32 fCosAngle = cos(fRotationInRadians);
 	yAxis = Vec3f(0.0f, fCosAngle, fSinAngle);
 	zAxis = Vec3f(0.0f, -fSinAngle, fCosAngle);
 }
 
-inline Mat34f::Mat34f(eYRotationInitializer eYRotation, const float& fRotationInRadians) :
+inline Mat34f::Mat34f(eYRotationInitializer eYRotation, const f32& fRotationInRadians) :
 	yAxis(I_Y_AXIS),
 	wAxis(I_W_AXIS)
 {
-	float fSinAngle = sin(fRotationInRadians);
-	float fCosAngle = cos(fRotationInRadians);
+	f32 fSinAngle = sin(fRotationInRadians);
+	f32 fCosAngle = cos(fRotationInRadians);
 	xAxis = Vec3f(fCosAngle, 0.0f, -fSinAngle);
 	zAxis = Vec3f(fSinAngle, 0.0f, fCosAngle);
 }
 
-inline Mat34f::Mat34f(eZRotationInitializer eZRotation, const float& fRotationInRadians) :
+inline Mat34f::Mat34f(eZRotationInitializer eZRotation, const f32& fRotationInRadians) :
 	zAxis(I_Z_AXIS),
 	wAxis(I_W_AXIS)
 {
-	float fSinAngle = sin(fRotationInRadians);
-	float fCosAngle = cos(fRotationInRadians);
+	f32 fSinAngle = sin(fRotationInRadians);
+	f32 fCosAngle = cos(fRotationInRadians);
 	xAxis = Vec3f(fCosAngle, fSinAngle, 0.0f);
 	yAxis = Vec3f(-fSinAngle, fCosAngle, 0.0f);
 }
@@ -120,10 +120,10 @@ __forceinline Vec3f_Ref operator*=(Vec3f_Ref vPos, Mat34f_In mMatrix)
 
 inline Vec3f_Out operator*(Vec4f_In vVector, Mat34f_In mMatrix)
 {
-	const float& fX = vVector.GetXRef();
-	const float& fY = vVector.GetYRef();
-	const float& fZ = vVector.GetZRef();
-	const float& fW = vVector.GetWRef();
+	const f32& fX = vVector.GetXRef();
+	const f32& fY = vVector.GetYRef();
+	const f32& fZ = vVector.GetZRef();
+	const f32& fW = vVector.GetWRef();
 
 #if SSE_AVAILABLE
 	Vector tmp1, tmp2;
@@ -178,32 +178,32 @@ __forceinline void Mat34f::operator-=(Mat34f_In rhs)
 	xAxis -= rhs.xAxis; yAxis -= rhs.yAxis; zAxis -= rhs.zAxis; wAxis -= rhs.wAxis;
 }
 
-__forceinline void Mat34f::Rotate_GlobalX(const float& fRadians)
+__forceinline void Mat34f::Rotate_GlobalX(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44f(I_ROTATION_X, fRadians));
 }
 
-__forceinline void Mat34f::Rotate_GlobalY(const float& fRadians)
+__forceinline void Mat34f::Rotate_GlobalY(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44f(I_ROTATION_Y, fRadians));
 }
 
-__forceinline void Mat34f::Rotate_GlobalZ(const float& fRadians)
+__forceinline void Mat34f::Rotate_GlobalZ(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44f(I_ROTATION_Z, fRadians));
 }
 
-__forceinline void Mat34f::Rotate_LocalX(const float& fRadians)
+__forceinline void Mat34f::Rotate_LocalX(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat44f(I_ROTATION_X, fRadians) * Mat34ToMat44(*this));
 }
 
-__forceinline void Mat34f::Rotate_LocalY(const float& fRadians)
+__forceinline void Mat34f::Rotate_LocalY(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat44f(I_ROTATION_Y, fRadians) * Mat34ToMat44(*this));
 }
 
-__forceinline void Mat34f::Rotate_LocalZ(const float& fRadians)
+__forceinline void Mat34f::Rotate_LocalZ(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat44f(I_ROTATION_Z, fRadians) * Mat34ToMat44(*this));
 }
@@ -254,11 +254,11 @@ __forceinline void Mat34f::LookAt(Vec3f_In mPos, Vec3f_In vWorldUp)
 	yAxis = ::Normalize(Cross(zAxis, xAxis));
 }
 
-inline void Mat34f::TurnTo(Vec3f_In vPos, const float& fDeltaTime, float fTurnModifier)
+inline void Mat34f::TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier)
 {
 	Vec3f vecToPos = ::Normalize(vPos - wAxis);
 
-	float protection = Dot(vecToPos, zAxis);
+	f32 protection = Dot(vecToPos, zAxis);
 
 	if (protection != protection)
 	{
@@ -266,7 +266,7 @@ inline void Mat34f::TurnTo(Vec3f_In vPos, const float& fDeltaTime, float fTurnMo
 		return;
 	}
 
-	float fRotation = Dot(vecToPos, xAxis);
+	f32 fRotation = Dot(vecToPos, xAxis);
 
 	if(fRotation > FLT_EPSILON || fRotation < -FLT_EPSILON)
 	{

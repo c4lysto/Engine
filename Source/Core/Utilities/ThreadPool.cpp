@@ -59,12 +59,12 @@ bool ThreadPool::GetWork(ThreadPool::JobArgs& jobArgs)
 	return bValidJob;
 }
 
-void ThreadPool::Init(size_t poolSize, const char* szPoolName /*= "Thread Pool"*/)
+void ThreadPool::Init(u32 poolSize, const char* szPoolName /*= "Thread Pool"*/)
 {
 	// Pool Has Already Been Initialized, Don't Be Stupid
 	if(m_vThreads.size() == 0)
 	{
-		for(size_t i = 0; i < poolSize; ++i)
+		for(u32 i = 0; i < poolSize; ++i)
 		{
 			std::ostringstream threadName;
 			threadName << szPoolName << "(" << i << ")";

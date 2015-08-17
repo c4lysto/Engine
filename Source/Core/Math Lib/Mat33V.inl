@@ -1,7 +1,7 @@
 
-__forceinline Mat33V::Mat33V(const float& fXx, const float& fXy, const float& fXz,
-							 const float& fYx, const float& fYy, const float& fYz,
-							 const float& fZx, const float& fZy, const float& fZz) :
+__forceinline Mat33V::Mat33V(const f32& fXx, const f32& fXy, const f32& fXz,
+							 const f32& fYx, const f32& fYy, const f32& fYz,
+							 const f32& fZx, const f32& fZy, const f32& fZz) :
 	xAxis(fXx, fXy, fXz),
 	yAxis(fYx, fYy, fYz),
 	zAxis(fZx, fZy, fZz)
@@ -31,9 +31,9 @@ __forceinline Mat33V::Mat33V(eIdentityInitializer UNUSED_PARAM(eIdentity)) :
 
 inline Mat33V::Mat33V(eXRotationInitializer UNUSED_PARAM(eXRotation), ScalarV_In vRotationInRadians)
 {
-	float fRotInRads = vRotationInRadians.AsFloat();
-	float fSinAngle = sin(fRotInRads);
-	float fCosAngle = cos(fRotInRads);
+	f32 fRotInRads = vRotationInRadians.AsFloat();
+	f32 fSinAngle = sin(fRotInRads);
+	f32 fCosAngle = cos(fRotInRads);
 	xAxis = g_IdentityX3V;
 	yAxis = Vec3V(0.0f, fCosAngle, fSinAngle);
 	zAxis = Vec3V(0.0f, -fSinAngle, fCosAngle);
@@ -41,9 +41,9 @@ inline Mat33V::Mat33V(eXRotationInitializer UNUSED_PARAM(eXRotation), ScalarV_In
 
 inline Mat33V::Mat33V(eYRotationInitializer UNUSED_PARAM(eYRotation), ScalarV_In vRotationInRadians)
 {
-	float fRotInRads = vRotationInRadians.AsFloat();
-	float fSinAngle = sin(fRotInRads);
-	float fCosAngle = cos(fRotInRads);
+	f32 fRotInRads = vRotationInRadians.AsFloat();
+	f32 fSinAngle = sin(fRotInRads);
+	f32 fCosAngle = cos(fRotInRads);
 	xAxis = Vec3V(fCosAngle, 0.0f, -fSinAngle);
 	yAxis = g_IdentityY3V;
 	zAxis = Vec3V(fSinAngle, 0.0f, fCosAngle);
@@ -51,9 +51,9 @@ inline Mat33V::Mat33V(eYRotationInitializer UNUSED_PARAM(eYRotation), ScalarV_In
 
 inline Mat33V::Mat33V(eZRotationInitializer UNUSED_PARAM(eZRotation), ScalarV_In vRotationInRadians)
 {
-	float fRotInRads = vRotationInRadians.AsFloat();
-	float fSinAngle = sin(fRotInRads);
-	float fCosAngle = cos(fRotInRads);
+	f32 fRotInRads = vRotationInRadians.AsFloat();
+	f32 fSinAngle = sin(fRotInRads);
+	f32 fCosAngle = cos(fRotInRads);
 	xAxis = Vec3V(fCosAngle, fSinAngle, 0.0f);
 	yAxis = Vec3V(-fSinAngle, fCosAngle, 0.0f);
 	zAxis = g_IdentityZ3V;

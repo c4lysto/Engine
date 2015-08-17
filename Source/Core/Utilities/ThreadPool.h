@@ -41,7 +41,7 @@ public:
 	~ThreadPool();
 
 	// Optional Call
-	void Init(size_t poolSize, const char* szPoolName = "Thread Pool");
+	void Init(u32 poolSize, const char* szPoolName = "Thread Pool");
 
 	void Shutdown();
 

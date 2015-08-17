@@ -12,7 +12,7 @@ typedef long long QWORD;
 namespace recon
 {
 
-enum class InputState : unsigned char
+enum class InputState : u8
 {
 	Pressed		= 0x0,
 	Down		= 0x1,
@@ -20,7 +20,7 @@ enum class InputState : unsigned char
 	Changed		= 0x4
 };
 
-enum class InputDevice : unsigned char
+enum class InputDevice : u8
 {
 	None		= 0x0,
 	Mouse		= 0x1,
@@ -33,7 +33,7 @@ enum class InputDevice : unsigned char
 	GamepadAny	= (Gamepad1 | Gamepad2 | Gamepad3 | Gamepad4)
 };
 
-enum class InputModifier : unsigned char
+enum class InputModifier : u8
 {
 	None	= 0,
 	LCtrl	= 0x1,
@@ -48,7 +48,7 @@ enum class InputModifier : unsigned char
 	Alt		= (LAlt | RAlt)
 };
 
-enum class InputID : unsigned short
+enum class InputID : u16
 {
 	// Keyboard
 	None	= 0,

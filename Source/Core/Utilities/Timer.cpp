@@ -9,7 +9,7 @@ namespace recon
 
 	}
 
-	COMMENT(static) void GameClock::Update(float fTimeDialation /*= 1.0f*/)
+	COMMENT(static) void GameClock::Update(f32 fTimeDialation /*= 1.0f*/)
 	{
 		ms_Timers[(u32)GameTimer::LastFrame] = ms_Timers[(u32)GameTimer::UnDialated];
 

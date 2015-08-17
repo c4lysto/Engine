@@ -1,20 +1,20 @@
 
-__forceinline Vec3f::Vec3f(const float& fVal) : x(fVal), y(fVal), z(fVal)
+__forceinline Vec3f::Vec3f(const f32& fVal) : x(fVal), y(fVal), z(fVal)
 {
 
 }
 
-__forceinline Vec3f::Vec3f(const float& fX, const float& fY, const float& fZ) : x(fX), y(fY), z(fZ)
+__forceinline Vec3f::Vec3f(const f32& fX, const f32& fY, const f32& fZ) : x(fX), y(fY), z(fZ)
 {
 
 }
 
-__forceinline Vec3f::Vec3f(const float& fX, Vec2f_In vYZ) : x(fX), y(vYZ.GetXRef()), z(vYZ.GetYRef())
+__forceinline Vec3f::Vec3f(const f32& fX, Vec2f_In vYZ) : x(fX), y(vYZ.GetXRef()), z(vYZ.GetYRef())
 {
 
 }
 
-__forceinline Vec3f::Vec3f(Vec2f_In vXY, const float& fZ) : x(vXY.GetXRef()), y(vXY.GetYRef()), z(fZ)
+__forceinline Vec3f::Vec3f(Vec2f_In vXY, const f32& fZ) : x(vXY.GetXRef()), y(vXY.GetYRef()), z(fZ)
 {
 
 }
@@ -76,7 +76,7 @@ __forceinline Vec3f_Ref RECON_VEC_CALLCONV Vec3f::operator=(Vec3f&& vVector)
 	return *this;
 }
 
-__forceinline void RECON_VEC_CALLCONV Vec3f::operator*=(const float& fScalar)
+__forceinline void RECON_VEC_CALLCONV Vec3f::operator*=(const f32& fScalar)
 {
 	x *= fScalar; y *= fScalar; z *= fScalar;
 }
@@ -86,9 +86,9 @@ __forceinline void RECON_VEC_CALLCONV Vec3f::operator*=(Vec3f_In vScale)
 	x *= vScale.x; y *= vScale.y; z *= vScale.z;
 }
 
-__forceinline Vec3f_Out RECON_VEC_CALLCONV Vec3f::operator/(const float& fScalar) const
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Vec3f::operator/(const f32& fScalar) const
 {
-	float fInvScalar = 1 / fScalar;
+	f32 fInvScalar = 1 / fScalar;
 	return Vec3f(x * fInvScalar, y * fInvScalar, z * fInvScalar);
 }
 
@@ -97,9 +97,9 @@ __forceinline Vec3f_Out RECON_VEC_CALLCONV Vec3f::operator/(Vec3f_In vScale) con
 	return Vec3f(x / vScale.x, y / vScale.y, z / vScale.z);
 }
 
-__forceinline void RECON_VEC_CALLCONV Vec3f::operator/=(const float& fScalar)
+__forceinline void RECON_VEC_CALLCONV Vec3f::operator/=(const f32& fScalar)
 {
-	float fInvScalar = 1 / fScalar;
+	f32 fInvScalar = 1 / fScalar;
 	x *= fInvScalar; y *= fInvScalar; z *= fInvScalar;
 }
 
@@ -108,7 +108,7 @@ __forceinline void RECON_VEC_CALLCONV Vec3f::operator/=(Vec3f_In vScale)
 	x /= vScale.x; y /= vScale.y; z /= vScale.z;
 }
 
-__forceinline Vec3f_Out RECON_VEC_CALLCONV Vec3f::operator*(const float& fScalar) const
+__forceinline Vec3f_Out RECON_VEC_CALLCONV Vec3f::operator*(const f32& fScalar) const
 {
 	return Vec3f(x * fScalar, y * fScalar, z * fScalar);
 }
@@ -118,7 +118,7 @@ __forceinline Vec3f_Out RECON_VEC_CALLCONV Vec3f::operator*(Vec3f_In vScale) con
 	return Vec3f(x * vScale.x, y * vScale.y, z * vScale.z);
 }
 
-__forceinline Vec3f_Out RECON_VEC_CALLCONV operator*(const float& fScalar, Vec3f_In vVector)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV operator*(const f32& fScalar, Vec3f_In vVector)
 {
 	return Vec3f(vVector.x * fScalar, vVector.y * fScalar, vVector.z * fScalar);
 }
@@ -200,22 +200,22 @@ __forceinline Vec3f_Out Vec3f::operator~() const
 	return Vec3fInt(~iX, ~iY, ~iZ);
 }
 
-__forceinline const float& Vec3f::operator[](int index) const
+__forceinline const f32& Vec3f::operator[](s32 index) const
 {
 	return vector[index];
 }
 
-__forceinline float& Vec3f::operator[](int index)
+__forceinline f32& Vec3f::operator[](s32 index)
 {
 	return vector[index];
 }
 
 __forceinline Vec3f_Out RECON_VEC_CALLCONV Vec3fInt(const s32& intVal)
 {
-	return Vec3f(*reinterpret_cast<const float*>(&intVal));
+	return Vec3f(*reinterpret_cast<const f32*>(&intVal));
 }
 
 __forceinline Vec3f_Out RECON_VEC_CALLCONV Vec3fInt(const s32& intX, const s32& intY, const s32& intZ)
 {
-	return Vec3f(*reinterpret_cast<const float*>(&intX), *reinterpret_cast<const float*>(&intY), *reinterpret_cast<const float*>(&intZ));
+	return Vec3f(*reinterpret_cast<const f32*>(&intX), *reinterpret_cast<const f32*>(&intY), *reinterpret_cast<const f32*>(&intZ));
 }

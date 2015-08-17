@@ -1,10 +1,10 @@
 
-__forceinline Vec2V::Vec2V(const float& fVal)
+__forceinline Vec2V::Vec2V(const f32& fVal)
 {
 	row = VectorSet(fVal);
 }
 
-__forceinline Vec2V::Vec2V(const float& fX, const float& fY)
+__forceinline Vec2V::Vec2V(const f32& fX, const f32& fY)
 {
 	row = VectorSet(fX, fY, VEC_FILL_VAL, VEC_FILL_VAL);
 }
@@ -193,22 +193,22 @@ __forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator~() const
 	return Vec2V(VectorNot(row));
 }
 
-__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(int intVal)
+__forceinline const f32& Vec2V::operator[](s32 index) const
+{
+	return floatArr[index];
+}
+
+__forceinline f32& Vec2V::operator[](s32 index)
+{
+	return floatArr[index];
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(s32 intVal)
 {
 	return Vec2V(VectorSet(intVal));
 }
 
-__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(int intX, int intY)
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(s32 intX, s32 intY)
 {
-	return Vec2V(VectorSet(intX, intY, (int)VEC_FILL_VAL, (int)VEC_FILL_VAL));
-}
-
-__forceinline const float& Vec2V::operator[](int index) const
-{
-	return floatArr[index];
-}
-
-__forceinline float& Vec2V::operator[](int index)
-{
-	return floatArr[index];
+	return Vec2V(VectorSet(intX, intY, (s32)VEC_FILL_VAL, (s32)VEC_FILL_VAL));
 }

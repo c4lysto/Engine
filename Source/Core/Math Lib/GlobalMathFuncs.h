@@ -52,30 +52,30 @@ Vec2f_Out RECON_VEC_CALLCONV ClampInt(Vec2f_In val, Vec2f_In minVal, Vec2f_In ma
 Vec3f_Out RECON_VEC_CALLCONV ClampInt(Vec3f_In val, Vec3f_In minVal, Vec3f_In maxVal);
 Vec4f_Out RECON_VEC_CALLCONV ClampInt(Vec4f_In val, Vec4f_In minVal, Vec4f_In maxVal);
 
-float RECON_VEC_CALLCONV Lerp(const float& lhs, const float& rhs, const float& fLambda);
-double RECON_VEC_CALLCONV Lerp(const double& lhs, const double& rhs, const double& fLambda);
-Vec2f_Out RECON_VEC_CALLCONV Lerp(Vec2f_In lhs, Vec2f_In rhs, const float& fLambda);
-Vec3f_Out RECON_VEC_CALLCONV Lerp(Vec3f_In lhs, Vec3f_In rhs, const float& fLambda);
-Vec4f_Out RECON_VEC_CALLCONV Lerp(Vec4f_In lhs, Vec4f_In rhs, const float& fLambda);
+f32 RECON_VEC_CALLCONV Lerp(const f32& lhs, const f32& rhs, const f32& fLambda);
+f64 RECON_VEC_CALLCONV Lerp(const f64& lhs, const f64& rhs, const f64& fLambda);
+Vec2f_Out RECON_VEC_CALLCONV Lerp(Vec2f_In lhs, Vec2f_In rhs, const f32& fLambda);
+Vec3f_Out RECON_VEC_CALLCONV Lerp(Vec3f_In lhs, Vec3f_In rhs, const f32& fLambda);
+Vec4f_Out RECON_VEC_CALLCONV Lerp(Vec4f_In lhs, Vec4f_In rhs, const f32& fLambda);
 
 s8 Abs(const s8& iScalar);
 s16 Abs(const s16& iScalar);
 s32 Abs(const s32& iScalar);
 s64 Abs(const s64& iScalar);
-float Abs(const float& fScalar);
-double Abs(const double& fScalar);
+f32 Abs(const f32& fScalar);
+f64 Abs(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Abs(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Abs(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Abs(Vec4f_In vVector);
 
-float Sqrt(const float& fScalar);
-double Sqrt(const double& fScalar);
+f32 Sqrt(const f32& fScalar);
+f64 Sqrt(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Sqrt(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Sqrt(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Sqrt(Vec4f_In vVector);
 
-float SqrtSafe(const float& fScalar, const float& safeVal = 0.0f);
-double SqrtSafe(const double& fScalar, const double& safeVal = 0.0);
+f32 SqrtSafe(const f32& fScalar, const f32& safeVal = 0.0f);
+f64 SqrtSafe(const f64& fScalar, const f64& safeVal = 0.0);
 Vec2f_Out RECON_VEC_CALLCONV SqrtSafe(Vec2f_In vVector, Vec2f_In vSafeVec = Vec2f(I_ZERO));
 Vec3f_Out RECON_VEC_CALLCONV SqrtSafe(Vec3f_In vVector, Vec3f_In vSafeVec = Vec3f(I_ZERO));
 Vec4f_Out RECON_VEC_CALLCONV SqrtSafe(Vec4f_In vVector, Vec4f_In vSafeVec = Vec4f(I_ZERO));
@@ -103,44 +103,44 @@ Vec4f_Out RECON_VEC_CALLCONV SelectTF(Vec4f_In lhs, Vec4f_In rhs, Vec4f_In condi
 
 // Trigonometry
 
-float Sin(const float& fRadians);
-double Sin(const double& fRadians);
+f32 Sin(const f32& fRadians);
+f64 Sin(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV Sin(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV Sin(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV Sin(Vec4f_In vRadians);
 
-float ASin(const float& fRadians);
-double ASin(const double& fRadians);
+f32 ASin(const f32& fRadians);
+f64 ASin(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV ASin(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV ASin(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV ASin(Vec4f_In vRadians);
 
-float Cos(const float& fRadians);
-double Cos(const double& fRadians);
+f32 Cos(const f32& fRadians);
+f64 Cos(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV Cos(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV Cos(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV Cos(Vec4f_In vRadians);
 
-float ACos(const float& fRadians);
-double ACos(const double& fRadians);
+f32 ACos(const f32& fRadians);
+f64 ACos(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV ACos(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV ACos(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV ACos(Vec4f_In vRadians);
 
-float Tan(const float& fRadians);
-double Tan(const double& fRadians);
+f32 Tan(const f32& fRadians);
+f64 Tan(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV Tan(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV Tan(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV Tan(Vec4f_In vRadians);
 
-float ATan(const float& fRadians);
-double ATan(const double& fRadians);
+f32 ATan(const f32& fRadians);
+f64 ATan(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV ATan(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV ATan(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV ATan(Vec4f_In vRadians);
 
 // Returns: Vec2f(Sin(), Cos());
-Vec2f_Out RECON_VEC_CALLCONV SinCos(const float& fRadians);
+Vec2f_Out RECON_VEC_CALLCONV SinCos(const f32& fRadians);
 
 
 // Comparison Functions
@@ -270,25 +270,25 @@ VEC_ARITH_DECL(DivideInt, Vec4f)
 
 // Vector Math Functions
 
-float RECON_VEC_CALLCONV Dot(Vec2f_In vVectorA, Vec2f_In vVectorB);
-float RECON_VEC_CALLCONV Dot(Vec3f_In vVectorA, Vec3f_In vVectorB);
-float RECON_VEC_CALLCONV Dot(Vec4f_In vVectorA, Vec4f_In vVectorB);
+f32 RECON_VEC_CALLCONV Dot(Vec2f_In vVectorA, Vec2f_In vVectorB);
+f32 RECON_VEC_CALLCONV Dot(Vec3f_In vVectorA, Vec3f_In vVectorB);
+f32 RECON_VEC_CALLCONV Dot(Vec4f_In vVectorA, Vec4f_In vVectorB);
 
-float RECON_VEC_CALLCONV Mag(Vec2f_In vVector);
-float RECON_VEC_CALLCONV Mag(Vec3f_In vVector);
-float RECON_VEC_CALLCONV Mag(Vec4f_In vVector);
+f32 RECON_VEC_CALLCONV Mag(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV Mag(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV Mag(Vec4f_In vVector);
 
-float RECON_VEC_CALLCONV Length(Vec2f_In vVector);
-float RECON_VEC_CALLCONV Length(Vec3f_In vVector);
-float RECON_VEC_CALLCONV Length(Vec4f_In vVector);
+f32 RECON_VEC_CALLCONV Length(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV Length(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV Length(Vec4f_In vVector);
 
-float RECON_VEC_CALLCONV MagSq(Vec2f_In vVector);
-float RECON_VEC_CALLCONV MagSq(Vec3f_In vVector);
-float RECON_VEC_CALLCONV MagSq(Vec4f_In vVector);
+f32 RECON_VEC_CALLCONV MagSq(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV MagSq(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV MagSq(Vec4f_In vVector);
 
-float RECON_VEC_CALLCONV LengthSq(Vec2f_In vVector);
-float RECON_VEC_CALLCONV LengthSq(Vec3f_In vVector);
-float RECON_VEC_CALLCONV LengthSq(Vec4f_In vVector);
+f32 RECON_VEC_CALLCONV LengthSq(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV LengthSq(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV LengthSq(Vec4f_In vVector);
 
 Vec2f_Out RECON_VEC_CALLCONV Normalize(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Normalize(Vec3f_In vVector);
@@ -304,37 +304,37 @@ Vec2f_Out RECON_VEC_CALLCONV FloatToInt(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV FloatToInt(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV FloatToInt(Vec4f_In vVector);
 
-float Floor(const float& fScalar);
-double Floor(const double& fScalar);
+f32 Floor(const f32& fScalar);
+f64 Floor(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Floor(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Floor(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Floor(Vec4f_In vVector);
 
-float Ceil(const float& fScalar);
-double Ceil(const double& fScalar);
+f32 Ceil(const f32& fScalar);
+f64 Ceil(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Ceil(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Ceil(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Ceil(Vec4f_In vVector);
 
-float Trunc(const float& fScalar);
-double Trunc(const double& fScalar);
+f32 Trunc(const f32& fScalar);
+f64 Trunc(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Trunc(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Trunc(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Trunc(Vec4f_In vVector);
 
-float Round(const float& fScalar);
-double Round(const double& fScalar);
+f32 Round(const f32& fScalar);
+f64 Round(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Round(Vec2f& vVector);
 Vec3f_Out RECON_VEC_CALLCONV Round(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Round(Vec4f_In vVector);
 
-float Log2(const float& fScalar);
-double Log2(const double& fScalar);
+f32 Log2(const f32& fScalar);
+f64 Log2(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Log2(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Log2(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Log2(Vec4f_In vVector);
 
-Mat44f_Out RECON_VEC_CALLCONV Lerp(Mat44f_In MatrixA, Mat44f_In MatrixB, const float fLambda);
+Mat44f_Out RECON_VEC_CALLCONV Lerp(Mat44f_In MatrixA, Mat44f_In MatrixB, const f32 fLambda);
 
 Vec3f_Out RECON_VEC_CALLCONV Cross(Vec3f_In lhs, Vec3f_In rhs);
 
@@ -353,14 +353,14 @@ Mat44f_Out RECON_VEC_CALLCONV Transpose3x3(Mat44f_In mMatrix);
 
 Mat44f_Out RECON_VEC_CALLCONV RotateAround(Vec3f_In origin, Mat44f_In rotatorsMatrix, Mat44f_In rotationMatrix);
 
-Mat44f_Out RECON_VEC_CALLCONV MakePerspectiveMatrix(float fFOV, float fAspectRatio, float fNearClip, float fFarClip);
-Mat44f_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(float fWidth, float fHeight, float fNear, float fFar);
+Mat44f_Out RECON_VEC_CALLCONV MakePerspectiveMatrix(f32 fFOV, f32 fAspectRatio, f32 fNearClip, f32 fFarClip);
+Mat44f_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(f32 fWidth, f32 fHeight, f32 fNear, f32 fFar);
 Mat44f_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(u32 unWidth, u32 unHeight);
 
-float CalculateGaussianWeight(s32 nOffset, float fSigma = 1.0f);
+f32 CalculateGaussianWeight(s32 nOffset, f32 fSigma = 1.0f);
 
 // unRadius - Number of Pixels to Blur In a Single Direction Including the Center Pixel
-inline void CalculateGaussianWeights(float* pGaussianWeights, u32 unRadius, float fLimit = 1.0f);
+inline void CalculateGaussianWeights(f32* pGaussianWeights, u32 unRadius, f32 fLimit = 1.0f);
 
 #if SSE_AVAILABLE
 
@@ -671,11 +671,11 @@ Mat44V_Out RECON_VEC_CALLCONV Transpose3x3(Mat44V_In mMatrix);
 
 Mat44V_Out RECON_VEC_CALLCONV RotateAround(Vec3V_In origin, Mat44V_In rotatorsMatrix, Mat44V_In rotationMatrix);
 
-Mat44V RECON_VEC_CALLCONV MakePerspectiveMatrixV(float fFOV, float fAspectRatio, float fNearClip, float fFarClip);
+Mat44V RECON_VEC_CALLCONV MakePerspectiveMatrixV(f32 fFOV, f32 fAspectRatio, f32 fNearClip, f32 fFarClip);
 
-Mat44V RECON_VEC_CALLCONV MakeOrthographicMatrixV(float fWidth, float fHeight, float fNear, float fFar);
+Mat44V RECON_VEC_CALLCONV MakeOrthographicMatrixV(f32 fWidth, f32 fHeight, f32 fNear, f32 fFar);
 
-Mat44V RECON_VEC_CALLCONV MakeTextureMatrixOffsetV(unsigned int unWidth, unsigned int unHeight);
+Mat44V RECON_VEC_CALLCONV MakeTextureMatrixOffsetV(u32 unWidth, u32 unHeight);
 #endif //SSE_AVAILABLE
 
 class VecCmpResult
@@ -704,7 +704,7 @@ public:
 	explicit operator Vector() const;
 #endif // SSE_AVAILABLE
 
-	int GetResultMask() const;
+	s32 GetResultMask() const;
 	operator s32 () const;
 
 	bool IsTrueAny() const;

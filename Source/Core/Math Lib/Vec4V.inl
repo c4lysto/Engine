@@ -23,12 +23,12 @@ __forceinline Vec4V::Vec4V(Vector&& vVector)
 }
 #endif // !RECON_OS_64BIT
 
-__forceinline Vec4V::Vec4V(const float& fVal)
+__forceinline Vec4V::Vec4V(const f32& fVal)
 {
 	row = VectorSet(fVal);
 }
 
-__forceinline Vec4V::Vec4V(const float& fX, const float& fY, const float& fZ, const float& fW)
+__forceinline Vec4V::Vec4V(const f32& fX, const f32& fY, const f32& fZ, const f32& fW)
 {
 	row = VectorSet(fX, fY, fZ, fW);
 }
@@ -222,22 +222,22 @@ __forceinline Vec4V_Out Vec4V::operator~() const
 	return Vec4V(VectorNot(row));
 }
 
-__forceinline const float& Vec4V::operator[](int index) const
+__forceinline const f32& Vec4V::operator[](s32 index) const
 {
 	return floatArr[index];
 }
 
-__forceinline float& Vec4V::operator[](int index)
+__forceinline f32& Vec4V::operator[](s32 index)
 {
 	return floatArr[index];
 }
 
-__forceinline Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(int intVal)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(s32 intVal)
 {
 	return Vec4V(VectorSet(intVal));
 }
 
-__forceinline Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(int intX, int intY, int intZ, int intW)
+__forceinline Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(s32 intX, s32 intY, s32 intZ, s32 intW)
 {
 	return Vec4V(VectorSet(intX, intY, intZ, intW));
 }

@@ -22,9 +22,9 @@ public:
 	void SetCurrHealth(s32 currHealth);
 
 	void TakeDamage(s32 healthDamage);
-	void TakeDamage(float percentDamage) {return TakeDamage(s32(m_MaxHealth * percentDamage));}
+	void TakeDamage(f32 percentDamage) {return TakeDamage(s32(m_MaxHealth * percentDamage));}
 	void Heal(s32 healthToHeal);
-	void Heal(float percentToHeal) {return Heal(s32(m_MaxHealth * percentToHeal));}
+	void Heal(f32 percentToHeal) {return Heal(s32(m_MaxHealth * percentToHeal));}
 
 	bool IsAlive() {return (m_CurrHealth > 0 && m_MaxHealth > 0);}
 	bool IsDead() {return (m_CurrHealth <= 0 || m_MaxHealth <= 0);}

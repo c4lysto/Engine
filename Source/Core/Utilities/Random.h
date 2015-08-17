@@ -17,22 +17,22 @@ public:
 
 	static s32 Draw();
 	static s32 Draw(s32 nMin, s32 nMax);
-	static float Draw(float fMin, float fMax);
+	static f32 Draw(f32 fMin, f32 fMax);
 
-	static float DrawNormalized();
+	static f32 DrawNormalized();
 
 	static bool DrawBool();
 
 	static Vec2V_Out Draw2();
-	static Vec2V_Out Draw2(float fMin, float fMax);
+	static Vec2V_Out Draw2(f32 fMin, f32 fMax);
 	static Vec2V_Out Draw2(Vec2V_In vMin, Vec2V_In vMax);
 
 	static Vec3V_Out Draw3();
-	static Vec3V_Out Draw3(float fMin, float fMax);
+	static Vec3V_Out Draw3(f32 fMin, f32 fMax);
 	static Vec3V_Out Draw3(Vec3V_In vMin, Vec3V_In vMax);
 
 	static Vec4V_Out Draw4();
-	static Vec4V_Out Draw4(float fMin, float fMax);
+	static Vec4V_Out Draw4(f32 fMin, f32 fMax);
 	static Vec4V_Out Draw4(Vec4V_In vMin, Vec4V_In vMax);
 };
 
@@ -60,12 +60,12 @@ s32 Rand::Draw(s32 nMin, s32 nMax)
 	return s32((DrawNormalized() * (nMax - nMin)) + nMin);
 }
 
-float Rand::Draw(float fMin, float fMax)
+f32 Rand::Draw(f32 fMin, f32 fMax)
 {
 	return (DrawNormalized() * (fMax - fMin)) + fMin;
 }
 
-float Rand::DrawNormalized()
+f32 Rand::DrawNormalized()
 {
 									// 1.0f/((2^23)-1)
 	return (Draw() & ((1<<23)-1)) * 1.1920930376163765926810017443897e-7f;
@@ -83,7 +83,7 @@ Vec2V_Out Rand::Draw2()
 	return Vec2VInt(seed1, (seed1 & 0x55555555) | (seed2 & 0xAAAAAAAA));
 }
 
-Vec2V_Out Rand::Draw2(float fMin, float fMax)
+Vec2V_Out Rand::Draw2(f32 fMin, f32 fMax)
 {
 	return Draw2(Vec2V(fMin), Vec2V(fMax));
 }
@@ -102,7 +102,7 @@ Vec3V_Out Rand::Draw3()
 	return Vec3VInt(seed1, (seed1 & 0x55555555) | (seed2 & 0xAAAAAAAA), seed2);
 }
 
-Vec3V_Out Rand::Draw3(float fMin, float fMax)
+Vec3V_Out Rand::Draw3(f32 fMin, f32 fMax)
 {
 	return Draw3(Vec3V(fMin), Vec3V(fMax));
 }
@@ -121,7 +121,7 @@ Vec4V_Out Rand::Draw4()
 	return Vec4VInt(seed1, (seed1 & 0x55555555) | (seed2 & 0xAAAAAAAA), seed2, (seed1 & 0xAAAAAAAA) | (seed2 & 0x55555555));
 }
 
-Vec4V_Out Rand::Draw4(float fMin, float fMax)
+Vec4V_Out Rand::Draw4(f32 fMin, f32 fMax)
 {
 	return Draw4(Vec4V(fMin), Vec4V(fMax));
 }

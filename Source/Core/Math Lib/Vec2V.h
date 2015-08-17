@@ -50,22 +50,22 @@ ALIGN(16) class Vec2V
 private:
 	union
 	{
-		float floatArr[4];
+		f32 floatArr[4];
 		Vector row;
 
 		union
 		{
 			struct
 			{
-				float x, y, z, w;
+				f32 x, y, z, w;
 			};
 		};
 	};
 
 public:
 	Vec2V(){}
-	explicit Vec2V(const float& fVal);
-	explicit Vec2V(const float& fX, const float& fY);
+	explicit Vec2V(const f32& fVal);
+	explicit Vec2V(const f32& fX, const f32& fY);
 	explicit Vec2V(ScalarV_In vVal);
 	explicit Vec2V(ScalarV_In vX, ScalarV_In vY);
 	//Vec2V(Vec2V_In vVector);
@@ -130,17 +130,17 @@ public:
 	VEC2V_ACCESSOR_SCALARV_CONST(GetY, Y)
 	VEC2V_ACCESSOR_SCALARV_CONST(GetZ, Z)
 	VEC2V_ACCESSOR_SCALARV_CONST(GetW, W)
-	VEC2V_ACCESSOR_CONST(const float&, GetXRef, x)
-	VEC2V_ACCESSOR_CONST(const float&, GetYRef, y)
-	VEC2V_ACCESSOR_CONST(const float&, GetZRef, z)
-	VEC2V_ACCESSOR_CONST(const float&, GetWRef, w)
+	VEC2V_ACCESSOR_CONST(const f32&, GetXRef, x)
+	VEC2V_ACCESSOR_CONST(const f32&, GetYRef, y)
+	VEC2V_ACCESSOR_CONST(const f32&, GetZRef, z)
+	VEC2V_ACCESSOR_CONST(const f32&, GetWRef, w)
 
 	VEC2V_ACCESSOR_CONST(Vector_Out, RECON_VEC_CALLCONV GetVector, row)
 
-	VEC2V_ACCESSOR(float&, GetXRef, x)
-	VEC2V_ACCESSOR(float&, GetYRef, y)
-	VEC2V_ACCESSOR(float&, GetZRef, z)
-	VEC2V_ACCESSOR(float&, GetWRef, w)
+	VEC2V_ACCESSOR(f32&, GetXRef, x)
+	VEC2V_ACCESSOR(f32&, GetYRef, y)
+	VEC2V_ACCESSOR(f32&, GetZRef, z)
+	VEC2V_ACCESSOR(f32&, GetWRef, w)
 #undef VEC2V_ACCESSOR
 #undef VEC2V_ACCESSOR_CONST
 #undef VEC2V_ACCESSOR_SCALARV_CONST
@@ -154,10 +154,10 @@ public:
 	void RECON_VEC_CALLCONV SetZ(ScalarV_In zVal);
 	void RECON_VEC_CALLCONV SetW(ScalarV_In wVal);
 
-	VEC2V_MUTATOR(SetX, const float&, x)
-	VEC2V_MUTATOR(SetY, const float&, y)
-	VEC2V_MUTATOR(SetZ, const float&, z)
-	VEC2V_MUTATOR(SetW, const float&, w)
+	VEC2V_MUTATOR(SetX, const f32&, x)
+	VEC2V_MUTATOR(SetY, const f32&, y)
+	VEC2V_MUTATOR(SetZ, const f32&, z)
+	VEC2V_MUTATOR(SetW, const f32&, w)
 
 #undef VEC2V_MUTATOR
 #else
@@ -204,12 +204,12 @@ public:
 
 	Vec2V_Out RECON_VEC_CALLCONV operator~() const;
 
-	const float& operator[](int index) const;
-	float& operator[](int index);
+	const f32& operator[](s32 index) const;
+	f32& operator[](s32 index);
 };
 
-Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(int intVal);
-Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(int intX, int intY);
+Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(s32 intVal);
+Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(s32 intX, s32 intY);
 
 ScalarV RECON_VEC_CALLCONV Dot(Vec2V_In lhs, Vec2V_In rhs);
 

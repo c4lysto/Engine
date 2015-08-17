@@ -1,10 +1,10 @@
 
-__forceinline Vec3V::Vec3V(const float& fVal)
+__forceinline Vec3V::Vec3V(const f32& fVal)
 {
 	row = VectorSet(fVal);
 }
 
-__forceinline Vec3V::Vec3V(const float& fX, const float& fY, const float& fZ)
+__forceinline Vec3V::Vec3V(const f32& fX, const f32& fY, const f32& fZ)
 {
 	row = VectorSet(fX, fY, fZ, VEC_FILL_VAL);
 }
@@ -204,22 +204,22 @@ __forceinline Vec3V_Out Vec3V::operator~() const
 	return Vec3V(VectorNot(row));
 }
 
-__forceinline const float& Vec3V::operator[](int index) const
+__forceinline const f32& Vec3V::operator[](s32 index) const
 {
 	return floatArr[index];
 }
 
-__forceinline float& Vec3V::operator[](int index)
+__forceinline f32& Vec3V::operator[](s32 index)
 {
 	return floatArr[index];
 }
 
-__forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(int intVal)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(s32 intVal)
 {
 	return Vec3V(VectorSet(intVal));
 }
 
-__forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(int intX, int intY, int intZ)
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(s32 intX, s32 intY, s32 intZ)
 {
-	return Vec3V(VectorSet(intX, intY, intZ, (int)VEC_FILL_VAL));
+	return Vec3V(VectorSet(intX, intY, intZ, (s32)VEC_FILL_VAL));
 }

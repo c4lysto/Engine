@@ -408,7 +408,7 @@ void InputManager::CreateMouseEvent(PRAWINPUT pInput)
 	{
 		InputMouseMoveEvent newEvent;
 
-		newEvent.m_vMouseMovement = Vec2f((float)rwMouse.lLastX, (float)rwMouse.lLastY);
+		newEvent.m_vMouseMovement = Vec2f((f32)rwMouse.lLastX, (f32)rwMouse.lLastY);
 		newEvent.m_vMousePos = GetMousePosition();
 
 		PostInputEvent(&newEvent);
@@ -554,7 +554,7 @@ Vec2f InputManager::GetMousePosition()
 {
 	POINT cursorPos;
 	GetCursorPos(&cursorPos);
-	return Vec2f((float)cursorPos.x, (float)cursorPos.y);
+	return Vec2f((f32)cursorPos.x, (f32)cursorPos.y);
 }
 
 LRESULT __stdcall InputManager::InputHookCallback(int code, WPARAM wParam, LPARAM lParam)

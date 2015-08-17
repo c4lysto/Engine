@@ -13,12 +13,12 @@ __forceinline ScalarV::ScalarV(Vector_In vVector)
 	Assertf(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
 }
 
-__forceinline ScalarV::ScalarV(const float& fVal)
+__forceinline ScalarV::ScalarV(const f32& fVal)
 {
 	row = VectorSet(fVal);
 }
 
-__forceinline ScalarV::ScalarV(const int& iVal)
+__forceinline ScalarV::ScalarV(const s32& iVal)
 {
 	row = VectorSet(iVal);
 }
@@ -28,22 +28,22 @@ __forceinline Vector_Out ScalarV::GetVector() const
 	return row;
 }
 
-__forceinline float ScalarV::GetFloat() const
+__forceinline f32 ScalarV::GetFloat() const
 {
 	return VectorExtractFloat<VecElem::X>(row);
 }
 
-__forceinline float ScalarV::AsFloat() const
+__forceinline f32 ScalarV::AsFloat() const
 {
 	return GetFloat();
 }
 
-__forceinline int ScalarV::GetInt() const
+__forceinline s32 ScalarV::GetInt() const
 {
 	return VectorExtractInt<VecElem::X>(row);
 }
 
-__forceinline int ScalarV::AsInt() const
+__forceinline s32 ScalarV::AsInt() const
 {
 	return GetInt();
 }
@@ -116,23 +116,23 @@ __forceinline ScalarV_Ref ScalarV::operator/=(ScalarV_In rhs)
 }
 
 // Logical Operators
-__forceinline ScalarV_Out ScalarV::operator<<(int nCount) const
+__forceinline ScalarV_Out ScalarV::operator<<(s32 nCount) const
 {
 	return ScalarV(VectorLeftShift(row, nCount));
 }
 
-__forceinline ScalarV_Ref ScalarV::operator<<=(int nCount)
+__forceinline ScalarV_Ref ScalarV::operator<<=(s32 nCount)
 {
 	row = VectorLeftShift(row, nCount);
 	return *this;
 }
 
-__forceinline ScalarV_Out ScalarV::operator>>(int nCount) const
+__forceinline ScalarV_Out ScalarV::operator>>(s32 nCount) const
 {
 	return ScalarV(VectorRightShift(row, nCount));
 }
 
-__forceinline ScalarV_Ref ScalarV::operator>>=(int nCount)
+__forceinline ScalarV_Ref ScalarV::operator>>=(s32 nCount)
 {
 	row = VectorRightShift(row, nCount);
 	return *this;

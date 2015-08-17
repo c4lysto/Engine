@@ -52,22 +52,22 @@ ALIGN(16) class Vec3V
 private:
 	union
 	{
-		float floatArr[4];
+		f32 floatArr[4];
 		Vector row;
 
 		union
 		{
 			struct
 			{
-				float x, y, z, w;
+				f32 x, y, z, w;
 			};
 		};
 	};
 
 public:
 	Vec3V(){}
-	explicit Vec3V(const float& fVal);
-	explicit Vec3V(const float& fX, const float& fY, const float& fZ);
+	explicit Vec3V(const f32& fVal);
+	explicit Vec3V(const f32& fX, const f32& fY, const f32& fZ);
 	explicit Vec3V(ScalarV_In vVal);
 	explicit Vec3V(ScalarV_In vX, ScalarV_In vY, ScalarV_In vZ);
 	explicit Vec3V(Vec2V_In vXY, ScalarV_In fZ);
@@ -133,18 +133,18 @@ public:
 	VEC3V_ACCESSOR_SCALARV_CONST(Y)
 	VEC3V_ACCESSOR_SCALARV_CONST(Z)
 	VEC3V_ACCESSOR_SCALARV_CONST(W)
-	VEC3V_ACCESSOR_CONST(const float&, GetXRef, x)
-	VEC3V_ACCESSOR_CONST(const float&, GetYRef, y)
-	VEC3V_ACCESSOR_CONST(const float&, GetZRef, z)
-	VEC3V_ACCESSOR_CONST(const float&, GetWRef, w)
+	VEC3V_ACCESSOR_CONST(const f32&, GetXRef, x)
+	VEC3V_ACCESSOR_CONST(const f32&, GetYRef, y)
+	VEC3V_ACCESSOR_CONST(const f32&, GetZRef, z)
+	VEC3V_ACCESSOR_CONST(const f32&, GetWRef, w)
 
 	// Returns the Vector Intrinsic Data Type
 	VEC3V_ACCESSOR_CONST(Vector_Out, RECON_VEC_CALLCONV GetVector, row)
 
-	VEC3V_ACCESSOR(float&, GetXRef, x)
-	VEC3V_ACCESSOR(float&, GetYRef, y)
-	VEC3V_ACCESSOR(float&, GetZRef, z)
-	VEC3V_ACCESSOR(float&, GetWRef, w)
+	VEC3V_ACCESSOR(f32&, GetXRef, x)
+	VEC3V_ACCESSOR(f32&, GetYRef, y)
+	VEC3V_ACCESSOR(f32&, GetZRef, z)
+	VEC3V_ACCESSOR(f32&, GetWRef, w)
 #undef VEC3V_ACCESSOR
 #undef VEC3V_ACCESSOR_CONST
 #undef VEC3V_ACCESSOR_SCALARV_CONST
@@ -158,10 +158,10 @@ public:
 	void RECON_VEC_CALLCONV SetZ(ScalarV_In vZ);
 	void RECON_VEC_CALLCONV SetW(ScalarV_In vW);
 
-	VEC3V_MUTATOR(SetX, const float&, x)
-	VEC3V_MUTATOR(SetY, const float&, y)
-	VEC3V_MUTATOR(SetZ, const float&, z)
-	VEC3V_MUTATOR(SetW, const float&, w)
+	VEC3V_MUTATOR(SetX, const f32&, x)
+	VEC3V_MUTATOR(SetY, const f32&, y)
+	VEC3V_MUTATOR(SetZ, const f32&, z)
+	VEC3V_MUTATOR(SetW, const f32&, w)
 #undef VEC3V_MUTATOR
 #else
 #error VEC3V MUTATORS NOT DEFINED
@@ -209,8 +209,8 @@ public:
 
 	Vec3V_Out operator~() const;
 
-	const float& operator[](int index) const;
-	float& operator[](int index);
+	const f32& operator[](s32 index) const;
+	f32& operator[](s32 index);
 };
 
 ScalarV RECON_VEC_CALLCONV Dot(Vec3V_In lhs, Vec3V_In rhs);
@@ -223,8 +223,8 @@ ScalarV RECON_VEC_CALLCONV LengthSq(Vec3V_In vVector);
 Vec3V_Out RECON_VEC_CALLCONV Normalize(Vec3V_In vVector);
 Vec3V_Out RECON_VEC_CALLCONV Cross(Vec3V_In vVectorA, Vec3V_In vVectorB);
 
-Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(int intVal);
-Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(int intX, int intY, int intZ);
+Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(s32 intVal);
+Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(s32 intX, s32 intY, s32 intZ);
 
 
 GLOBALCONST Vec3V g_IdentityX3V = Vec3V(I_X_AXIS);

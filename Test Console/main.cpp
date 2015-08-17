@@ -92,13 +92,13 @@ struct TstDerivedClass : public TstThreadArgs
 };
 
 void TstThreadProc(void* pArgs);
-float TstGlobal()
+f32 TstGlobal()
 {
 	cout << "TstGlobal() called !" << endl;
 	return PI;
 }
 
-typedef float (TstThreadArgs::*tstFunc)(void);
+typedef f32 (TstThreadArgs::*tstFunc)(void);
 
 void CallFuncPtr(Function<int(int&)> funcPtr)
 {
@@ -106,7 +106,7 @@ void CallFuncPtr(Function<int(int&)> funcPtr)
 	funcPtr(val);
 }
 
-void IntelMatInverse(float* src)
+void IntelMatInverse(f32* src)
 {
 	__m128 minor0, minor1, minor2, minor3;
 	__m128 row0, row1, row2, row3;
@@ -370,7 +370,7 @@ int main()
 
 	//(pTstArgs->*memFunc)(tstVal);
 
-	//std::function<float(void)> pStdFunc;
+	//std::function<f32(void)> pStdFunc;
 	//pStdFunc = std::bind(TstGlobal);
 	//pStdFunc();
 

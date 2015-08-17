@@ -33,8 +33,8 @@ class Mat34f
 private:
 	union
 	{
-		float m[12];
-		float ma[4][3];
+		f32 m[12];
+		f32 ma[4][3];
 
 		struct
 		{
@@ -49,10 +49,10 @@ private:
 
 public:
 	Mat34f(){}
-	explicit Mat34f(const float& fXx, const float& fXy, const float& fXz,
-					const float& fYx, const float& fYy, const float& fYz,
-					const float& fZx, const float& fZy, const float& fZz,
-					const float& fWx, const float& fWy, const float& fWz);
+	explicit Mat34f(const f32& fXx, const f32& fXy, const f32& fXz,
+					const f32& fYx, const f32& fYy, const f32& fYz,
+					const f32& fZx, const f32& fZy, const f32& fZz,
+					const f32& fWx, const f32& fWy, const f32& fWz);
 	Mat34f(Mat34f_In mMatrix);
 	Mat34f(Mat34f&& mMatrix);
 	explicit Mat34f(Vec3f_In vXAxis,
@@ -61,9 +61,9 @@ public:
 					Vec3f_In vWAxis);
 
 	explicit Mat34f(eIdentityInitializer eIdentity);
-	explicit Mat34f(eXRotationInitializer eXRotation, const float& fRotationInRadians);
-	explicit Mat34f(eYRotationInitializer eYRotation, const float& fRotationInRadians);
-	explicit Mat34f(eZRotationInitializer eZRotation, const float& fRotationInRadians);
+	explicit Mat34f(eXRotationInitializer eXRotation, const f32& fRotationInRadians);
+	explicit Mat34f(eYRotationInitializer eYRotation, const f32& fRotationInRadians);
+	explicit Mat34f(eZRotationInitializer eZRotation, const f32& fRotationInRadians);
 	explicit Mat34f(eMatrixPositionInitializer eMatrixPos, Vec3f_In vPos);
 
 #if defined(MAT34F_ACCESSOR) && defined(MAT34F_ACCESSOR_CONST)
@@ -112,13 +112,13 @@ public:
 	Mat34f_Out operator-(Mat34f_In rhs) const;
 	void operator-=(Mat34f_In rhs);
 
-	void Rotate_GlobalX(const float& fRadians);
-	void Rotate_GlobalY(const float& fRadians);
-	void Rotate_GlobalZ(const float& fRadians);
+	void Rotate_GlobalX(const f32& fRadians);
+	void Rotate_GlobalY(const f32& fRadians);
+	void Rotate_GlobalZ(const f32& fRadians);
 
-	void Rotate_LocalX(const float& fRadians);
-	void Rotate_LocalY(const float& fRadians);
-	void Rotate_LocalZ(const float& fRadians);
+	void Rotate_LocalX(const f32& fRadians);
+	void Rotate_LocalY(const f32& fRadians);
+	void Rotate_LocalZ(const f32& fRadians);
 
 	void Scale(Vec3f_In vScale);
 
@@ -133,7 +133,7 @@ public:
 
 	void LookAt(Vec3f_In mPos, Vec3f_In vWorldUp = g_IdentityY3);
 
-	void TurnTo(Vec3f_In vPos, const float& fDeltaTime, float fTurnModifier = 1.0f);
+	void TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier = 1.0f);
 };
 
 Mat44f_Out RECON_VEC_CALLCONV Mat34ToMat44(Mat34f_In mMatrix);

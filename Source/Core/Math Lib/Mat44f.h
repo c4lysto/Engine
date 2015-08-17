@@ -33,8 +33,8 @@ class Mat44f
 private:
 	union
 	{
-		float m[16];
-		float ma[4][4];
+		f32 m[16];
+		f32 ma[4][4];
 
 		struct
 		{
@@ -44,10 +44,10 @@ private:
 
 public:
 	Mat44f(){}
-	explicit Mat44f(const float& fXx, const float& fXy, const float& fXz, const float& fXw,
-					const float& fYx, const float& fYy, const float& fYz, const float& fYw,
-					const float& fZx, const float& fZy, const float& fZz, const float& fZw,
-					const float& fWx, const float& fWy, const float& fWz, const float& fWw);
+	explicit Mat44f(const f32& fXx, const f32& fXy, const f32& fXz, const f32& fXw,
+					const f32& fYx, const f32& fYy, const f32& fYz, const f32& fYw,
+					const f32& fZx, const f32& fZy, const f32& fZz, const f32& fZw,
+					const f32& fWx, const f32& fWy, const f32& fWz, const f32& fWw);
 	Mat44f(Mat44f_In mMatrix);
 	Mat44f(Mat44f&& mMatrix);
 	explicit Mat44f(Vec4f_In vXAxis,
@@ -56,9 +56,9 @@ public:
 					Vec4f_In vWAxis);
 
 	explicit Mat44f(eIdentityInitializer eIdentity);
-	explicit Mat44f(eXRotationInitializer eXRotation, const float& fRotationInRadians);
-	explicit Mat44f(eYRotationInitializer eYRotation, const float& fRotationInRadians);
-	explicit Mat44f(eZRotationInitializer eZRotation, const float& fRotationInRadians);
+	explicit Mat44f(eXRotationInitializer eXRotation, const f32& fRotationInRadians);
+	explicit Mat44f(eYRotationInitializer eYRotation, const f32& fRotationInRadians);
+	explicit Mat44f(eZRotationInitializer eZRotation, const f32& fRotationInRadians);
 	explicit Mat44f(eMatrixPositionInitializer eMatrixPos, Vec3f_In vPos);
 
 #if defined(Mat44_ACCESSOR) && defined(Mat44_ACCESSOR_CONST)
@@ -109,13 +109,13 @@ public:
 	void operator-=(Mat44f_In rhs);
 
 	// actually faster than DirectX Version :)
-	void Rotate_GlobalX(const float& fRadians);
-	void Rotate_GlobalY(const float& fRadians);
-	void Rotate_GlobalZ(const float& fRadians);
+	void Rotate_GlobalX(const f32& fRadians);
+	void Rotate_GlobalY(const f32& fRadians);
+	void Rotate_GlobalZ(const f32& fRadians);
 
-	void Rotate_LocalX(const float& fRadians);
-	void Rotate_LocalY(const float& fRadians);
-	void Rotate_LocalZ(const float& fRadians);
+	void Rotate_LocalX(const f32& fRadians);
+	void Rotate_LocalY(const f32& fRadians);
+	void Rotate_LocalZ(const f32& fRadians);
 
 	void Scale(const Vec3f& vScale);
 
@@ -131,7 +131,7 @@ public:
 
 	void LookAt(const Vec3f& mPos, const Vec3f& vWorldUp = g_IdentityY3);
 
-	void TurnTo(Vec3f_In vPos, const float& fDeltaTime, float fTurnModifier = 1.0f);
+	void TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier = 1.0f);
 
 	void OrthoNormalInvert();
 };

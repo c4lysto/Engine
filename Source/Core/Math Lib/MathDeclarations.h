@@ -197,7 +197,7 @@ class Mat44V;
 #define VEC_FILL_VAL (0.0f)
 #endif //VEC_FILL_VAL
 #else
-#define ScalarV float
+#define ScalarV f32
 #define Vec2V Vec2f
 #define Vec3V Vec3f
 #define Vec4V Vec4f
@@ -224,7 +224,7 @@ class Mat44V;
 #endif//SSE_AVAILABLE
 
 #if SSE_AVAILABLE
-// Flipped the value around because __m128 stores the float in the opposite order that you think it does, TRUST ME!
+// Flipped the value around because __m128 stores the f32 in the opposite order that you think it does, TRUST ME!
 // _MM_FSHUFFLE makes using the _mm_shuffle_ps() function more intuitive by flipping the values that it passes to _MM_SHUFFLE()
 #define _MM_FSHUFFLE(fp0,fp1,fp2,fp3) _MM_SHUFFLE((int)(fp3),(int)(fp2),(int)(fp1),(int)(fp0))
 #endif

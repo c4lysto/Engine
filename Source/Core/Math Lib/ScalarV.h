@@ -34,8 +34,8 @@ public:
 	ScalarV(ScalarV&& vVector);
 #endif // !RECON_OS_64BIT
 	explicit ScalarV(Vector_In vVector);
-	explicit ScalarV(const float& fVal);
-	explicit ScalarV(const int& iVal);
+	explicit ScalarV(const f32& fVal);
+	explicit ScalarV(const s32& iVal);
 
 #ifdef DEFINE_SCALARV_ENUM_CONSTRUCTOR
 	DEFINE_SCALARV_ENUM_CONSTRUCTOR(eZeroInitializer,		FloatToIntRep::Zero)
@@ -79,11 +79,11 @@ public:
 
 	Vector_Out GetVector() const;
 
-	float GetFloat() const;
-	float AsFloat() const;
+	f32 GetFloat() const;
+	f32 AsFloat() const;
 
-	int GetInt() const;
-	int AsInt() const;
+	s32 GetInt() const;
+	s32 AsInt() const;
 
 	bool IsValid() const;
 
@@ -104,11 +104,11 @@ public:
 	ScalarV_Ref operator/=(ScalarV_In rhs);
 
 	// Logical Operators
-	ScalarV_Out operator<<(int nCount) const;
-	ScalarV_Ref operator<<=(int nCount);
+	ScalarV_Out operator<<(s32 nCount) const;
+	ScalarV_Ref operator<<=(s32 nCount);
 
-	ScalarV_Out operator>>(int nCount) const;
-	ScalarV_Ref operator>>=(int nCount);
+	ScalarV_Out operator>>(s32 nCount) const;
+	ScalarV_Ref operator>>=(s32 nCount);
 
 	ScalarV_Out operator&(ScalarV_In rhs) const;
 	ScalarV_Ref operator&=(ScalarV_In rhs);
