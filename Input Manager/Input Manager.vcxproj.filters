@@ -15,21 +15,21 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Input Manager\WinMain.cpp">
+    <ClCompile Include="WinMain.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Input\InputManager.cpp">
+    <ClCompile Include="..\Source\Core\Input\InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Input\Input.h">
+    <ClInclude Include="..\Source\Core\Input\Input.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Input\InputEvent.h">
+    <ClInclude Include="..\Source\Core\Input\InputEvent.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\Ryan%27s Projects Repository\Engine\Source\Core\Input\InputManager.h">
+    <ClInclude Include="..\Source\Core\Input\InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -13,8 +13,8 @@ using namespace std;
 //#include "Utilities\SmartPointer.h"
 #include "Utilities\Function.h"
 #include "Utilities\HashString.h"
-#include "Utilities/SysMutex.h"
-#include "Utilities/SysEvent.h"
+#include "Utilities/Mutex.h"
+#include "Utilities/Event.h"
 #include <mutex>
 //#include "../Utilities/DebugHelp.h"
 
@@ -360,10 +360,9 @@ int main()
 	}
 
 	myGlobalFunc = Function<int(int&)>(memberFunc);
-	myGlobalFunc(tstVal2);
 
-	myGlobalFunc = memberFunc;
-	myGlobalFunc(tstVal2);
+	if(myGlobalFunc)
+		myGlobalFunc(tstVal2);
 
 
 	//StaticFunctionPointer<int, int&> tmp = TestThisBitch;

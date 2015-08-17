@@ -4,10 +4,10 @@
 #include <Windows.h>
 #include "Input.h"
 
-#include "../Utilities/SysEvent.h"
+#include "../Utilities/Event.h"
 #include "../Utilities/SysHook.h"
-#include "../Utilities/SysMutex.h"
-#include "../Utilities/SysThread.h"
+#include "../Utilities/Mutex.h"
+#include "../Utilities/Thread.h"
 
 #include <atomic>
 #include <map>
@@ -33,8 +33,8 @@ private:
 
 private:
 	void* m_WindowHandle;
-	SysThread m_InputThread;
-	SysEvent m_NewInputEvent;
+	Thread m_InputThread;
+	Event m_NewInputEvent;
 	SysCriticalSection m_PendingInputCS;
 	SysCriticalSection m_CurrentInputCS;
 	SysHook m_InputHook;

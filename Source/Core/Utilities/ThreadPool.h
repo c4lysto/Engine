@@ -5,9 +5,9 @@
 #include <queue>
 #include <vector>
 
-#include "SysMutex.h"
-#include "SysThread.h"
-#include "SysSemaphore.h"
+#include "Mutex.h"
+#include "Thread.h"
+#include "Semaphore.h"
 
 namespace recon
 {
@@ -17,19 +17,19 @@ class ThreadPool
 private:
 	struct JobArgs
 	{
-		SysThreadProc m_pProc;
+		ThreadProc m_pProc;
 		void* m_pArgs;
-		SysThreadPriority m_ePriority;
+		ThreadPriority m_ePriority;
 
 		JobArgs() {}
-		JobArgs(SysThreadProc pProc, void* pArgs, SysThreadPriority ePriority) :
+		JobArgs(ThreadProc pProc, void* pArgs, ThreadPriority ePriority) :
 			m_pProc(pProc), m_pArgs(pArgs), m_ePriority(ePriority) {}
 	};
 
 private:
-	SysSemaphore m_JobSemaphore;
+	Semaphore m_JobSemaphore;
 	SysCriticalSection m_JobCS;
-	std::vector<SysThread> m_vThreads;
+	std::vector<Thread> m_vThreads;
 	std::queue<JobArgs> m_qJobs;
 
 	static void WorkerThreadProc(void* pArgs);
@@ -45,7 +45,7 @@ public:
 
 	void Shutdown();
 
-	void AddWork(SysThreadProc pProc, void* pArgs, SysThreadPriority ePriority = SysThreadPriority::Normal);
+	void AddWork(ThreadProc pProc, void* pArgs, ThreadPriority ePriority = ThreadPriority::Normal);
 
 	void ClearWorkQueue();
 };

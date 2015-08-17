@@ -1,36 +1,36 @@
-#include "SysThread.h"
+#include "Thread.h"
 #include <process.h>
 
-#include "SysEvent.h"
+#include "Event.h"
 
 namespace recon
 {
 
-SysThread::SysThread()
+Thread::Thread()
 {
 }
 
-SysThread::SysThread(SysThreadProc pThreadProc, void* pArgs, SysThreadPriority eThreadPrio /*= SysThreadPriority::Normal*/, const char* szThreadName /*= nullptr*/)
+Thread::Thread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eThreadPrio /*= ThreadPriority::Normal*/, const char* szThreadName /*= nullptr*/)
 {
 	StartThread(pThreadProc, pArgs, eThreadPrio, szThreadName);
 }
 
-SysThread::SysThread(SysThread&& rhs) :
+Thread::Thread(Thread&& rhs) :
 	m_Thread(std::move(rhs.m_Thread)),
 	m_ThreadArgs(std::move(rhs.m_ThreadArgs))
 {
 }
 
-SysThread::~SysThread()
+Thread::~Thread()
 {
 	EndThread();
 }
 
-bool SysThread::StartThread(SysThreadProc pThreadProc, void* pArgs, SysThreadPriority eThreadPrio /*= SysThreadPriority::Normal*/, const char* szThreadName /*= nullptr*/)
+bool Thread::StartThread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eThreadPrio /*= ThreadPriority::Normal*/, const char* szThreadName /*= nullptr*/)
 {
 	bool bThreadStarted = false;
 
-	if(Verifyf(GetThreadHandle() != nullptr, "Thread is Already Active, Start Thread will not do anything."))
+	if(Verifyf(GetThreadHandle() == nullptr, "Thread is Already Active, Start Thread will not do anything."))
 	{
 		if(Verifyf(pThreadProc, "No Function Set for the starting thread"))
 		{
@@ -57,7 +57,7 @@ bool SysThread::StartThread(SysThreadProc pThreadProc, void* pArgs, SysThreadPri
 	return bThreadStarted;
 }
 
-unsigned int __stdcall SysThread::DefaultThreadProc(void* pArgs)
+unsigned int __stdcall Thread::DefaultThreadProc(void* pArgs)
 {
 	u32 nProcRetVal = (u32)-1;
 
@@ -80,7 +80,7 @@ unsigned int __stdcall SysThread::DefaultThreadProc(void* pArgs)
 	return nProcRetVal;
 }
 
-void SysThread::Wait()
+void Thread::Wait()
 {
 	if(m_Thread.joinable() && m_Thread.get_id() != std::this_thread::get_id())
 	{
@@ -88,13 +88,13 @@ void SysThread::Wait()
 	}
 }
 
-void SysThread::EndThread()
+void Thread::EndThread()
 {	
 	Wait();
 }
 
 // pThread - Pass nullptr to set Calling Thread's Name
-void SysSetThreadName(const char* szName, SysThread* pThread /*= nullptr*/)
+void SysSetThreadName(const char* szName, Thread* pThread /*= nullptr*/)
 {
 	// How to Set Thread Name According to MSDN
 
@@ -120,10 +120,10 @@ void SysSetThreadName(const char* szName, SysThread* pThread /*= nullptr*/)
 	__except(EXCEPTION_EXECUTE_HANDLER) {}
 }
 
-void SysSetThreadPriority(SysThreadPriority threadPriority, SysThread* pThread /*= nullptr*/)
+void SysSetThreadPriority(ThreadPriority threadPriority, Thread* pThread /*= nullptr*/)
 {
-	if (Verifyf((threadPriority == SysThreadPriority::Idle || threadPriority == SysThreadPriority::Critical) ||
-		(threadPriority >= SysThreadPriority::Low && threadPriority <= SysThreadPriority::High), "SysSetThreadPriority() - Invalid Thread Priority"))
+	if (Verifyf((threadPriority == ThreadPriority::Idle || threadPriority == ThreadPriority::Critical) ||
+		(threadPriority >= ThreadPriority::Low && threadPriority <= ThreadPriority::High), "SysSetThreadPriority() - Invalid Thread Priority"))
 	{
 		SetThreadPriority(pThread ? pThread->GetThreadHandle() : GetCurrentThread(), (int)threadPriority);
 	}

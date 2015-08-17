@@ -83,7 +83,7 @@ bool InputManager::Initialize(HWND hWnd)
 		return false;
 	}
 
-	m_InputThread.StartThread(recon::SysThreadProc(this, &InputManager::InputThreadProc), nullptr, SysThreadPriority::Normal, "Input Thread");
+	m_InputThread.StartThread(recon::ThreadProc(this, &InputManager::InputThreadProc), nullptr, ThreadPriority::Normal, "Input Thread");
 	m_InputHook.Init(sysHookType::HOOK_GETMESSAGE, InputManager::InputHookCallback);
 
 	return true;

@@ -14,6 +14,7 @@ private:
 
 public:
 	HashString() : m_Hash(0) {}
+	HashString(const HashString& rhs) : m_Hash(rhs.m_Hash) {}
 	HashString(HashString&& rhs) : m_Hash(rhs.m_Hash) {}
 	explicit HashString(const u32& rhs) : m_Hash(rhs) {}
 	explicit HashString(u32&& rhs) : m_Hash(rhs) {}

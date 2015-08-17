@@ -24,7 +24,7 @@ namespace recon
 		typedef std::chrono::high_resolution_clock::time_point TimePoint;
 
 	private:
-		typedef std::chrono::duration<std::chrono::system_clock::rep, std::chrono::system_clock::period> TimeDuration;
+		typedef std::chrono::duration<std::chrono::high_resolution_clock::rep, std::chrono::high_resolution_clock::period> TimeDuration;
 
 	private:
 		TimePoint m_PrevTimePoint;

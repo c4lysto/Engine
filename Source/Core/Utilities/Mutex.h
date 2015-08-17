@@ -1,5 +1,5 @@
-#ifndef _RECON_SYSMUTEX_H_
-#define _RECON_SYSMUTEX_H_
+#ifndef _RECON_MUTEX_H_
+#define _RECON_MUTEX_H_
 
 #include "UtilitiesInclude.h"
 
@@ -8,11 +8,11 @@
 namespace recon
 {
 
-class SysMutex;
+class Mutex;
 
-typedef SysMutex SysCriticalSection;
+typedef Mutex SysCriticalSection;
 
-class SysMutex
+class Mutex
 {
 	friend class SysAutoMutex;
 
@@ -21,11 +21,11 @@ private:
 	std::recursive_mutex m_Mutex;
 
 public:
-	SysMutex(u32 nSpinCount = 1000) : m_nSpinCount(nSpinCount) {}
-	~SysMutex() {}
+	Mutex(u32 nSpinCount = 1000) : m_nSpinCount(nSpinCount) {}
+	~Mutex() {}
 
-	SysMutex(const SysMutex& rhs) = delete;
-	SysMutex& operator=(const SysMutex& rhs) = delete;
+	Mutex(const Mutex& rhs) = delete;
+	Mutex& operator=(const Mutex& rhs) = delete;
 
 	void Lock();
 	bool TryLock();
@@ -33,11 +33,11 @@ public:
 
 public:
 
-	friend void SysCreateMutex(SysMutex& sysMutex, bool bInitialOwner = false);
-	friend void SysCloseMutex(SysMutex& sysMutex);
+	friend void SysCreateMutex(Mutex& sysMutex, bool bInitialOwner = false);
+	friend void SysCloseMutex(Mutex& sysMutex);
 };
 
-__forceinline void SysMutex::Lock()
+__forceinline void Mutex::Lock()
 { 
 	u32 nCurrSpin = m_nSpinCount; 
 	while(nCurrSpin--)
@@ -48,12 +48,12 @@ __forceinline void SysMutex::Lock()
 	m_Mutex.lock(); 
 }
 
-__forceinline bool SysMutex::TryLock()
+__forceinline bool Mutex::TryLock()
 {
 	return m_Mutex.try_lock(); 
 }
 
-__forceinline void SysMutex::Unlock()
+__forceinline void Mutex::Unlock()
 {
 	m_Mutex.unlock();
 }
@@ -66,10 +66,10 @@ typedef SysAutoMutex SysAutoCriticalSection;
 class SysAutoMutex
 {
 private:
-	SysMutex& m_Mutex;
+	Mutex& m_Mutex;
 
 public:
-	SysAutoMutex(SysMutex& sysMutex) :
+	SysAutoMutex(Mutex& sysMutex) :
 		m_Mutex(sysMutex)
 	{
 		m_Mutex.Lock();
@@ -87,4 +87,4 @@ public:
 
 } // namespace recon
 
-#endif // SYSMUTEX_H
+#endif // _RECON_MUTEX_H_

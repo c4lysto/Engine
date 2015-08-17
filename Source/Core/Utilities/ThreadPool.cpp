@@ -31,7 +31,7 @@ void ThreadPool::WorkerThreadProc(void* pArgs)
 
 					(jobArgs.m_pProc)(jobArgs.m_pArgs);
 
-					SysSetThreadPriority(SysThreadPriority::Normal);
+					SysSetThreadPriority(ThreadPriority::Normal);
 				}
 				else
 				{
@@ -68,7 +68,7 @@ void ThreadPool::Init(size_t poolSize, const char* szPoolName /*= "Thread Pool"*
 		{
 			std::ostringstream threadName;
 			threadName << szPoolName << "(" << i << ")";
-			m_vThreads.push_back(SysThread(WorkerThreadProc, this, SysThreadPriority::Normal, threadName.str().c_str()));
+			m_vThreads.push_back(Thread(WorkerThreadProc, this, ThreadPriority::Normal, threadName.str().c_str()));
 		}
 	}
 }
@@ -85,7 +85,7 @@ void ThreadPool::Shutdown()
 	m_vThreads.clear();
 }
 
-void ThreadPool::AddWork(SysThreadProc pProc, void* pArgs, SysThreadPriority ePriority /*= SysThreadPriority::Normal*/)
+void ThreadPool::AddWork(ThreadProc pProc, void* pArgs, ThreadPriority ePriority /*= ThreadPriority::Normal*/)
 {
 	SysAutoCriticalSection jobCS(m_JobCS);
 

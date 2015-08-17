@@ -1,5 +1,5 @@
-#ifndef _RECON_SYSSEMAPHORE_H_
-#define _RECON_SYSSEMAPHORE_H_
+#ifndef _RECON_SEMAPHORE_H_
+#define _RECON_SEMAPHORE_H_
 
 #include <atomic>
 #include <condition_variable>
@@ -11,7 +11,7 @@
 namespace recon
 {
 
-class SysSemaphore
+class Semaphore
 {
 public:
 	typedef void* Handle;
@@ -24,11 +24,11 @@ private:
 	std::condition_variable m_CV;
 
 public:
-	SysSemaphore(u32 nMaxCount = U32_MAX);
-	~SysSemaphore();
+	Semaphore(u32 nMaxCount = U32_MAX);
+	~Semaphore();
 
-	SysSemaphore(const SysSemaphore& rhs) = delete;
-	SysSemaphore& operator=(const SysSemaphore& rhs) = delete;
+	Semaphore(const Semaphore& rhs) = delete;
+	Semaphore& operator=(const Semaphore& rhs) = delete;
 
 	void Acquire();
 	bool TryAcquire();
@@ -36,13 +36,13 @@ public:
 	void Release(u32 nReleaseCount = 1);
 };
 
-inline SysSemaphore::SysSemaphore(u32 nMaxCount /*= U32_MAX*/) : 
+inline Semaphore::Semaphore(u32 nMaxCount /*= U32_MAX*/) : 
 	m_MaxCount(nMaxCount), 
 	m_CurrCount(0)
 {
 }
 
-inline SysSemaphore::~SysSemaphore()
+inline Semaphore::~Semaphore()
 {
 	m_CountMutex.lock();
 	m_MaxCount = 0;
@@ -52,7 +52,7 @@ inline SysSemaphore::~SysSemaphore()
 	m_CV.notify_all();
 }
 
-__forceinline void SysSemaphore::Acquire()
+__forceinline void Semaphore::Acquire()
 {
 	while(true)
 	{
@@ -71,7 +71,7 @@ __forceinline void SysSemaphore::Acquire()
 	}
 }
 
-__forceinline bool SysSemaphore::TryAcquire()
+__forceinline bool Semaphore::TryAcquire()
 {
 	bool bAcquired = false;
 
@@ -86,7 +86,7 @@ __forceinline bool SysSemaphore::TryAcquire()
 	return bAcquired;
 }
 
-__forceinline void SysSemaphore::Release(u32 nReleaseCount /*= 1*/)
+__forceinline void Semaphore::Release(u32 nReleaseCount /*= 1*/)
 {
 	m_CountMutex.lock();
 	m_CurrCount = Min(m_CurrCount + nReleaseCount, m_MaxCount);
@@ -96,4 +96,4 @@ __forceinline void SysSemaphore::Release(u32 nReleaseCount /*= 1*/)
 
 } // namespace recon
 
-#endif // _RECON_SYSSEMAPHORE_H_
+#endif // _RECON_SEMAPHORE_H_

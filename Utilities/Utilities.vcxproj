@@ -23,7 +23,7 @@
     <ClCompile Include="..\Source\Core\Utilities\HashString.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\SysHook.cpp" />
-    <ClCompile Include="..\Source\Core\Utilities\SysThread.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\Thread.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\ThreadPool.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\Timer.cpp" />
   </ItemGroup>
@@ -37,11 +37,11 @@
     <ClInclude Include="..\Source\Core\Utilities\GlobalDefines.h" />
     <ClInclude Include="..\Source\Core\Utilities\HashString.h" />
     <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h" />
-    <ClInclude Include="..\Source\Core\Utilities\SysEvent.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Event.h" />
     <ClInclude Include="..\Source\Core\Utilities\SysHook.h" />
-    <ClInclude Include="..\Source\Core\Utilities\SysMutex.h" />
-    <ClInclude Include="..\Source\Core\Utilities\SysSemaphore.h" />
-    <ClInclude Include="..\Source\Core\Utilities\SysThread.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Mutex.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Semaphore.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Thread.h" />
     <ClInclude Include="..\Source\Core\Utilities\ThreadPool.h" />
     <ClInclude Include="..\Source\Core\Utilities\Timer.h" />
     <ClInclude Include="..\Source\Core\Utilities\UtilitiesInclude.h" />
