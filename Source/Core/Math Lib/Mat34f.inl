@@ -84,7 +84,7 @@ __forceinline Mat34f::Mat34f(Vec3f_In vXAxis,
 {
 }
 
-__forceinline Mat34f_Ref Mat34f::operator=(Mat34f_In mMatrix)
+__forceinline Mat34f_Ref RECON_VEC_CALLCONV Mat34f::operator=(Mat34f_In mMatrix)
 {
 	if(this != &mMatrix)
 	{
@@ -96,7 +96,7 @@ __forceinline Mat34f_Ref Mat34f::operator=(Mat34f_In mMatrix)
 	return *this;
 }
 
-__forceinline Mat34f_Ref Mat34f::operator=(Mat34f&& mMatrix)
+__forceinline Mat34f_Ref RECON_VEC_CALLCONV Mat34f::operator=(Mat34f&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
@@ -108,17 +108,17 @@ __forceinline Mat34f_Ref Mat34f::operator=(Mat34f&& mMatrix)
 	return *this;
 }
 
-__forceinline Vec3f_Out operator*(Vec3f_ConstRef vPos, Mat34f_In mMatrix)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV operator*(Vec3f_ConstRef vPos, Mat34f_In mMatrix)
 {
 	return ::operator*(Vec4f(vPos, 1.0f), mMatrix);
 }
 
-__forceinline Vec3f_Ref operator*=(Vec3f_Ref vPos, Mat34f_In mMatrix)
+__forceinline Vec3f_Ref RECON_VEC_CALLCONV operator*=(Vec3f_Ref vPos, Mat34f_In mMatrix)
 {
 	return vPos = ::operator*(vPos, mMatrix);
 }
 
-inline Vec3f_Out operator*(Vec4f_In vVector, Mat34f_In mMatrix)
+inline Vec3f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector, Mat34f_In mMatrix)
 {
 	const f32& fX = vVector.GetXRef();
 	const f32& fY = vVector.GetYRef();
@@ -151,12 +151,12 @@ inline Vec3f_Out operator*(Vec4f_In vVector, Mat34f_In mMatrix)
 #endif
 }
 
-__forceinline Mat34f_Out Mat34f::operator+(Mat34f_In rhs) const
+__forceinline Mat34f_Out RECON_VEC_CALLCONV Mat34f::operator+(Mat34f_In rhs) const
 {
 	return Mat34f(xAxis + rhs.xAxis, yAxis + rhs.yAxis,  zAxis + rhs.zAxis, wAxis + rhs.wAxis);
 }
 
-__forceinline void Mat34f::operator+=(Mat34f_In rhs)
+__forceinline void RECON_VEC_CALLCONV Mat34f::operator+=(Mat34f_In rhs)
 {
 	xAxis += rhs.xAxis; yAxis += rhs.yAxis; zAxis += rhs.zAxis; wAxis += rhs.wAxis;
 }
@@ -168,54 +168,54 @@ __forceinline void Mat34f::MakeIdentity3x3()
 	zAxis = g_IdentityZ3;
 }
 
-__forceinline Mat34f_Out Mat34f::operator-(Mat34f_In rhs) const
+__forceinline Mat34f_Out RECON_VEC_CALLCONV Mat34f::operator-(Mat34f_In rhs) const
 {
 	return Mat34f(xAxis - rhs.xAxis, yAxis - rhs.yAxis,  zAxis - rhs.zAxis, wAxis - rhs.wAxis);
 }
 
-__forceinline void Mat34f::operator-=(Mat34f_In rhs)
+__forceinline void RECON_VEC_CALLCONV Mat34f::operator-=(Mat34f_In rhs)
 {
 	xAxis -= rhs.xAxis; yAxis -= rhs.yAxis; zAxis -= rhs.zAxis; wAxis -= rhs.wAxis;
 }
 
-__forceinline void Mat34f::Rotate_GlobalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat34f::Rotate_GlobalX(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44f(I_ROTATION_X, fRadians));
 }
 
-__forceinline void Mat34f::Rotate_GlobalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat34f::Rotate_GlobalY(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44f(I_ROTATION_Y, fRadians));
 }
 
-__forceinline void Mat34f::Rotate_GlobalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat34f::Rotate_GlobalZ(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat34ToMat44(*this) * Mat44f(I_ROTATION_Z, fRadians));
 }
 
-__forceinline void Mat34f::Rotate_LocalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat34f::Rotate_LocalX(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat44f(I_ROTATION_X, fRadians) * Mat34ToMat44(*this));
 }
 
-__forceinline void Mat34f::Rotate_LocalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat34f::Rotate_LocalY(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat44f(I_ROTATION_Y, fRadians) * Mat34ToMat44(*this));
 }
 
-__forceinline void Mat34f::Rotate_LocalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat34f::Rotate_LocalZ(const f32& fRadians)
 {
 	*this = Mat44ToMat34(Mat44f(I_ROTATION_Z, fRadians) * Mat34ToMat44(*this));
 }
 
-__forceinline void Mat34f::Scale(Vec3f_In vScale)
+__forceinline void RECON_VEC_CALLCONV Mat34f::Scale(Vec3f_In vScale)
 {
 	xAxis = xAxis * vScale.GetX();
 	yAxis = yAxis * vScale.GetY();
 	zAxis = zAxis * vScale.GetZ();
 }
 
-__forceinline void Mat34f::SetScale(Vec3f_In vScale)
+__forceinline void RECON_VEC_CALLCONV Mat34f::SetScale(Vec3f_In vScale)
 {
 	xAxis = ::Normalize(xAxis) * vScale.GetX();
 	yAxis = ::Normalize(yAxis) * vScale.GetY();
@@ -228,7 +228,7 @@ __forceinline Vec3f_Out Mat34f::GetScale() const
 	return retVal;
 }
 
-__forceinline void Mat34f::Translate(Vec3f vTranslation)
+__forceinline void RECON_VEC_CALLCONV Mat34f::Translate(Vec3f vTranslation)
 {
 	wAxis = wAxis + vTranslation;
 }
@@ -247,14 +247,14 @@ __forceinline void Mat34f::Normalize()
 	zAxis = ::Normalize(zAxis);
 }
 
-__forceinline void Mat34f::LookAt(Vec3f_In mPos, Vec3f_In vWorldUp)
+__forceinline void RECON_VEC_CALLCONV Mat34f::LookAt(Vec3f_In mPos, Vec3f_In vWorldUp)
 {
 	zAxis = ::Normalize(mPos - wAxis);
 	xAxis = ::Normalize(Cross(vWorldUp, zAxis));
 	yAxis = ::Normalize(Cross(zAxis, xAxis));
 }
 
-inline void Mat34f::TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier)
+inline void RECON_VEC_CALLCONV Mat34f::TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier)
 {
 	Vec3f vecToPos = ::Normalize(vPos - wAxis);
 

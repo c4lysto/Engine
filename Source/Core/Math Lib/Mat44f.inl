@@ -84,7 +84,7 @@ __forceinline Mat44f::Mat44f(Vec4f_In vXAxis,
 {
 }
 
-__forceinline Mat44f_Ref Mat44f::operator=(Mat44f_In mMatrix)
+__forceinline Mat44f_Ref RECON_VEC_CALLCONV Mat44f::operator=(Mat44f_In mMatrix)
 {
 	if(this != &mMatrix)
 	{
@@ -96,7 +96,7 @@ __forceinline Mat44f_Ref Mat44f::operator=(Mat44f_In mMatrix)
 	return *this;
 }
 
-__forceinline Mat44f_Ref Mat44f::operator=(Mat44f&& mMatrix)
+__forceinline Mat44f_Ref RECON_VEC_CALLCONV Mat44f::operator=(Mat44f&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
@@ -108,7 +108,7 @@ __forceinline Mat44f_Ref Mat44f::operator=(Mat44f&& mMatrix)
 	return *this;
 }
 
-inline Mat44f_Out Mat44f::operator*(Mat44f_In mMatrix) const
+inline Mat44f_Out RECON_VEC_CALLCONV Mat44f::operator*(Mat44f_In mMatrix) const
 {
 	Mat44f result;
 
@@ -197,7 +197,7 @@ inline Mat44f_Out Mat44f::operator*(Mat44f_In mMatrix) const
 	return result;
 }
 
-inline void Mat44f::operator*=(Mat44f_In mMatrix)
+inline void RECON_VEC_CALLCONV Mat44f::operator*=(Mat44f_In mMatrix)
 {
 #if SSE_AVAILABLE
 	const Vector otherX = VectorLoadU(mMatrix.xAxis.GetVector());
@@ -287,7 +287,7 @@ inline void Mat44f::operator*=(Mat44f_In mMatrix)
 #endif
 }
 
-inline Vec4f_Out operator*(Vec4f_In vVector, Mat44f_In mMatrix)
+inline Vec4f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector, Mat44f_In mMatrix)
 {
 	f32 fX = vVector.GetX();
 	f32 fY = vVector.GetY();
@@ -316,17 +316,17 @@ inline Vec4f_Out operator*(Vec4f_In vVector, Mat44f_In mMatrix)
 #endif
 }
 
-__forceinline Vec4f_Ref operator*=(Vec4f_Ref vVector, Mat44f_In mMatrix)
+__forceinline Vec4f_Ref RECON_VEC_CALLCONV operator*=(Vec4f_Ref vVector, Mat44f_In mMatrix)
 {
 	return vVector = vVector * mMatrix;
 }
 
-__forceinline Mat44f_Out Mat44f::operator+(Mat44f_In rhs) const
+__forceinline Mat44f_Out RECON_VEC_CALLCONV Mat44f::operator+(Mat44f_In rhs) const
 {
 	return Mat44f(xAxis + rhs.GetXAxisRef(), yAxis + rhs.GetYAxisRef(),  zAxis + rhs.GetZAxisRef(), wAxis + rhs.GetWAxisRef());
 }
 
-__forceinline void Mat44f::operator+=(Mat44f_In rhs)
+__forceinline void RECON_VEC_CALLCONV Mat44f::operator+=(Mat44f_In rhs)
 {
 	xAxis += rhs.GetXAxisRef(); yAxis += rhs.GetYAxisRef(); zAxis += rhs.GetZAxisRef(); wAxis += rhs.GetWAxisRef();
 }
@@ -338,61 +338,61 @@ __forceinline void Mat44f::MakeIdentity3x3()
 	zAxis.SetXYZ(g_IdentityZ3);
 }
 
-__forceinline Mat44f_Out Mat44f::operator-(Mat44f_In rhs) const
+__forceinline Mat44f_Out RECON_VEC_CALLCONV Mat44f::operator-(Mat44f_In rhs) const
 {
 	return Mat44f(xAxis - rhs.GetXAxisRef(), yAxis - rhs.GetYAxisRef(),  zAxis - rhs.GetZAxisRef(), wAxis - rhs.GetWAxisRef());
 }
 
-__forceinline void Mat44f::operator-=(Mat44f_In rhs)
+__forceinline void RECON_VEC_CALLCONV Mat44f::operator-=(Mat44f_In rhs)
 {
 	xAxis -= rhs.GetXAxisRef(); yAxis -= rhs.GetYAxisRef(); zAxis -= rhs.GetZAxisRef(); wAxis -= rhs.GetWAxisRef();
 }
 
 // actually faster than DirectX Version :)
-__forceinline void Mat44f::Rotate_GlobalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_GlobalX(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_X, fRadians);
 	*this *= tmp;
 }
 
-__forceinline void Mat44f::Rotate_GlobalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_GlobalY(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_Y, fRadians);
 	*this *= tmp;
 }
 
-__forceinline void Mat44f::Rotate_GlobalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_GlobalZ(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_Z, fRadians);
 	*this *= tmp;
 }
 
-__forceinline void Mat44f::Rotate_LocalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_LocalX(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_X, fRadians);
 	*this = tmp * (*this);
 }
 
-__forceinline void Mat44f::Rotate_LocalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_LocalY(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_Y, fRadians);
 	*this = tmp * (*this);
 }
 
-__forceinline void Mat44f::Rotate_LocalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_LocalZ(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_Z, fRadians);
 	*this = tmp * (*this);
 }
 
-__forceinline void Mat44f::Scale(const Vec3f& vScale)
+__forceinline void RECON_VEC_CALLCONV Mat44f::Scale(const Vec3f& vScale)
 {
 	xAxis.SetXYZ(xAxis.GetXYZ() * vScale.GetX());
 	yAxis.SetXYZ(yAxis.GetXYZ() * vScale.GetY());
 	zAxis.SetXYZ(zAxis.GetXYZ() * vScale.GetZ());
 }
 
-__forceinline void Mat44f::SetScale(const Vec3f& vScale)
+__forceinline void RECON_VEC_CALLCONV Mat44f::SetScale(const Vec3f& vScale)
 {
 	xAxis.SetXYZ(::Normalize(xAxis.GetXYZ()) * vScale.GetX());
 	yAxis.SetXYZ(::Normalize(yAxis.GetXYZ()) * vScale.GetY());
@@ -405,7 +405,7 @@ __forceinline Vec3f_Out Mat44f::GetScale() const
 	return retVal;
 }
 
-__forceinline void Mat44f::Translate(Vec3f vTranslation)
+__forceinline void RECON_VEC_CALLCONV Mat44f::Translate(Vec3f vTranslation)
 {
 	wAxis.SetXYZ(wAxis.GetXYZ() + vTranslation);
 }
@@ -451,14 +451,14 @@ __forceinline void Mat44f::Normalize()
 	zAxis.SetXYZ(::Normalize(zAxis.GetXYZ()));
 }
 
-__forceinline void Mat44f::LookAt(const Vec3f& mPos, const Vec3f& vWorldUp)
+__forceinline void RECON_VEC_CALLCONV Mat44f::LookAt(const Vec3f& mPos, const Vec3f& vWorldUp)
 {
 	zAxis.SetXYZ(::Normalize(mPos - wAxis.GetXYZ()));
 	xAxis.SetXYZ(::Normalize(Cross(vWorldUp, zAxis.GetXYZ())));
 	yAxis.SetXYZ(::Normalize(Cross(zAxis.GetXYZ(), xAxis.GetXYZ())));
 }
 
-inline void Mat44f::TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier)
+inline void RECON_VEC_CALLCONV Mat44f::TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier)
 {
 	Vec3f vecToPos = ::Normalize(vPos - wAxis.GetXYZ());
 

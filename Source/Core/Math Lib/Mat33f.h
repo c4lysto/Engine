@@ -25,7 +25,7 @@ class Mat33f
 	__forceinline retType name() const { return retVal; }
 
 #define MAT33F_MUTATOR(name, inType, modifiedVal) \
-	__forceinline void name(inType rhs) { modifiedVal = rhs; }
+	__forceinline void RECON_VEC_CALLCONV name(inType rhs) { modifiedVal = rhs; }
 
 private:
 	union
@@ -88,27 +88,27 @@ public:
 #error MAT33F MUTATORS NOT DEFINED!
 #endif
 
-	Mat33f_Ref operator=(Mat33f_In mMatrix);
-	Mat33f_Ref operator=(Mat33f&& mMatrix);
+	Mat33f_Ref RECON_VEC_CALLCONV operator=(Mat33f_In mMatrix);
+	Mat33f_Ref RECON_VEC_CALLCONV operator=(Mat33f&& mMatrix);
 
-	Mat33f_Out operator*(Mat33f_In mMatrix) const;
-	void operator*=(Mat33f_In mMatrix);
-	friend Vec3f_Out operator*(Vec3f_ConstRef vVector, Mat33f_In mMatrix);
-	friend Vec3f_Ref operator*=(Vec3f_Ref vVector, Mat33f_In mMatrix);
+	Mat33f_Out RECON_VEC_CALLCONV operator*(Mat33f_In mMatrix) const;
+	void RECON_VEC_CALLCONV operator*=(Mat33f_In mMatrix);
+	friend Vec3f_Out RECON_VEC_CALLCONV operator*(Vec3f_ConstRef vVector, Mat33f_In mMatrix);
+	friend Vec3f_Ref RECON_VEC_CALLCONV operator*=(Vec3f_Ref vVector, Mat33f_In mMatrix);
 
-	Mat33f_Out operator+(Mat33f_In rhs) const;
-	void operator+=(Mat33f_In rhs);
+	Mat33f_Out RECON_VEC_CALLCONV operator+(Mat33f_In rhs) const;
+	void RECON_VEC_CALLCONV operator+=(Mat33f_In rhs);
 
-	Mat33f_Out operator-(Mat33f_In rhs) const;
-	void operator-=(Mat33f_In rhs);
+	Mat33f_Out RECON_VEC_CALLCONV operator-(Mat33f_In rhs) const;
+	void RECON_VEC_CALLCONV operator-=(Mat33f_In rhs);
 
-	void Rotate_LocalX(const f32& fRadians);
-	void Rotate_LocalY(const f32& fRadians);
-	void Rotate_LocalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalZ(const f32& fRadians);
 
-	void Scale(Vec3f_In vScale);
+	void RECON_VEC_CALLCONV Scale(Vec3f_In vScale);
 
-	void SetScale(Vec3f_In vScale);
+	void RECON_VEC_CALLCONV SetScale(Vec3f_In vScale);
 	Vec3f_Out GetScale() const;
 
 	void Transpose();

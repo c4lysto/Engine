@@ -27,7 +27,7 @@ class Mat34f
 	__forceinline retType name() const { return retVal; }
 
 #define MAT34F_MUTATOR(name, inType, modifiedVal) \
-	__forceinline void name(inType rhs) { modifiedVal = rhs; }
+	__forceinline void RECON_VEC_CALLCONV name(inType rhs) { modifiedVal = rhs; }
 
 
 private:
@@ -99,41 +99,41 @@ public:
 
 	void MakeIdentity3x3();
 
-	Mat34f_Ref operator=(Mat34f_In mMatrix);
-	Mat34f_Ref operator=(Mat34f&& mMatrix);
+	Mat34f_Ref RECON_VEC_CALLCONV operator=(Mat34f_In mMatrix);
+	Mat34f_Ref RECON_VEC_CALLCONV operator=(Mat34f&& mMatrix);
 
-	friend Vec3f_Out operator*(Vec3f_ConstRef vPos, Mat34f_In mMatrix);
-	friend Vec3f_Ref operator*=(Vec3f_Ref vPos, Mat34f_In mMatrix);
-	friend Vec3f_Out operator*(Vec4f_In vVector, Mat34f_In mMatrix);
+	friend Vec3f_Out RECON_VEC_CALLCONV operator*(Vec3f_ConstRef vPos, Mat34f_In mMatrix);
+	friend Vec3f_Ref RECON_VEC_CALLCONV operator*=(Vec3f_Ref vPos, Mat34f_In mMatrix);
+	friend Vec3f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector, Mat34f_In mMatrix);
 
-	Mat34f_Out operator+(Mat34f_In rhs) const;
-	void operator+=(Mat34f_In rhs);
+	Mat34f_Out RECON_VEC_CALLCONV operator+(Mat34f_In rhs) const;
+	void RECON_VEC_CALLCONV operator+=(Mat34f_In rhs);
 
-	Mat34f_Out operator-(Mat34f_In rhs) const;
-	void operator-=(Mat34f_In rhs);
+	Mat34f_Out RECON_VEC_CALLCONV operator-(Mat34f_In rhs) const;
+	void RECON_VEC_CALLCONV operator-=(Mat34f_In rhs);
 
-	void Rotate_GlobalX(const f32& fRadians);
-	void Rotate_GlobalY(const f32& fRadians);
-	void Rotate_GlobalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_GlobalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_GlobalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_GlobalZ(const f32& fRadians);
 
-	void Rotate_LocalX(const f32& fRadians);
-	void Rotate_LocalY(const f32& fRadians);
-	void Rotate_LocalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalZ(const f32& fRadians);
 
-	void Scale(Vec3f_In vScale);
+	void RECON_VEC_CALLCONV Scale(Vec3f_In vScale);
 
-	void SetScale(Vec3f_In vScale);
+	void RECON_VEC_CALLCONV SetScale(Vec3f_In vScale);
 	Vec3f_Out GetScale() const;
 
-	void Translate(Vec3f vTranslation);
+	void RECON_VEC_CALLCONV Translate(Vec3f vTranslation);
 
 	void Transpose3x3();
 
 	void Normalize();
 
-	void LookAt(Vec3f_In mPos, Vec3f_In vWorldUp = g_IdentityY3);
+	void RECON_VEC_CALLCONV LookAt(Vec3f_In mPos, Vec3f_In vWorldUp = g_IdentityY3);
 
-	void TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier = 1.0f);
+	void RECON_VEC_CALLCONV TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier = 1.0f);
 };
 
 Mat44f_Out RECON_VEC_CALLCONV Mat34ToMat44(Mat34f_In mMatrix);

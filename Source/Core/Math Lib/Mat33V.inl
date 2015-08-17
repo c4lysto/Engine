@@ -59,7 +59,7 @@ inline Mat33V::Mat33V(eZRotationInitializer UNUSED_PARAM(eZRotation), ScalarV_In
 	zAxis = g_IdentityZ3V;
 }
 
-inline Mat33V_Ref Mat33V::operator=(Mat33V_In mMatrix)
+inline Mat33V_Ref RECON_VEC_CALLCONV Mat33V::operator=(Mat33V_In mMatrix)
 {
 	if(this != &mMatrix)
 	{
@@ -70,7 +70,7 @@ inline Mat33V_Ref Mat33V::operator=(Mat33V_In mMatrix)
 	return *this;
 }
 
-inline Mat33V_Ref Mat33V::operator=(Mat33V&& mMatrix)
+inline Mat33V_Ref RECON_VEC_CALLCONV Mat33V::operator=(Mat33V&& mMatrix)
 {
 	if(this != &mMatrix)
 	{
@@ -81,14 +81,14 @@ inline Mat33V_Ref Mat33V::operator=(Mat33V&& mMatrix)
 	return *this;
 }
 
-__forceinline Mat33V_Out Mat33V::operator*(Mat33V_In mMatrix) const
+__forceinline Mat33V_Out RECON_VEC_CALLCONV Mat33V::operator*(Mat33V_In mMatrix) const
 {
 	Mat33V result(*this);
 	result *= mMatrix;
 	return result;
 }
 
-inline void Mat33V::operator*=(Mat33V_In mMatrix)
+inline void RECON_VEC_CALLCONV Mat33V::operator*=(Mat33V_In mMatrix)
 {
 #if SSE_AVAILABLE
 	const Vector otherX = VectorSet(mMatrix.xAxis.GetXRef(), mMatrix.xAxis.GetYRef(), mMatrix.xAxis.GetZRef(), 0.0f);
@@ -145,7 +145,7 @@ inline void Mat33V::operator*=(Mat33V_In mMatrix)
 #endif
 }
 
-inline Vec3V_Out operator*(Vec3V_ConstRef vVector, Mat33V_In mMatrix)
+inline Vec3V_Out RECON_VEC_CALLCONV operator*(Vec3V_ConstRef vVector, Mat33V_In mMatrix)
 {
 #if SSE_AVAILABLE
 	const Vector otherX = VectorSet(mMatrix.xAxis.GetXRef(), mMatrix.xAxis.GetYRef(), mMatrix.xAxis.GetZRef(), 0.0f);
@@ -172,18 +172,18 @@ inline Vec3V_Out operator*(Vec3V_ConstRef vVector, Mat33V_In mMatrix)
 #endif
 }
 
-__forceinline Vec3V_Ref operator*=(Vec3V_Ref vVector, Mat33V_In mMatrix)
+__forceinline Vec3V_Ref RECON_VEC_CALLCONV operator*=(Vec3V_Ref vVector, Mat33V_In mMatrix)
 {
 	vVector = vVector * mMatrix;
 	return vVector;
 }
 
-__forceinline Mat33V_Out Mat33V::operator+(Mat33V_In rhs) const
+__forceinline Mat33V_Out RECON_VEC_CALLCONV Mat33V::operator+(Mat33V_In rhs) const
 {
 	return Mat33V(xAxis + rhs.xAxis, yAxis + rhs.yAxis, zAxis + rhs.zAxis);
 }
 
-__forceinline void Mat33V::operator+=(Mat33V_In rhs)
+__forceinline void RECON_VEC_CALLCONV Mat33V::operator+=(Mat33V_In rhs)
 {
 	xAxis += rhs.xAxis; yAxis += rhs.yAxis; zAxis += rhs.zAxis;
 }
@@ -193,37 +193,37 @@ __forceinline Mat33V_Out Mat33V::operator-(Mat33V_In rhs) const
 	return Mat33V(xAxis - rhs.xAxis, yAxis - rhs.yAxis, zAxis - rhs.zAxis);
 }
 
-__forceinline void Mat33V::operator-=(Mat33V_In rhs)
+__forceinline void RECON_VEC_CALLCONV Mat33V::operator-=(Mat33V_In rhs)
 {
 	xAxis -= rhs.xAxis; yAxis -= rhs.yAxis; zAxis -= rhs.zAxis;
 }
 
-inline void Mat33V::Rotate_LocalX(ScalarV_In vRadians)
+inline void RECON_VEC_CALLCONV Mat33V::Rotate_LocalX(ScalarV_In vRadians)
 {
 	Mat33V tmp(I_ROTATION_X, vRadians);
 	*this = tmp * (*this);
 }
 
-inline void Mat33V::Rotate_LocalY(ScalarV_In vRadians)
+inline void RECON_VEC_CALLCONV Mat33V::Rotate_LocalY(ScalarV_In vRadians)
 {
 	Mat33V tmp(I_ROTATION_Y, vRadians);
 	*this = tmp * (*this);
 }
 
-inline void Mat33V::Rotate_LocalZ(ScalarV_In vRadians)
+inline void RECON_VEC_CALLCONV Mat33V::Rotate_LocalZ(ScalarV_In vRadians)
 {
 	Mat33V tmp(I_ROTATION_Z, vRadians);
 	*this = tmp * (*this);
 }
 
-__forceinline void Mat33V::Scale(Vec3V_In vScale)
+__forceinline void RECON_VEC_CALLCONV Mat33V::Scale(Vec3V_In vScale)
 {
 	xAxis *= vScale.GetX();
 	yAxis *= vScale.GetY();
 	zAxis *= vScale.GetZ();
 }
 
-__forceinline void Mat33V::SetScale(Vec3V_In vScale)
+__forceinline void RECON_VEC_CALLCONV Mat33V::SetScale(Vec3V_In vScale)
 {
 	xAxis = ::Normalize(xAxis) * vScale.GetX();
 	yAxis = ::Normalize(yAxis) * vScale.GetY();

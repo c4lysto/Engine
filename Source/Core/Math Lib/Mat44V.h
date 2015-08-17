@@ -28,7 +28,7 @@ ALIGN(16) class Mat44V
 	__forceinline retType name() const { return retVal; }
 
 #define Mat44V_MUTATOR(name, inType, modifiedVal) \
-	__forceinline void name(inType rhs) { modifiedVal = rhs; }
+	__forceinline void RECON_VEC_CALLCONV name(inType rhs) { modifiedVal = rhs; }
 
 
 private:
@@ -103,41 +103,41 @@ public:
 	//explicit operator XMMATRIX() const;
 	//explicit operator XMMATRIX*() const;
 
-	Mat44V_ConstRef operator=(Mat44V_In mMatrix);
-	Mat44V_ConstRef operator=(Mat44V&& mMatrix);
+	Mat44V_ConstRef RECON_VEC_CALLCONV operator=(Mat44V_In mMatrix);
+	Mat44V_ConstRef RECON_VEC_CALLCONV operator=(Mat44V&& mMatrix);
 
-	Mat44V_Out operator*(Mat44V_In mMatrix) const;
-	void operator*=(Mat44V_In mMatrix);
+	Mat44V_Out RECON_VEC_CALLCONV operator*(Mat44V_In mMatrix) const;
+	void RECON_VEC_CALLCONV operator*=(Mat44V_In mMatrix);
 
-	Mat44V_Out operator+(Mat44V_In rhs) const;
-	void operator+=(Mat44V_In rhs);
+	Mat44V_Out RECON_VEC_CALLCONV operator+(Mat44V_In rhs) const;
+	void RECON_VEC_CALLCONV operator+=(Mat44V_In rhs);
 
-	Mat44V_Out operator-(Mat44V_In rhs) const;
-	void operator-=(Mat44V_In rhs);
+	Mat44V_Out RECON_VEC_CALLCONV operator-(Mat44V_In rhs) const;
+	void RECON_VEC_CALLCONV operator-=(Mat44V_In rhs);
 
-	void Rotate_GlobalX(const f32& fRadians);
-	void Rotate_GlobalY(const f32& fRadians);
-	void Rotate_GlobalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_GlobalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_GlobalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_GlobalZ(const f32& fRadians);
 
-	void Rotate_LocalX(const f32& fRadians);
-	void Rotate_LocalY(const f32& fRadians);
-	void Rotate_LocalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV Rotate_LocalZ(const f32& fRadians);
 
-	void Scale(Vec3V_In vScale);
+	void RECON_VEC_CALLCONV Scale(Vec3V_In vScale);
 
-	void SetScale(Vec3V_In vScale);
+	void RECON_VEC_CALLCONV SetScale(Vec3V_In vScale);
 	Vec3V_Out GetScale() const;
 
-	void Translate(Vec3V_In vTranslation);
+	void RECON_VEC_CALLCONV Translate(Vec3V_In vTranslation);
 
 	void Transpose();
 	void Transpose3x3();
 
 	void Normalize();
 
-	void LookAt(Vec3V_In mPos, Vec3V_In vWorldUp = g_IdentityY3V);
+	void RECON_VEC_CALLCONV LookAt(Vec3V_In mPos, Vec3V_In vWorldUp = g_IdentityY3V);
 
-	void TurnTo(Vec3V_In vPos, const f32& fDeltaTime, f32 fTurnModifier = 1.0f);
+	void RECON_VEC_CALLCONV TurnTo(Vec3V_In vPos, const f32& fDeltaTime, f32 fTurnModifier = 1.0f);
 
 	void OrthoNormalInvert();
 };
