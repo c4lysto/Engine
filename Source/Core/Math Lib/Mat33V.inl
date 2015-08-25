@@ -23,40 +23,40 @@ __forceinline Mat33V::Mat33V(Mat33V&& mMatrix) :
 }
 
 __forceinline Mat33V::Mat33V(eIdentityInitializer UNUSED_PARAM(eIdentity)) :
-	xAxis(g_IdentityX3V),
-	yAxis(g_IdentityY3V),
-	zAxis(g_IdentityZ3V)
+	xAxis(I_X_AXIS),
+	yAxis(I_Y_AXIS),
+	zAxis(I_Z_AXIS)
 {
 }
 
-inline Mat33V::Mat33V(eXRotationInitializer UNUSED_PARAM(eXRotation), ScalarV_In vRotationInRadians)
+inline Mat33V::Mat33V(eXRotationInitializer UNUSED_PARAM(eXRotation), ScalarV_In vRotationInRadians) :
+	xAxis(I_X_AXIS)
 {
 	f32 fRotInRads = vRotationInRadians.AsFloat();
 	f32 fSinAngle = sin(fRotInRads);
 	f32 fCosAngle = cos(fRotInRads);
-	xAxis = g_IdentityX3V;
 	yAxis = Vec3V(0.0f, fCosAngle, fSinAngle);
 	zAxis = Vec3V(0.0f, -fSinAngle, fCosAngle);
 }
 
-inline Mat33V::Mat33V(eYRotationInitializer UNUSED_PARAM(eYRotation), ScalarV_In vRotationInRadians)
+inline Mat33V::Mat33V(eYRotationInitializer UNUSED_PARAM(eYRotation), ScalarV_In vRotationInRadians) :
+	yAxis(I_Y_AXIS)
 {
 	f32 fRotInRads = vRotationInRadians.AsFloat();
 	f32 fSinAngle = sin(fRotInRads);
 	f32 fCosAngle = cos(fRotInRads);
 	xAxis = Vec3V(fCosAngle, 0.0f, -fSinAngle);
-	yAxis = g_IdentityY3V;
 	zAxis = Vec3V(fSinAngle, 0.0f, fCosAngle);
 }
 
-inline Mat33V::Mat33V(eZRotationInitializer UNUSED_PARAM(eZRotation), ScalarV_In vRotationInRadians)
+inline Mat33V::Mat33V(eZRotationInitializer UNUSED_PARAM(eZRotation), ScalarV_In vRotationInRadians) :
+	zAxis(I_Z_AXIS)
 {
 	f32 fRotInRads = vRotationInRadians.AsFloat();
 	f32 fSinAngle = sin(fRotInRads);
 	f32 fCosAngle = cos(fRotInRads);
 	xAxis = Vec3V(fCosAngle, fSinAngle, 0.0f);
 	yAxis = Vec3V(-fSinAngle, fCosAngle, 0.0f);
-	zAxis = g_IdentityZ3V;
 }
 
 inline Mat33V_Ref RECON_VEC_CALLCONV Mat33V::operator=(Mat33V_In mMatrix)
@@ -233,18 +233,6 @@ __forceinline void RECON_VEC_CALLCONV Mat33V::SetScale(Vec3V_In vScale)
 __forceinline Vec3V_Out Mat33V::GetScale() const
 {
 	return Vec3V(Mag(xAxis), Mag(yAxis), Mag(zAxis));
-}
-
-__forceinline void Mat33V::Transpose()
-{
-	Vector tmpX = VectorPermute<VecElem::X1, VecElem::X2, VecElem::Z1, VecElem::W1>(row1, row2);
-	tmpX = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::X2, VecElem::W1>(tmpX, row3);
-	Vector tmpY = VectorPermute<VecElem::Y2, VecElem::Y1, VecElem::Z1, VecElem::W1>(row2, row1);
-	tmpY = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Y2, VecElem::W1>(tmpY, row3);
-	row3 = VectorPermute<VecElem::Z2, VecElem::Y1, VecElem::Z1, VecElem::W1>(row3, row1);
-	row3 = VectorPermute<VecElem::X1, VecElem::Z2, VecElem::Z1, VecElem::W1>(row3, row2);
-	row1 = tmpX;
-	row2 = tmpY;
 }
 
 __forceinline void Mat33V::Normalize()

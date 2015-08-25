@@ -36,12 +36,6 @@
     <ClInclude Include="..\Source\Core\Math Lib\Mat33V.h">
       <Filter>Header Files\Math Core</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Mat34f.h">
-      <Filter>Header Files\Math Core</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Math Lib\Mat34V.h">
-      <Filter>Header Files\Math Core</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Core\Math Lib\Mat44f.h">
       <Filter>Header Files\Math Core</Filter>
     </ClInclude>
@@ -93,6 +87,12 @@
     <ClInclude Include="..\Source\Core\Physics\Sphere.h">
       <Filter>Header Files\Physics</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Mat43f.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Math Lib\Mat43V.h">
+      <Filter>Header Files\Math Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\Core\Math Lib\GlobalMathFuncs.inl">
@@ -102,12 +102,6 @@
       <Filter>Resource Files\Math Core</Filter>
     </None>
     <None Include="..\Source\Core\Math Lib\Mat33V.inl">
-      <Filter>Resource Files\Math Core</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Mat34f.inl">
-      <Filter>Resource Files\Math Core</Filter>
-    </None>
-    <None Include="..\Source\Core\Math Lib\Mat34V.inl">
       <Filter>Resource Files\Math Core</Filter>
     </None>
     <None Include="..\Source\Core\Math Lib\Mat44f.inl">
@@ -154,6 +148,12 @@
     </None>
     <None Include="..\Source\Core\Physics\Sphere.inl">
       <Filter>Resource Files\Physics</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Mat43f.inl">
+      <Filter>Resource Files\Math Core</Filter>
+    </None>
+    <None Include="..\Source\Core\Math Lib\Mat43V.inl">
+      <Filter>Resource Files\Math Core</Filter>
     </None>
   </ItemGroup>
 </Project>

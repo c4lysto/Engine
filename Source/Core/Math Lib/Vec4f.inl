@@ -1,22 +1,12 @@
 
-__forceinline Vec4f::Vec4f(Vec4f_In vVector)
-#if !SSE_AVAILABLE || 1
-: x(vVector.x), y(vVector.y), z(vVector.z), w(vVector.w)
-#endif
+__forceinline Vec4f::Vec4f(Vec4f_In vVector) : x(vVector.x), y(vVector.y), z(vVector.z), w(vVector.w)
 {
-#if SSE_AVAILABLE && 0
-	VectorStoreU(VectorLoadU(vVector.vector), vector);
-#endif
+
 }
 
-__forceinline Vec4f::Vec4f(Vec4f&& vVector)
-#if !SSE_AVAILABLE || 1
-: x(vVector.x), y(vVector.y), z(vVector.z), w(vVector.w)
-#endif
+__forceinline Vec4f::Vec4f(Vec4f&& vVector) : x(vVector.x), y(vVector.y), z(vVector.z), w(vVector.w)
 {
-#if SSE_AVAILABLE && 0
-	VectorStoreU(VectorLoadU(vVector.vector), vector);
-#endif
+
 }
 
 #if SSE_AVAILABLE

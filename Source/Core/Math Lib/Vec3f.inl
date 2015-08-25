@@ -24,11 +24,12 @@ __forceinline Vec3f::Vec3f(Vec3f_In vVector) : x(vVector.x), y(vVector.y), z(vVe
 
 }
 
-__forceinline Vec3f::Vec3f(Vec3f&& vVector)
+__forceinline Vec3f::Vec3f(Vec3f&& vVector) :
+	x(std::move(vVector.x)),
+	y(std::move(vVector.y)),
+	z(std::move(vVector.x))
 {
-	x = std::move(vVector.x);
-	y = std::move(vVector.y);
-	z = std::move(vVector.z);
+
 }
 
 #if SSE_AVAILABLE

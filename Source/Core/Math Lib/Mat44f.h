@@ -16,7 +16,7 @@ typedef Mat44f Mat44f_Out;
 // Other Mat44f Aliases
 typedef Mat44f float4x4;
 
-class Mat34f;
+class Mat43f;
 
 class Mat44f
 {
@@ -124,19 +124,11 @@ public:
 
 	void RECON_VEC_CALLCONV Translate(Vec3f vTranslation);
 
-	void Transpose();
-	void Transpose3x3();
-
 	void Normalize();
-
-	void RECON_VEC_CALLCONV LookAt(const Vec3f& mPos, const Vec3f& vWorldUp = g_IdentityY3);
-
-	void RECON_VEC_CALLCONV TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier = 1.0f);
-
-	void OrthoNormalInvert();
 };
 
-Mat34f RECON_VEC_CALLCONV Mat44ToMat34(Mat44f_In mMatrix);
+Mat43f RECON_VEC_CALLCONV Mat44ToMat43(Mat44f_In mMatrix);
+Mat44f_Out RECON_VEC_CALLCONV Transpose3x3(Mat44f_In mMatrix);
 
 #include "Mat44f.inl"
 

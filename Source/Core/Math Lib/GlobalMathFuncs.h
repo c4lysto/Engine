@@ -68,6 +68,10 @@ Vec2f_Out RECON_VEC_CALLCONV Abs(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Abs(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Abs(Vec4f_In vVector);
 
+Vec2f_Out RECON_VEC_CALLCONV AbsInt(Vec2f_In vVector);
+Vec3f_Out RECON_VEC_CALLCONV AbsInt(Vec3f_In vVector);
+Vec4f_Out RECON_VEC_CALLCONV AbsInt(Vec4f_In vVector);
+
 f32 Sqrt(const f32& fScalar);
 f64 Sqrt(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Sqrt(Vec2f_In vVector);
@@ -341,21 +345,27 @@ Vec3f_Out RECON_VEC_CALLCONV Cross(Vec3f_In lhs, Vec3f_In rhs);
 
 // Matrix Function
 
-Mat44f RECON_VEC_CALLCONV Mat34ToMat44(Mat34f_In mMatrix);
-Mat34f RECON_VEC_CALLCONV Mat44ToMat34(Mat44f_In mMatrix);
+Mat44f RECON_VEC_CALLCONV Mat43ToMat44(Mat43f_In mMatrix);
+Mat43f RECON_VEC_CALLCONV Mat44ToMat43(Mat44f_In mMatrix);
 
-Mat44f_Out RECON_VEC_CALLCONV MatrixInverse(Mat44f_In mMatrix);
+Mat43f_Out RECON_VEC_CALLCONV LookAt(Vec3f_In viewerPos, Vec3f_In lookAtPos, Vec3f_In vWorldUp = Vec3f(I_WORLD_UP));
+
+Mat43f_Out RECON_VEC_CALLCONV TurnTo(Mat43f_In vTurningMat, Vec3f_In vTurnToPos, const f32& fDeltaTime, const f32& fTurnModifier = 1.0f);
+
+Mat44f_Out RECON_VEC_CALLCONV Invert(Mat44f_In mMatrix);
+Mat44f_Out RECON_VEC_CALLCONV InvertOrtho(Mat44f_In mMatrix);
 
 Mat33f_Out RECON_VEC_CALLCONV Transpose(Mat33f_In mMatrix);
 Mat44f_Out RECON_VEC_CALLCONV Transpose(Mat44f_In mMatrix);
 
+Mat43f_Out RECON_VEC_CALLCONV Transpose3x3(Mat43f_In mMatrix);
 Mat44f_Out RECON_VEC_CALLCONV Transpose3x3(Mat44f_In mMatrix);
 
 Mat44f_Out RECON_VEC_CALLCONV RotateAround(Vec3f_In origin, Mat44f_In rotatorsMatrix, Mat44f_In rotationMatrix);
 
 Mat44f_Out RECON_VEC_CALLCONV MakePerspectiveMatrix(f32 fFOV, f32 fAspectRatio, f32 fNearClip, f32 fFarClip);
 Mat44f_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(f32 fWidth, f32 fHeight, f32 fNear, f32 fFar);
-Mat44f_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(u32 unWidth, u32 unHeight);
+Mat44f_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(f32 unWidth, f32 unHeight);
 
 f32 CalculateGaussianWeight(s32 nOffset, f32 fSigma = 1.0f);
 
@@ -408,6 +418,11 @@ ScalarV_Out RECON_VEC_CALLCONV Abs(ScalarV_In vScalar);
 Vec2V_Out RECON_VEC_CALLCONV Abs(Vec2V_In vVector);
 Vec3V_Out RECON_VEC_CALLCONV Abs(Vec3V_In vVector);
 Vec4V_Out RECON_VEC_CALLCONV Abs(Vec4V_In vVector);
+
+ScalarV_Out RECON_VEC_CALLCONV AbsInt(ScalarV_In vVector);
+Vec2V_Out RECON_VEC_CALLCONV AbsInt(Vec2V_In vVector);
+Vec3V_Out RECON_VEC_CALLCONV AbsInt(Vec3V_In vVector);
+Vec4V_Out RECON_VEC_CALLCONV AbsInt(Vec4V_In vVector);
 
 template<VecElem splat> Vec2V_Out RECON_VEC_CALLCONV Splat(Vec2V_In lhs);
 template<VecElem splat> Vec3V_Out RECON_VEC_CALLCONV Splat(Vec3V_In lhs);
@@ -660,22 +675,29 @@ Mat44V_Out RECON_VEC_CALLCONV Lerp(Mat44V_In MatrixA, Mat44V_In MatrixB, ScalarV
 
 Vec3V_Out RECON_VEC_CALLCONV Cross(Vec3V_In lhs, Vec3V_In rhs);
 
-Mat44V RECON_VEC_CALLCONV Mat34ToMat44(Mat34V_In mMatrix);
-Mat34V RECON_VEC_CALLCONV Mat44ToMat34(Mat44V_In mMatrix);
+Mat44V RECON_VEC_CALLCONV Mat43ToMat44(Mat43V_In mMatrix);
+Mat43V RECON_VEC_CALLCONV Mat44ToMat43(Mat44V_In mMatrix);
 
-Mat44V_Out RECON_VEC_CALLCONV MatrixInverse(Mat44V_In mMatrix);
+Mat43V_Out RECON_VEC_CALLCONV LookAt(Vec3V_In viewerPos, Vec3V_In lookAtPos, Vec3V_In vWorldUp = Vec3V(I_WORLD_UP));
 
+Mat43V_Out RECON_VEC_CALLCONV TurnTo(Mat43V_In vTurningMat, Vec3V_In vTurnToPos, ScalarV_In vDeltaTime, ScalarV_In vTurnModifier = ScalarV(I_ONE));
+
+Mat44V_Out RECON_VEC_CALLCONV Invert(Mat44V_In mMatrix);
+Mat44V_Out RECON_VEC_CALLCONV InvertOrtho(Mat44V_In mMatrix);
+
+Mat33V_Out RECON_VEC_CALLCONV Transpose(Mat33V_In mMatrix);
 Mat44V_Out RECON_VEC_CALLCONV Transpose(Mat44V_In mMatrix);
 
+Mat43V_Out RECON_VEC_CALLCONV Transpose3x3(Mat43V_In mMatrix);
 Mat44V_Out RECON_VEC_CALLCONV Transpose3x3(Mat44V_In mMatrix);
 
 Mat44V_Out RECON_VEC_CALLCONV RotateAround(Vec3V_In origin, Mat44V_In rotatorsMatrix, Mat44V_In rotationMatrix);
 
-Mat44V RECON_VEC_CALLCONV MakePerspectiveMatrixV(f32 fFOV, f32 fAspectRatio, f32 fNearClip, f32 fFarClip);
+Mat44V RECON_VEC_CALLCONV MakePerspectiveMatrix(ScalarV_In vFOV, ScalarV_In vAspectRatio, ScalarV_In vNearClip, ScalarV_In vFarClip);
 
-Mat44V RECON_VEC_CALLCONV MakeOrthographicMatrixV(f32 fWidth, f32 fHeight, f32 fNear, f32 fFar);
+Mat44V RECON_VEC_CALLCONV MakeOrthographicMatrix(ScalarV_In vWidth, ScalarV_In vHeight, ScalarV_In vNear, ScalarV_In vFar);
 
-Mat44V RECON_VEC_CALLCONV MakeTextureMatrixOffsetV(u32 unWidth, u32 unHeight);
+Mat44V RECON_VEC_CALLCONV MakeTextureMatrixOffset(ScalarV_In unWidth, ScalarV_In unHeight);
 #endif //SSE_AVAILABLE
 
 class VecCmpResult

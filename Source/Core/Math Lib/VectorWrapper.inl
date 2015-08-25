@@ -326,8 +326,12 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorDivide(Vector_In lhs, Vector_I
 
 __forceinline Vector_Out RECON_VEC_CALLCONV VectorNegate(Vector_In vec)
 {
-	// Toggle The Sign Bit
 	return _mm_xor_ps(vec, VEC_INT_TO_FLOAT(_mm_set1_epi32(0x80000000)));
+}
+
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorNegateInt(Vector_In vec)
+{
+	return VectorSubtractInt(VectorSetConstant<0>(), vec);
 }
 
 //__forceinline Vector_Out RECON_VEC_CALLCONV operator-(Vector_In vec)
@@ -338,6 +342,11 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorNegate(Vector_In vec)
 __forceinline Vector_Out RECON_VEC_CALLCONV VectorAbs(Vector_In vec)
 {
 	return _mm_and_ps(vec, VEC_INT_TO_FLOAT(_mm_set1_epi32(0x7FFFFFFF)));
+}
+
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorAbsInt(Vector_In vec)
+{
+	return VEC_INT_TO_FLOAT(_mm_abs_epi32(VEC_FLOAT_TO_INT(vec)));
 }
 
 __forceinline Vector_Out RECON_VEC_CALLCONV VectorSqrt(Vector_In vec)

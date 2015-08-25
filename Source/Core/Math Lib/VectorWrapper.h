@@ -105,7 +105,11 @@ Vector_Out RECON_VEC_CALLCONV VectorDivide(Vector_In lhs, Vector_In rhs);
 Vector_Out RECON_VEC_CALLCONV VectorNegate(Vector_In vec);
 //Vector_Out operator-(Vector_In vec);
 
+Vector_Out RECON_VEC_CALLCONV VectorNegateInt(Vector_In vec);
+
 Vector_Out RECON_VEC_CALLCONV VectorAbs(Vector_In vec);
+
+Vector_Out RECON_VEC_CALLCONV VectorAbsInt(Vector_In vec);
 
 Vector_Out RECON_VEC_CALLCONV VectorSqrt(Vector_In vec);
 

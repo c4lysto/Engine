@@ -16,7 +16,7 @@ public:
 	Vec3V_Out GetPosition() const {return m_pTransform ? m_pTransform->GetPosition() : Vec3V(I_ZERO);}
 
 	Mat33V_Out GetMat33() const  {return m_pTransform ? m_pTransform->GetMat33() : Mat33V(I_IDENTITY);}
-	Mat34V_Out GetMatrix() const { return m_pTransform ? m_pTransform->GetMatrix() : Mat34V(I_IDENTITY); }
+	Mat43V_Out GetMatrix() const { return m_pTransform ? m_pTransform->GetMatrix() : Mat43V(I_IDENTITY); }
 	Mat44V_Out GetFullMatrix() const { return m_pTransform ? m_pTransform->GetFullMatrix() : Mat44V(I_IDENTITY); }
 
 	void TransformLocal(Mat44V_In mTransform);

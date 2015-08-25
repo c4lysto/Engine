@@ -1,26 +1,25 @@
 
 
 #if !RECON_OS_64BIT
-__forceinline ScalarV::ScalarV(ScalarV&& vVector)
+__forceinline ScalarV::ScalarV(ScalarV&& vVector) : row(std::move(vVector.row))
 {
-	row = move(vVector.row);
+
 }
 #endif // !RECON_OS_64BIT
 
-__forceinline ScalarV::ScalarV(Vector_In vVector)
+__forceinline ScalarV::ScalarV(Vector_In vVector) : row(vVector)
 {
-	row = vVector;
 	Assertf(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
 }
 
-__forceinline ScalarV::ScalarV(const f32& fVal)
+__forceinline ScalarV::ScalarV(const f32& fVal) : row(VectorSet(fVal))
 {
-	row = VectorSet(fVal);
+	
 }
 
-__forceinline ScalarV::ScalarV(const s32& iVal)
+__forceinline ScalarV::ScalarV(const s32& iVal) : row(VectorSet(iVal))
 {
-	row = VectorSet(iVal);
+	
 }
 
 __forceinline Vector_Out ScalarV::GetVector() const

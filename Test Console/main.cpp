@@ -231,6 +231,8 @@ int main()
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetBreakAlloc(-1);
 
+	Vec2V vecTst(1.0f, 5.0f);
+
 	TstThreadArgs* pTstArgs = new TstThreadArgs;
 	TstThreadArgs localTstArgs;
 

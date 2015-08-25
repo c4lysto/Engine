@@ -1,17 +1,17 @@
 
-__forceinline Vec3V::Vec3V(const f32& fVal)
+__forceinline Vec3V::Vec3V(const f32& fVal) : row(VectorSet(fVal))
 {
-	row = VectorSet(fVal);
+	
 }
 
-__forceinline Vec3V::Vec3V(const f32& fX, const f32& fY, const f32& fZ)
+__forceinline Vec3V::Vec3V(const f32& fX, const f32& fY, const f32& fZ) : row(VectorSet(fX, fY, fZ, VEC_FILL_VAL))
 {
-	row = VectorSet(fX, fY, fZ, VEC_FILL_VAL);
+	
 }
 
-__forceinline Vec3V::Vec3V(ScalarV_In vVal)
+__forceinline Vec3V::Vec3V(ScalarV_In vVal) : row(vVal.GetVector())
 {
-	row = vVal.GetVector();
+	
 }
 
 __forceinline Vec3V::Vec3V(ScalarV_In vX, ScalarV_In vY, ScalarV_In vZ)
@@ -20,14 +20,16 @@ __forceinline Vec3V::Vec3V(ScalarV_In vX, ScalarV_In vY, ScalarV_In vZ)
 	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(row, vZ.GetVector());
 }
 
-__forceinline Vec3V::Vec3V(Vec2V_In vXY, ScalarV_In vZ)
+__forceinline Vec3V::Vec3V(Vec2V_In vXY, ScalarV_In vZ) :
+	row(VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(vXY.GetVector(), vZ.GetVector()))
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(vXY.GetVector(), vZ.GetVector());
+	
 }
 
-__forceinline Vec3V::Vec3V(ScalarV_In vX, Vec2V_In vYZ)
+__forceinline Vec3V::Vec3V(ScalarV_In vX, Vec2V_In vYZ) :
+	row(VectorPermute<VecElem::X2, VecElem::X1, VecElem::Y1, VecElem::W2>(vYZ.GetVector(), vX.GetVector()))
 {
-	row = VectorPermute<VecElem::X2, VecElem::X1, VecElem::Y1, VecElem::W2>(vYZ.GetVector(), vX.GetVector());
+	
 }
 
 //__forceinline Vec3V::Vec3V(Vec3V_In vVector)
@@ -36,21 +38,22 @@ __forceinline Vec3V::Vec3V(ScalarV_In vX, Vec2V_In vYZ)
 //}
 
 #if !RECON_OS_64BIT
-__forceinline Vec3V::Vec3V(Vec3V&& vVector)
+__forceinline Vec3V::Vec3V(Vec3V&& vVector) :
+	row(std::move(vVector.row))
 {
-	row = move(vVector.row);
+
 }
 #endif // !RECON_OS_64BIT
 
-__forceinline Vec3V::Vec3V(Vector_In vVector)
+__forceinline Vec3V::Vec3V(Vector_In vVector) : row(vVector)
 {
-	row = vVector;
+
 }
 
 #if !RECON_OS_64BIT
-__forceinline Vec3V::Vec3V(Vector&& vVector)
+__forceinline Vec3V::Vec3V(Vector&& vVector) : row(std::move(vVector))
 {
-	row = move(vVector);
+	
 }
 #endif // !RECON_OS_64BIT
 

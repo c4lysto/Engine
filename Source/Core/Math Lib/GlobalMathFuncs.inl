@@ -273,6 +273,21 @@ __forceinline Vec4f_Out RECON_VEC_CALLCONV Abs(Vec4f_In vVector)
 	return Vec4f(Abs(vVector.GetXRef()), Abs(vVector.GetYRef()), Abs(vVector.GetZRef()), Abs(vVector.GetWRef()));
 }
 
+__forceinline Vec2f_Out RECON_VEC_CALLCONV AbsInt(Vec2f_In vVector)
+{
+	return Vec2fInt(Abs(vVector.GetXiRef()), Abs(vVector.GetYiRef()));
+}
+
+__forceinline Vec3f_Out RECON_VEC_CALLCONV AbsInt(Vec3f_In vVector)
+{
+	return Vec3fInt(Abs(vVector.GetXiRef()), Abs(vVector.GetYiRef()), Abs(vVector.GetZiRef()));
+}
+
+__forceinline Vec4f_Out RECON_VEC_CALLCONV AbsInt(Vec4f_In vVector)
+{
+	return Vec4fInt(Abs(vVector.GetXiRef()), Abs(vVector.GetYiRef()), Abs(vVector.GetZiRef()), Abs(vVector.GetWiRef()));
+}
+
 __forceinline f32 Sqrt(const f32& fScalar)
 {
 	return sqrtf(fScalar);
@@ -1147,7 +1162,7 @@ __forceinline Vec3f_Out RECON_VEC_CALLCONV Cross(Vec3f_In lhs, Vec3f_In rhs)
 				 lhs.GetX() * rhs.GetY() - lhs.GetY() * rhs.GetX());
 }
 
-__forceinline Mat44f RECON_VEC_CALLCONV Mat34ToMat44(Mat34f_In mMatrix)
+__forceinline Mat44f RECON_VEC_CALLCONV Mat43ToMat44(Mat43f_In mMatrix)
 {
 	return Mat44f(Vec4f(mMatrix.GetXAxisRef(), 0.0f), \
 				  Vec4f(mMatrix.GetYAxisRef(), 0.0f), \
@@ -1155,15 +1170,62 @@ __forceinline Mat44f RECON_VEC_CALLCONV Mat34ToMat44(Mat34f_In mMatrix)
 				  Vec4f(mMatrix.GetWAxisRef(), 1.0f));
 }
 
-__forceinline Mat34f RECON_VEC_CALLCONV Mat44ToMat34(Mat44f_In mMatrix)
+__forceinline Mat43f RECON_VEC_CALLCONV Mat44ToMat43(Mat44f_In mMatrix)
 {
-	return Mat34f(mMatrix.GetXAxisRef().GetXYZ(), \
+	return Mat43f(mMatrix.GetXAxisRef().GetXYZ(), \
 				  mMatrix.GetYAxisRef().GetXYZ(), \
 				  mMatrix.GetZAxisRef().GetXYZ(), \
 				  mMatrix.GetWAxisRef().GetXYZ());
 }
 
-inline Mat44f_Out RECON_VEC_CALLCONV MatrixInverse(Mat44f_In mMatrix)
+__forceinline Mat43f_Out RECON_VEC_CALLCONV LookAt(Vec3f_In viewerPos, Vec3f_In lookAtPos, Vec3f_In vWorldUp /*= Vec3f(I_WORLD_UP)*/)
+{
+	Mat43f retVal;
+	retVal.SetZAxis(Normalize(lookAtPos - viewerPos));
+	retVal.SetXAxis(Normalize(Cross(vWorldUp, retVal.GetZAxisRef())));
+	retVal.SetYAxis(Normalize(Cross(retVal.GetZAxisRef(), retVal.GetXAxisRef())));
+	retVal.SetWAxis(viewerPos);
+	return retVal;
+}
+
+inline Mat43f_Out RECON_VEC_CALLCONV TurnTo(Mat43f_In vTurningMat, Vec3f_In vTurnToPos, const f32& fDeltaTime, const f32& fTurnModifier /*= 1.0f*/)
+{
+	Mat43f retVal(vTurningMat);
+
+	Vec3f vecToPos = Normalize(vTurnToPos - retVal.GetWAxisRef());
+
+	f32 protection = Dot(vecToPos, retVal.GetZAxisRef());
+
+	if(protection != protection)
+	{
+		// You are already facing that exact direction
+		return retVal;
+	}
+
+	f32 fRotation = Dot(vecToPos, retVal.GetXAxisRef());
+
+	if(fRotation > FLT_EPSILON || fRotation < -FLT_EPSILON)
+	{
+		// protection to keep the matrix from turning slowly
+		// if the position is behind the matrix
+		if(Dot(vecToPos, retVal.GetZAxisRef()) < 0.0f)
+			fRotation = (fRotation < 0.0f) ? -1.0f : 1.0f;
+
+		retVal.Rotate_LocalY(fRotation * fTurnModifier * fDeltaTime);
+	}
+
+	fRotation = Dot(vecToPos, retVal.GetYAxisRef());
+
+	if(fRotation > FLT_EPSILON || fRotation < -FLT_EPSILON)
+		retVal.Rotate_LocalX(-fRotation * fTurnModifier * fDeltaTime);
+
+	retVal.SetXAxis(Normalize(Cross(Vec3f(I_WORLD_UP), retVal.GetZAxisRef())));
+	retVal.SetYAxis(Normalize(Cross(retVal.GetZAxisRef(), retVal.GetXAxisRef())));
+
+	return retVal;
+}
+
+inline Mat44f_Out RECON_VEC_CALLCONV Invert(Mat44f_In mMatrix)
 {
 	/*
 	Derived From The Intel Paper At:
@@ -1252,24 +1314,51 @@ inline Mat44f_Out RECON_VEC_CALLCONV MatrixInverse(Mat44f_In mMatrix)
 	return mMatrix;
 }
 
+inline Mat44f_Out RECON_VEC_CALLCONV InvertOrtho(Mat44f_In mMatrix)
+{
+	Mat44f retVal(Transpose3x3(mMatrix));
+	Vec4f_Ref wAxis = retVal.GetWAxisRef();
+	wAxis.SetX(-Dot(mMatrix.GetWAxisRef().GetXYZ(), mMatrix.GetXAxisRef().GetXYZ()));
+	wAxis.SetY(-Dot(mMatrix.GetWAxisRef().GetXYZ(), mMatrix.GetYAxisRef().GetXYZ()));
+	wAxis.SetZ(-Dot(mMatrix.GetWAxisRef().GetXYZ(), mMatrix.GetZAxisRef().GetXYZ()));
+	return retVal;
+}
+
 __forceinline Mat33f_Out RECON_VEC_CALLCONV Transpose(Mat33f_In mMatrix)
 {
-	Mat33f retVal(mMatrix);
-	retVal.Transpose();
+	Mat33f retVal(mMatrix); 
+	std::swap(retVal.GetYAxisRef().GetXRef(), retVal.GetXAxisRef().GetYRef());
+	std::swap(retVal.GetZAxisRef().GetXRef(), retVal.GetXAxisRef().GetZRef());
+	std::swap(retVal.GetZAxisRef().GetYRef(), retVal.GetYAxisRef().GetZRef());
 	return retVal;
 }
 
 __forceinline Mat44f_Out RECON_VEC_CALLCONV Transpose(Mat44f_In mMatrix)
 {
 	Mat44f retVal(mMatrix);
-	retVal.Transpose();
+	std::swap(retVal.GetXAxisRef().GetYRef(), retVal.GetYAxisRef().GetXRef());
+	std::swap(retVal.GetXAxisRef().GetZRef(), retVal.GetZAxisRef().GetXRef());
+	std::swap(retVal.GetYAxisRef().GetZRef(), retVal.GetZAxisRef().GetYRef());
+	std::swap(retVal.GetWAxisRef().GetXRef(), retVal.GetXAxisRef().GetWRef());
+	std::swap(retVal.GetWAxisRef().GetYRef(), retVal.GetYAxisRef().GetWRef());
+	std::swap(retVal.GetWAxisRef().GetZRef(), retVal.GetZAxisRef().GetWRef());
+	return retVal;
+}
+
+__forceinline Mat43f_Out RECON_VEC_CALLCONV Transpose3x3(Mat43f_In mMatrix)
+{
+	Mat43f retVal;
+	retVal.SetMat33(Transpose(mMatrix.GetMat33Ref()));
+	retVal.SetWAxis(mMatrix.GetWAxisRef());
 	return retVal;
 }
 
 __forceinline Mat44f_Out RECON_VEC_CALLCONV Transpose3x3(Mat44f_In mMatrix)
 {
 	Mat44f retVal(mMatrix);
-	retVal.Transpose3x3();
+	std::swap(retVal.GetYAxisRef().GetXRef(), retVal.GetXAxisRef().GetYRef());
+	std::swap(retVal.GetZAxisRef().GetXRef(), retVal.GetXAxisRef().GetZRef());
+	std::swap(retVal.GetZAxisRef().GetYRef(), retVal.GetYAxisRef().GetZRef());
 	return retVal;
 }
 
@@ -1301,12 +1390,12 @@ __forceinline Mat44f_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(f32 fWidth, f
 					0.0f,				0.0f,					-fNear / (fFar - fNear),	1.0f);
 }
 
-__forceinline Mat44f_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(u32 unWidth, u32 unHeight)
+__forceinline Mat44f_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(f32 fWidth, f32 fHeight)
 {
 	return Mat44f(0.5f,						0.0f,						0.0f,	0.0f,
 				  0.0f,						-0.5f,						0.0f,	0.0f,
 				  0.0f,						0.0f,						1.0f,	0.0f,
-				  0.5f + (0.5f / unWidth),	0.5f + (0.5f / unHeight),	0.0f,	1.0f);
+				  0.5f + (0.5f / fWidth),	0.5f + (0.5f / fHeight),	0.0f,	1.0f);
 }
 
 __forceinline f32 CalculateGaussianWeight(s32 nOffset, f32 fSigma)
@@ -1519,6 +1608,26 @@ __forceinline Vec4V_Out RECON_VEC_CALLCONV Abs(Vec4V_In vVector)
 	return Vec4V(VectorAbs(vVector.GetVector()));
 }
 
+__forceinline ScalarV_Out RECON_VEC_CALLCONV AbsInt(ScalarV_In vVector)
+{
+	return ScalarV(VectorAbsInt(vVector.GetVector()));
+}
+
+__forceinline Vec2V_Out RECON_VEC_CALLCONV AbsInt(Vec2V_In vVector)
+{
+	return Vec2V(VectorAbsInt(vVector.GetVector()));
+}
+
+__forceinline Vec3V_Out RECON_VEC_CALLCONV AbsInt(Vec3V_In vVector)
+{
+	return Vec3V(VectorAbsInt(vVector.GetVector()));
+}
+
+__forceinline Vec4V_Out RECON_VEC_CALLCONV AbsInt(Vec4V_In vVector)
+{
+	return Vec4V(VectorAbsInt(vVector.GetVector()));
+}
+
 template<VecElem splat>
 __forceinline Vec2V_Out RECON_VEC_CALLCONV Splat(Vec2V_In lhs)
 {
@@ -1541,7 +1650,7 @@ template<VecElem pX, VecElem pY>
 __forceinline Vec2V_Out RECON_VEC_CALLCONV Permute(Vec2V_In lhs)
 {
 	static_assert(	(pX >= VecElem::X && pX <= VecElem::Y) &&
-						(pY >= VecElem::X && pY <= VecElem::Y), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
+					(pY >= VecElem::X && pY <= VecElem::Y), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Y!");
 	static_assert(	!(pX == VecElem::X && pY == VecElem::Y), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec2V(VectorPermute<pX, pY, VecElem::Z, VecElem::W>(lhs.GetVector()));
 }
@@ -1550,8 +1659,8 @@ template<VecElem pX, VecElem pY, VecElem pZ>
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Permute(Vec3V_In lhs)
 {
 	static_assert(	(pX >= VecElem::X && pX <= VecElem::Z) &&
-						(pY >= VecElem::X && pY <= VecElem::Z) &&
-						(pZ >= VecElem::X && pY <= VecElem::Z), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Z!");
+					(pY >= VecElem::X && pY <= VecElem::Z) &&
+					(pZ >= VecElem::X && pY <= VecElem::Z), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::Z!");
 	static_assert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec3V(VectorPermute<pX, pY, pZ, VecElem::W>(lhs.GetVector()));
 }
@@ -1559,9 +1668,9 @@ template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
 __forceinline Vec4V_Out RECON_VEC_CALLCONV Permute(Vec4V_In lhs)
 {
 	static_assert(	(pX >= VecElem::X && pX <= VecElem::W) &&
-						(pY >= VecElem::X && pY <= VecElem::W) &&
-						(pZ >= VecElem::X && pY <= VecElem::W) &&
-						(pW >= VecElem::X && pY <= VecElem::W), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::W!");
+					(pY >= VecElem::X && pY <= VecElem::W) &&
+					(pZ >= VecElem::X && pY <= VecElem::W) &&
+					(pW >= VecElem::X && pY <= VecElem::W), "Invalid Permute Indices! Indices must be between VecElem::X <-> VecElem::W!");
 	static_assert(	!(pX == VecElem::X && pY == VecElem::Y && pZ == VecElem::Z && pW == VecElem::W), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec4V(VectorPermute<pX, pY, pZ, pW>(lhs.GetVector()));
 }
@@ -1570,9 +1679,9 @@ template<VecElem pX, VecElem pY>
 __forceinline Vec2V_Out RECON_VEC_CALLCONV Permute(Vec2V_In lhs, Vec2V_In rhs)
 {
 	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::Y1) || (pX >= VecElem::X2 && pX <= VecElem::Y2)) &&
-						((pY >= VecElem::X1 && pY <= VecElem::Y1) || (pY >= VecElem::X2 && pY <= VecElem::Y2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
+					((pY >= VecElem::X1 && pY <= VecElem::Y1) || (pY >= VecElem::X2 && pY <= VecElem::Y2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
 	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1) || 
-						  (pX == VecElem::X2 && pY == VecElem::Y2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+					  (pX == VecElem::X2 && pY == VecElem::Y2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec2V(VectorPermute<pX, pY, VecElem::Z1, VecElem::W1>(lhs.GetVector(), rhs.GetVector()));
 }
 
@@ -1580,10 +1689,10 @@ template<VecElem pX, VecElem pY, VecElem pZ>
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Permute(Vec3V_In lhs, Vec3V_In rhs)
 {
 	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::Z1) || (pX >= VecElem::X2 && pX <= VecElem::Z2)) &&
-						((pY >= VecElem::X1 && pY <= VecElem::Z1) || (pY >= VecElem::X2 && pY <= VecElem::Z2)) &&
-						((pZ >= VecElem::X1 && pZ <= VecElem::Z1) || (pZ >= VecElem::X2 && pZ <= VecElem::Z2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
+					((pY >= VecElem::X1 && pY <= VecElem::Z1) || (pY >= VecElem::X2 && pY <= VecElem::Z2)) &&
+					((pZ >= VecElem::X1 && pZ <= VecElem::Z1) || (pZ >= VecElem::X2 && pZ <= VecElem::Z2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
 	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1) || 
-						  (pX == VecElem::X2 && pY == VecElem::Y2 && pZ == VecElem::Z2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+						 (pX == VecElem::X2 && pY == VecElem::Y2 && pZ == VecElem::Z2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec3V(VectorPermute<pX, pY, pZ, VecElem::W1>(lhs.GetVector(), rhs.GetVector()));
 }
 
@@ -1591,11 +1700,11 @@ template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW>
 __forceinline Vec4V_Out RECON_VEC_CALLCONV Permute(Vec4V_In lhs, Vec4V_In rhs)
 {
 	static_assert(	((pX >= VecElem::X1 && pX <= VecElem::W1) || (pX >= VecElem::X2 && pX <= VecElem::W2)) &&
-						((pY >= VecElem::X1 && pY <= VecElem::W1) || (pY >= VecElem::X2 && pY <= VecElem::W2)) &&
-						((pZ >= VecElem::X1 && pZ <= VecElem::W1) || (pZ >= VecElem::X2 && pZ <= VecElem::W2)) &&
-						((pW >= VecElem::X1 && pW <= VecElem::W1) || (pW >= VecElem::X2 && pW <= VecElem::W2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
+					((pY >= VecElem::X1 && pY <= VecElem::W1) || (pY >= VecElem::X2 && pY <= VecElem::W2)) &&
+					((pZ >= VecElem::X1 && pZ <= VecElem::W1) || (pZ >= VecElem::X2 && pZ <= VecElem::W2)) &&
+					((pW >= VecElem::X1 && pW <= VecElem::W1) || (pW >= VecElem::X2 && pW <= VecElem::W2)), "Invalid Permute Indices! Indices must be between VecElem::X1 <-> VecElem::W2!");
 	static_assert(	!((pX == VecElem::X1 && pY == VecElem::Y1 && pZ == VecElem::Z1 && pW == VecElem::W1) || 
-						  (pX == VecElem::X2 && pY == VecElem::Y2 && pZ == VecElem::Z2 && pW == VecElem::W2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
+						 (pX == VecElem::X2 && pY == VecElem::Y2 && pZ == VecElem::Z2 && pW == VecElem::W2)), "Invalid Permute Indices! Vector Will Not Change, So Don't Bother Calling Permute!");
 	return Vec4V(VectorPermute<pX, pY, pZ, pW>(lhs.GetVector(), rhs.GetVector()));
 }
 
@@ -2267,7 +2376,7 @@ __forceinline Vec3V_Out RECON_VEC_CALLCONV Cross(Vec3V_In lhs, Vec3V_In rhs)
 	return Vec3V(VectorCrossProduct(lhs.GetVector(), rhs.GetVector()));
 }
 
-__forceinline Mat44V RECON_VEC_CALLCONV Mat34ToMat44(Mat34V_In mMatrix)
+__forceinline Mat44V RECON_VEC_CALLCONV Mat43ToMat44(Mat43V_In mMatrix)
 {
 	return Mat44V(Vec4V(mMatrix.GetXAxisRef(), ScalarV(I_ZERO)), \
 				  Vec4V(mMatrix.GetYAxisRef(), ScalarV(I_ZERO)), \
@@ -2275,15 +2384,62 @@ __forceinline Mat44V RECON_VEC_CALLCONV Mat34ToMat44(Mat34V_In mMatrix)
 				  Vec4V(mMatrix.GetWAxisRef(), ScalarV(I_ONE)));
 }
 
-__forceinline Mat34V RECON_VEC_CALLCONV Mat44ToMat34(Mat44V_In mMatrix)
+__forceinline Mat43V RECON_VEC_CALLCONV Mat44ToMat43(Mat44V_In mMatrix)
 {
-	return Mat34V(mMatrix.GetXAxisRef().GetXYZ(), \
+	return Mat43V(mMatrix.GetXAxisRef().GetXYZ(), \
 				  mMatrix.GetYAxisRef().GetXYZ(), \
 				  mMatrix.GetZAxisRef().GetXYZ(), \
 				  mMatrix.GetWAxisRef().GetXYZ());
 }
 
-__forceinline Mat44V_Out RECON_VEC_CALLCONV MatrixInverse(Mat44V_In mMatrix)
+__forceinline Mat43V_Out RECON_VEC_CALLCONV LookAt(Vec3V_In viewerPos, Vec3V_In lookAtPos, Vec3V_In vWorldUp /*= Vec3V(I_WORLD_UP)*/)
+{
+	Mat43V retVal;
+	retVal.SetZAxis(Normalize(lookAtPos - viewerPos));
+	retVal.SetXAxis(Normalize(Cross(vWorldUp, retVal.GetZAxisRef())));
+	retVal.SetYAxis(Normalize(Cross(retVal.GetZAxisRef(), retVal.GetXAxisRef())));
+	retVal.SetWAxis(viewerPos);
+	return retVal;
+}
+
+inline Mat43V_Out RECON_VEC_CALLCONV TurnTo(Mat43V_In vTurningMat, Vec3V_In vTurnToPos, ScalarV_In vDeltaTime, ScalarV_In vTurnModifier /*= ScalarV(I_ONE)*/)
+{
+	Mat43V retVal(vTurningMat);
+
+	Vec3V vecToPos = Normalize(vTurnToPos - retVal.GetWAxisRef());
+
+	ScalarV protection = Dot(vecToPos, retVal.GetZAxisRef());
+
+	if(protection != protection)
+	{
+		// You are already facing that exact direction
+		return retVal;
+	}
+
+	ScalarV fRotation = Dot(vecToPos, retVal.GetXAxisRef());
+
+	if(fRotation > ScalarV(I_FLT_EPSILON) || fRotation < ScalarV(I_NEG_FLT_EPSILON))
+	{
+		// protection to keep the matrix from turning slowly
+		// if the position is behind the matrix
+		if(Dot(vecToPos, retVal.GetZAxisRef()) < ScalarV(I_ZERO))
+			fRotation = (fRotation < ScalarV(I_ZERO)) ? ScalarV(I_NEG_ONE) : ScalarV(I_ONE);
+
+		retVal.Rotate_LocalY(fRotation * vTurnModifier * vDeltaTime);
+	}
+
+	fRotation = Dot(vecToPos, retVal.GetYAxisRef());
+
+	if(fRotation > ScalarV(I_FLT_EPSILON) || fRotation < ScalarV(I_NEG_FLT_EPSILON))
+		retVal.Rotate_LocalX(-fRotation * vTurnModifier * vDeltaTime);
+
+	retVal.SetXAxis(Normalize(Cross(Vec3V(I_WORLD_UP), retVal.GetZAxisRef())));
+	retVal.SetYAxis(Normalize(Cross(retVal.GetZAxisRef(), retVal.GetXAxisRef())));
+
+	return retVal;
+}
+
+inline Mat44V_Out RECON_VEC_CALLCONV Invert(Mat44V_In mMatrix)
 {
 	/*
 		Derived From The Intel Paper At:
@@ -2371,17 +2527,60 @@ __forceinline Mat44V_Out RECON_VEC_CALLCONV MatrixInverse(Mat44V_In mMatrix)
 	return mMatrix;
 }
 
+inline Mat44V_Out RECON_VEC_CALLCONV InvertOrtho(Mat44V_In mMatrix)
+{
+	Mat44V retVal(Transpose3x3(mMatrix));
+	Vec4V_Ref wAxis = retVal.GetWAxisRef();
+	wAxis.SetX(-Dot(mMatrix.GetWAxisRef().GetXYZ(), mMatrix.GetXAxisRef().GetXYZ()));
+	wAxis.SetY(-Dot(mMatrix.GetWAxisRef().GetXYZ(), mMatrix.GetYAxisRef().GetXYZ()));
+	wAxis.SetZ(-Dot(mMatrix.GetWAxisRef().GetXYZ(), mMatrix.GetZAxisRef().GetXYZ()));
+	return retVal;
+}
+
+__forceinline Mat33V_Out RECON_VEC_CALLCONV Transpose(Mat33V_In mMatrix)
+{
+	Mat33V retVal;
+	Vec3V tmp = Permute<VecElem::X1, VecElem::X2, VecElem::Z1>(mMatrix.GetXAxisRef(), mMatrix.GetYAxisRef());
+	retVal.SetXAxis(Permute<VecElem::X1, VecElem::Y1, VecElem::X2>(tmp, mMatrix.GetZAxisRef()));
+	tmp = Permute<VecElem::Y2, VecElem::Y1, VecElem::Z1>(mMatrix.GetYAxisRef(), mMatrix.GetXAxisRef());
+	retVal.SetYAxis(Permute<VecElem::X1, VecElem::Y1, VecElem::Y2>(tmp, mMatrix.GetZAxisRef()));
+	tmp = Permute<VecElem::Z2, VecElem::Y1, VecElem::Z1>(mMatrix.GetZAxisRef(), mMatrix.GetXAxisRef());
+	retVal.SetZAxis(Permute<VecElem::X1, VecElem::Z2, VecElem::Z1>(tmp, mMatrix.GetYAxisRef()));
+	return retVal;
+}
+
 __forceinline Mat44V_Out RECON_VEC_CALLCONV Transpose(Mat44V_In mMatrix)
 {
-	Mat44V retVal(mMatrix);
-	retVal.Transpose();
+	Mat44V retVal;
+	Vec4V tmp1 = Permute<VecElem::X1, VecElem::Y1, VecElem::X2, VecElem::Y2>(mMatrix.GetXAxisRef(), mMatrix.GetYAxisRef());
+	Vec4V tmp2 = Permute<VecElem::X1, VecElem::Y1, VecElem::X2, VecElem::Y2>(mMatrix.GetZAxisRef(), mMatrix.GetWAxisRef());
+	Vec4V tmp3 = Permute<VecElem::Z1, VecElem::W1, VecElem::Z2, VecElem::W2>(mMatrix.GetXAxisRef(), mMatrix.GetYAxisRef());
+	Vec4V tmp4 = Permute<VecElem::Z1, VecElem::W1, VecElem::Z2, VecElem::W2>(mMatrix.GetZAxisRef(), mMatrix.GetWAxisRef());
+	retVal.SetXAxis(Permute<VecElem::X1, VecElem::Z1, VecElem::X2, VecElem::Z2>(tmp1, tmp2));
+	retVal.SetYAxis(Permute<VecElem::Y1, VecElem::W1, VecElem::Y2, VecElem::W2>(tmp1, tmp2));
+	retVal.SetZAxis(Permute<VecElem::X1, VecElem::Z1, VecElem::X2, VecElem::Z2>(tmp3, tmp4));
+	retVal.SetWAxis(Permute<VecElem::Y1, VecElem::W1, VecElem::Y2, VecElem::W2>(tmp3, tmp4));
+	return retVal;
+}
+
+__forceinline Mat43V_Out RECON_VEC_CALLCONV Transpose3x3(Mat43V_In mMatrix)
+{
+	Mat43V retVal;
+	retVal.SetMat33(Transpose(mMatrix.GetMat33Ref()));
+	retVal.SetWAxis(mMatrix.GetWAxisRef());
 	return retVal;
 }
 
 __forceinline Mat44V_Out RECON_VEC_CALLCONV Transpose3x3(Mat44V_In mMatrix)
 {
-	Mat44V retVal(mMatrix);
-	retVal.Transpose3x3();
+	Mat44V retVal;
+	Vec4V tmp = Permute<VecElem::X1, VecElem::X2, VecElem::Z1, VecElem::W1>(mMatrix.GetXAxisRef(), mMatrix.GetYAxisRef());
+	retVal.SetXAxis(Permute<VecElem::X1, VecElem::Y1, VecElem::X2, VecElem::W1>(tmp, mMatrix.GetZAxisRef()));
+	tmp = Permute<VecElem::Y2, VecElem::Y1, VecElem::Z1, VecElem::W1>(mMatrix.GetYAxisRef(), mMatrix.GetXAxisRef());
+	retVal.SetYAxis(Permute<VecElem::X1, VecElem::Y1, VecElem::Y2, VecElem::W1>(tmp, mMatrix.GetZAxisRef()));
+	tmp = Permute<VecElem::Z2, VecElem::Y1, VecElem::Z1, VecElem::W1>(mMatrix.GetZAxisRef(), mMatrix.GetXAxisRef());
+	retVal.SetZAxis(Permute<VecElem::X1, VecElem::Z2, VecElem::Z1, VecElem::W1>(tmp, mMatrix.GetYAxisRef()));
+	retVal.SetWAxis(mMatrix.GetWAxisRef());
 	return retVal;
 }
 
@@ -2394,31 +2593,31 @@ __forceinline Mat44V_Out RECON_VEC_CALLCONV RotateAround(Vec3V_In origin, Mat44V
 	return newMat;
 }
 
-__forceinline Mat44V_Out RECON_VEC_CALLCONV MakePerspectiveMatrixV(f32 fFOV, f32 fAspectRatio, f32 fNearClip, f32 fFarClip)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV MakePerspectiveMatrix(ScalarV_In vFOV, ScalarV_In vAspectRatio, ScalarV_In vNearClip, ScalarV_In vFarClip)
 {
-	f32 yScale = 1 / tan(fFOV * 0.5f);
-	f32 xScale = yScale / fAspectRatio;
+	ScalarV yScale(ScalarV(I_ONE) / Tan(vFOV * ScalarV(I_HALF)));
+	ScalarV xScale(yScale / vAspectRatio);
 
-	return Mat44V(	xScale,		0.0f,	0.0f,												0.0f,
-					0.0f,		yScale,	0.0f,												0.0f,
-					0.0f,		0.0f,	fFarClip / (fFarClip - fNearClip),					1.0f,
-					0.0f,		0.0f,	(-fNearClip * fFarClip) / (fFarClip - fNearClip),	0.0f);
+	return Mat44V(	Vec4V(xScale,			Vec3V(I_ZERO)),
+					Vec4V(ScalarV(I_ZERO),	yScale,												Vec2V(I_ZERO)),
+					Vec4V(Vec2V(I_ZERO),	vFarClip / (vFarClip - vNearClip),					ScalarV(I_ONE)),
+					Vec4V(Vec2V(I_ZERO),	(-vNearClip * vFarClip) / (vFarClip - vNearClip),	ScalarV(I_ZERO)));
 }
 
-__forceinline Mat44V_Out RECON_VEC_CALLCONV MakeOrthographicMatrixV(f32 fWidth, f32 fHeight, f32 fNear, f32 fFar)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(ScalarV_In vWidth, ScalarV_In vHeight, ScalarV_In vNear, ScalarV_In vFar)
 {
-	return Mat44V(	2.0f / fWidth,		0.0f,					0.0f,						0.0f,
-					0.0f,				2.0f / fHeight,			0.0f,						0.0f,
-					0.0f,				0.0f,					1.0f / (fFar - fNear),		0.0f,
-					0.0f,				0.0f,					-fNear / (fFar - fNear),	1.0f);
+	return Mat44V(	Vec4V(ScalarV(I_TWO) / vWidth,	Vec3V(I_ZERO)),
+					Vec4V(ScalarV(I_ZERO),			ScalarV(I_TWO) / vHeight,			Vec2V(I_ZERO)),
+					Vec4V(Vec2V(I_ZERO),			ScalarV(I_ONE) / (vFar - vNear),	ScalarV(I_ZERO)),
+					Vec4V(Vec2V(I_ZERO),			-vNear / (vFar - vNear),			ScalarV(I_ONE)));
 }
 
-__forceinline Mat44V_Out RECON_VEC_CALLCONV MakeTextureMatrixOffsetV(u32 unWidth, u32 unHeight)
+__forceinline Mat44V_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(ScalarV_In vWidth, ScalarV_In vHeight)
 {
-	return Mat44V(0.5f,						0.0f,						0.0f,	0.0f,
-				  0.0f,						-0.5f,						0.0f,	0.0f,
-				  0.0f,						0.0f,						1.0f,	0.0f,
-				  0.5f + (0.5f / unWidth),	0.5f + (0.5f / unHeight),	0.0f,	1.0f);
+	return Mat44V(Vec4V(ScalarV(I_HALF),								Vec3V(I_ZERO)),
+				  Vec4V(ScalarV(I_ZERO),								ScalarV(I_NEG_HALF),							Vec2V(I_ZERO)),
+				  Vec4V(I_Z_AXIS),
+				  Vec4V(ScalarV(I_HALF) + (ScalarV(I_HALF) / vWidth), ScalarV(I_HALF) + (ScalarV(I_HALF) / vHeight), ScalarV(I_ZERO), ScalarV(I_ONE)));
 }
 #endif //SSE_AVAILABLE
 
@@ -2468,7 +2667,7 @@ template<VecElem index0, VecElem index1>
 __forceinline bool VecCmpResult::IsTrue() const
 {
 	static_assert((index0 >= VecElem::X && index0 <= VecElem::W) && \
-		(index1 >= VecElem::X && index1 <= VecElem::W), "Invalid VecCmpResult Index!");
+				  (index1 >= VecElem::X && index1 <= VecElem::W), "Invalid VecCmpResult Index!");
 	return (GetResultMask() & ((1 << index0) | (1 << index1))) != 0;
 }
 
@@ -2476,7 +2675,7 @@ template<VecElem index0, VecElem index1, VecElem index2>
 __forceinline bool VecCmpResult::IsTrue() const
 {
 	static_assert((index0 >= VecElem::X && index0 <= VecElem::W) && \
-		(index1 >= VecElem::X && index1 <= VecElem::W) && \
-		(index2 >= VecElem::X && index2 <= VecElem::W), "Invalid VecCmpResult Index!");
+				  (index1 >= VecElem::X && index1 <= VecElem::W) && \
+				  (index2 >= VecElem::X && index2 <= VecElem::W), "Invalid VecCmpResult Index!");
 	return (GetResultMask() & ((1 << index0) | (1 << index1) | (1 << index2))) != 0;
 }

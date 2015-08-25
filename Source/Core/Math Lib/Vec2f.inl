@@ -4,10 +4,9 @@ __forceinline Vec2f::Vec2f(Vec2f_In vVector) : x(vVector.x), y(vVector.y)
 
 }
 
-__forceinline Vec2f::Vec2f(Vec2f&& vVector)
+__forceinline Vec2f::Vec2f(Vec2f&& vVector) : x(std::move(vVector.x)), y(std::move(vVector.y))
 {
-	x = std::move(vVector.x);
-	y = std::move(vVector.y);
+
 }
 
 __forceinline Vec2f::Vec2f(const f32& fVal) : x(fVal), y(fVal)

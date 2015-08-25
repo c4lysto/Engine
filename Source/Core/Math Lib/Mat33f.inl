@@ -23,37 +23,37 @@ __forceinline Mat33f::Mat33f(Mat33f&& mMatrix) :
 }
 
 __forceinline Mat33f::Mat33f(eIdentityInitializer UNUSED_PARAM(eIdentity)) :
-	xAxis(g_IdentityX3),
-	yAxis(g_IdentityY3),
-	zAxis(g_IdentityZ3)
+	xAxis(I_X_AXIS),
+	yAxis(I_Y_AXIS),
+	zAxis(I_Z_AXIS)
 {
 }
 
-inline Mat33f::Mat33f(eXRotationInitializer UNUSED_PARAM(eXRotation), const f32& fRotationInRadians)
+inline Mat33f::Mat33f(eXRotationInitializer UNUSED_PARAM(eXRotation), const f32& fRotationInRadians) :
+	xAxis(I_X_AXIS)
 {
 	f32 fSinAngle = sin(fRotationInRadians);
 	f32 fCosAngle = cos(fRotationInRadians);
-	xAxis = g_IdentityX3;
 	yAxis = Vec3f(0.0f, fCosAngle, fSinAngle);
 	zAxis = Vec3f(0.0f, -fSinAngle, fCosAngle);
 }
 
-inline Mat33f::Mat33f(eYRotationInitializer UNUSED_PARAM(eYRotation), const f32& fRotationInRadians)
+inline Mat33f::Mat33f(eYRotationInitializer UNUSED_PARAM(eYRotation), const f32& fRotationInRadians) :
+	yAxis(I_Y_AXIS)
 {
 	f32 fSinAngle = sin(fRotationInRadians);
 	f32 fCosAngle = cos(fRotationInRadians);
 	xAxis = Vec3f(fCosAngle, 0.0f, -fSinAngle);
-	yAxis = g_IdentityY3;
 	zAxis = Vec3f(fSinAngle, 0.0f, fCosAngle);
 }
 
-inline Mat33f::Mat33f(eZRotationInitializer UNUSED_PARAM(eZRotation), const f32& fRotationInRadians)
+inline Mat33f::Mat33f(eZRotationInitializer UNUSED_PARAM(eZRotation), const f32& fRotationInRadians) :
+	zAxis(I_Z_AXIS)
 {
 	f32 fSinAngle = sin(fRotationInRadians);
 	f32 fCosAngle = cos(fRotationInRadians);
 	xAxis = Vec3f(fCosAngle, fSinAngle, 0.0f);
 	yAxis = Vec3f(-fSinAngle, fCosAngle, 0.0f);
-	zAxis = g_IdentityZ3;
 }
 
 inline Mat33f_Ref RECON_VEC_CALLCONV Mat33f::operator=(Mat33f_In mMatrix)
@@ -229,13 +229,6 @@ __forceinline void RECON_VEC_CALLCONV Mat33f::SetScale(Vec3f_In vScale)
 __forceinline Vec3f_Out Mat33f::GetScale() const
 {
 	return Vec3f(Mag(xAxis), Mag(yAxis), Mag(zAxis));
-}
-
-__forceinline void Mat33f::Transpose()
-{
-	std::swap(Yx, Xy);
-	std::swap(Zx, Xz);
-	std::swap(Zy, Yz);
 }
 
 __forceinline void Mat33f::Normalize()

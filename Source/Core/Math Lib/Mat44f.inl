@@ -27,41 +27,41 @@ __forceinline Mat44f::Mat44f(Mat44f&& mMatrix) :
 }
 
 __forceinline Mat44f::Mat44f(eIdentityInitializer UNUSED_PARAM(eIdentity)) :
-	xAxis(g_IdentityX4),
-	yAxis(g_IdentityY4),
-	zAxis(g_IdentityZ4),
-	wAxis(g_IdentityW4)
+	xAxis(I_X_AXIS),
+	yAxis(I_Y_AXIS),
+	zAxis(I_Z_AXIS),
+	wAxis(I_W_AXIS)
 {
 }
 
-inline Mat44f::Mat44f(eXRotationInitializer UNUSED_PARAM(eXRotation), const f32& fRotationInRadians)
+inline Mat44f::Mat44f(eXRotationInitializer UNUSED_PARAM(eXRotation), const f32& fRotationInRadians) :
+	xAxis(I_X_AXIS),
+	wAxis(I_W_AXIS)
 {
 	f32 fSinAngle = sin(fRotationInRadians);
 	f32 fCosAngle = cos(fRotationInRadians);
-	xAxis = g_IdentityX4;
 	yAxis = Vec4f(0.0f, fCosAngle, fSinAngle, 0.0f);
 	zAxis = Vec4f(0.0f, -fSinAngle, fCosAngle, 0.0f);
-	wAxis = g_IdentityW4;
 }
 
-inline Mat44f::Mat44f(eYRotationInitializer UNUSED_PARAM(eYRotation), const f32& fRotationInRadians)
+inline Mat44f::Mat44f(eYRotationInitializer UNUSED_PARAM(eYRotation), const f32& fRotationInRadians) :
+	yAxis(I_Y_AXIS),
+	wAxis(I_W_AXIS)
 {
 	f32 fSinAngle = sin(fRotationInRadians);
 	f32 fCosAngle = cos(fRotationInRadians);
 	xAxis = Vec4f(fCosAngle, 0.0f, -fSinAngle, 0.0f);
-	yAxis = g_IdentityY4;
 	zAxis = Vec4f(fSinAngle, 0.0f, fCosAngle, 0.0f);
-	wAxis = g_IdentityW4;
 }
 
-inline Mat44f::Mat44f(eZRotationInitializer UNUSED_PARAM(eZRotation), const f32& fRotationInRadians)
+inline Mat44f::Mat44f(eZRotationInitializer UNUSED_PARAM(eZRotation), const f32& fRotationInRadians) :
+	zAxis(I_Z_AXIS),
+	wAxis(I_W_AXIS)
 {
 	f32 fSinAngle = sin(fRotationInRadians);
 	f32 fCosAngle = cos(fRotationInRadians);
 	xAxis = Vec4f(fCosAngle, fSinAngle, 0.0f, 0.0f);
 	yAxis = Vec4f(-fSinAngle, fCosAngle, 0.0f, 0.0f);
-	zAxis = g_IdentityZ4;
-	wAxis = g_IdentityW4;
 }
 
 __forceinline Mat44f::Mat44f(eMatrixPositionInitializer UNUSED_PARAM(eMatrixPos), Vec3f_In vPos) :
@@ -333,9 +333,9 @@ __forceinline void RECON_VEC_CALLCONV Mat44f::operator+=(Mat44f_In rhs)
 
 __forceinline void Mat44f::MakeIdentity3x3()
 {
-	xAxis.SetXYZ(g_IdentityX3);
-	yAxis.SetXYZ(g_IdentityY3);
-	zAxis.SetXYZ(g_IdentityZ3);
+	xAxis.SetXYZ(Vec3f(I_X_AXIS));
+	yAxis.SetXYZ(Vec3f(I_Y_AXIS));
+	zAxis.SetXYZ(Vec3f(I_Z_AXIS));
 }
 
 __forceinline Mat44f_Out RECON_VEC_CALLCONV Mat44f::operator-(Mat44f_In rhs) const
@@ -410,94 +410,9 @@ __forceinline void RECON_VEC_CALLCONV Mat44f::Translate(Vec3f vTranslation)
 	wAxis.SetXYZ(wAxis.GetXYZ() + vTranslation);
 }
 
-inline void Mat44f::Transpose()
-{
-#if SSE_AVAILABLE
-	Vector row1 = VectorLoadU(xAxis.GetVector());
-	Vector row2 = VectorLoadU(yAxis.GetVector());
-	Vector row3 = VectorLoadU(zAxis.GetVector());
-	Vector row4 = VectorLoadU(wAxis.GetVector());
-
-	Vector tmp1 = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::X2, VecElem::Y2>(row1, row2);
-	Vector tmp2 = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::X2, VecElem::Y2>(row3, row4);
-	Vector tmp3 = VectorPermute<VecElem::Z1, VecElem::W1, VecElem::Z2, VecElem::W2>(row1, row2);
-	Vector tmp4 = VectorPermute<VecElem::Z1, VecElem::W1, VecElem::Z2, VecElem::W2>(row3, row4);
-
-	VectorStoreU(VectorPermute<VecElem::X1, VecElem::Z1, VecElem::X2, VecElem::Z2>(tmp1, tmp2), xAxis.GetVector());
-	VectorStoreU(VectorPermute<VecElem::Y1, VecElem::W1, VecElem::Y2, VecElem::W2>(tmp1, tmp2), yAxis.GetVector());
-	VectorStoreU(VectorPermute<VecElem::X1, VecElem::Z1, VecElem::X2, VecElem::Z2>(tmp3, tmp4), zAxis.GetVector());
-	VectorStoreU(VectorPermute<VecElem::Y1, VecElem::W1, VecElem::Y2, VecElem::W2>(tmp3, tmp4), wAxis.GetVector());
-#else
-	swap(xAxis.y, yAxis.x);
-	swap(xAxis.z, zAxis.x);
-	swap(yAxis.z, zAxis.y);
-	swap(wAxis.x, xAxis.w);
-	swap(wAxis.y, yAxis.w);
-	swap(wAxis.z, zAxis.w);
-#endif
-}
-
-__forceinline void Mat44f::Transpose3x3()
-{
-	std::swap(xAxis.y, yAxis.x);
-	std::swap(xAxis.z, zAxis.x);
-	std::swap(yAxis.z, zAxis.y);
-}
-
 __forceinline void Mat44f::Normalize()
 {
 	xAxis.SetXYZ(::Normalize(xAxis.GetXYZ()));
 	yAxis.SetXYZ(::Normalize(yAxis.GetXYZ()));
 	zAxis.SetXYZ(::Normalize(zAxis.GetXYZ()));
-}
-
-__forceinline void RECON_VEC_CALLCONV Mat44f::LookAt(const Vec3f& mPos, const Vec3f& vWorldUp)
-{
-	zAxis.SetXYZ(::Normalize(mPos - wAxis.GetXYZ()));
-	xAxis.SetXYZ(::Normalize(Cross(vWorldUp, zAxis.GetXYZ())));
-	yAxis.SetXYZ(::Normalize(Cross(zAxis.GetXYZ(), xAxis.GetXYZ())));
-}
-
-inline void RECON_VEC_CALLCONV Mat44f::TurnTo(Vec3f_In vPos, const f32& fDeltaTime, f32 fTurnModifier)
-{
-	Vec3f vecToPos = ::Normalize(vPos - wAxis.GetXYZ());
-
-	f32 protection = Dot(vecToPos, zAxis.GetXYZ());
-
-	if (protection != protection)
-	{
-		// You are already facing that exact direction
-		return;
-	}
-
-	f32 fRotation = Dot(vecToPos, xAxis.GetXYZ());
-
-	if(fRotation > FLT_EPSILON || fRotation < -FLT_EPSILON)
-	{
-		// protection to keep the matrix from turning slowly
-		// if the position is behind the matrix
-		if(Dot(vecToPos, zAxis.GetXYZ()) < 0.0f)
-			fRotation = (fRotation < 0.0f) ? -1.0f : 1.0f;
-
-		Rotate_LocalY(fRotation * fTurnModifier * fDeltaTime);
-	}
-
-	fRotation = Dot(vecToPos, yAxis.GetXYZ());
-
-	if(fRotation > FLT_EPSILON || fRotation < -FLT_EPSILON)
-		Rotate_LocalX(-fRotation * fTurnModifier * fDeltaTime);
-
-	xAxis.SetXYZ(::Normalize(Cross(g_WorldUp, zAxis.GetXYZ())));
-	yAxis.SetXYZ(::Normalize(Cross(zAxis.GetXYZ(), xAxis.GetXYZ())));
-}
-
-__forceinline void Mat44f::OrthoNormalInvert()
-{
-	Mat44f tmp(*this);
-
-	Transpose3x3();
-
-	wAxis.x = -Dot(tmp.wAxis.GetXYZ(), tmp.xAxis.GetXYZ());
-	wAxis.y = -Dot(tmp.wAxis.GetXYZ(), tmp.yAxis.GetXYZ());
-	wAxis.z = -Dot(tmp.wAxis.GetXYZ(), tmp.zAxis.GetXYZ());
 }

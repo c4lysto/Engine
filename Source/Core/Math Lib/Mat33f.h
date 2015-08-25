@@ -111,8 +111,6 @@ public:
 	void RECON_VEC_CALLCONV SetScale(Vec3f_In vScale);
 	Vec3f_Out GetScale() const;
 
-	void Transpose();
-
 	void Normalize();
 };
 

@@ -1,22 +1,23 @@
 
-__forceinline Vec2V::Vec2V(const f32& fVal)
+__forceinline Vec2V::Vec2V(const f32& fVal) : row(VectorSet(fVal))
 {
-	row = VectorSet(fVal);
+
 }
 
-__forceinline Vec2V::Vec2V(const f32& fX, const f32& fY)
+__forceinline Vec2V::Vec2V(const f32& fX, const f32& fY) : row(VectorSet(fX, fY, VEC_FILL_VAL, VEC_FILL_VAL))
 {
-	row = VectorSet(fX, fY, VEC_FILL_VAL, VEC_FILL_VAL);
+	
 }
 
-__forceinline Vec2V::Vec2V(ScalarV_In vVal)
+__forceinline Vec2V::Vec2V(ScalarV_In vVal) : row(vVal.GetVector())
 {
-	row = vVal.GetVector();
+
 }
 
-__forceinline Vec2V::Vec2V(ScalarV_In vX, ScalarV_In vY)
+__forceinline Vec2V::Vec2V(ScalarV_In vX, ScalarV_In vY) :
+	row(VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W2>(vX.GetVector(), vY.GetVector()))
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W2>(vX.GetVector(), vY.GetVector());
+	
 }
 
 //__forceinline Vec2V::Vec2V(Vec2V_In vVector)
@@ -25,21 +26,21 @@ __forceinline Vec2V::Vec2V(ScalarV_In vX, ScalarV_In vY)
 //}
 
 #if !RECON_OS_64BIT
-__forceinline Vec2V::Vec2V(Vec2V&& vVector)
+__forceinline Vec2V::Vec2V(Vec2V&& vVector) : row(std::move(vVector.row))
 {
-	row = move(vVector.row);
+	
 }
 #endif // !RECON_OS_64BIT
 
-__forceinline Vec2V::Vec2V(Vector_In rhs)
+__forceinline Vec2V::Vec2V(Vector_In rhs) : row(rhs)
 {
-	row = rhs;
+
 }
 
 #if !RECON_OS_64BIT
-__forceinline Vec2V::Vec2V(Vector&& rhs)
+__forceinline Vec2V::Vec2V(Vector&& rhs) : row(std::move(rhs))
 {
-	row = move(rhs);
+	
 }
 #endif // !RECON_OS_64BIT
 

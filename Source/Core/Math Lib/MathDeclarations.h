@@ -23,24 +23,26 @@
 #endif
 
 // Initializer Enums
-enum eZeroInitializer		{ I_ZERO	};
-enum eOneInitializer		{ I_ONE		};
-enum eTwoInitializer		{ I_TWO		};
-enum eThreeInitializer		{ I_THREE	};
-enum eFourInitializer		{ I_FOUR	};
-enum eFiveInitializer		{ I_FIVE	};
-enum eSixInitializer		{ I_SIX		};
-enum eSevenInitializer		{ I_SEVEN	};
-enum eEightInitializer		{ I_EIGHT	};
-enum eNineInitializer		{ I_NINE	};
-enum eTenInitializer		{ I_TEN		};
-enum ePIInitializer			{ I_PI		};
-enum eTwoPIInitializer		{ I_TWOPI	};
-enum eHalfPIInitializer		{ I_HALFPI	};
-enum eQuarterInitializer	{ I_QUARTER	};
-enum eHalfInitializer		{ I_HALF	};
-enum eFLTMINInitializer		{ I_FLT_MIN	};
-enum eFLTMAXInitializer		{ I_FLT_MAX	};
+enum eZeroInitializer			{ I_ZERO	};
+enum eOneInitializer			{ I_ONE		};
+enum eTwoInitializer			{ I_TWO		};
+enum eThreeInitializer			{ I_THREE	};
+enum eFourInitializer			{ I_FOUR	};
+enum eFiveInitializer			{ I_FIVE	};
+enum eSixInitializer			{ I_SIX		};
+enum eSevenInitializer			{ I_SEVEN	};
+enum eEightInitializer			{ I_EIGHT	};
+enum eNineInitializer			{ I_NINE	};
+enum eTenInitializer			{ I_TEN		};
+enum ePIInitializer				{ I_PI		};
+enum eTwoPIInitializer			{ I_TWOPI	};
+enum eHalfPIInitializer			{ I_HALFPI	};
+enum eQuarterInitializer		{ I_QUARTER	};
+enum eHalfInitializer			{ I_HALF	};
+enum eFLTMINInitializer			{ I_FLT_MIN	};
+enum eFLTMAXInitializer			{ I_FLT_MAX	};
+enum eFLTEpsilonInitializer		{ I_FLT_EPSILON };
+enum eNANInitializer			{ I_NAN };
 
 enum eNegOneInitializer			{ I_NEG_ONE		};
 enum eNegTwoInitializer			{ I_NEG_TWO		};
@@ -59,17 +61,19 @@ enum eNegQuarterInitializer		{ I_NEG_QUARTER	};
 enum eNegHalfInitializer		{ I_NEG_HALF	};
 enum eNegFLTMINInitializer		{ I_NEG_FLT_MIN	};
 enum eNegFLTMAXInitializer		{ I_NEG_FLT_MAX	};
+enum eNegFLTEpsilonInitializer	{ I_NEG_FLT_EPSILON };
+enum eNegNANInitializer			{ I_NEG_NAN };
 
-enum eXAxisInitializer		{ I_X_AXIS };
-enum eYAxisInitializer		{ I_Y_AXIS };
-enum eZAxisInitializer		{ I_Z_AXIS };
-enum eWAxisInitializer		{ I_W_AXIS };
+enum eXAxisInitializer			{ I_X_AXIS };
+enum eYAxisInitializer			{ I_Y_AXIS, I_WORLD_UP };
+enum eZAxisInitializer			{ I_Z_AXIS };
+enum eWAxisInitializer			{ I_W_AXIS };
 
-enum eUpAxisInitializer		{ I_UP_AXIS };
+enum eUpAxisInitializer			{ I_UP_AXIS };
 
-enum eXRotationInitializer	{ I_ROTATION_X };
-enum eYRotationInitializer	{ I_ROTATION_Y };
-enum eZRotationInitializer	{ I_ROTATION_Z };
+enum eXRotationInitializer		{ I_ROTATION_X };
+enum eYRotationInitializer		{ I_ROTATION_Y };
+enum eZRotationInitializer		{ I_ROTATION_Z };
 
 enum eIdentityInitializer		{ I_IDENTITY };
 enum eMatrixPositionInitializer	{ I_MAT_POS };
@@ -117,6 +121,7 @@ enum class FloatToIntRep : u32
 	Flt_Max				= 0x7F7FFFFF,
 	Infinity			= 0x7F800000,
 	NaN					= 0x7FC00000,
+	Flt_Epsilon			= 0x34000000,
 
 	// Negatives
 	Neg_One					= 0xBF800000,
@@ -141,6 +146,7 @@ enum class FloatToIntRep : u32
 	Neg_Flt_Max				= 0xFF7FFFFF,
 	Neg_Infinity			= 0xFF800000,
 	Neg_NaN					= 0xFFC00000,
+	Neg_Flt_Epsilon			= 0xB4000000,
 
 	// Misc
 	Sign_Bit				= 0x80000000,
@@ -151,7 +157,7 @@ class Vec2f;
 class Vec3f;
 class Vec4f;
 class Mat33f;
-class Mat34f;
+class Mat43f;
 class Mat44f;
 
 #if SSE_AVAILABLE
@@ -160,7 +166,7 @@ class Vec2V;
 class Vec3V;
 class Vec4V;
 class Mat33V;
-class Mat34V;
+class Mat43V;
 class Mat44V;
 
 // Conversion Macros - Start
@@ -173,7 +179,7 @@ class Mat44V;
 									VEC3F_TO_VEC3V(x.GetYAxisRef()), \
 									VEC3F_TO_VEC3V(x.GetZAxisRef()))))
 
-#define MAT34F_TO_MAT34V(x) (Mat34V(VEC3F_TO_VEC3V(x.GetXAxisRef()), \
+#define MAT34F_TO_MAT34V(x) (Mat43V(VEC3F_TO_VEC3V(x.GetXAxisRef()), \
 									VEC3F_TO_VEC3V(x.GetYAxisRef()), \
 									VEC3F_TO_VEC3V(x.GetZAxisRef()), \
 									VEC3F_TO_VEC3V(x.GetWAxisRef())))
@@ -188,7 +194,7 @@ class Mat44V;
 #define VEC3V_TO_VEC3F(x) (Vec3f(*(Vec3f*)&(x)))
 #define VEC4V_TO_VEC4F(x) (Vec4f(*(Vec4f*)&(x)))
 #define MAT33V_TO_MAT33F(x) (Mat33f(*(Mat33f*)&(x)))
-#define MAT34V_TO_MAT34F(x) (Mat34f(*(Mat34f*)&(x)))
+#define MAT34V_TO_MAT34F(x) (Mat43f(*(Mat43f*)&(x)))
 #define MAT44V_TO_MAT44F(x) (Mat44f(*(Mat44f*)&(x)))
 
 // Conversion Macros - End
@@ -202,7 +208,7 @@ class Mat44V;
 #define Vec3V Vec3f
 #define Vec4V Vec4f
 #define Mat33V Mat33f
-#define Mat34V Mat34f
+#define Mat43V Mat43f
 #define Mat44V Mat44f
 
 // Conversion Macros - Start
