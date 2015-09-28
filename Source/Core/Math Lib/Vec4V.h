@@ -23,10 +23,9 @@ typedef Vec4V float4V;
 ALIGN(16) class Vec4V
 {
 #define DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(enumeration, xIntRep, yIntRep, zIntRep, wIntRep) \
-	explicit __forceinline Vec4V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)wIntRep>(); }
+	explicit __forceinline Vec4V(enumeration) : row(VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)wIntRep>()) { }
 
-#define DEFINE_VEC4V_ENUM_CONSTRUCTOR(enumeration, intRep) \
-	explicit __forceinline Vec4V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
+#define DEFINE_VEC4V_ENUM_CONSTRUCTOR(enumeration, intRep) DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(enumeration, intRep, intRep, intRep, intRep)
 
 #define VEC4V_ACCESSOR(retType, funcName, retVal) \
 	__forceinline retType funcName() { return retVal; }
@@ -169,6 +168,23 @@ public:
 	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eZAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::Zero, FloatToIntRep::One, FloatToIntRep::Zero)
 	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eWAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::Zero, FloatToIntRep::Zero, FloatToIntRep::One)
 	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eUpAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::One, FloatToIntRep::Zero, FloatToIntRep::Zero)
+
+	DEFINE_VEC4V_ENUM_CONSTRUCTOR(eTrueInitializer, FloatToIntRep::True)
+	DEFINE_VEC4V_ENUM_CONSTRUCTOR(eFalseInitializer, FloatToIntRep::False)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eTTTFInitializer, FloatToIntRep::True, FloatToIntRep::True, FloatToIntRep::True, FloatToIntRep::False)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eTTFTInitializer, FloatToIntRep::True, FloatToIntRep::True, FloatToIntRep::False, FloatToIntRep::True)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eTTFFInitializer, FloatToIntRep::True, FloatToIntRep::True, FloatToIntRep::False, FloatToIntRep::False)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eTFTTInitializer, FloatToIntRep::True, FloatToIntRep::False, FloatToIntRep::True, FloatToIntRep::True)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eTFTFInitializer, FloatToIntRep::True, FloatToIntRep::False, FloatToIntRep::True, FloatToIntRep::False)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eTFFTInitializer, FloatToIntRep::True, FloatToIntRep::False, FloatToIntRep::False, FloatToIntRep::True)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eTFFFInitializer, FloatToIntRep::True, FloatToIntRep::False, FloatToIntRep::False, FloatToIntRep::False)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eFTTTInitializer, FloatToIntRep::False, FloatToIntRep::True, FloatToIntRep::True, FloatToIntRep::True)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eFTTFInitializer, FloatToIntRep::False, FloatToIntRep::True, FloatToIntRep::True, FloatToIntRep::False)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eFTFTInitializer, FloatToIntRep::False, FloatToIntRep::True, FloatToIntRep::False, FloatToIntRep::True)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eFTFFInitializer, FloatToIntRep::False, FloatToIntRep::True, FloatToIntRep::False, FloatToIntRep::False)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eFFTTInitializer, FloatToIntRep::False, FloatToIntRep::False, FloatToIntRep::True, FloatToIntRep::True)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eFFTFInitializer, FloatToIntRep::False, FloatToIntRep::False, FloatToIntRep::True, FloatToIntRep::False)
+	DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR(eFFFTInitializer, FloatToIntRep::False, FloatToIntRep::False, FloatToIntRep::False, FloatToIntRep::True)
 #undef DEFINE_VEC4V_ENUM_CONSTRUCTOR
 #undef DEFINE_VEC4V_ENUM_VAL_CONSTRUCTOR
 #endif //DEFINE_VEC4_ENUM_CONSTRUCTOR

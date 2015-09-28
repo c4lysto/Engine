@@ -97,6 +97,9 @@ public:
 
 	DEFINE_VEC2_ENUM_VAL_CONSTRUCTOR(eXAxisInitializer, FloatToIntRep::One, FloatToIntRep::Zero)
 	DEFINE_VEC2_ENUM_VAL_CONSTRUCTOR(eYAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::One)
+	
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eTrueInitializer, FloatToIntRep::True)
+	DEFINE_VEC2_ENUM_CONSTRUCTOR(eFalseInitializer, FloatToIntRep::False)
 #undef DEFINE_VEC2_ENUM_CONSTRUCTOR
 #undef DEFINE_VEC2_ENUM_VAL_CONSTRUCTOR
 #else

@@ -194,19 +194,19 @@ __forceinline void RECON_VEC_CALLCONV Mat33f::operator-=(Mat33f_In rhs)
 	xAxis -= rhs.xAxis; yAxis -= rhs.yAxis; zAxis -= rhs.zAxis;
 }
 
-inline void RECON_VEC_CALLCONV Mat33f::Rotate_LocalX(const f32& fRadians)
+inline void RECON_VEC_CALLCONV Mat33f::RotateLocalX(const f32& fRadians)
 {
 	Mat33f tmp(I_ROTATION_X, fRadians);
 	*this = tmp * (*this);
 }
 
-inline void RECON_VEC_CALLCONV Mat33f::Rotate_LocalY(const f32& fRadians)
+inline void RECON_VEC_CALLCONV Mat33f::RotateLocalY(const f32& fRadians)
 {
 	Mat33f tmp(I_ROTATION_Y, fRadians);
 	*this = tmp * (*this);
 }
 
-inline void RECON_VEC_CALLCONV Mat33f::Rotate_LocalZ(const f32& fRadians)
+inline void RECON_VEC_CALLCONV Mat33f::RotateLocalZ(const f32& fRadians)
 {
 	Mat33f tmp(I_ROTATION_Z, fRadians);
 	*this = tmp * (*this);
@@ -229,11 +229,4 @@ __forceinline void RECON_VEC_CALLCONV Mat33f::SetScale(Vec3f_In vScale)
 __forceinline Vec3f_Out Mat33f::GetScale() const
 {
 	return Vec3f(Mag(xAxis), Mag(yAxis), Mag(zAxis));
-}
-
-__forceinline void Mat33f::Normalize()
-{
-	xAxis = ::Normalize(xAxis);
-	yAxis = ::Normalize(yAxis);
-	zAxis = ::Normalize(zAxis);
 }

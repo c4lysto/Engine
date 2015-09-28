@@ -22,7 +22,7 @@ typedef ScalarV_Ref ScalarV_InOut;
 class ScalarV
 {
 #define DEFINE_SCALARV_ENUM_CONSTRUCTOR(enumeration, intRep) \
-	explicit __forceinline ScalarV(enumeration) {	row = VectorSetConstant<(u32)intRep>();	}
+	explicit __forceinline ScalarV(enumeration) : row(VectorSetConstant<(u32)intRep>()) { }
 
 private:
 
@@ -79,6 +79,9 @@ public:
 	DEFINE_SCALARV_ENUM_CONSTRUCTOR(eNegFLTMAXInitializer,		FloatToIntRep::Neg_Flt_Max)
 	DEFINE_SCALARV_ENUM_CONSTRUCTOR(eNegFLTEpsilonInitializer,	FloatToIntRep::Neg_Flt_Epsilon)
 	DEFINE_SCALARV_ENUM_CONSTRUCTOR(eNegNANInitializer,			FloatToIntRep::Neg_NaN)
+
+	DEFINE_SCALARV_ENUM_CONSTRUCTOR(eTrueInitializer, FloatToIntRep::True)
+	DEFINE_SCALARV_ENUM_CONSTRUCTOR(eFalseInitializer, FloatToIntRep::False)
 #undef DEFINE_SCALARV_ENUM_CONSTRUCTOR
 #endif //DEFINE_SCALARV_ENUM_CONSTRUCTOR
 

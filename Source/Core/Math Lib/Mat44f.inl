@@ -349,37 +349,37 @@ __forceinline void RECON_VEC_CALLCONV Mat44f::operator-=(Mat44f_In rhs)
 }
 
 // actually faster than DirectX Version :)
-__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_GlobalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::RotateGlobalX(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_X, fRadians);
 	*this *= tmp;
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_GlobalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::RotateGlobalY(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_Y, fRadians);
 	*this *= tmp;
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_GlobalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::RotateGlobalZ(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_Z, fRadians);
 	*this *= tmp;
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_LocalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::RotateLocalX(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_X, fRadians);
 	*this = tmp * (*this);
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_LocalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::RotateLocalY(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_Y, fRadians);
 	*this = tmp * (*this);
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44f::Rotate_LocalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44f::RotateLocalZ(const f32& fRadians)
 {
 	Mat44f tmp(I_ROTATION_Z, fRadians);
 	*this = tmp * (*this);
@@ -408,11 +408,4 @@ __forceinline Vec3f_Out Mat44f::GetScale() const
 __forceinline void RECON_VEC_CALLCONV Mat44f::Translate(Vec3f vTranslation)
 {
 	wAxis.SetXYZ(wAxis.GetXYZ() + vTranslation);
-}
-
-__forceinline void Mat44f::Normalize()
-{
-	xAxis.SetXYZ(::Normalize(xAxis.GetXYZ()));
-	yAxis.SetXYZ(::Normalize(yAxis.GetXYZ()));
-	zAxis.SetXYZ(::Normalize(zAxis.GetXYZ()));
 }

@@ -78,6 +78,27 @@ enum eZRotationInitializer		{ I_ROTATION_Z };
 enum eIdentityInitializer		{ I_IDENTITY };
 enum eMatrixPositionInitializer	{ I_MAT_POS };
 
+enum eTrueInitializer			{ I_TRUE, I_TTTT };
+enum eFalseInitializer			{ I_FALSE, I_FFFF };
+
+enum eTTTFInitializer			{ I_TTTF };
+
+enum eTTFTInitializer			{ I_TTFT };
+enum eTTFFInitializer			{ I_TTFF };
+
+enum eTFTTInitializer			{ I_TFTT };
+enum eTFTFInitializer			{ I_TFTF };
+enum eTFFTInitializer			{ I_TFFT };
+enum eTFFFInitializer			{ I_TFFF };
+
+enum eFTTTInitializer			{ I_FTTT };
+enum eFTTFInitializer			{ I_FTTF };
+enum eFTFTInitializer			{ I_FTFT };
+enum eFTFFInitializer			{ I_FTFF };
+enum eFFTTInitializer			{ I_FFTT };
+enum eFFTFInitializer			{ I_FFTF };
+enum eFFFTInitializer			{ I_FFFT };
+
 enum class VecElem
 {
 	X = 0x0,
@@ -150,7 +171,10 @@ enum class FloatToIntRep : u32
 
 	// Misc
 	Sign_Bit				= 0x80000000,
-	Abs_Mask				= 0x7FFFFFFF
+	Abs_Mask				= 0x7FFFFFFF,
+
+	True					= 0xFFFFFFFF,
+	False					= 0x00000000
 };
 
 class Vec2f;
@@ -179,7 +203,7 @@ class Mat44V;
 									VEC3F_TO_VEC3V(x.GetYAxisRef()), \
 									VEC3F_TO_VEC3V(x.GetZAxisRef()))))
 
-#define MAT34F_TO_MAT34V(x) (Mat43V(VEC3F_TO_VEC3V(x.GetXAxisRef()), \
+#define MAT43F_TO_MAT43V(x) (Mat43V(VEC3F_TO_VEC3V(x.GetXAxisRef()), \
 									VEC3F_TO_VEC3V(x.GetYAxisRef()), \
 									VEC3F_TO_VEC3V(x.GetZAxisRef()), \
 									VEC3F_TO_VEC3V(x.GetWAxisRef())))
@@ -194,7 +218,7 @@ class Mat44V;
 #define VEC3V_TO_VEC3F(x) (Vec3f(*(Vec3f*)&(x)))
 #define VEC4V_TO_VEC4F(x) (Vec4f(*(Vec4f*)&(x)))
 #define MAT33V_TO_MAT33F(x) (Mat33f(*(Mat33f*)&(x)))
-#define MAT34V_TO_MAT34F(x) (Mat43f(*(Mat43f*)&(x)))
+#define MAT43V_TO_MAT43F(x) (Mat43f(*(Mat43f*)&(x)))
 #define MAT44V_TO_MAT44F(x) (Mat44f(*(Mat44f*)&(x)))
 
 // Conversion Macros - End

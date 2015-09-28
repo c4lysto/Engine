@@ -23,7 +23,7 @@ __forceinline Vec3V_Out Plane::GetNormal() const
 
 __forceinline void Plane::SetNormal(Vec3V_In vNormal)
 {
-	m_vPlane.SetXYZ(vNormal);
+	m_vPlane.SetXYZ(Normalize(vNormal));
 }
 
 __forceinline ScalarV_Out Plane::GetOffset() const
@@ -38,7 +38,7 @@ __forceinline void Plane::SetOffset(ScalarV_In vOffset)
 
 __forceinline void Plane::Set(Vec4V_In vPlane)
 {
-	m_vPlane = vPlane;
+	m_vPlane = Vec4V(Normalize(vPlane.GetXYZ()), vPlane.GetW());
 }
 
 __forceinline Vec4V_Out Plane::Get() const

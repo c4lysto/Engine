@@ -21,6 +21,8 @@ using namespace std;
 #include <DirectXMath.h>
 #include <bitset>
 
+#include "Physics/Frustum.h"
+
 using namespace recon;
 
 #define TEST_SETS 1
@@ -240,6 +242,12 @@ int main()
 	tstThreadPool.Init(100);
 
 	//CallFuncPtr(TestThisBitch);
+
+	DirectX::XMMATRIX dxMat = DirectX::XMMatrixPerspectiveFovLH(DEGREES_TO_RADIANS(70.0f), 4.0f/3.0f, 0.01f, 500.0f);
+	Mat44V perspectiveMat = MakePerspectiveMatrix(ScalarV(DEGREES_TO_RADIANS(70.0f)), ScalarV(I_FOUR)/ScalarV(I_THREE), ScalarV(0.01f), ScalarV(500.0f));
+
+	Frustum m_Frustum;
+	m_Frustum.Build(perspectiveMat);
 
 	int tstVal = 250;
 	const TstThreadArgs* pConstTstArgs = pTstArgs;

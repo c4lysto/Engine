@@ -28,10 +28,9 @@ typedef Vec2V float2V;
 ALIGN(16) class Vec2V
 {
 #define DEFINE_VEC2V_ENUM_VAL_CONSTRUCTOR(enumeration, xIntRep, yIntRep)\
-	explicit __forceinline Vec2V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)FloatToIntRep::Zero, (u32)FloatToIntRep::Zero>(); }
+	explicit __forceinline Vec2V(enumeration) : row(VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)FloatToIntRep::Zero, (u32)FloatToIntRep::Zero>()) { }
 
-#define DEFINE_VEC2V_ENUM_CONSTRUCTOR(enumeration, intRep)\
-	explicit __forceinline Vec2V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
+#define DEFINE_VEC2V_ENUM_CONSTRUCTOR(enumeration, intRep) DEFINE_VEC2V_ENUM_VAL_CONSTRUCTOR(enumeration, intRep, intRep)
 
 #define VEC2V_ACCESSOR(retType, funcName, retVal) \
 	__forceinline retType funcName() { return retVal; }
@@ -123,6 +122,9 @@ public:
 
 	DEFINE_VEC2V_ENUM_VAL_CONSTRUCTOR(eXAxisInitializer, FloatToIntRep::One, FloatToIntRep::Zero)
 	DEFINE_VEC2V_ENUM_VAL_CONSTRUCTOR(eYAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::One)
+
+	DEFINE_VEC2V_ENUM_CONSTRUCTOR(eTrueInitializer, FloatToIntRep::True)
+	DEFINE_VEC2V_ENUM_CONSTRUCTOR(eFalseInitializer, FloatToIntRep::False)
 #undef DEFINE_VEC2V_ENUM_CONSTRUCTOR
 #undef DEFINE_VEC2V_ENUM_VAL_CONSTRUCTOR
 #else

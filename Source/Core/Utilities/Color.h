@@ -63,12 +63,12 @@ public:
 
 	__forceinline void Set(u32 color) {m_Color = color;}
 
-	__forceinline void Set(s32 R, s32 G, s32 B, s32 A)
+	__forceinline void Set(s32 R, s32 G, s32 B, s32 A = 255)
 	{
 		SetR(R); SetG(G); SetB(B); SetA(A);
 	}
 
-	__forceinline void Set(f32 R, f32 G, f32 B, f32 A)
+	__forceinline void Set(f32 R, f32 G, f32 B, f32 A = 1.0f)
 	{
 		SetR(R); SetG(G); SetB(B); SetA(A);
 	}

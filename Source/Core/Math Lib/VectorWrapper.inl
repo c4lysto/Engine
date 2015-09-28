@@ -771,8 +771,8 @@ inline Vector_Out RECON_VEC_CALLCONV VectorTan(Vector_In vec)
 
 	D = VectorAdd(VectorMultiply(VC2, D), VectorSetConstant<(u32)FloatToIntRep::One>());
 
-	N = VectorSelectTF(VC, N, VCNearZero);
-	D = VectorSelectTF(VectorSetConstant<(u32)FloatToIntRep::One>(), D, VCNearZero);
+	N = VectorSelectTF(VCNearZero, VC, N);
+	D = VectorSelectTF(VCNearZero, VectorSetConstant<(u32)FloatToIntRep::One>(), D);
 
 	Vector R0 = VectorNegate(N);
 	Vector R1 = VectorDivide(N, D);
@@ -780,9 +780,9 @@ inline Vector_Out RECON_VEC_CALLCONV VectorTan(Vector_In vec)
 
 	Vector VIsZero = VectorIsEqual(vec, VectorSetConstant<(u32)FloatToIntRep::Zero>());
 
-	Vector Result = VectorSelectTF(R1, R0, VBIsEven);
+	Vector Result = VectorSelectTF(VBIsEven, R1, R0);
 
-	Result = VectorSelectTF(VectorSetConstant<(u32)FloatToIntRep::Zero>(), Result, VIsZero);
+	Result = VectorSelectTF(VIsZero, VectorSetConstant<(u32)FloatToIntRep::Zero>(), Result);
 
 	return Result;
 #endif // RECON_USE_SVML

@@ -1,6 +1,8 @@
 #ifndef _RECON_PLANE_H_
 #define _RECON_PLANE_H_
 
+#include "../Math Lib/MathLib.h"
+
 namespace recon
 {
 
@@ -26,7 +28,7 @@ private:
 
 public:
 	Plane();
-	explicit Plane(Vec3V_In vPosition)
+	explicit Plane(Vec3V_In vPosition);
 	explicit Plane(Vec3V_In vNormal, ScalarV_In vOffset);
 	explicit Plane(Vec4V_In vPlane);
 

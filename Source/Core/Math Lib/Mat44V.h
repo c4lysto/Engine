@@ -115,13 +115,13 @@ public:
 	Mat44V_Out RECON_VEC_CALLCONV operator-(Mat44V_In rhs) const;
 	void RECON_VEC_CALLCONV operator-=(Mat44V_In rhs);
 
-	void RECON_VEC_CALLCONV Rotate_GlobalX(const f32& fRadians);
-	void RECON_VEC_CALLCONV Rotate_GlobalY(const f32& fRadians);
-	void RECON_VEC_CALLCONV Rotate_GlobalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateGlobalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateGlobalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateGlobalZ(const f32& fRadians);
 
-	void RECON_VEC_CALLCONV Rotate_LocalX(const f32& fRadians);
-	void RECON_VEC_CALLCONV Rotate_LocalY(const f32& fRadians);
-	void RECON_VEC_CALLCONV Rotate_LocalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateLocalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateLocalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateLocalZ(const f32& fRadians);
 
 	void RECON_VEC_CALLCONV Scale(Vec3V_In vScale);
 
@@ -129,8 +129,6 @@ public:
 	Vec3V_Out GetScale() const;
 
 	void RECON_VEC_CALLCONV Translate(Vec3V_In vTranslation);
-
-	void Normalize();
 };
 
 Mat43V RECON_VEC_CALLCONV Mat44ToMat43(Mat44V_In mMatrix);

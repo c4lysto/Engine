@@ -26,10 +26,9 @@ typedef Vec3V float3V;
 ALIGN(16) class Vec3V
 {
 #define DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(enumeration, xIntRep, yIntRep, zIntRep)\
-	explicit __forceinline Vec3V(enumeration) { row = VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)FloatToIntRep::Zero>(); }
+	explicit __forceinline Vec3V(enumeration) : row(VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)FloatToIntRep::Zero>()) {}
 
-#define DEFINE_VEC3V_ENUM_CONSTRUCTOR(enumeration, intRep)\
-	explicit __forceinline Vec3V(enumeration) { row = VectorSetConstant<(u32)intRep>(); }
+#define DEFINE_VEC3V_ENUM_CONSTRUCTOR(enumeration, intRep) DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(enumeration, intRep, intRep, intRep)
 
 #define DEFINE_VEC3V_ENUM_VEC_CONSTRUCTOR(enumeration, vec)\
 	explicit __forceinline Vec3V(enumeration) { row = vec.row; }
@@ -128,6 +127,9 @@ public:
 	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eZAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::Zero, FloatToIntRep::One)
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eWAxisInitializer, FloatToIntRep::Zero)
 	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eUpAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::One, FloatToIntRep::Zero)
+
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eTrueInitializer, FloatToIntRep::True)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eFalseInitializer, FloatToIntRep::False)
 #undef DEFINE_VEC3V_ENUM_CONSTRUCTOR
 #undef DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR
 #endif //DEFINE_VEC3_ENUM_CONSTRUCTOR
