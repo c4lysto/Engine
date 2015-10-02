@@ -195,11 +195,18 @@ typedef double f64;
 #define BIT31 BIT(31)
 
 #define S8_SIGN_BIT BIT7
+#define S8_ABS_MASK (0x7Fi8)
+
 #define S16_SIGN_BIT BIT15
+#define S16_ABS_MASK (0x7FFFi16)
+
 #define S32_SIGN_BIT BIT31
-#define S64_SIGN_BIT BIT(63)
+#define S32_ABS_MASK (0x7FFFFFFFi32)
+
+#define S64_SIGN_BIT ((u64)1 << 64)
+#define S64_ABS_MASK (0x7FFFFFFFFFFFFFFFi64)
 
 #define F32_SIGN_BIT BIT31
-#define f64_SIGN_BIT BIT(63)
+#define F64_SIGN_BIT S64_SIGN_BIT
 
 #endif

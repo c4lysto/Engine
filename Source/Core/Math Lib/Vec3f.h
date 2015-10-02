@@ -113,6 +113,9 @@ public:
 	DEFINE_VEC3_ENUM_VAL_CONSTRUCTOR(eZAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::Zero, FloatToIntRep::One)
 	DEFINE_VEC3_ENUM_CONSTRUCTOR(eWAxisInitializer, FloatToIntRep::Zero)
 	DEFINE_VEC3_ENUM_VAL_CONSTRUCTOR(eUpAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::One, FloatToIntRep::Zero)
+
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eTrueInitializer, FloatToIntRep::True)
+	DEFINE_VEC3_ENUM_CONSTRUCTOR(eFalseInitializer, FloatToIntRep::False)
 #undef DEFINE_VEC3_ENUM_CONSTRUCTOR
 #undef DEFINE_VEC3_ENUM_VAL_CONSTRUCTOR
 #endif //DEFINE_VEC3_ENUM_CONSTRUCTOR

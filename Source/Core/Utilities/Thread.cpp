@@ -30,7 +30,7 @@ bool Thread::StartThread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eTh
 {
 	bool bThreadStarted = false;
 
-	if(Verifyf(GetThreadHandle() == nullptr, "Thread is Already Active, Start Thread will not do anything."))
+	//if(Verifyf(GetThreadHandle() == nullptr, "Thread is Already Active, Start Thread will not do anything."))
 	{
 		if(Verifyf(pThreadProc, "No Function Set for the starting thread"))
 		{

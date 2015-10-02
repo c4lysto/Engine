@@ -7,7 +7,7 @@
 
 #define REGISTER_MEM_POOL(className) \
 private: \
-	static ObjectMemoryPool<className, __ALIGNOF(className)> m_##className##_MemPool(TO_STRING(className)); \
+	static ObjectMemoryPool<className, __ALIGNOF(className)> m_##className##_MemPool (TO_STRING(className)); \
 public: \
 	void* operator new (size_t UNUSED_PARAM(count)) \
 	{ \
@@ -30,7 +30,7 @@ public:
 	virtual void Shutdown();
 };
 
-template <typename classType, u8 alignment = 16>
+template <typename classType>
 class ObjectMemoryPool : public IMemPool
 {
 public:

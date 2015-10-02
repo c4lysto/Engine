@@ -109,13 +109,13 @@ public:
 	void RECON_VEC_CALLCONV operator-=(Mat44f_In rhs);
 
 	// actually faster than DirectX Version :)
-	void RECON_VEC_CALLCONV Rotate_GlobalX(const f32& fRadians);
-	void RECON_VEC_CALLCONV Rotate_GlobalY(const f32& fRadians);
-	void RECON_VEC_CALLCONV Rotate_GlobalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateGlobalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateGlobalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateGlobalZ(const f32& fRadians);
 
-	void RECON_VEC_CALLCONV Rotate_LocalX(const f32& fRadians);
-	void RECON_VEC_CALLCONV Rotate_LocalY(const f32& fRadians);
-	void RECON_VEC_CALLCONV Rotate_LocalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateLocalX(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateLocalY(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateLocalZ(const f32& fRadians);
 
 	void RECON_VEC_CALLCONV Scale(const Vec3f& vScale);
 
@@ -123,8 +123,6 @@ public:
 	Vec3f_Out GetScale() const;
 
 	void RECON_VEC_CALLCONV Translate(Vec3f vTranslation);
-
-	void Normalize();
 };
 
 Mat43f RECON_VEC_CALLCONV Mat44ToMat43(Mat44f_In mMatrix);

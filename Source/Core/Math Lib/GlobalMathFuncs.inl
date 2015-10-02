@@ -449,25 +449,25 @@ __forceinline s32 RECON_VEC_CALLCONV SignMask(Vec4f_In vVector)
 			   ((vVector.GetWiRef() & BIT31) << (s32)VecElem::W));
 }
 
-__forceinline Vec2f_Out RECON_VEC_CALLCONV SelectTF(Vec2f_In lhs, Vec2f_In rhs, Vec2f_In condition)
+__forceinline Vec2f_Out RECON_VEC_CALLCONV SelectTF(Vec2f_In condition, Vec2f_In ifTrue, Vec2f_In ifFalse)
 {
-	return Vec2f((condition.GetXiRef() & BIT31) ? lhs.GetXRef() : rhs.GetXRef(),
-				 (condition.GetYiRef() & BIT31) ? lhs.GetYRef() : rhs.GetYRef());
+	return Vec2f((condition.GetXiRef() & BIT31) ? ifTrue.GetXRef() : ifFalse.GetXRef(),
+				 (condition.GetYiRef() & BIT31) ? ifTrue.GetYRef() : ifFalse.GetYRef());
 }
 
-__forceinline Vec3f_Out RECON_VEC_CALLCONV SelectTF(Vec3f_In lhs, Vec3f_In rhs, Vec3f_In condition)
+__forceinline Vec3f_Out RECON_VEC_CALLCONV SelectTF(Vec3f_In condition, Vec3f_In ifTrue, Vec3f_In ifFalse)
 {
-	return Vec3f((condition.GetXiRef() & BIT31) ? lhs.GetXRef() : rhs.GetXRef(),
-				 (condition.GetYiRef() & BIT31) ? lhs.GetYRef() : rhs.GetYRef(),
-				 (condition.GetZiRef() & BIT31) ? lhs.GetZRef() : rhs.GetZRef());
+	return Vec3f((condition.GetXiRef() & BIT31) ? ifTrue.GetXRef() : ifFalse.GetXRef(),
+				 (condition.GetYiRef() & BIT31) ? ifTrue.GetYRef() : ifFalse.GetYRef(),
+				 (condition.GetZiRef() & BIT31) ? ifTrue.GetZRef() : ifFalse.GetZRef());
 }
 
-__forceinline Vec4f_Out RECON_VEC_CALLCONV SelectTF(Vec4f_In lhs, Vec4f_In rhs, Vec4f_In condition)
+__forceinline Vec4f_Out RECON_VEC_CALLCONV SelectTF(Vec4f_In condition, Vec4f_In ifTrue, Vec4f_In ifFalse)
 {
-	return Vec4f((condition.GetXiRef() & BIT31) ? lhs.GetXRef() : rhs.GetXRef(),
-				 (condition.GetYiRef() & BIT31) ? lhs.GetYRef() : rhs.GetYRef(),
-				 (condition.GetZiRef() & BIT31) ? lhs.GetZRef() : rhs.GetZRef(),
-				 (condition.GetWiRef() & BIT31) ? lhs.GetWRef() : rhs.GetWRef());
+	return Vec4f((condition.GetXiRef() & BIT31) ? ifTrue.GetXRef() : ifFalse.GetXRef(),
+				 (condition.GetYiRef() & BIT31) ? ifTrue.GetYRef() : ifFalse.GetYRef(),
+				 (condition.GetZiRef() & BIT31) ? ifTrue.GetZRef() : ifFalse.GetZRef(),
+				 (condition.GetWiRef() & BIT31) ? ifTrue.GetWRef() : ifFalse.GetWRef());
 }
 
 __forceinline f32 Sin(const f32& fRadians)
@@ -934,52 +934,43 @@ __forceinline f32 RECON_VEC_CALLCONV LengthSq(Vec4f_In vVector)
 
 __forceinline Vec2f_Out RECON_VEC_CALLCONV Normalize(Vec2f_In vVector)
 {
-	f32 magSq = MagSq(vVector);
-	if(magSq)
-	{
-		magSq = 1 / Sqrt(magSq);
-		return vVector * magSq;
-	}
-	return vVector;
+	f32 magSq = MagSq(vVector); \
+	return magSq ? (vVector * (1 / Sqrt(magSq))) : vVector;
 }
 
 __forceinline Vec3f_Out RECON_VEC_CALLCONV Normalize(Vec3f_In vVector)
 {
-	f32 magSq = MagSq(vVector);
-
-	// protection against divide by zero
-	if(magSq)
-	{
-		magSq = 1 / Sqrt(magSq);
-		return vVector * magSq;
-	}
-
-	return vVector;
+	f32 magSq = MagSq(vVector); \
+	return magSq ? (vVector * (1 / Sqrt(magSq))) : vVector;
 }
 
 __forceinline Vec4f_Out RECON_VEC_CALLCONV Normalize(Vec4f_In vVector)
 {
-	f32 magSq = MagSq(vVector);
-	if(magSq)
-	{
-		magSq = 1 / Sqrt(magSq);
-		return vVector * magSq;
-	}
-	return vVector;
+	f32 magSq = MagSq(vVector); \
+	return magSq ? (vVector * (1 / Sqrt(magSq))) : vVector;
 }
 
 __forceinline Mat33f_Out RECON_VEC_CALLCONV Normalize(Mat33f_In mMatrix)
 {
-	Mat33f tmp(mMatrix);
-	tmp.Normalize();
-	return tmp;
+	return Mat33f(Normalize(mMatrix.GetXAxisRef()), \
+				  Normalize(mMatrix.GetYAxisRef()), \
+				  Normalize(mMatrix.GetZAxisRef()));
+}
+
+__forceinline Mat43f_Out RECON_VEC_CALLCONV Normalize(Mat43f_In mMatrix)
+{
+	return Mat43f(Normalize(mMatrix.GetXAxisRef()), \
+				  Normalize(mMatrix.GetYAxisRef()), \
+				  Normalize(mMatrix.GetZAxisRef()), \
+				  mMatrix.GetWAxisRef());
 }
 
 __forceinline Mat44f_Out RECON_VEC_CALLCONV Normalize(Mat44f_In mMatrix)
 {
-	Mat44f tmp(mMatrix);
-	tmp.Normalize();
-	return tmp;
+	return Mat44f(Vec4f(Normalize(mMatrix.GetXAxisRef().GetXYZ()), mMatrix.GetXAxisRef().GetWRef()), \
+				  Vec4f(Normalize(mMatrix.GetYAxisRef().GetXYZ()), mMatrix.GetYAxisRef().GetWRef()), \
+				  Vec4f(Normalize(mMatrix.GetZAxisRef().GetXYZ()), mMatrix.GetZAxisRef().GetWRef()), \
+				  mMatrix.GetWAxisRef());
 }
 
 __forceinline Vec2f_Out RECON_VEC_CALLCONV IntToFloat(Vec2f_In vVector)
@@ -1211,13 +1202,13 @@ inline Mat43f_Out RECON_VEC_CALLCONV TurnTo(Mat43f_In vTurningMat, Vec3f_In vTur
 		if(Dot(vecToPos, retVal.GetZAxisRef()) < 0.0f)
 			fRotation = (fRotation < 0.0f) ? -1.0f : 1.0f;
 
-		retVal.Rotate_LocalY(fRotation * fTurnModifier * fDeltaTime);
+		retVal.RotateLocalY(fRotation * fTurnModifier * fDeltaTime);
 	}
 
 	fRotation = Dot(vecToPos, retVal.GetYAxisRef());
 
 	if(fRotation > FLT_EPSILON || fRotation < -FLT_EPSILON)
-		retVal.Rotate_LocalX(-fRotation * fTurnModifier * fDeltaTime);
+		retVal.RotateLocalX(-fRotation * fTurnModifier * fDeltaTime);
 
 	retVal.SetXAxis(Normalize(Cross(Vec3f(I_WORLD_UP), retVal.GetZAxisRef())));
 	retVal.SetYAxis(Normalize(Cross(retVal.GetZAxisRef(), retVal.GetXAxisRef())));
@@ -1725,22 +1716,22 @@ __forceinline s32 RECON_VEC_CALLCONV SignMask(Vec4V_In vVector)
 
 __forceinline ScalarV_Out RECON_VEC_CALLCONV SelectTF(ScalarV_In condition, ScalarV_In ifTrue, ScalarV_In ifFalse)
 {
-	return ScalarV(VectorSelectTF(ifTrue.GetVector(), ifFalse.GetVector(), condition.GetVector()));
+	return ScalarV(VectorSelectTF(condition.GetVector(), ifTrue.GetVector(), ifFalse.GetVector()));
 }
 
 __forceinline Vec2V_Out RECON_VEC_CALLCONV SelectTF(Vec2V_In condition, Vec2V_In ifTrue, Vec2V_In ifFalse)
 {
-	return Vec2V(VectorSelectTF(ifTrue.GetVector(), ifFalse.GetVector(), condition.GetVector()));
+	return Vec2V(VectorSelectTF(condition.GetVector(), ifTrue.GetVector(), ifFalse.GetVector()));
 }
 
 __forceinline Vec3V_Out RECON_VEC_CALLCONV SelectTF(Vec3V_In condition, Vec3V_In ifTrue, Vec3V_In ifFalse)
 {
-	return Vec3V(VectorSelectTF(ifTrue.GetVector(), ifFalse.GetVector(), condition.GetVector()));
+	return Vec3V(VectorSelectTF(condition.GetVector(), ifTrue.GetVector(), ifFalse.GetVector()));
 }
 
 __forceinline Vec4V_Out RECON_VEC_CALLCONV SelectTF(Vec4V_In condition, Vec4V_In ifTrue, Vec4V_In ifFalse)
 {
-	return Vec4V(VectorSelectTF(ifTrue.GetVector(), ifFalse.GetVector(), condition.GetVector()));
+	return Vec4V(VectorSelectTF(condition.GetVector(), ifTrue.GetVector(), ifFalse.GetVector()));
 }
 
 template<VecElem elem> 
@@ -2028,28 +2019,28 @@ __forceinline Vec4V_Out RECON_VEC_CALLCONV Sqrt(Vec4V_In vVector)
 
 __forceinline ScalarV_Out RECON_VEC_CALLCONV SqrtSafe(ScalarV_In vScalar, ScalarV_In safeVec /*= ScalarV(I_ZERO)*/)
 {
-	Vector NotZeroVecMask = VectorIsNotEqual(vScalar.GetVector(), VectorSet(0.0f));
+	Vector NotZeroVecMask = VectorIsNotEqual(vScalar.GetVector(), VectorSetConstant<FloatToIntRep::Zero>());
 	Vector sqrtVal = VectorSqrt(vScalar.GetVector());
 	return ScalarV(VectorOr(VectorAnd(sqrtVal, NotZeroVecMask), VectorAndNot(safeVec.GetVector(), NotZeroVecMask)));
 }
 
 __forceinline Vec2V_Out RECON_VEC_CALLCONV SqrtSafe(Vec2V_In vVector, Vec2V_In safeVec /*= Vec2V(I_ZERO)*/)
 {
-	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSet(0.0f));
+	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSetConstant<FloatToIntRep::Zero>());
 	Vector sqrtVal = VectorSqrt(vVector.GetVector());
 	return Vec2V(VectorOr(VectorAnd(sqrtVal, NotZeroVecMask), VectorAndNot(safeVec.GetVector(), NotZeroVecMask)));
 }
 
 __forceinline Vec3V_Out RECON_VEC_CALLCONV SqrtSafe(Vec3V_In vVector, Vec3V_In safeVec /*= Vec3V(I_ZERO)*/)
 {
-	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSet(0.0f));
+	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSetConstant<FloatToIntRep::Zero>());
 	Vector sqrtVal = VectorSqrt(vVector.GetVector());
 	return Vec3V(VectorOr(VectorAnd(sqrtVal, NotZeroVecMask), VectorAndNot(safeVec.GetVector(), NotZeroVecMask)));
 }
 
 __forceinline Vec4V_Out RECON_VEC_CALLCONV SqrtSafe(Vec4V_In vVector, Vec4V_In safeVec /*= Vec4V(I_ZERO)*/)
 {
-	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSet(0.0f));
+	Vector NotZeroVecMask = VectorIsNotEqual(vVector.GetVector(), VectorSetConstant<FloatToIntRep::Zero>());
 	Vector sqrtVal = VectorSqrt(vVector.GetVector());
 	return Vec4V(VectorOr(VectorAnd(sqrtVal, NotZeroVecMask), VectorAndNot(safeVec.GetVector(), NotZeroVecMask)));
 }
@@ -2063,7 +2054,7 @@ __forceinline ScalarV RECON_VEC_CALLCONV Dot(Vec2V_In vVectorA, Vec2V_In vVector
 
 __forceinline ScalarV RECON_VEC_CALLCONV Dot(Vec3V_In vVectorA, Vec3V_In vVectorB)
 {
-	Vector tmpRhs = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(vVectorB.GetVector(), VectorSet(0.0f));
+	Vector tmpRhs = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(vVectorB.GetVector(), VectorSetConstant<FloatToIntRep::Zero>());
 	Vector tmp = VectorMultiply(vVectorA.GetVector(), tmpRhs);
 	tmp = VectorHAdd(tmp, tmp);
 	return ScalarVFromElement<VecElem::X>(VectorHAdd(tmp, tmp));
@@ -2139,33 +2130,42 @@ __forceinline ScalarV RECON_VEC_CALLCONV LengthSq(Vec4V_In vVector)
 __forceinline Vec2V_Out RECON_VEC_CALLCONV Normalize(Vec2V_In vVector)
 {
 	Vec2V magSq(MagSq(vVector));
-	return Vec2V(SelectTF(Vec2V(I_ZERO), vVector / magSq, IsGreaterThan(magSq, Vec2V(I_ZERO))));
+	return Vec2V(SelectTF(IsGreaterThan(magSq, Vec2V(I_ZERO)), vVector / Sqrt(magSq), Vec2V(I_ZERO)));
 }
 
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Normalize(Vec3V_In vVector)
 {
 	Vec3V magSq(MagSq(vVector));
-	return Vec3V(SelectTF(Vec3V(I_ZERO), vVector / magSq, IsGreaterThan(magSq, Vec3V(I_ZERO))));
+	return Vec3V(SelectTF(IsGreaterThan(magSq, Vec3V(I_ZERO)), vVector / Sqrt(magSq), Vec3V(I_ZERO)));
 }
 
 __forceinline Vec4V_Out RECON_VEC_CALLCONV Normalize(Vec4V_In vVector)
 {
 	Vec4V magSq(MagSq(vVector));
-	return Vec4V(SelectTF(Vec4V(I_ZERO), vVector / magSq, IsGreaterThan(magSq, Vec4V(I_ZERO))));
+	return Vec4V(SelectTF(IsGreaterThan(magSq, Vec4V(I_ZERO)), vVector / Sqrt(magSq), Vec4V(I_ZERO)));
 }
 
-//__forceinline Mat33V_Out RECON_VEC_CALLCONV Normalize(Mat33V_In mMatrix)
-//{
-//	Mat33V tmp(mMatrix);
-//	tmp.Normalize();
-//	return tmp;
-//}
+__forceinline Mat33V_Out RECON_VEC_CALLCONV Normalize(Mat33V_In mMatrix)
+{
+	return Mat33V(Normalize(mMatrix.GetXAxisRef()), \
+				  Normalize(mMatrix.GetYAxisRef()), \
+				  Normalize(mMatrix.GetZAxisRef()));
+}
+
+__forceinline Mat43V_Out RECON_VEC_CALLCONV Normalize(Mat43V_In mMatrix)
+{
+	return Mat43V(Normalize(mMatrix.GetXAxisRef()), \
+				  Normalize(mMatrix.GetYAxisRef()), \
+				  Normalize(mMatrix.GetZAxisRef()), \
+				  mMatrix.GetWAxisRef());
+}
 
 __forceinline Mat44V_Out RECON_VEC_CALLCONV Normalize(Mat44V_In mMatrix)
 {
-	Mat44V tmp(mMatrix);
-	tmp.Normalize();
-	return tmp;
+	return Mat44V(Vec4V(Normalize(mMatrix.GetXAxisRef().GetXYZ()), mMatrix.GetXAxisRef().GetW()), \
+				  Vec4V(Normalize(mMatrix.GetYAxisRef().GetXYZ()), mMatrix.GetYAxisRef().GetW()), \
+				  Vec4V(Normalize(mMatrix.GetZAxisRef().GetXYZ()), mMatrix.GetZAxisRef().GetW()), \
+				  mMatrix.GetWAxisRef());
 }
 
 __forceinline ScalarV_Out RECON_VEC_CALLCONV AddInt(ScalarV_In lhs, ScalarV_In rhs)
@@ -2425,13 +2425,13 @@ inline Mat43V_Out RECON_VEC_CALLCONV TurnTo(Mat43V_In vTurningMat, Vec3V_In vTur
 		if(Dot(vecToPos, retVal.GetZAxisRef()) < ScalarV(I_ZERO))
 			fRotation = (fRotation < ScalarV(I_ZERO)) ? ScalarV(I_NEG_ONE) : ScalarV(I_ONE);
 
-		retVal.Rotate_LocalY(fRotation * vTurnModifier * vDeltaTime);
+		retVal.RotateLocalY(fRotation * vTurnModifier * vDeltaTime);
 	}
 
 	fRotation = Dot(vecToPos, retVal.GetYAxisRef());
 
 	if(fRotation > ScalarV(I_FLT_EPSILON) || fRotation < ScalarV(I_NEG_FLT_EPSILON))
-		retVal.Rotate_LocalX(-fRotation * vTurnModifier * vDeltaTime);
+		retVal.RotateLocalX(-fRotation * vTurnModifier * vDeltaTime);
 
 	retVal.SetXAxis(Normalize(Cross(Vec3V(I_WORLD_UP), retVal.GetZAxisRef())));
 	retVal.SetYAxis(Normalize(Cross(retVal.GetZAxisRef(), retVal.GetXAxisRef())));
@@ -2617,26 +2617,26 @@ __forceinline Mat44V_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(ScalarV_In v
 	return Mat44V(Vec4V(ScalarV(I_HALF),								Vec3V(I_ZERO)),
 				  Vec4V(ScalarV(I_ZERO),								ScalarV(I_NEG_HALF),							Vec2V(I_ZERO)),
 				  Vec4V(I_Z_AXIS),
-				  Vec4V(ScalarV(I_HALF) + (ScalarV(I_HALF) / vWidth), ScalarV(I_HALF) + (ScalarV(I_HALF) / vHeight), ScalarV(I_ZERO), ScalarV(I_ONE)));
+				  Vec4V(ScalarV(I_HALF) + (ScalarV(I_HALF) / vWidth),	ScalarV(I_HALF) + (ScalarV(I_HALF) / vHeight),	ScalarV(I_ZERO), ScalarV(I_ONE)));
 }
 #endif //SSE_AVAILABLE
 
 
 __forceinline VecCmpResult::VecCmpResult(const bool& bX)
 {
-	m_VectorMask = Vec4V(VectorIsNotEqualInt(VectorSet(0), VectorSet(bX, 0, 0, 0)));
+	m_VectorMask = Vec4V(VectorIsNotEqualInt(VectorSetConstant<FloatToIntRep::Zero>(), VectorSet(bX, 0, 0, 0)));
 }
 __forceinline VecCmpResult::VecCmpResult(const bool& bX, const bool& bY)
 {
-	m_VectorMask = Vec4V(VectorIsNotEqualInt(VectorSet(0), VectorSet(bX, bY, 0, 0)));
+	m_VectorMask = Vec4V(VectorIsNotEqualInt(VectorSetConstant<FloatToIntRep::Zero>(), VectorSet(bX, bY, 0, 0)));
 }
 __forceinline VecCmpResult::VecCmpResult(const bool& bX, const bool& bY, const bool& bZ)
 {
-	m_VectorMask = Vec4V(VectorIsNotEqualInt(VectorSet(0), VectorSet(bX, bY, bZ, 0)));
+	m_VectorMask = Vec4V(VectorIsNotEqualInt(VectorSetConstant<FloatToIntRep::Zero>(), VectorSet(bX, bY, bZ, 0)));
 }
 __forceinline VecCmpResult::VecCmpResult(const bool& bX, const bool& bY, const bool& bZ, const bool bW)
 {
-	m_VectorMask = Vec4V(VectorIsNotEqualInt(VectorSet(0), VectorSet(bX, bY, bZ, bW)));
+	m_VectorMask = Vec4V(VectorIsNotEqualInt(VectorSetConstant<FloatToIntRep::Zero>(), VectorSet(bX, bY, bZ, bW)));
 }
 
 #if SSE_AVAILABLE
@@ -2668,6 +2668,7 @@ __forceinline bool VecCmpResult::IsTrue() const
 {
 	static_assert((index0 >= VecElem::X && index0 <= VecElem::W) && \
 				  (index1 >= VecElem::X && index1 <= VecElem::W), "Invalid VecCmpResult Index!");
+	static_assert(index0 != index1, "index0 & index1 Cannot Be The Same Index");
 	return (GetResultMask() & ((1 << index0) | (1 << index1))) != 0;
 }
 
@@ -2677,5 +2678,6 @@ __forceinline bool VecCmpResult::IsTrue() const
 	static_assert((index0 >= VecElem::X && index0 <= VecElem::W) && \
 				  (index1 >= VecElem::X && index1 <= VecElem::W) && \
 				  (index2 >= VecElem::X && index2 <= VecElem::W), "Invalid VecCmpResult Index!");
+	static_assert(index0 != index1 && index0 != index2 && index1 != index2, "index0 & index1 & index2 Cannot Be The Same Index");
 	return (GetResultMask() & ((1 << index0) | (1 << index1) | (1 << index2))) != 0;
 }

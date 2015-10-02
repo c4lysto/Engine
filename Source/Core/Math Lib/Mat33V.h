@@ -100,16 +100,14 @@ public:
 	Mat33V_Out RECON_VEC_CALLCONV operator-(Mat33V_In rhs) const;
 	void RECON_VEC_CALLCONV operator-=(Mat33V_In rhs);
 
-	void RECON_VEC_CALLCONV Rotate_LocalX(ScalarV_In vRadians);
-	void RECON_VEC_CALLCONV Rotate_LocalY(ScalarV_In vRadians);
-	void RECON_VEC_CALLCONV Rotate_LocalZ(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateLocalX(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateLocalY(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateLocalZ(ScalarV_In vRadians);
 
 	void RECON_VEC_CALLCONV Scale(Vec3V_In vScale);
 
 	void RECON_VEC_CALLCONV SetScale(Vec3V_In vScale);
 	Vec3V_Out GetScale() const;
-
-	void Normalize();
 };
 
 #include "Mat33V.inl"

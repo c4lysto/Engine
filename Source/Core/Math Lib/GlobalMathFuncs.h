@@ -100,9 +100,9 @@ s32 RECON_VEC_CALLCONV SignMask(Vec2f_In vVector);
 s32 RECON_VEC_CALLCONV SignMask(Vec3f_In vVector);
 s32 RECON_VEC_CALLCONV SignMask(Vec4f_In vVector);
 
-Vec2f_Out RECON_VEC_CALLCONV SelectTF(Vec2f_In lhs, Vec2f_In rhs, Vec2f_In condition);
-Vec3f_Out RECON_VEC_CALLCONV SelectTF(Vec3f_In lhs, Vec3f_In rhs, Vec3f_In condition);
-Vec4f_Out RECON_VEC_CALLCONV SelectTF(Vec4f_In lhs, Vec4f_In rhs, Vec4f_In condition);
+Vec2f_Out RECON_VEC_CALLCONV SelectTF(Vec2f_In condition, Vec2f_In ifTrue, Vec2f_In ifFalse);
+Vec3f_Out RECON_VEC_CALLCONV SelectTF(Vec3f_In condition, Vec3f_In ifTrue, Vec3f_In ifFalse);
+Vec4f_Out RECON_VEC_CALLCONV SelectTF(Vec4f_In condition, Vec4f_In ifTrue, Vec4f_In ifFalse);
 
 
 // Trigonometry
@@ -298,6 +298,7 @@ Vec2f_Out RECON_VEC_CALLCONV Normalize(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Normalize(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Normalize(Vec4f_In vVector);
 Mat33f_Out RECON_VEC_CALLCONV Normalize(Mat33f_In mMatrix);
+Mat43f_Out RECON_VEC_CALLCONV Normalize(Mat43f_In mMatrix);
 Mat44f_Out RECON_VEC_CALLCONV Normalize(Mat44f_In mMatrix);
 
 Vec2f_Out RECON_VEC_CALLCONV IntToFloat(Vec2f_In vVector);
@@ -618,7 +619,8 @@ ScalarV RECON_VEC_CALLCONV LengthSq(Vec4V_In vVector);
 Vec2V_Out RECON_VEC_CALLCONV Normalize(Vec2V_In vVector);
 Vec3V_Out RECON_VEC_CALLCONV Normalize(Vec3V_In vVector);
 Vec4V_Out RECON_VEC_CALLCONV Normalize(Vec4V_In vVector);
-//Mat33V_Out RECON_VEC_CALLCONV Normalize(Mat33V_In mMatrix);
+Mat33V_Out RECON_VEC_CALLCONV Normalize(Mat33V_In mMatrix);
+Mat43V_Out RECON_VEC_CALLCONV Normalize(Mat43V_In mMatrix);
 Mat44V_Out RECON_VEC_CALLCONV Normalize(Mat44V_In mMatrix);
 
 ScalarV_Out RECON_VEC_CALLCONV AddInt(ScalarV_In lhs, ScalarV_In rhs);

@@ -178,32 +178,32 @@ __forceinline void RECON_VEC_CALLCONV Mat43f::operator-=(Mat43f_In rhs)
 	xAxis -= rhs.xAxis; yAxis -= rhs.yAxis; zAxis -= rhs.zAxis; wAxis -= rhs.wAxis;
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat43f::Rotate_GlobalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat43f::RotateGlobalX(const f32& fRadians)
 {
 	*this = Mat44ToMat43(Mat43ToMat44(*this) * Mat44f(I_ROTATION_X, fRadians));
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat43f::Rotate_GlobalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat43f::RotateGlobalY(const f32& fRadians)
 {
 	*this = Mat44ToMat43(Mat43ToMat44(*this) * Mat44f(I_ROTATION_Y, fRadians));
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat43f::Rotate_GlobalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat43f::RotateGlobalZ(const f32& fRadians)
 {
 	*this = Mat44ToMat43(Mat43ToMat44(*this) * Mat44f(I_ROTATION_Z, fRadians));
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat43f::Rotate_LocalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat43f::RotateLocalX(const f32& fRadians)
 {
 	*this = Mat44ToMat43(Mat44f(I_ROTATION_X, fRadians) * Mat43ToMat44(*this));
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat43f::Rotate_LocalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat43f::RotateLocalY(const f32& fRadians)
 {
 	*this = Mat44ToMat43(Mat44f(I_ROTATION_Y, fRadians) * Mat43ToMat44(*this));
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat43f::Rotate_LocalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat43f::RotateLocalZ(const f32& fRadians)
 {
 	*this = Mat44ToMat43(Mat44f(I_ROTATION_Z, fRadians) * Mat43ToMat44(*this));
 }
@@ -231,11 +231,4 @@ __forceinline Vec3f_Out Mat43f::GetScale() const
 __forceinline void RECON_VEC_CALLCONV Mat43f::Translate(Vec3f vTranslation)
 {
 	wAxis = wAxis + vTranslation;
-}
-
-__forceinline void Mat43f::Normalize()
-{
-	xAxis = ::Normalize(xAxis);
-	yAxis = ::Normalize(yAxis);
-	zAxis = ::Normalize(zAxis);
 }
