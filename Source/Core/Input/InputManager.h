@@ -68,6 +68,13 @@ private:
 #endif
 
 public:
+	static InputManager* ms_Instance;
+
+	static void CreateInstance();
+	static void DestroyInstance();
+	static InputManager* GetInstance() { Assert(ms_Instance); return ms_Instance; }
+
+public:
 	InputManager();
 	~InputManager();
 

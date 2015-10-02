@@ -29,6 +29,25 @@ namespace recon
 
 #define USE_BUFFERED_INPUT (0)
 
+InputManager* InputManager::ms_Instance = nullptr;
+
+void InputManager::CreateInstance()
+{
+	if(Verify(!ms_Instance))
+	{
+		ms_Instance = new InputManager;
+	}
+}
+
+void InputManager::DestroyInstance()
+{
+	if(Verify(ms_Instance))
+	{
+		delete ms_Instance;
+		ms_Instance = nullptr;
+	}
+}
+
 InputManager::InputManager() : 
 m_ucModifiers((u8)InputModifier::None),
 m_ucConnectedDevices((int)InputDevice::Mouse | (int)InputDevice::Keyboard), 

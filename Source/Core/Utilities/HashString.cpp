@@ -9,7 +9,7 @@ HashString::HashString(const char* szString)
 	m_Hash = ComputeHash(szString);
 }
 
-const HashString& HashString::operator=(const HashString& rhs)
+HashString& HashString::operator=(const HashString& rhs)
 {
 	if(this != &rhs)
 	{
@@ -21,7 +21,7 @@ const HashString& HashString::operator=(const HashString& rhs)
 	return *this;
 }
 
-const HashString& HashString::operator=(const u32& rhs)
+HashString& HashString::operator=(const u32& rhs)
 {
 	if(m_Hash == 0)
 	{
@@ -34,8 +34,6 @@ u32 HashString::ComputeHash(const char* szString)
 {
 	// One-At-A-Time Hash Taken From:
 	// http://burtleburtle.net/bob/hash/doobs.html
-
-	//Assertf(szString, "Hash String - Invalid String for Hash Computation!");
 
 	u32 hash = 0;
 
@@ -54,6 +52,28 @@ u32 HashString::ComputeHash(const char* szString)
 	}
 
 	return hash;
+}
+
+HashWithString& HashWithString::operator=(const HashWithString& rhs)
+{
+	if(this != &rhs)
+	{
+		m_Hash = rhs.m_Hash;
+		m_String = rhs.m_String;
+	}
+
+	return *this;
+}
+
+HashWithString& HashWithString::operator=(HashWithString&& rhs)
+{
+	if(this != &rhs)
+	{
+		m_Hash = rhs.m_Hash;
+		m_String = std::move(rhs.m_String);
+	}
+
+	return *this;
 }
 
 } // namespace recon

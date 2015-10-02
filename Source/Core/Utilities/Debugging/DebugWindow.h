@@ -6,6 +6,9 @@
 
 #define BUFFER_SIZE 100
 
+namespace recon
+{
+
 class DebugWindow
 {
 private:
@@ -15,7 +18,11 @@ public:
 	static bool Initialize();
 
 	static BOOL Shutdown()
-	{return FreeConsole();}
+	{
+		return FreeConsole();
+	}
 };
+
+} // namespace recon
 
 #endif

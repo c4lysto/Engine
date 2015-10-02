@@ -56,7 +56,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	UpdateWindow(hWnd);
 
 #ifdef _DEBUG
-	if(!DebugWindow::Initialize())
+	if(!recon::DebugWindow::Initialize())
 	{
 		MessageBox(hWnd, _T("Failed To Create Debug Window"), _T(""), MB_OK | MB_ICONERROR);
 
@@ -68,7 +68,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 
 	WPARAM retVal = RunMessageLoop();
 
-	DebugWindow::Shutdown();
+	recon::DebugWindow::Shutdown();
 
 	UnregisterClass(CLASS_NAME, hInstance);
 

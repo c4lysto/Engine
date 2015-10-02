@@ -97,7 +97,9 @@ typedef double f64;
 #endif
 
 #ifndef NUMELEM
-	#define NUMELEM(arr) (sizeof(arr)/(*(arr)))
+	template<typename T, size_t N>
+	char(&ArraySizeHelper(T(&array)[N]))[N];
+	#define NUMELEM(arr) (sizeof(ArraySizeHelper(arr)))
 #endif
 
 #ifndef UNUSED_PARAM
