@@ -1,6 +1,8 @@
 #ifndef _RECON_AABB_H_
 #define _RECON_AABB_H_
 
+#include "Sphere.h"
+
 namespace recon
 {
 
@@ -40,16 +42,16 @@ public:
 	Vec3V_Ref GetMaxRef();
 	Vec3V_ConstRef GetMaxRef() const;
 
+	Vec3V_Out GetCenter() const;
+
 	Vec3V_Out GetDimensions() const;
-	Vec3V_Out GetHalfDimensions() const;
+	Vec3V_Out GetExtents() const;
 
 	void SetUserData1(ScalarV_In vData);
 	ScalarV_Out GetUserData1() const;
 
 	void SetUserData2(ScalarV_In vData);
 	ScalarV_Out GetUserData2() const;
-
-	Vec3V_Out GetDimensions() const;
 
 	void SetFromSurroundingSphere(Sphere_In vSurroundingSphere);
 };

@@ -16,9 +16,7 @@ enum class ThreadPriority
 {
 	Idle = -15,
 	Low = -2,
-	Below_Normal = -1,
 	Normal = 0,
-	Above_Normal = 1,
 	High = 2,
 	Critical = 15
 };

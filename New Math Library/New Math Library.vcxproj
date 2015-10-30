@@ -36,12 +36,14 @@
     <ClInclude Include="..\Source\Core\Math Lib\Vec4f.h" />
     <ClInclude Include="..\Source\Core\Math Lib\Vec4V.h" />
     <ClInclude Include="..\Source\Core\Math Lib\VectorWrapper.h" />
-    <ClInclude Include="..\Source\Core\Physics\AABB.h" />
-    <ClInclude Include="..\Source\Core\Physics\Frustum.h" />
-    <ClInclude Include="..\Source\Core\Physics\GlobalPhysicsFuncs.h" />
-    <ClInclude Include="..\Source\Core\Physics\Plane.h" />
-    <ClInclude Include="..\Source\Core\Physics\Ray.h" />
-    <ClInclude Include="..\Source\Core\Physics\Sphere.h" />
+    <ClInclude Include="..\Source\Core\Physics\Spatial Bounds\AABB.h" />
+    <ClInclude Include="..\Source\Core\Physics\Spatial Bounds\Capsule.h" />
+    <ClInclude Include="..\Source\Core\Physics\Spatial Bounds\Frustum.h" />
+    <ClInclude Include="..\Source\Core\Physics\Spatial Bounds\GlobalSpatialBoundsFuncs.h" />
+    <ClInclude Include="..\Source\Core\Physics\Spatial Bounds\Plane.h" />
+    <ClInclude Include="..\Source\Core\Physics\Spatial Bounds\Ray.h" />
+    <ClInclude Include="..\Source\Core\Physics\Spatial Bounds\SpatialBounds.h" />
+    <ClInclude Include="..\Source\Core\Physics\Spatial Bounds\Sphere.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\Source\Core\Math Lib\GlobalMathFuncs.inl" />
@@ -59,12 +61,13 @@
     <None Include="..\Source\Core\Math Lib\Vec4f.inl" />
     <None Include="..\Source\Core\Math Lib\Vec4V.inl" />
     <None Include="..\Source\Core\Math Lib\VectorWrapper.inl" />
-    <None Include="..\Source\Core\Physics\AABB.inl" />
-    <None Include="..\Source\Core\Physics\Frustum.inl" />
-    <None Include="..\Source\Core\Physics\GlobalPhysicsFuncs.inl" />
-    <None Include="..\Source\Core\Physics\Plane.inl" />
-    <None Include="..\Source\Core\Physics\Ray.inl" />
-    <None Include="..\Source\Core\Physics\Sphere.inl" />
+    <None Include="..\Source\Core\Physics\Spatial Bounds\AABB.inl" />
+    <None Include="..\Source\Core\Physics\Spatial Bounds\Capsule.inl" />
+    <None Include="..\Source\Core\Physics\Spatial Bounds\Frustum.inl" />
+    <None Include="..\Source\Core\Physics\Spatial Bounds\GlobalSpatialBoundsFuncs.inl" />
+    <None Include="..\Source\Core\Physics\Spatial Bounds\Plane.inl" />
+    <None Include="..\Source\Core\Physics\Spatial Bounds\Ray.inl" />
+    <None Include="..\Source\Core\Physics\Spatial Bounds\Sphere.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{3C69EFDB-7DFC-4C91-9230-D6C8CDD88425}</ProjectGuid>

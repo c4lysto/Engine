@@ -1,7 +1,7 @@
 #ifndef _RECON_PLANE_H_
 #define _RECON_PLANE_H_
 
-#include "../Math Lib/MathLib.h"
+//#include "../../Math Lib/MathLib.h"
 
 namespace recon
 {
@@ -21,6 +21,7 @@ typedef Plane Plane_Out;
 
 typedef Plane_Ref Plane_InOut;
 
+// Plane Equation: Ax + By + Cz + D = 0
 class Plane
 {
 private:
@@ -30,6 +31,7 @@ public:
 	Plane();
 	explicit Plane(Vec3V_In vPosition);
 	explicit Plane(Vec3V_In vNormal, ScalarV_In vOffset);
+	explicit Plane(Vec3V_In vNormal, Vec3V_In vPosition);
 	explicit Plane(Vec4V_In vPlane);
 
 	Vec3V_Out GetNormal() const;
@@ -40,6 +42,9 @@ public:
 
 	void Set(Vec4V_In vPlane);
 	Vec4V_Out Get() const;
+
+	Vec4V_Ref GetRef();
+	Vec4V_ConstRef GetRef() const;
 
 	Vec3V_Out GetPos() const;
 };

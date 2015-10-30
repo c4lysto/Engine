@@ -40,7 +40,7 @@ public:
 
 	void SetUserData2(ScalarV vData);
 	ScalarV_Out GetUserData2() const;
-}
+};
 
 #include "Ray.inl"
 

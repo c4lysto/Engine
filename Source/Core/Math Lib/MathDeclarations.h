@@ -43,6 +43,19 @@ enum eFLTMINInitializer			{ I_FLT_MIN	};
 enum eFLTMAXInitializer			{ I_FLT_MAX	};
 enum eFLTEpsilonInitializer		{ I_FLT_EPSILON };
 enum eNANInitializer			{ I_NAN };
+enum eSignBitInitializer		{ I_SIGN_BIT };
+enum eAbsMaskInitializer		{ I_ABS_MASK };
+
+enum eINTOneInitializer			{ I_INT_ONE };
+enum eINTTwoInitializer			{ I_INT_TWO };
+enum eINTThreeInitializer		{ I_INT_THREE };
+enum eINTFourInitializer		{ I_INT_FOUR };
+enum eINTFiveInitializer		{ I_INT_FIVE };
+enum eINTSixInitializer			{ I_INT_SIX };
+enum eINTSevenInitializer		{ I_INT_SEVEN };
+enum eINTEightInitializer		{ I_INT_EIGHT };
+enum eINTNineInitializer		{ I_INT_NINE };
+enum eINTTenInitializer			{ I_INT_TEN };
 
 enum eNegOneInitializer			{ I_NEG_ONE		};
 enum eNegTwoInitializer			{ I_NEG_TWO		};
@@ -63,6 +76,17 @@ enum eNegFLTMINInitializer		{ I_NEG_FLT_MIN	};
 enum eNegFLTMAXInitializer		{ I_NEG_FLT_MAX	};
 enum eNegFLTEpsilonInitializer	{ I_NEG_FLT_EPSILON };
 enum eNegNANInitializer			{ I_NEG_NAN };
+
+enum eINTNegOneInitializer		{ I_INT_NEG_ONE };
+enum eINTNegTwoInitializer		{ I_INT_NEG_TWO };
+enum eINTNegThreeInitializer	{ I_INT_NEG_THREE };
+enum eINTNegFourInitializer		{ I_INT_NEG_FOUR };
+enum eINTNegFiveInitializer		{ I_INT_NEG_FIVE };
+enum eINTNegSixInitializer		{ I_INT_NEG_SIX };
+enum eINTNegSevenInitializer	{ I_INT_NEG_SEVEN };
+enum eINTNegEightInitializer	{ I_INT_NEG_EIGHT };
+enum eINTNegNineInitializer		{ I_INT_NEG_NINE };
+enum eINTNegTenInitializer		{ I_INT_NEG_TEN };
 
 enum eXAxisInitializer			{ I_X_AXIS };
 enum eYAxisInitializer			{ I_Y_AXIS, I_WORLD_UP };

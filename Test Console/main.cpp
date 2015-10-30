@@ -2,6 +2,7 @@
 #include <iostream>
 using namespace std;
 
+
 #include <tchar.h>
 
 #include <thread>
@@ -19,9 +20,9 @@ using namespace std;
 //#include "../Utilities/DebugHelp.h"
 
 #include <DirectXMath.h>
-#include <bitset>
+//#include <bitset>
 
-#include "Physics/Frustum.h"
+#include "../Source/Core/Physics/Spatial Bounds/SpatialBounds.h"
 
 using namespace recon;
 
@@ -243,11 +244,21 @@ int main()
 
 	//CallFuncPtr(TestThisBitch);
 
+	//Plane tstPlane = Plane(Vec3V(I_X_AXIS), ScalarV(I_THREE));
+	recon::Sphere tstSphere(Vec3V(0.0f, 0.0f, -10.0f), ScalarV(I_SIX));
+	recon::AABB tstAABB(Vec3V(-5.0f, -5.0f, 500.1f), Vec3V(5.0f, 5.0f, 501.0f));
+
+	//bool tstColl = TestSphereToPlane(tstSphere, tstPlane);
+
 	DirectX::XMMATRIX dxMat = DirectX::XMMatrixPerspectiveFovLH(DEGREES_TO_RADIANS(70.0f), 4.0f/3.0f, 0.01f, 500.0f);
 	Mat44V perspectiveMat = MakePerspectiveMatrix(ScalarV(DEGREES_TO_RADIANS(70.0f)), ScalarV(I_FOUR)/ScalarV(I_THREE), ScalarV(0.01f), ScalarV(500.0f));
 
 	Frustum m_Frustum;
 	m_Frustum.Build(perspectiveMat);
+	m_Frustum.TransposePlanes();
+
+	bool tstColFrustum = TestFrustumToSphere(m_Frustum, tstSphere);
+	tstColFrustum = TestFrustumToAABB(m_Frustum, tstAABB);
 
 	int tstVal = 250;
 	const TstThreadArgs* pConstTstArgs = pTstArgs;

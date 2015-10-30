@@ -25,13 +25,10 @@ typedef Vec3V float3V;
 
 ALIGN(16) class Vec3V
 {
-#define DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(enumeration, xIntRep, yIntRep, zIntRep)\
-	explicit __forceinline Vec3V(enumeration) : row(VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)FloatToIntRep::Zero>()) {}
+#define DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(enumeration, xIntRep, yIntRep, zIntRep) \
+	explicit __forceinline Vec3V(enumeration) : row(VectorSetConstant<(u32)xIntRep, (u32)yIntRep, (u32)zIntRep, (u32)FloatToIntRep::Zero>()) { }
 
 #define DEFINE_VEC3V_ENUM_CONSTRUCTOR(enumeration, intRep) DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(enumeration, intRep, intRep, intRep)
-
-#define DEFINE_VEC3V_ENUM_VEC_CONSTRUCTOR(enumeration, vec)\
-	explicit __forceinline Vec3V(enumeration) { row = vec.row; }
 
 #define VEC3V_ACCESSOR(retType, funcName, retVal) \
 	__forceinline retType funcName() { return retVal; }
@@ -101,6 +98,18 @@ public:
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eFLTMAXInitializer,		FloatToIntRep::Flt_Max)
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eFLTEpsilonInitializer,	FloatToIntRep::Flt_Epsilon)
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eNANInitializer,			FloatToIntRep::NaN)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eSignBitInitializer,		FloatToIntRep::Sign_Bit)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eAbsMaskInitializer,		FloatToIntRep::Abs_Mask)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTOneInitializer,		1)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTTwoInitializer,		2)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTThreeInitializer,		3)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTFourInitializer,		4)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTFiveInitializer,		5)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTSixInitializer,		6)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTSevenInitializer,		7)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTEightInitializer,		8)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNineInitializer,		9)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTTenInitializer,		10)
 
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eNegOneInitializer,			FloatToIntRep::Neg_One)
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eNegTwoInitializer,			FloatToIntRep::Neg_Two)
@@ -121,15 +130,25 @@ public:
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eNegFLTMAXInitializer,		FloatToIntRep::Neg_Flt_Max)
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eNegFLTEpsilonInitializer,	FloatToIntRep::Neg_Flt_Epsilon)
 	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eNegNANInitializer,			FloatToIntRep::Neg_NaN)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegOneInitializer,		-1)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegTwoInitializer,		-2)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegThreeInitializer,		-3)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegFourInitializer,		-4)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegFiveInitializer,		-5)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegSixInitializer,		-6)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegSevenInitializer,		-7)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegEightInitializer,		-8)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegNineInitializer,		-9)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eINTNegTenInitializer,		-10)
 
-	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eXAxisInitializer, FloatToIntRep::One, FloatToIntRep::Zero, FloatToIntRep::Zero)
-	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eYAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::One, FloatToIntRep::Zero)
-	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eZAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::Zero, FloatToIntRep::One)
-	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eWAxisInitializer, FloatToIntRep::Zero)
-	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eUpAxisInitializer, FloatToIntRep::Zero, FloatToIntRep::One, FloatToIntRep::Zero)
+	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eXAxisInitializer,		FloatToIntRep::One, FloatToIntRep::Zero, FloatToIntRep::Zero)
+	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eYAxisInitializer,		FloatToIntRep::Zero, FloatToIntRep::One, FloatToIntRep::Zero)
+	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eZAxisInitializer,		FloatToIntRep::Zero, FloatToIntRep::Zero, FloatToIntRep::One)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eWAxisInitializer,			FloatToIntRep::Zero)
+	DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR(eUpAxisInitializer,		FloatToIntRep::Zero, FloatToIntRep::One, FloatToIntRep::Zero)
 
-	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eTrueInitializer, FloatToIntRep::True)
-	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eFalseInitializer, FloatToIntRep::False)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eTrueInitializer,				FloatToIntRep::True)
+	DEFINE_VEC3V_ENUM_CONSTRUCTOR(eFalseInitializer,			FloatToIntRep::False)
 #undef DEFINE_VEC3V_ENUM_CONSTRUCTOR
 #undef DEFINE_VEC3V_ENUM_VAL_CONSTRUCTOR
 #endif //DEFINE_VEC3_ENUM_CONSTRUCTOR

@@ -50,12 +50,17 @@ __forceinline Vec3V_ConstRef AABB::GetMaxRef() const
 	return m_vMax;
 }
 
+__forceinline Vec3V_Out AABB::GetCenter() const
+{
+	return (m_vMax + m_vMin) * Vec3V(I_HALF);
+}
+
 __forceinline Vec3V_Out AABB::GetDimensions() const
 {
 	return m_vMax - m_vMin;
 }
 
-__forceinline Vec3V_Out AABB::GetHalfDimensions() const
+__forceinline Vec3V_Out AABB::GetExtents() const
 {
 	return GetDimensions() * ScalarV(I_HALF);
 }
@@ -78,11 +83,6 @@ __forceinline void AABB::SetUserData2(ScalarV_In vData)
 __forceinline ScalarV_Out AABB::GetUserData2() const
 {
 	return m_vMax.GetW();
-}
-
-__forceinline Vec3V_Out AABB::GetDimensions() const
-{
-	return m_vMax - m_vMin;
 }
 
 __forceinline void AABB::SetFromSurroundingSphere(Sphere_In vSurroundingSphere)

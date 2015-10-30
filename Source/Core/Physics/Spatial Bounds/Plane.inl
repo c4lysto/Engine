@@ -1,7 +1,7 @@
 
 __forceinline Plane::Plane() {}
 
-inline Plane::Plane(Vec3V_In vPosition) : m_vPlane(Normalize(vPosition), Mag(vPosition))
+__forceinline Plane::Plane(Vec3V_In vPosition) : m_vPlane(Normalize(vPosition), -Mag(vPosition))
 {
 
 }
@@ -9,6 +9,12 @@ inline Plane::Plane(Vec3V_In vPosition) : m_vPlane(Normalize(vPosition), Mag(vPo
 __forceinline Plane::Plane(Vec3V_In vNormal, ScalarV_In vOffset) : m_vPlane(Normalize(vNormal), vOffset)
 {
 
+}
+
+__forceinline Plane::Plane(Vec3V_In vNormal, Vec3V_In vPosition)
+{
+	Vec3V vNormalizedNormal(Normalize(vNormal));
+	m_vPlane = Vec4V(vNormalizedNormal, -Dot(vNormalizedNormal, vPosition));
 }
 
 __forceinline Plane::Plane(Vec4V_In vPlane) : m_vPlane(vPlane)
@@ -46,7 +52,17 @@ __forceinline Vec4V_Out Plane::Get() const
 	return m_vPlane;
 }
 
+__forceinline Vec4V_Ref Plane::GetRef()
+{
+	return m_vPlane;
+}
+
+__forceinline Vec4V_ConstRef Plane::GetRef() const
+{
+	return m_vPlane;
+}
+
 __forceinline Vec3V_Out Plane::GetPos() const
 {
-	return GetNormal() * GetOffset();
+	return GetNormal() * -GetOffset();
 }

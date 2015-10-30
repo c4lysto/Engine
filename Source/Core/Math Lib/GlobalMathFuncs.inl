@@ -935,19 +935,19 @@ __forceinline f32 RECON_VEC_CALLCONV LengthSq(Vec4f_In vVector)
 __forceinline Vec2f_Out RECON_VEC_CALLCONV Normalize(Vec2f_In vVector)
 {
 	f32 magSq = MagSq(vVector); \
-	return magSq ? (vVector * (1 / Sqrt(magSq))) : vVector;
+	return magSq ? (vVector * (1.0f / Sqrt(magSq))) : vVector;
 }
 
 __forceinline Vec3f_Out RECON_VEC_CALLCONV Normalize(Vec3f_In vVector)
 {
 	f32 magSq = MagSq(vVector); \
-	return magSq ? (vVector * (1 / Sqrt(magSq))) : vVector;
+	return magSq ? (vVector * (1.0f / Sqrt(magSq))) : vVector;
 }
 
 __forceinline Vec4f_Out RECON_VEC_CALLCONV Normalize(Vec4f_In vVector)
 {
 	f32 magSq = MagSq(vVector); \
-	return magSq ? (vVector * (1 / Sqrt(magSq))) : vVector;
+	return magSq ? (vVector * (1.0f / Sqrt(magSq))) : vVector;
 }
 
 __forceinline Mat33f_Out RECON_VEC_CALLCONV Normalize(Mat33f_In mMatrix)

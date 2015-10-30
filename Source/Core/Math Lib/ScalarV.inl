@@ -3,7 +3,7 @@
 #if !RECON_OS_64BIT
 __forceinline ScalarV::ScalarV(ScalarV&& vVector) : row(std::move(vVector.row))
 {
-
+	Assertf(IsValid(), "ScalarV Is Invalid, Components MUST Be Splatted Across The Vector!");
 }
 #endif // !RECON_OS_64BIT
 
