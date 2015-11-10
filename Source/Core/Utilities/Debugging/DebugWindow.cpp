@@ -3,6 +3,9 @@
 #include <io.h>
 #include <fcntl.h>
 
+namespace recon
+{
+
 HANDLE DebugWindow::m_hOutput = nullptr;
 
 bool DebugWindow::Initialize()
@@ -19,9 +22,11 @@ bool DebugWindow::Initialize()
 		return false;
 
 	conHandle = _open_osfhandle((intptr_t)m_hOutput, _O_TEXT);
-    pFile = _fdopen(conHandle, "w");
-    *stdout = *pFile;
-    setvbuf(stdout, NULL, _IONBF, 0);
+	pFile = _fdopen(conHandle, "w");
+	*stdout = *pFile;
+	setvbuf(stdout, NULL, _IONBF, 0);
 
 	return true;
 }
+
+} // namespace recon

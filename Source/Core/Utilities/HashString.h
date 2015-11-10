@@ -1,6 +1,9 @@
 #ifndef _RECON_HASHSTRING_H_
 #define _RECON_HASHSTRING_H_
-#include "GlobalDefines.h"
+
+#include <string>
+
+#include "UtilitiesInclude.h"
 
 #define USE_COMPILE_TIME_HASH_STRING (0)
 
@@ -17,7 +20,7 @@ private:
 		const char* m_szString;
 	};
 
-private:
+protected:
 	u32 m_Hash;
 
 	u32 _ComputeHash(const char* szString) const;
@@ -43,8 +46,8 @@ public:
 	__forceinline explicit HashString(const char (&szString)[arrSize]);
 #endif // USE_COMPILE_TIME_HASH_STRING
 
-	const HashString& operator=(const HashString& rhs);
-	const HashString& operator=(const u32& rhs);
+	HashString& operator=(const HashString& rhs);
+	HashString& operator=(const u32& rhs);
 
 	bool operator==(const HashString& rhs) const {return m_Hash == rhs.m_Hash;}
 	bool operator==(const u32& rhs) const { return m_Hash == rhs; }
@@ -55,8 +58,9 @@ public:
 	bool operator<(const HashString& rhs) const { return m_Hash < rhs.m_Hash; }
 	bool operator>(const HashString& rhs) const { return m_Hash > rhs.m_Hash; }
 
-	operator u32() {return m_Hash;}
+	explicit operator u32() {return m_Hash;}
 };
+
 
 #if USE_COMPILE_TIME_HASH_STRING
 template<size_t arrSize>
@@ -65,6 +69,27 @@ __forceinline HashString::HashString(const char (&szString)[arrSize]) :
 {
 }
 #endif // USE_COMPILE_TIME_HASH_STRING
+
+class HashWithString : public HashString
+{
+private:
+	std::string m_String;
+
+public:
+	HashWithString() {}
+	HashWithString(const HashWithString& rhs) : HashString(rhs), m_String(rhs.m_String) {}
+	HashWithString(HashWithString&& rhs) : HashString(std::move(rhs)), m_String(std::move(rhs.m_String)) { rhs.m_Hash = 0; }
+	explicit HashWithString(const char* szString) : HashString(szString), m_String(szString) {}
+
+	HashWithString& operator=(const HashWithString& rhs);
+	HashWithString& operator=(HashWithString&& rhs);
+};
+
+#if RECON_DEBUG
+typedef HashWithString HashWithDebugString;
+#else
+typedef HashString HashWithDebugString;
+#endif // !RECON_DEBUG
 
 } // namespace recon
 
