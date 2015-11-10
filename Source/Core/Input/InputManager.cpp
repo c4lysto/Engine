@@ -44,12 +44,12 @@ InputManager::~InputManager()
 
 void InputManager::Shutdown()
 {
-	m_PendingInputCS.Lock();
+	m_PendingInputMutex.Lock();
 	while(!m_PendingInputEvents.empty())
 	{
 		m_PendingInputEvents.pop();
 	}
-	m_PendingInputCS.Unlock();
+	m_PendingInputMutex.Unlock();
 
 	m_IsInputThreadRunning.clear();
 	m_NewInputEvent.Signal();
@@ -163,7 +163,7 @@ void InputManager::SetDeviceChange(WPARAM wParam, LPARAM lParam)
 
 void InputManager::ProcessInputEvent(WPARAM wParam, LPARAM lParam)
 {
-	//SysAutoCriticalSection inputCS(m_InputCS);
+	//AutoMutex inputCS(m_InputCS);
 
 #if USE_BUFFERED_INPUT
 	UINT unSize = 0;
@@ -246,9 +246,9 @@ void InputManager::AddInputRequest(WPARAM wParam, LPARAM lParam)
 {
 	PendingInputEvent pendingEvent = {wParam, lParam};
 
-	m_PendingInputCS.Lock();
+	m_PendingInputMutex.Lock();
 	m_PendingInputEvents.push(pendingEvent);
-	m_PendingInputCS.Unlock();
+	m_PendingInputMutex.Unlock();
 
 	m_NewInputEvent.Signal();
 }
@@ -259,7 +259,7 @@ void InputManager::ProcessInput()
 	DisplayCurrentEvents();
 #endif // RECON_DEBUG
 
-	SysAutoCriticalSection currInputCS(m_CurrentInputCS);
+	AutoMutex currInputMutex(m_CurrentInputMutex);
 
 	std::list<InputCurrentEventContainer::iterator> lEventsToDelete;
 
@@ -424,7 +424,7 @@ void InputManager::CreateMouseEvent(PRAWINPUT pInput)
 
 void InputManager::PostButtonEvent(InputEvent& inputEvent, bool bIsDown)
 {
-	SysAutoCriticalSection currInputCS(m_CurrentInputCS);
+	AutoMutex currInputMutex(m_CurrentInputMutex);
 
 	InputEvent* pDownEvent = GetCurrentInputEvent(inputEvent);
 
@@ -456,7 +456,7 @@ void InputManager::PostInputEvent(const InputEvent* pInputEvent)
 {
 	if(pInputEvent)
 	{
-		SysAutoCriticalSection currInputCS(m_CurrentInputCS);
+		AutoMutex currInputMutex(m_CurrentInputMutex);
 
 		InputEvent* pCurrEvent = GetCurrentInputEvent(*pInputEvent);
 
@@ -477,7 +477,7 @@ void InputManager::PostInputEvent(const InputEvent* pInputEvent)
 
 void InputManager::ClearAllCurrentInput()
 {
-	SysAutoCriticalSection currInputCS(m_CurrentInputCS);
+	AutoMutex currInputMutex(m_CurrentInputMutex);
 
 	for(InputCurrentEventContainer::iterator iter = m_lCurrentEvents.begin(); iter != m_lCurrentEvents.end(); ++iter)
 	{
@@ -497,7 +497,7 @@ void InputManager::InputThreadProc(void* pArgs)
 	{
 		m_NewInputEvent.Wait();
 
-		m_PendingInputCS.Lock();
+		m_PendingInputMutex.Lock();
 
 		while(m_PendingInputEvents.size())
 		{
@@ -508,7 +508,7 @@ void InputManager::InputThreadProc(void* pArgs)
 			cout << "Event Posted!\n";
 		}
 
-		m_PendingInputCS.Unlock();
+		m_PendingInputMutex.Unlock();
 	}
 }
 
@@ -613,7 +613,7 @@ void InputManager::DisplayCurrentEvents()
 {
 	//system("cls");
 
-	SysAutoCriticalSection currInputCS(m_CurrentInputCS);
+	AutoMutex currInputMutex(m_CurrentInputMutex);
 
 	for(InputCurrentEventContainer::iterator iter = m_lCurrentEvents.begin(); iter != m_lCurrentEvents.end(); ++iter)
 	{

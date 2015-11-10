@@ -5,7 +5,7 @@ __forceinline AABB::AABB(Vec3V_In vMin, Vec3V_In vMax) : m_vMin(vMin), m_vMax(vM
 
 __forceinline AABB::AABB(Sphere_In vSurroundingSphere)
 {
-	SetFromSurroundingSphere(vSurroundingSphere);
+	SetFromSphere(vSurroundingSphere);
 }
 
 // Will Overwrite User Data 1
@@ -85,9 +85,19 @@ __forceinline ScalarV_Out AABB::GetUserData2() const
 	return m_vMax.GetW();
 }
 
-__forceinline void AABB::SetFromSurroundingSphere(Sphere_In vSurroundingSphere)
+__forceinline void AABB::SetFromSphere(Sphere_In vSurroundingSphere)
 {
 	Vec3V vSphereCenter = vSurroundingSphere.GetCenter();
 	m_vMin = vSphereCenter - Vec3V(vSurroundingSphere.GetRadius());
 	m_vMax = vSphereCenter + Vec3V(vSurroundingSphere.GetRadius());
+}
+
+__forceinline Sphere_Out AABB::GetSuroundingSphere() const
+{
+	return Sphere(GetCenter(), Mag(m_vMax - m_vMin) * ScalarV(I_HALF));
+}
+
+__forceinline Sphere_Out AABB::GetInscribedSphere() const
+{
+	return Sphere(GetCenter(), MinComponent(GetExtents()));
 }

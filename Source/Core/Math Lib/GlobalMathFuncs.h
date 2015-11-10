@@ -96,13 +96,27 @@ template<VecElem pX, VecElem pY> Vec2f_Out RECON_VEC_CALLCONV Permute(Vec2f_In l
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3f_Out RECON_VEC_CALLCONV Permute(Vec3f_In lhs, Vec3f_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4f_Out RECON_VEC_CALLCONV Permute(Vec4f_In lhs, Vec4f_In rhs);
 
-s32 RECON_VEC_CALLCONV SignMask(Vec2f_In vVector);
-s32 RECON_VEC_CALLCONV SignMask(Vec3f_In vVector);
-s32 RECON_VEC_CALLCONV SignMask(Vec4f_In vVector);
+f32 Sign(const f32& fScalar);
+f64 Sign(const f64& fScalar);
+Vec2f_Out RECON_VEC_CALLCONV Sign(Vec2f_In vVector);
+Vec3f_Out RECON_VEC_CALLCONV Sign(Vec3f_In vVector);
+Vec4f_Out RECON_VEC_CALLCONV Sign(Vec4f_In vVector);
+
+s32 RECON_VEC_CALLCONV MoveMask(Vec2f_In vVector);
+s32 RECON_VEC_CALLCONV MoveMask(Vec3f_In vVector);
+s32 RECON_VEC_CALLCONV MoveMask(Vec4f_In vVector);
 
 Vec2f_Out RECON_VEC_CALLCONV SelectTF(Vec2f_In condition, Vec2f_In ifTrue, Vec2f_In ifFalse);
 Vec3f_Out RECON_VEC_CALLCONV SelectTF(Vec3f_In condition, Vec3f_In ifTrue, Vec3f_In ifFalse);
 Vec4f_Out RECON_VEC_CALLCONV SelectTF(Vec4f_In condition, Vec4f_In ifTrue, Vec4f_In ifFalse);
+
+f32 RECON_VEC_CALLCONV MinComponent(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV MinComponent(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV MinComponent(Vec4f_In vVector);
+
+f32 RECON_VEC_CALLCONV MaxComponent(Vec2f_In vVector);
+f32 RECON_VEC_CALLCONV MaxComponent(Vec3f_In vVector);
+f32 RECON_VEC_CALLCONV MaxComponent(Vec4f_In vVector);
 
 
 // Trigonometry
@@ -349,7 +363,7 @@ Vec3f_Out RECON_VEC_CALLCONV Cross(Vec3f_In lhs, Vec3f_In rhs);
 Mat44f RECON_VEC_CALLCONV Mat43ToMat44(Mat43f_In mMatrix);
 Mat43f RECON_VEC_CALLCONV Mat44ToMat43(Mat44f_In mMatrix);
 
-Mat43f_Out RECON_VEC_CALLCONV LookAt(Vec3f_In viewerPos, Vec3f_In lookAtPos, Vec3f_In vWorldUp = Vec3f(I_WORLD_UP));
+Mat43f_Out RECON_VEC_CALLCONV LookAt(Vec3f_In vFrom, Vec3f_In vTo, Vec3f_In vUpAxis = Vec3f(I_WORLD_UP));
 
 Mat43f_Out RECON_VEC_CALLCONV TurnTo(Mat43f_In vTurningMat, Vec3f_In vTurnToPos, const f32& fDeltaTime, const f32& fTurnModifier = 1.0f);
 
@@ -366,6 +380,7 @@ Mat44f_Out RECON_VEC_CALLCONV RotateAround(Vec3f_In origin, Mat44f_In rotatorsMa
 
 Mat44f_Out RECON_VEC_CALLCONV MakePerspectiveMatrix(f32 fFOV, f32 fAspectRatio, f32 fNearClip, f32 fFarClip);
 Mat44f_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(f32 fWidth, f32 fHeight, f32 fNear, f32 fFar);
+Mat44f_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(f32 fLeft, f32 fRight, f32 fBottom, f32 fTop, f32 fNear, f32 fFar);
 Mat44f_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(f32 unWidth, f32 unHeight);
 
 f32 CalculateGaussianWeight(s32 nOffset, f32 fSigma = 1.0f);
@@ -437,14 +452,27 @@ template<VecElem pX, VecElem pY> Vec2V_Out RECON_VEC_CALLCONV Permute(Vec2V_In l
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3V_Out RECON_VEC_CALLCONV Permute(Vec3V_In lhs, Vec3V_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4V_Out RECON_VEC_CALLCONV Permute(Vec4V_In lhs, Vec4V_In rhs);
 
-s32 RECON_VEC_CALLCONV SignMask(Vec2V_In vVector);
-s32 RECON_VEC_CALLCONV SignMask(Vec3V_In vVector);
-s32 RECON_VEC_CALLCONV SignMask(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Sign(ScalarV_In vVector);
+Vec2V_Out RECON_VEC_CALLCONV Sign(Vec2V_In vVector);
+Vec3V_Out RECON_VEC_CALLCONV Sign(Vec3V_In vVector);
+Vec4V_Out RECON_VEC_CALLCONV Sign(Vec4V_In vVector);
+
+s32 RECON_VEC_CALLCONV MoveMask(Vec2V_In vVector);
+s32 RECON_VEC_CALLCONV MoveMask(Vec3V_In vVector);
+s32 RECON_VEC_CALLCONV MoveMask(Vec4V_In vVector);
 
 ScalarV_Out RECON_VEC_CALLCONV SelectTF(ScalarV_In condition, ScalarV_In ifTrue, ScalarV_In ifFalse);
 Vec2V_Out RECON_VEC_CALLCONV SelectTF(Vec2V_In condition, Vec2V_In ifTrue, Vec2V_In ifFalse);
 Vec3V_Out RECON_VEC_CALLCONV SelectTF(Vec3V_In condition, Vec3V_In ifTrue, Vec3V_In ifFalse);
 Vec4V_Out RECON_VEC_CALLCONV SelectTF(Vec4V_In condition, Vec4V_In ifTrue, Vec4V_In ifFalse);
+
+ScalarV_Out RECON_VEC_CALLCONV MinComponent(Vec2V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV MinComponent(Vec3V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV MinComponent(Vec4V_In vVector);
+
+ScalarV_Out RECON_VEC_CALLCONV MaxComponent(Vec2V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV MaxComponent(Vec3V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV MaxComponent(Vec4V_In vVector);
 
 template<VecElem elem> ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vector_In vVector);
 template<VecElem elem> ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vec2V_In vVector);
@@ -596,25 +624,25 @@ Vec2V_Out RECON_VEC_CALLCONV SqrtSafe(Vec2V_In vVector, Vec2V_In safeVec = Vec2V
 Vec3V_Out RECON_VEC_CALLCONV SqrtSafe(Vec3V_In vVector, Vec3V_In safeVec = Vec3V(I_ZERO));
 Vec4V_Out RECON_VEC_CALLCONV SqrtSafe(Vec4V_In vVector, Vec4V_In safeVec = Vec4V(I_ZERO));
 
-ScalarV RECON_VEC_CALLCONV Dot(Vec2V_In vVectorA, Vec2V_In vVectorB);
-ScalarV RECON_VEC_CALLCONV Dot(Vec3V_In vVectorA, Vec3V_In vVectorB);
-ScalarV RECON_VEC_CALLCONV Dot(Vec4V_In vVectorA, Vec4V_In vVectorB);
+ScalarV_Out RECON_VEC_CALLCONV Dot(Vec2V_In vVectorA, Vec2V_In vVectorB);
+ScalarV_Out RECON_VEC_CALLCONV Dot(Vec3V_In vVectorA, Vec3V_In vVectorB);
+ScalarV_Out RECON_VEC_CALLCONV Dot(Vec4V_In vVectorA, Vec4V_In vVectorB);
 
-ScalarV RECON_VEC_CALLCONV Mag(Vec2V_In vVector);
-ScalarV RECON_VEC_CALLCONV Mag(Vec3V_In vVector);
-ScalarV RECON_VEC_CALLCONV Mag(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Mag(Vec2V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Mag(Vec3V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Mag(Vec4V_In vVector);
 
-ScalarV RECON_VEC_CALLCONV Length(Vec2V_In vVector);
-ScalarV RECON_VEC_CALLCONV Length(Vec3V_In vVector);
-ScalarV RECON_VEC_CALLCONV Length(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Length(Vec2V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Length(Vec3V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV Length(Vec4V_In vVector);
 
-ScalarV RECON_VEC_CALLCONV MagSq(Vec2V_In vVector);
-ScalarV RECON_VEC_CALLCONV MagSq(Vec3V_In vVector);
-ScalarV RECON_VEC_CALLCONV MagSq(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV MagSq(Vec2V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV MagSq(Vec3V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV MagSq(Vec4V_In vVector);
 
-ScalarV RECON_VEC_CALLCONV LengthSq(Vec2V_In vVector);
-ScalarV RECON_VEC_CALLCONV LengthSq(Vec3V_In vVector);
-ScalarV RECON_VEC_CALLCONV LengthSq(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV LengthSq(Vec2V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV LengthSq(Vec3V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV LengthSq(Vec4V_In vVector);
 
 Vec2V_Out RECON_VEC_CALLCONV Normalize(Vec2V_In vVector);
 Vec3V_Out RECON_VEC_CALLCONV Normalize(Vec3V_In vVector);
@@ -680,7 +708,7 @@ Vec3V_Out RECON_VEC_CALLCONV Cross(Vec3V_In lhs, Vec3V_In rhs);
 Mat44V RECON_VEC_CALLCONV Mat43ToMat44(Mat43V_In mMatrix);
 Mat43V RECON_VEC_CALLCONV Mat44ToMat43(Mat44V_In mMatrix);
 
-Mat43V_Out RECON_VEC_CALLCONV LookAt(Vec3V_In viewerPos, Vec3V_In lookAtPos, Vec3V_In vWorldUp = Vec3V(I_WORLD_UP));
+Mat43V_Out RECON_VEC_CALLCONV LookAt(Vec3V_In vFrom, Vec3V_In vTo, Vec3V_In vUpAxis = Vec3V(I_WORLD_UP));
 
 Mat43V_Out RECON_VEC_CALLCONV TurnTo(Mat43V_In vTurningMat, Vec3V_In vTurnToPos, ScalarV_In vDeltaTime, ScalarV_In vTurnModifier = ScalarV(I_ONE));
 
@@ -695,11 +723,13 @@ Mat44V_Out RECON_VEC_CALLCONV Transpose3x3(Mat44V_In mMatrix);
 
 Mat44V_Out RECON_VEC_CALLCONV RotateAround(Vec3V_In origin, Mat44V_In rotatorsMatrix, Mat44V_In rotationMatrix);
 
-Mat44V RECON_VEC_CALLCONV MakePerspectiveMatrix(ScalarV_In vFOV, ScalarV_In vAspectRatio, ScalarV_In vNearClip, ScalarV_In vFarClip);
+Mat44V_Out RECON_VEC_CALLCONV MakePerspectiveMatrix(ScalarV_In vFOV, ScalarV_In vAspectRatio, ScalarV_In vNearClip, ScalarV_In vFarClip);
 
-Mat44V RECON_VEC_CALLCONV MakeOrthographicMatrix(ScalarV_In vWidth, ScalarV_In vHeight, ScalarV_In vNear, ScalarV_In vFar);
+Mat44V_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(ScalarV_In vWidth, ScalarV_In vHeight, ScalarV_In vNear, ScalarV_In vFar);
 
-Mat44V RECON_VEC_CALLCONV MakeTextureMatrixOffset(ScalarV_In unWidth, ScalarV_In unHeight);
+Mat44V_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(ScalarV_In fLeft, ScalarV_In fRight, ScalarV_In fBottom, ScalarV_In fTop, ScalarV_In fNear, ScalarV_In fFar);
+
+Mat44V_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(ScalarV_In unWidth, ScalarV_In unHeight);
 #endif //SSE_AVAILABLE
 
 class VecCmpResult

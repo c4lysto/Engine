@@ -154,11 +154,7 @@ typedef double f64;
 #define S64_MAX		(9223372036854775807i64)
 #define U64_MAX		(0xFFFFFFFFFFFFFFFFui64)
 
-#ifndef INFINITE
-	#define INFINITE	0xFFFFFFFF
-#endif // INFINITE
-
-#define BIT(bit) (1<<bit)
+#define BIT(bit) (1<<(bit))
 #define BIT0 BIT(0)
 #define BIT1 BIT(1)
 #define BIT2 BIT(2)

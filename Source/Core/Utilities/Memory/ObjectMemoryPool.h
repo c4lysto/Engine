@@ -4,18 +4,19 @@
 #include <list>
 
 #include "../UtilitiesInclude.h"
+#include "../Mutex.h"
 
 #define REGISTER_MEM_POOL(className) \
 private: \
-	static ObjectMemoryPool<className, __ALIGNOF(className)> m_##className##_MemPool (TO_STRING(className)); \
+	static ObjectMemoryPool<className> ms_##className##_MemPool (TO_STRING(className)); \
 public: \
 	void* operator new (size_t UNUSED_PARAM(count)) \
 	{ \
-		return (void*) m_##className##_MemPool ->Allocate(); \
+		return (void*) ms_##className##_MemPool ->Allocate(); \
 	} \
 	void operator delete(void* pMem) \
 	{ \
-		if(pMem) m_##className##_MemPool ->Free((className*)pMem); \
+		if(pMem) ms_##className##_MemPool ->Free((className*)pMem); \
 	}
 
 namespace recon
@@ -27,21 +28,21 @@ public:
 	virtual ~IMemPool() {}
 
 	virtual void Init(u32 poolSize) = 0;
-	virtual void Shutdown();
+	virtual void Shutdown() = 0;
 };
 
-template <typename classType>
+template <typename _ObjType>
 class ObjectMemoryPool : public IMemPool
 {
 public:
-	typedef classType DataType;
+	typedef _ObjType DataType;
 
 private:
 	struct PoolIterator
 	{
 		union
 		{
-			classType* pData;
+			_ObjType* pData;
 			PoolIterator* pNext;
 		};
 	};
@@ -50,6 +51,7 @@ private:
 	std::string m_szPoolName;
 	void* m_pPool;
 	PoolIterator* m_pHead;
+	Mutex m_poolMutex;
 
 #if RECON_ASSERT
 	void* m_pPoolEnd;
@@ -59,11 +61,12 @@ public:
 	explicit ObjectMemoryPool(const char* szPoolName);
 	virtual ~ObjectMemoryPool();
 
+	// poolSize: Number Of Objects In The Pool
 	void Init(u32 poolSize) override;
 	void Shutdown() override;
 
-	classType* Allocate();
-	void Free(classType* pObject);
+	_ObjType* Allocate();
+	void Free(_ObjType* pObject);
 
 private:
 	void InitializeFreeList(u32 objectCount);

@@ -65,13 +65,14 @@ public:
 	void Wait();
 
 	void EndThread();
+
+public:
+	// pThread - Pass nullptr to set Calling Thread's Name
+	static void SetThreadName(const char* szName, Thread* pThread = nullptr);
+
+	// pThread - Pass nullptr to set Calling Thread's Priority
+	static void SetThreadPriority(ThreadPriority threadPriority, Thread* pThread = nullptr);
 };
-
-// pThread - Pass nullptr to set Calling Thread's Name
-void SysSetThreadName(const char* szName, Thread* pThread = nullptr);
-
-// pThread - Pass nullptr to set Calling Thread's Priority
-void SysSetThreadPriority(ThreadPriority threadPriority, Thread* pThread = nullptr);
 
 } // namespace recon
 

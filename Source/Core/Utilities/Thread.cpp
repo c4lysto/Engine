@@ -42,8 +42,8 @@ bool Thread::StartThread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eTh
 
 			if(GetThreadHandle() != nullptr)
 			{
-				SysSetThreadName(szThreadName, this);
-				SysSetThreadPriority(eThreadPrio, this);
+				Thread::SetThreadName(szThreadName, this);
+				Thread::SetThreadPriority(eThreadPrio, this);
 
 				bThreadStarted = true;
 			}
@@ -94,8 +94,9 @@ void Thread::EndThread()
 }
 
 // pThread - Pass nullptr to set Calling Thread's Name
-void SysSetThreadName(const char* szName, Thread* pThread /*= nullptr*/)
+void Thread::SetThreadName(const char* szName, Thread* pThread /*= nullptr*/)
 {
+#if RECON_OS_WINDOWS
 	// How to Set Thread Name According to MSDN
 
 	const DWORD MS_VC_EXCEPTION = 0x406D1388;
@@ -118,15 +119,18 @@ void SysSetThreadName(const char* szName, Thread* pThread /*= nullptr*/)
 		RaiseException(MS_VC_EXCEPTION, 0, sizeof(info) / sizeof(ULONG_PTR), (ULONG_PTR*)&info);
 	}
 	__except(EXCEPTION_EXECUTE_HANDLER) {}
+#endif // RECON_OS_WINDOWS
 }
 
-void SysSetThreadPriority(ThreadPriority threadPriority, Thread* pThread /*= nullptr*/)
+void Thread::SetThreadPriority(ThreadPriority threadPriority, Thread* pThread /*= nullptr*/)
 {
+#if RECON_OS_WINDOWS
 	if (Verifyf((threadPriority == ThreadPriority::Idle || threadPriority == ThreadPriority::Critical) ||
-		(threadPriority >= ThreadPriority::Low && threadPriority <= ThreadPriority::High), "SysSetThreadPriority() - Invalid Thread Priority"))
+		(threadPriority >= ThreadPriority::Low && threadPriority <= ThreadPriority::High), "Thread::SetThreadPriority() - Invalid Thread Priority"))
 	{
-		SetThreadPriority(pThread ? pThread->GetThreadHandle() : GetCurrentThread(), (int)threadPriority);
+		::SetThreadPriority(pThread ? pThread->GetThreadHandle() : GetCurrentThread(), (int)threadPriority);
 	}
+#endif // RECON_OS_WINDOWS
 }
 
 } // namespace recon

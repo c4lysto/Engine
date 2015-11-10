@@ -53,7 +53,10 @@ public:
 	void SetUserData2(ScalarV_In vData);
 	ScalarV_Out GetUserData2() const;
 
-	void SetFromSurroundingSphere(Sphere_In vSurroundingSphere);
+	void SetFromSphere(Sphere_In vSurroundingSphere);
+
+	Sphere_Out GetSuroundingSphere() const;
+	Sphere_Out GetInscribedSphere() const;
 };
 
 #include "AABB.inl"

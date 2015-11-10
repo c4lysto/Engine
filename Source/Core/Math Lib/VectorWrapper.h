@@ -233,7 +233,7 @@ VEC_CMP_DECL_ALL(IsLessThanOrEqualInt);
 
 // Misc Operations:
 
-s32 RECON_VEC_CALLCONV VectorSignMask(Vector_In vec);
+s32 RECON_VEC_CALLCONV VectorMoveMask(Vector_In vec);
 
 Vector_Out RECON_VEC_CALLCONV VectorMin(Vector_In lhs, Vector_In rhs);
 Vector_Out RECON_VEC_CALLCONV VectorMinInt(Vector_In lhs, Vector_In rhs);
@@ -246,6 +246,14 @@ Vector_Out RECON_VEC_CALLCONV VectorClampInt(Vector_In val, Vector_In minVal, Ve
 
 Vector_Out RECON_VEC_CALLCONV VectorSelectTF(Vector_In condition, Vector_In ifTrue, Vector_In ifFalse);
 
+Vector_Out RECON_VEC_CALLCONV VectorMinComponentV2(Vector_In vec);
+Vector_Out RECON_VEC_CALLCONV VectorMinComponentV3(Vector_In vec);
+Vector_Out RECON_VEC_CALLCONV VectorMinComponentV4(Vector_In vec);
+
+Vector_Out RECON_VEC_CALLCONV VectorMaxComponentV2(Vector_In vec);
+Vector_Out RECON_VEC_CALLCONV VectorMaxComponentV3(Vector_In vec);
+Vector_Out RECON_VEC_CALLCONV VectorMaxComponentV4(Vector_In vec);
+
 Vector_Out RECON_VEC_CALLCONV VectorBitscanForward(Vector_In vec);
 
 
@@ -253,9 +261,9 @@ Vector_Out RECON_VEC_CALLCONV VectorBitscanForward(Vector_In vec);
 
 Vector_Out RECON_VEC_CALLCONV VectorCrossProduct(Vector_In lhs, Vector_In rhs);
 
-f32 RECON_VEC_CALLCONV VectorDot2(Vector_In lhs, Vector_In rhs);
-f32 RECON_VEC_CALLCONV VectorDot3(Vector_In lhs, Vector_In rhs);
-f32 RECON_VEC_CALLCONV VectorDot4(Vector_In lhs, Vector_In rhs);
+Vector_Out RECON_VEC_CALLCONV VectorDotV2(Vector_In lhs, Vector_In rhs);
+Vector_Out RECON_VEC_CALLCONV VectorDotV3(Vector_In lhs, Vector_In rhs);
+Vector_Out RECON_VEC_CALLCONV VectorDotV4(Vector_In lhs, Vector_In rhs);
 
 #include "VectorWrapper.inl"
 

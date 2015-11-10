@@ -10,11 +10,11 @@ namespace recon
 
 class Mutex;
 
-typedef Mutex SysCriticalSection;
+typedef Mutex CriticalSection;
 
 class Mutex
 {
-	friend class SysAutoMutex;
+	friend class AutoMutex;
 
 private:
 	const u32 m_nSpinCount;
@@ -30,11 +30,6 @@ public:
 	void Lock();
 	bool TryLock();
 	void Unlock();
-
-public:
-
-	friend void SysCreateMutex(Mutex& sysMutex, bool bInitialOwner = false);
-	friend void SysCloseMutex(Mutex& sysMutex);
 };
 
 __forceinline void Mutex::Lock()
@@ -59,23 +54,23 @@ __forceinline void Mutex::Unlock()
 }
 
 
-class SysAutoMutex;
+class AutoMutex;
 
-typedef SysAutoMutex SysAutoCriticalSection;
+typedef AutoMutex AutoCriticalSection;
 
-class SysAutoMutex
+class AutoMutex
 {
 private:
 	Mutex& m_Mutex;
 
 public:
-	SysAutoMutex(Mutex& sysMutex) :
+	AutoMutex(Mutex& sysMutex) :
 		m_Mutex(sysMutex)
 	{
 		m_Mutex.Lock();
 	}
 	
-	~SysAutoMutex()
+	~AutoMutex()
 	{
 		m_Mutex.Unlock();
 	}

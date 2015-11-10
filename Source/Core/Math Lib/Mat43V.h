@@ -59,10 +59,10 @@ private:
 
 public:
 	Mat43V(){}
-	explicit Mat43V(const f32& fXx, const f32& fXy, const f32& fXz,
-					const f32& fYx, const f32& fYy, const f32& fYz,
-					const f32& fZx, const f32& fZy, const f32& fZz,
-					const f32& fWx, const f32& fWy, const f32& fWz);
+	explicit Mat43V(ScalarV_In vXx, ScalarV_In vXy, ScalarV_In vXz,
+					ScalarV_In vYx, ScalarV_In vYy, ScalarV_In vYz,
+					ScalarV_In vZx, ScalarV_In vZy, ScalarV_In vZz,
+					ScalarV_In vWx, ScalarV_In vWy, ScalarV_In vWz);
 	Mat43V(Mat43V_In mMatrix);
 	Mat43V(Mat43V&& mMatrix);
 	explicit Mat43V(Vec3V_In vXAxis,
@@ -71,9 +71,9 @@ public:
 					Vec3V_In vWAxis);
 
 	explicit Mat43V(eIdentityInitializer eIdentity);
-	explicit Mat43V(eXRotationInitializer eXRotation, const f32& fRotationInRadians);
-	explicit Mat43V(eYRotationInitializer eXRotation, const f32& fRotationInRadians);
-	explicit Mat43V(eZRotationInitializer eXRotation, const f32& fRotationInRadians);
+	explicit Mat43V(eXRotationInitializer eXRotation, ScalarV_In vRotationInRadians);
+	explicit Mat43V(eYRotationInitializer eXRotation, ScalarV_In vRotationInRadians);
+	explicit Mat43V(eZRotationInitializer eXRotation, ScalarV_In vRotationInRadians);
 	explicit Mat43V(eMatrixPositionInitializer eMatrixPos, Vec3V_In vPos);
 
 #if defined(MAT43V_ACCESSOR) && defined(MAT43V_ACCESSOR_CONST)
@@ -126,13 +126,13 @@ public:
 	Mat43V_Out RECON_VEC_CALLCONV operator-(Mat43V_In rhs) const;
 	void RECON_VEC_CALLCONV operator-=(Mat43V_In rhs);
 
-	void RECON_VEC_CALLCONV RotateGlobalX(const f32& fRadians);
-	void RECON_VEC_CALLCONV RotateGlobalY(const f32& fRadians);
-	void RECON_VEC_CALLCONV RotateGlobalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateGlobalX(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateGlobalY(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateGlobalZ(ScalarV_In vRadians);
 
-	void RECON_VEC_CALLCONV RotateLocalX(const f32& fRadians);
-	void RECON_VEC_CALLCONV RotateLocalY(const f32& fRadians);
-	void RECON_VEC_CALLCONV RotateLocalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateLocalX(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateLocalY(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateLocalZ(ScalarV_In vRadians);
 
 	void RECON_VEC_CALLCONV Scale(Vec3V_In vScale);
 

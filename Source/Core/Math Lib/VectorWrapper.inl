@@ -116,7 +116,7 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorPermute(Vector_In lhs, Vector_
 	static_assert((pW >= VecElem::X1 && pW <= VecElem::W1) || (pW >= VecElem::X2 && pW <= VecElem::W2), "Invalid Permute W-Index. Must be between VecElem::X1 & VecElem::W2!");
 
 	static_assert(!((pX < VecElem::X2 && pY < VecElem::X2 && pZ < VecElem::X2 && pW < VecElem::X2) ||
-		(pX > VecElem::W1 && pY > VecElem::W1 && pZ > VecElem::W1 && pW > VecElem::W1)), "All Components Are From The Same Vector, Use 'Permute(Vector_In vec)' Instead");
+					(pX > VecElem::W1 && pY > VecElem::W1 && pZ > VecElem::W1 && pW > VecElem::W1)), "All Components Are From The Same Vector, Use 'Permute(Vector_In vec)' Instead");
 
 	if((pX < VecElem::X2 && pY < VecElem::X2) &&			// Permute<Vec1, Vec1, Vec2, Vec2>
 	   (pZ > VecElem::W1 && pW > VecElem::W1))
@@ -386,7 +386,7 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorRound(Vector_In vec)
 
 __forceinline Vector_Out RECON_VEC_CALLCONV VectorSign(Vector_In vec)
 {
-	return VectorOr(VectorAnd(vec, VectorSet((s32)0x80000000)), VectorSet(1.0f));
+	return VectorAnd(VectorIsNotEqual(vec, VectorSetConstant<0>()), VectorOr(VectorAnd(vec, VectorSet((s32)0x80000000)), VectorSet(1.0f)));
 }
 
 inline Vector_Out RECON_VEC_CALLCONV VectorLog2(Vector_In vec)
@@ -1099,7 +1099,7 @@ VEC_CMP_OREQUAL_INT_DEF_ALL(IsLessThanOrEqualInt, IsLessThanInt);
 
 // Misc Operations
 
-__forceinline s32 RECON_VEC_CALLCONV VectorSignMask(Vector_In vec)
+__forceinline s32 RECON_VEC_CALLCONV VectorMoveMask(Vector_In vec)
 {
 	return _mm_movemask_ps(vec);
 }
@@ -1139,32 +1139,66 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorSelectTF(Vector_In condition, 
 	return _mm_blendv_ps(ifFalse, ifTrue, condition);
 }
 
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorMinComponentV2(Vector_In vec)
+{
+	return VectorMin(VectorSplat<VecElem::X>(vec), VectorSplat<VecElem::Y>(vec));
+}
+
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorMinComponentV3(Vector_In vec)
+{
+	Vector MinXY = VectorMin(vec, VectorSplat<VecElem::Y>(vec));
+	return VectorSplat<VecElem::X>(VectorMin(MinXY, VectorSplat<VecElem::Z>(vec)));
+}
+
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorMinComponentV4(Vector_In vec)
+{
+	Vector MinXZ_YW = VectorMin(vec, VectorPermute<VecElem::Z, VecElem::W, VecElem::Z, VecElem::W>(vec));
+	return VectorSplat<VecElem::X>(VectorMin(MinXZ_YW, VectorSplat<VecElem::Y>(MinXZ_YW)));
+}
+
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorMaxComponentV2(Vector_In vec)
+{
+	return VectorMax(VectorSplat<VecElem::X>(vec), VectorSplat<VecElem::Y>(vec));
+}
+
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorMaxComponentV3(Vector_In vec)
+{
+	Vector MaxXY = VectorMax(vec, VectorSplat<VecElem::Y>(vec));
+	return VectorSplat<VecElem::X>(VectorMax(MaxXY, VectorSplat<VecElem::Z>(vec)));
+}
+
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorMaxComponentV4(Vector_In vec)
+{
+	Vector MaxXZ_YW = VectorMax(vec, VectorPermute<VecElem::Z, VecElem::W, VecElem::Z, VecElem::W>(vec));
+	return VectorSplat<VecElem::X>(VectorMax(MaxXZ_YW, VectorSplat<VecElem::Y>(MaxXZ_YW)));
+}
+
 inline Vector_Out RECON_VEC_CALLCONV VectorBitscanForward(Vector_In vec)
 {
 	// Modified from "DirectXMathVector.inl"
 
-	Vector c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xFFFF>());   // c = (v > 0xFFFF)
-	Vector b = VectorRightShift(c, 31);              // b = (c ? 1 : 0)
-	Vector r = VectorLeftShift(b, 4);               // r = (b << 4)
-	vec = VectorRightShift4(vec, r);              // v = (v >> r)
+	Vector c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xFFFF>());	// c = (v > 0xFFFF)
+	Vector b = VectorRightShift(c, 31);										// b = (c ? 1 : 0)
+	Vector r = VectorLeftShift(b, 4);										// r = (b << 4)
+	vec = VectorRightShift4(vec, r);										// v = (v >> r)
 
-	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xFF>());   // c = (v > 0xFF)
-	b = VectorRightShift(c, 31);              // b = (c ? 1 : 0)
-	Vector s = VectorLeftShift(b, 3);               // s = (b << 3)
-	vec = VectorRightShift4(vec, s);              // v = (v >> s)
-	r = VectorOr(r, s);                 // r = (r | s)
+	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xFF>());	// c = (v > 0xFF)
+	b = VectorRightShift(c, 31);								// b = (c ? 1 : 0)
+	Vector s = VectorLeftShift(b, 3);							// s = (b << 3)
+	vec = VectorRightShift4(vec, s);							// v = (v >> s)
+	r = VectorOr(r, s);											// r = (r | s)
 
-	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xF>());   // c = (v > 0xF)
-	b = VectorRightShift(c, 31);              // b = (c ? 1 : 0)
-	s = VectorLeftShift(b, 2);               // s = (b << 2)
-	vec = VectorRightShift4(vec, s);              // v = (v >> s)
-	r = VectorOr(r, s);                 // r = (r | s)
+	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xF>());	// c = (v > 0xF)
+	b = VectorRightShift(c, 31);								// b = (c ? 1 : 0)
+	s = VectorLeftShift(b, 2);									// s = (b << 2)
+	vec = VectorRightShift4(vec, s);							// v = (v >> s)
+	r = VectorOr(r, s);											// r = (r | s)
 
-	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0x3>());   // c = (v > 0x3)
-	b = VectorRightShift(c, 31);              // b = (c ? 1 : 0)
-	s = VectorLeftShift(b, 1);               // s = (b << 1)
-	vec = VectorRightShift4(vec, s);              // v = (v >> s)
-	r = VectorOr(r, s);                 // r = (r | s)
+	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0x3>());  // c = (v > 0x3)
+	b = VectorRightShift(c, 31);								// b = (c ? 1 : 0)
+	s = VectorLeftShift(b, 1);									// s = (b << 1)
+	vec = VectorRightShift4(vec, s);							// v = (v >> s)
+	r = VectorOr(r, s);											// r = (r | s)
 
 	s = VectorRightShift(vec, 1);
 	r = VectorOr(r, s);
@@ -1187,25 +1221,25 @@ __forceinline Vector_Out RECON_VEC_CALLCONV VectorCrossProduct(Vector_In lhs, Ve
 	return VectorSubtract(vec3, VectorMultiply(vec1, vec2));
 }
 
-__forceinline f32 RECON_VEC_CALLCONV VectorDot2(Vector_In lhs, Vector_In rhs)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorDotV2(Vector_In lhs, Vector_In rhs)
 {
 	Vector dp = VectorMultiply(lhs, rhs);
-	return VectorExtractFloat<VecElem::X>(VectorHAdd(dp, dp));
+	return VectorSplat<VecElem::X>(VectorHAdd(dp, dp));
 }
 
-__forceinline f32 RECON_VEC_CALLCONV VectorDot3(Vector_In lhs, Vector_In rhs)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorDotV3(Vector_In lhs, Vector_In rhs)
 {
-	Vector rhsWZero = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::X2>(rhs, VectorSet(0.0f));
+	Vector rhsWZero = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::X2>(rhs, VectorSetConstant<0x0>());
 	Vector dp = VectorMultiply(lhs, rhsWZero);
 	Vector result = VectorHAdd(dp, dp);
-	return VectorExtractFloat<VecElem::X>(VectorHAdd(result, result));
+	return VectorSplat<VecElem::X>(VectorHAdd(result, result));
 }
 
-__forceinline f32 RECON_VEC_CALLCONV VectorDot4(Vector_In lhs, Vector_In rhs)
+__forceinline Vector_Out RECON_VEC_CALLCONV VectorDotV4(Vector_In lhs, Vector_In rhs)
 {
 	Vector dp = VectorMultiply(lhs, rhs);
 	Vector result = VectorHAdd(dp, dp);
-	return VectorExtractFloat<VecElem::X>(VectorHAdd(result, result));
+	return VectorSplat<VecElem::X>(VectorHAdd(result, result));
 }
 
 #undef VEC_INT_TO_FLOAT

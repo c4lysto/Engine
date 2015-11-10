@@ -27,11 +27,11 @@ void ThreadPool::WorkerThreadProc(void* pArgs)
 			{
 				if(pThreadPool->GetWork(jobArgs))
 				{
-					SysSetThreadPriority(jobArgs.m_ePriority);
+					Thread::SetThreadPriority(jobArgs.m_ePriority);
 
 					(jobArgs.m_pProc)(jobArgs.m_pArgs);
 
-					SysSetThreadPriority(ThreadPriority::Normal);
+					Thread::SetThreadPriority(ThreadPriority::Normal);
 				}
 				else
 				{
@@ -46,7 +46,7 @@ bool ThreadPool::GetWork(ThreadPool::JobArgs& jobArgs)
 {
 	m_JobSemaphore.Acquire();
 
-	SysAutoCriticalSection jobCS(m_JobCS);
+	AutoMutex jobMutex(m_JobMutex);
 
 	bool bValidJob = false;
 
@@ -87,7 +87,7 @@ void ThreadPool::Shutdown()
 
 void ThreadPool::AddWork(ThreadProc pProc, void* pArgs, ThreadPriority ePriority /*= ThreadPriority::Normal*/)
 {
-	SysAutoCriticalSection jobCS(m_JobCS);
+	AutoMutex jobMutex(m_JobMutex);
 
 	m_qJobs.push(JobArgs(pProc, pArgs, ePriority));
 
@@ -96,7 +96,7 @@ void ThreadPool::AddWork(ThreadProc pProc, void* pArgs, ThreadPriority ePriority
 
 void ThreadPool::ClearWorkQueue()
 {
-	SysAutoCriticalSection jobCS(m_JobCS);
+	AutoMutex jobMutex(m_JobMutex);
 
 	while(!m_qJobs.empty())
 	{

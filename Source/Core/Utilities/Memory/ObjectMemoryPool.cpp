@@ -7,8 +7,8 @@ namespace recon
 
 ObjectPoolManager::MemoryPoolList ObjectPoolManager::m_MemoryPools;
 
-template<typename _ClassType>
-ObjectMemoryPool<_ClassType>::ObjectMemoryPool(const char* szPoolName) :
+template<typename _ObjType>
+ObjectMemoryPool<_ObjType>::ObjectMemoryPool(const char* szPoolName) :
 	m_szPoolName(szPoolName),
 	m_pPool(nullptr),
 	m_pHead(nullptr)
@@ -16,45 +16,47 @@ ObjectMemoryPool<_ClassType>::ObjectMemoryPool(const char* szPoolName) :
 	ObjectPoolManager::RegisterMemoryPool(this);
 }
 
-template<typename _ClassType>
-ObjectMemoryPool<_ClassType>::~ObjectMemoryPool()
+template<typename _ObjType>
+ObjectMemoryPool<_ObjType>::~ObjectMemoryPool()
 {
 	Shutdown();
 }
 
-template<typename _ClassType>
-void ObjectMemoryPool<_ClassType>::Init(u32 poolSize)
+// poolSize: Number Of Objects In The Pool
+template<typename _ObjType>
+void ObjectMemoryPool<_ObjType>::Init(u32 poolSize)
 {
 	Assertf(poolSize, "Cannot Allocate A Memory Mool Of Size 0!!!");
 
-	u32 objectCount = poolSize / sizeof(_ClassType);
-	objectCount += (u32)((poolSize % objectCount) != 0);
+	m_pPool = _aligned_malloc(sizeof(_ObjType)*poolSize, alignof(_ObjType));
 
-	m_pPool = _aligned_malloc(sizeof(_ClassType)*objectCount, __alignof(_ClassType));
-
-	InitializeFreeList(objectCount);
+	InitializeFreeList(poolSize);
 }
 
-template<typename _ClassType>
-void ObjectMemoryPool<_ClassType>::Shutdown()
+template<typename _ObjType>
+void ObjectMemoryPool<_ObjType>::Shutdown()
 {
 	if(m_pPool)
 	{
 		_aligned_free(m_pPool);
 		m_pPool = nullptr;
 	}
+
+	m_pHead = nullptr;
 }
 
-template<typename _ClassType>
-_ClassType* ObjectMemoryPool<_ClassType>::Allocate()
+template<typename _ObjType>
+_ObjType* ObjectMemoryPool<_ObjType>::Allocate()
 {
+	AutoMutex(m_poolMutex);
+
 	if(Verifyf(m_pHead, "Object Memory Pool Is Out Of Free Entries! Increase Pool Size!"))
 	{
-		_ClassType* pObject = m_pHead->pData;
+		_ObjType* pObject = m_pHead->pData;
 
 		if(pObject)
 		{
-			pObject = new (void*)pObject _ClassType();
+			pObject = new (void*)pObject _ObjType();
 
 			m_pHead = m_pHead->pNext;
 		}
@@ -65,34 +67,38 @@ _ClassType* ObjectMemoryPool<_ClassType>::Allocate()
 	return nullptr;
 }
 
-template<typename _ClassType>
-void ObjectMemoryPool<_ClassType>::Free(_ClassType* pObject)
+template<typename _ObjType>
+void ObjectMemoryPool<_ObjType>::Free(_ObjType* pObject)
 {
 	if(pObject)
 	{
-		Assertf(pObject >= m_pPool && pObject < m_pPoolEnd, "Trying to Free Memory That Doesn't Exist In This Memory Pool");
-
-		pObject->~_ClassType();
+		pObject->~_ObjType();
 
 		PoolIterator* pIter = reinterpret_cast<PoolIterator*>(pObject);
+
+		AutoMutex(m_poolMutex);
+
+		Assertf(pObject >= m_pPool && pObject < m_pPoolEnd, "Trying to Free Memory That Doesn't Exist In This Memory Pool");
 
 		pIter->pNext = m_pHead;
 		m_pHead = pIter;
 	}
 }
 
-template<typename _ClassType>
-void ObjectMemoryPool<_ClassType>::InitializeFreeList(u32 objectCount)
+template<typename _ObjType>
+void ObjectMemoryPool<_ObjType>::InitializeFreeList(u32 objectCount)
 {
+	AutoMutex(m_poolMutex);
+
 	m_pHead = (PoolIterator*)m_pPool;
 
 	PoolIterator* pCurrNode = m_pHead;
-	PoolIterator* pPoolEnd = m_pHead->pData + objectCount;
+	PoolIterator* pPoolEnd = m_pHead->pData + (sizeof(_ObjType)* objectCount);
 	while(true)
 	{
-		pCurrNode->pNext = (PoolIterator*)(pCurrNode->pData + 1);
+		pCurrNode->pNext = (PoolIterator*)((char*)pCurrNode->pData + sizeof(_ObjType));
 
-		if(pCurrNode->pNext == m_pPoolEnd)
+		if(pCurrNode->pNext == pPoolEnd)
 		{
 			pCurrNode->pNext = nullptr;
 			break;

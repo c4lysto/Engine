@@ -1,12 +1,12 @@
 
-__forceinline Mat44V::Mat44V(const f32& fXx, const f32& fXy, const f32& fXz, const f32& fXw,
-							 const f32& fYx, const f32& fYy, const f32& fYz, const f32& fYw,
-							 const f32& fZx, const f32& fZy, const f32& fZz, const f32& fZw,
-							 const f32& fWx, const f32& fWy, const f32& fWz, const f32& fWw) :
-	xAxis(fXx, fXy, fXz, fXw),
-	yAxis(fYx, fYy, fYz, fYw),
-	zAxis(fZx, fZy, fZz, fZw),
-	wAxis(fWx, fWy, fWz, fWw)
+__forceinline Mat44V::Mat44V(ScalarV_In vXx, ScalarV_In vXy, ScalarV_In vXz, ScalarV_In vXw,
+							 ScalarV_In vYx, ScalarV_In vYy, ScalarV_In vYz, ScalarV_In vYw,
+							 ScalarV_In vZx, ScalarV_In vZy, ScalarV_In vZz, ScalarV_In vZw,
+							 ScalarV_In vWx, ScalarV_In vWy, ScalarV_In vWz, ScalarV_In vWw) :
+	xAxis(vXx, vXy, vXz, vXw),
+	yAxis(vYx, vYy, vYz, vYw),
+	zAxis(vZx, vZy, vZz, vZw),
+	wAxis(vWx, vWy, vWz, vWw)
 {
 }
 
@@ -45,34 +45,31 @@ inline Mat44V::Mat44V(eIdentityInitializer UNUSED_PARAM(eIdentity)) :
 {
 }
 
-inline Mat44V::Mat44V(eXRotationInitializer UNUSED_PARAM(eXRotation), const f32& fRotationInRadians) :
+inline Mat44V::Mat44V(eXRotationInitializer UNUSED_PARAM(eXRotation), ScalarV_In vRotationInRadians) :
 	xAxis(I_X_AXIS),
 	wAxis(I_W_AXIS)
 {
-	f32 fSinAngle = sin(fRotationInRadians);
-	f32 fCosAngle = cos(fRotationInRadians);
-	yAxis = Vec4V(0.0f, fCosAngle, fSinAngle, 0.0f);
-	zAxis = Vec4V(0.0f, -fSinAngle, fCosAngle, 0.0f);
+	Vec2V vSinCos(SinCos(vRotationInRadians));
+	yAxis = Vec4V(ScalarV(I_ZERO), vSinCos.GetY(), vSinCos.GetX(), ScalarV(I_ZERO));
+	zAxis = Vec4V(ScalarV(I_ZERO), -vSinCos.GetX(), vSinCos.GetY(), ScalarV(I_ZERO));
 }
 
-inline Mat44V::Mat44V(eYRotationInitializer UNUSED_PARAM(eYRotation), const f32& fRotationInRadians) :
+inline Mat44V::Mat44V(eYRotationInitializer UNUSED_PARAM(eYRotation), ScalarV_In vRotationInRadians) :
 	yAxis(I_Y_AXIS),
 	wAxis(I_W_AXIS)
 {
-	f32 fSinAngle = sin(fRotationInRadians);
-	f32 fCosAngle = cos(fRotationInRadians);
-	xAxis = Vec4V(fCosAngle, 0.0f, -fSinAngle, 0.0f);
-	zAxis = Vec4V(fSinAngle, 0.0f, fCosAngle, 0.0f);
+	Vec2V vSinCos(SinCos(vRotationInRadians));
+	xAxis = Vec4V(vSinCos.GetY(), ScalarV(I_ZERO), -vSinCos.GetX(), ScalarV(I_ZERO));
+	zAxis = Vec4V(vSinCos.GetX(), ScalarV(I_ZERO), vSinCos.GetY(), ScalarV(I_ZERO));
 }
 
-inline Mat44V::Mat44V(eZRotationInitializer UNUSED_PARAM(eZRotation), const f32& fRotationInRadians) :
+inline Mat44V::Mat44V(eZRotationInitializer UNUSED_PARAM(eZRotation), ScalarV_In vRotationInRadians) :
 	zAxis(I_Z_AXIS),
 	wAxis(I_W_AXIS)
 {
-	f32 fSinAngle = sin(fRotationInRadians);
-	f32 fCosAngle = cos(fRotationInRadians);
-	xAxis = Vec4V(fCosAngle, fSinAngle, 0.0f, 0.0f);
-	yAxis = Vec4V(-fSinAngle, fCosAngle, 0.0f, 0.0f);
+	Vec2V vSinCos(SinCos(vRotationInRadians));
+	xAxis = Vec4V(vSinCos.GetY(), vSinCos.GetX(), Vec2V(I_ZERO));
+	yAxis = Vec4V(-vSinCos.GetX(), vSinCos.GetY(), Vec2V(I_ZERO));
 }
 
 __forceinline Mat44V::Mat44V(eMatrixPositionInitializer UNUSED_PARAM(eMatrixPos), Vec3V_In vPos) :
@@ -248,39 +245,39 @@ __forceinline void RECON_VEC_CALLCONV Mat44V::operator-=(Mat44V_In rhs)
 }
 
 // actually faster than DirectX Version :)
-__forceinline void RECON_VEC_CALLCONV Mat44V::RotateGlobalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44V::RotateGlobalX(ScalarV_In vRadians)
 {
-	Mat44V tmp(I_ROTATION_X, fRadians);
+	Mat44V tmp(I_ROTATION_X, vRadians);
 	*this *= tmp;
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44V::RotateGlobalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44V::RotateGlobalY(ScalarV_In vRadians)
 {
-	Mat44V tmp(I_ROTATION_Y, fRadians);
+	Mat44V tmp(I_ROTATION_Y, vRadians);
 	*this *= tmp;
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44V::RotateGlobalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44V::RotateGlobalZ(ScalarV_In vRadians)
 {
-	Mat44V tmp(I_ROTATION_Z, fRadians);
+	Mat44V tmp(I_ROTATION_Z, vRadians);
 	*this *= tmp;
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44V::RotateLocalX(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44V::RotateLocalX(ScalarV_In vRadians)
 {
-	Mat44V tmp(I_ROTATION_X, fRadians);
+	Mat44V tmp(I_ROTATION_X, vRadians);
 	*this = tmp * (*this);
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44V::RotateLocalY(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44V::RotateLocalY(ScalarV_In vRadians)
 {
-	Mat44V tmp(I_ROTATION_Y, fRadians);
+	Mat44V tmp(I_ROTATION_Y, vRadians);
 	*this = tmp * (*this);
 }
 
-__forceinline void RECON_VEC_CALLCONV Mat44V::RotateLocalZ(const f32& fRadians)
+__forceinline void RECON_VEC_CALLCONV Mat44V::RotateLocalZ(ScalarV_In vRadians)
 {
-	Mat44V tmp(I_ROTATION_Z, fRadians);
+	Mat44V tmp(I_ROTATION_Z, vRadians);
 	*this = tmp * (*this);
 }
 

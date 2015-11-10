@@ -53,10 +53,10 @@ private:
 
 public:
 	Mat44V(){}
-	explicit Mat44V(const f32& fXx, const f32& fXy, const f32& fXz, const f32& fXw,
-					const f32& fYx, const f32& fYy, const f32& fYz, const f32& fYw,
-					const f32& fZx, const f32& fZy, const f32& fZz, const f32& fZw,
-					const f32& fWx, const f32& fWy, const f32& fWz, const f32& fWw);
+	explicit Mat44V(ScalarV_In vXx, ScalarV_In vXy, ScalarV_In vXz, ScalarV_In vXw,
+					ScalarV_In vYx, ScalarV_In vYy, ScalarV_In vYz, ScalarV_In vYw,
+					ScalarV_In vZx, ScalarV_In vZy, ScalarV_In vZz, ScalarV_In vZw,
+					ScalarV_In vWx, ScalarV_In vWy, ScalarV_In vWz, ScalarV_In vWw);
 	Mat44V(Mat44V_In mMatrix);
 	Mat44V(Mat44V&& mMatrix);
 	explicit Mat44V(Vec4V_In vXAxis,
@@ -65,9 +65,9 @@ public:
 					Vec4V_In vWAxis);
 
 	explicit Mat44V(eIdentityInitializer eIdentity);
-	explicit Mat44V(eXRotationInitializer eXRotation, const f32& fRotationInRadians);
-	explicit Mat44V(eYRotationInitializer eXRotation, const f32& fRotationInRadians);
-	explicit Mat44V(eZRotationInitializer eXRotation, const f32& fRotationInRadians);
+	explicit Mat44V(eXRotationInitializer eXRotation, ScalarV_In vRotationInRadians);
+	explicit Mat44V(eYRotationInitializer eXRotation, ScalarV_In vRotationInRadians);
+	explicit Mat44V(eZRotationInitializer eXRotation, ScalarV_In vRotationInRadians);
 	explicit Mat44V(eMatrixPositionInitializer eMatrixPos, Vec3V_In vPos);
 
 #if defined(Mat44V_ACCESSOR) && defined(Mat44V_ACCESSOR_CONST)
@@ -115,13 +115,13 @@ public:
 	Mat44V_Out RECON_VEC_CALLCONV operator-(Mat44V_In rhs) const;
 	void RECON_VEC_CALLCONV operator-=(Mat44V_In rhs);
 
-	void RECON_VEC_CALLCONV RotateGlobalX(const f32& fRadians);
-	void RECON_VEC_CALLCONV RotateGlobalY(const f32& fRadians);
-	void RECON_VEC_CALLCONV RotateGlobalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateGlobalX(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateGlobalY(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateGlobalZ(ScalarV_In vRadians);
 
-	void RECON_VEC_CALLCONV RotateLocalX(const f32& fRadians);
-	void RECON_VEC_CALLCONV RotateLocalY(const f32& fRadians);
-	void RECON_VEC_CALLCONV RotateLocalZ(const f32& fRadians);
+	void RECON_VEC_CALLCONV RotateLocalX(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateLocalY(ScalarV_In vRadians);
+	void RECON_VEC_CALLCONV RotateLocalZ(ScalarV_In vRadians);
 
 	void RECON_VEC_CALLCONV Scale(Vec3V_In vScale);
 
@@ -133,6 +133,7 @@ public:
 
 Mat43V RECON_VEC_CALLCONV Mat44ToMat43(Mat44V_In mMatrix);
 Mat44V_Out RECON_VEC_CALLCONV Transpose3x3(Mat44V_In mMatrix);
+Vec2V_Out RECON_VEC_CALLCONV SinCos(ScalarV_In vRadians);
 
 #include "Mat44V.inl"
 

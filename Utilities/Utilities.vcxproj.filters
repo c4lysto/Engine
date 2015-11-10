@@ -113,5 +113,8 @@
     <ClInclude Include="..\Source\Core\Utilities\Semaphore.h">
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Atomic.h">
+      <Filter>Header Files\Threading</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

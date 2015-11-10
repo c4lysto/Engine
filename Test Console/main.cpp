@@ -8,6 +8,7 @@ using namespace std;
 #include <thread>
 #include <list>
 
+#include "Utilities\Atomic.h"
 #include "Utilities\Timer.h"
 #include "Math Lib\MathLib.h"
 #include "Utilities\ThreadPool.h"
@@ -229,10 +230,40 @@ public:
 	}
 };
 
+struct tstAlignStruct
+{
+	int val;
+	bool val1, val2;
+};
+
+void OnUnhandledException()
+{
+	std::cout << "OnUnhandledException Called!" << std::endl;
+	Sleep(10000);
+}
+
 int main()
 {
 	_CrtSetDbgFlag(_CRTDBG_ALLOC_MEM_DF | _CRTDBG_LEAK_CHECK_DF);
 	_CrtSetBreakAlloc(-1);
+
+	std::set_terminate(OnUnhandledException);
+	std::set_unexpected(OnUnhandledException);
+
+	u32 resultHash = sizeof(tstAlignStruct);//recon::HashString("TestHashThisBitch");
+	std::cout << resultHash << std::endl;
+
+	tstAlignStruct tstPtrAdd;
+	recon::AtomicPtr<tstAlignStruct> vec4vPtr(&tstPtrAdd);
+
+	const tstAlignStruct* ptr = nullptr;//vec4vPtr;
+	++vec4vPtr;
+	//tstAlignStruct* ptr1 = vec4vPtr + 2;
+	//ptr = ptr1 - 1;
+	//ptr1 = ptr--;
+
+	//std::terminate();
+	std::cout << ptr->val << std::endl;
 
 	Vec2V vecTst(1.0f, 5.0f);
 

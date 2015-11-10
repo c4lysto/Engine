@@ -4,9 +4,10 @@
 namespace recon
 {
 
-HashString::HashString(const char* szString)
+HashString::HashString(ImplicitConstCharStringWrapper stringWrapper) :
+	m_Hash(_ComputeHash(stringWrapper.m_szString))
 {
-	m_Hash = ComputeHash(szString);
+	
 }
 
 const HashString& HashString::operator=(const HashString& rhs)
@@ -30,7 +31,7 @@ const HashString& HashString::operator=(const u32& rhs)
 	return *this;
 }
 
-u32 HashString::ComputeHash(const char* szString)
+u32 HashString::_ComputeHash(const char* szString) const
 {
 	// One-At-A-Time Hash Taken From:
 	// http://burtleburtle.net/bob/hash/doobs.html

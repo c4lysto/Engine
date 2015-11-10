@@ -50,9 +50,9 @@ __forceinline s32 ScalarV::AsInt() const
 __forceinline bool ScalarV::IsValid() const
 {
 	// Checks if all the components are the same value
-	return (VectorSignMask(VectorIsEqualInt(VectorSplat<VecElem::X>(row), VectorSplat<VecElem::Y>(row))) & \
-			VectorSignMask(VectorIsEqualInt(VectorSplat<VecElem::Z>(row), VectorSplat<VecElem::W>(row))) & \
-			VectorSignMask(VectorIsEqualInt(VectorSplat<VecElem::X>(row), VectorSplat<VecElem::Z>(row)))) == 0xF;
+	return (VectorMoveMask(VectorIsEqualInt(VectorSplat<VecElem::X>(row), VectorSplat<VecElem::Y>(row))) & \
+			VectorMoveMask(VectorIsEqualInt(VectorSplat<VecElem::Z>(row), VectorSplat<VecElem::W>(row))) & \
+			VectorMoveMask(VectorIsEqualInt(VectorSplat<VecElem::X>(row), VectorSplat<VecElem::Z>(row)))) == 0xF;
 }
 
 __forceinline ScalarV_Out ScalarV::operator-() const

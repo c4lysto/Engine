@@ -28,6 +28,7 @@
     <ClCompile Include="..\Source\Core\Utilities\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Source\Core\Utilities\Atomic.h" />
     <ClInclude Include="..\Source\Core\Utilities\BitSet.h" />
     <ClInclude Include="..\Source\Core\Utilities\Color.h" />
     <ClInclude Include="..\Source\Core\Utilities\Function.h" />

@@ -28,7 +28,7 @@ private:
 
 private:
 	Semaphore m_JobSemaphore;
-	SysCriticalSection m_JobCS;
+	Mutex m_JobMutex;
 	std::vector<Thread> m_vThreads;
 	std::queue<JobArgs> m_qJobs;
 

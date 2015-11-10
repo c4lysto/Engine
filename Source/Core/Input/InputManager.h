@@ -35,8 +35,8 @@ private:
 	void* m_WindowHandle;
 	Thread m_InputThread;
 	Event m_NewInputEvent;
-	SysCriticalSection m_PendingInputCS;
-	SysCriticalSection m_CurrentInputCS;
+	Mutex m_PendingInputMutex;
+	Mutex m_CurrentInputMutex;
 	SysHook m_InputHook;
 	std::atomic_flag m_IsInputThreadRunning;
 
