@@ -1,13 +1,13 @@
 #ifndef _RECON_DEFAULTGAMEAPP_H_
 #define _RECON_DEFAULTGAMEAPP_H_
 
-#include "Application.h"
+#include "WindowedApplication.h"
 #include "AppWindow.h"
 
 namespace recon
 {
 
-class IDefaultGameApp : public IApplication
+class IDefaultGameApp : public IWindowedApplication
 {
 private:
 
@@ -15,9 +15,11 @@ public:
 	IDefaultGameApp(const std::string& appName);
 	virtual ~IDefaultGameApp() override;
 
+	virtual void Run(AppState currState) override;
+
 protected:
 	virtual bool Init() override;
-	virtual void RunSingleLoop() override;
+	virtual void RunSingleLoop() = 0;
 	virtual void Shutdown() override;
 
 public:

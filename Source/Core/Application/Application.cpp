@@ -16,26 +16,20 @@ IApplication::~IApplication()
 
 }
 
-void IApplication::ProcessCmdLineArgs(int argc, wchar_t** argv)
-{
-	(void)argc;
-	(void)argv;
-}
-
 void IApplication::Run(AppState currState)
 {
 	switch(currState)
 	{
+	case AppState::Prologue:
+		{
+			AppEntryPoint::SetState(AppState::Init);
+		}
+		break;
+
 	case AppState::Init:
 		{
 			AppEntryPoint::SetState(AppState::Pending);
 			Init();
-		}
-		break;
-
-	case AppState::Run:
-		{
-			RunSingleLoop();
 		}
 		break;
 
@@ -46,6 +40,18 @@ void IApplication::Run(AppState currState)
 		}
 		break;
 	}
+}
+
+bool IApplication::Init()
+{
+	recon::AppEntryPoint::SetState(recon::AppState::Run);
+
+	return true;
+}
+
+void IApplication::Shutdown()
+{
+	recon::AppEntryPoint::SetState(recon::AppState::Epilogue);
 }
 
 } // namespace recon

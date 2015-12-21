@@ -60,6 +60,15 @@
     <ClCompile Include="..\Source\Core\Utilities\Thread.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\CmdLineArg.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\CmdLineArgData.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\CmdLineManager.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Core\Utilities\GlobalDefines.h">
@@ -115,6 +124,15 @@
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\Atomic.h">
       <Filter>Header Files\Threading</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\CmdLineArg.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\CmdLineArgData.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\CmdLineManager.h">
+      <Filter>Header Files\Misc</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

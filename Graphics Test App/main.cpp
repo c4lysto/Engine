@@ -3,18 +3,14 @@
 #include "../Source/Core/Application/AppEntryPoint.h"
 
 #if RECON_OS_WINDOWS
-int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
+//int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, PSTR lpCmdLine, int nCmdShow)
+int main(int argc, char** argv)
 {
 	int returnCode = -1;
 
-	if(recon::AppEntryPoint::InitEntryPoint())
+	if(recon::AppEntryPoint::InitEntryPoint(argc, argv))
 	{
-		LPWSTR arguments = GetCommandLineW();
-
-		int argc;
-		LPWSTR* argv = CommandLineToArgvW(arguments, &argc);
-
-		returnCode = recon::AppEntryPoint::ExecuteApp(argc, argv);
+		returnCode = recon::AppEntryPoint::ExecuteApp();
 
 		recon::AppEntryPoint::ShutdownEntryPoint();
 	}

@@ -19,6 +19,9 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\Source\Core\Utilities\CmdLineArg.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\CmdLineArgData.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\CmdLineManager.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\Debugging\DebugWindow.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\HashString.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp" />
@@ -30,6 +33,9 @@
   <ItemGroup>
     <ClInclude Include="..\Source\Core\Utilities\Atomic.h" />
     <ClInclude Include="..\Source\Core\Utilities\BitSet.h" />
+    <ClInclude Include="..\Source\Core\Utilities\CmdLineArg.h" />
+    <ClInclude Include="..\Source\Core\Utilities\CmdLineArgData.h" />
+    <ClInclude Include="..\Source\Core\Utilities\CmdLineManager.h" />
     <ClInclude Include="..\Source\Core\Utilities\Color.h" />
     <ClInclude Include="..\Source\Core\Utilities\Function.h" />
     <ClInclude Include="..\Source\Core\Utilities\Random.h" />

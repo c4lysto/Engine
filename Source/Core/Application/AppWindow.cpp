@@ -14,8 +14,6 @@ void IAppWindow::Run(AppState currState)
 		case AppState::Prologue:
 		{
 			Init();
-
-			AppEntryPoint::SetState(AppState::Init);
 		}
 		break;
 

@@ -3,6 +3,9 @@
 
 #include "../Math Lib/MathLib.h"
 
+namespace recon
+{
+
 class Rand
 {
 private:
@@ -41,7 +44,7 @@ THREADLOCAL u32 Rand::ms_Seed2 = 0x2F01BEEFU;
 
 void Rand::Seed(u32 seed)
 {
-	ms_Seed1 = (seed & 0xFFFFFFFE) + 1; // See Can't be 0
+	ms_Seed1 = (seed & 0xFFFFFFFE) + 1; // Seed Can't be 0
 	ms_Seed2 = ms_Seed1 ^ U32_MAX;
 }
 
@@ -73,7 +76,7 @@ f32 Rand::DrawNormalized()
 
 bool Rand::DrawBool()
 {
-	return (Draw() & 1);
+	return (Draw() & 1) != 0;
 }
 
 Vec2V_Out Rand::Draw2()
@@ -132,5 +135,7 @@ Vec4V_Out Rand::Draw4(Vec4V_In vMin, Vec4V_In vMax)
 	Vec4V floatMask(IntToFloat(Draw4() & Vec4VInt((1 << 23) - 1)) * oneOver2Pow23MinusOne);
 	return floatMask * (vMax - vMin) + vMin;
 }
+
+} // namespace recon
 
 #endif // __RANDOM_H__

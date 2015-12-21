@@ -152,12 +152,9 @@
     <ClInclude Include="..\Source\Core\Application\AppWindow.h" />
     <ClInclude Include="..\Source\Core\Application\AppWindow_Windows.h" />
     <ClInclude Include="..\Source\Core\Application\Application.h" />
-    <ClInclude Include="..\Source\Core\Application\DefaultGameApp.h" />
+    <ClInclude Include="..\Source\Core\Application\WindowedApplication.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Graphics Engine\Graphics Engine.vcxproj">
-      <Project>{ef308125-ca73-457e-ac86-9e0895f86a89}</Project>
-    </ProjectReference>
     <ProjectReference Include="..\Input Manager\Input Manager.vcxproj">
       <Project>{459e99fd-87c8-4c2b-b750-c790fba22eb7}</Project>
     </ProjectReference>
@@ -170,7 +167,7 @@
     <ClCompile Include="..\Source\Core\Application\AppWindow.cpp" />
     <ClCompile Include="..\Source\Core\Application\AppWindow_Windows.cpp" />
     <ClCompile Include="..\Source\Core\Application\Application.cpp" />
-    <ClCompile Include="..\Source\Core\Application\DefaultGameApp.cpp" />
+    <ClCompile Include="..\Source\Core\Application\WindowedApplication.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

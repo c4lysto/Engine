@@ -1180,27 +1180,27 @@ inline Vector_Out RECON_VEC_CALLCONV VectorBitscanForward(Vector_In vec)
 	Vector c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xFFFF>());	// c = (v > 0xFFFF)
 	Vector b = VectorRightShift(c, 31);										// b = (c ? 1 : 0)
 	Vector r = VectorLeftShift(b, 4);										// r = (b << 4)
-	vec = VectorRightShift4(vec, r);										// v = (v >> r)
+	Vector vecOut = VectorRightShift4(vec, r);										// v = (v >> r)
 
-	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xFF>());	// c = (v > 0xFF)
+	c = VectorIsGreaterThanInt(vecOut, VectorSetConstant<0xFF>());	// c = (v > 0xFF)
 	b = VectorRightShift(c, 31);								// b = (c ? 1 : 0)
 	Vector s = VectorLeftShift(b, 3);							// s = (b << 3)
-	vec = VectorRightShift4(vec, s);							// v = (v >> s)
+	vecOut = VectorRightShift4(vecOut, s);							// v = (v >> s)
 	r = VectorOr(r, s);											// r = (r | s)
 
-	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0xF>());	// c = (v > 0xF)
+	c = VectorIsGreaterThanInt(vecOut, VectorSetConstant<0xF>());	// c = (v > 0xF)
 	b = VectorRightShift(c, 31);								// b = (c ? 1 : 0)
 	s = VectorLeftShift(b, 2);									// s = (b << 2)
-	vec = VectorRightShift4(vec, s);							// v = (v >> s)
+	vecOut = VectorRightShift4(vecOut, s);							// v = (v >> s)
 	r = VectorOr(r, s);											// r = (r | s)
 
-	c = VectorIsGreaterThanInt(vec, VectorSetConstant<0x3>());  // c = (v > 0x3)
+	c = VectorIsGreaterThanInt(vecOut, VectorSetConstant<0x3>());  // c = (v > 0x3)
 	b = VectorRightShift(c, 31);								// b = (c ? 1 : 0)
 	s = VectorLeftShift(b, 1);									// s = (b << 1)
-	vec = VectorRightShift4(vec, s);							// v = (v >> s)
+	vecOut = VectorRightShift4(vecOut, s);							// v = (v >> s)
 	r = VectorOr(r, s);											// r = (r | s)
 
-	s = VectorRightShift(vec, 1);
+	s = VectorRightShift(vecOut, 1);
 	r = VectorOr(r, s);
 
 	return r;

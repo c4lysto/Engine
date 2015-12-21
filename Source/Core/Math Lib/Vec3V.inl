@@ -91,8 +91,7 @@ __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator=(Vec3V_In vVector)
 #if !RECON_OS_64BIT
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator=(Vec3V&& vVector)
 {
-	if(this != &vVector)
-		row = move(vVector.row);
+	if(this != &vVector) { row = std::move(vVector.row); }
 	return *this;
 }
 #endif // !RECON_OS_64BIT

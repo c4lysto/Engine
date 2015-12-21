@@ -42,7 +42,7 @@ private:
 	std::thread m_Thread;
 	ThreadArgs m_ThreadArgs;
 
-	static unsigned int __stdcall DefaultThreadProc(void* pArgs);
+	static int DefaultThreadProc(void* pArgs);
 
 public:
 	Thread();

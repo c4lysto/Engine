@@ -83,6 +83,8 @@ public:
 
 	HashWithString& operator=(const HashWithString& rhs);
 	HashWithString& operator=(HashWithString&& rhs);
+
+	const std::string& GetString() const { return m_String; }
 };
 
 #if RECON_DEBUG

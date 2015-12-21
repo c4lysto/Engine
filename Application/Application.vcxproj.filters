@@ -27,7 +27,7 @@
     <ClInclude Include="..\Source\Core\Application\AppWindow.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Core\Application\DefaultGameApp.h">
+    <ClInclude Include="..\Source\Core\Application\WindowedApplication.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -44,7 +44,7 @@
     <ClCompile Include="..\Source\Core\Application\AppWindow.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Core\Application\DefaultGameApp.cpp">
+    <ClCompile Include="..\Source\Core\Application\WindowedApplication.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

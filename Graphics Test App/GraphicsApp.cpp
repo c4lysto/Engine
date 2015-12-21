@@ -19,8 +19,6 @@ bool GraphicsApp::Init()
 {
 	IDefaultGameApp::Init();
 
-	recon::AppEntryPoint::SetState(recon::AppState::Run);
-
 	return true;
 }
 
@@ -34,6 +32,4 @@ void GraphicsApp::RunSingleLoop()
 void GraphicsApp::Shutdown()
 {
 	IDefaultGameApp::Shutdown();
-
-	recon::AppEntryPoint::SetState(recon::AppState::Epilogue);
 }

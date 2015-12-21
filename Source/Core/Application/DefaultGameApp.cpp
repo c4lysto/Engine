@@ -14,7 +14,7 @@ namespace recon
 {
 
 IDefaultGameApp::IDefaultGameApp(const std::string& appName) :
-	IApplication(appName)
+	IWindowedApplication(appName)
 {
 
 }
@@ -28,15 +28,16 @@ bool IDefaultGameApp::Init()
 {
 	bool bSuccessfullyInitialized = false;
 
-	bSuccessfullyInitialized = IApplication::Init();
+	bSuccessfullyInitialized = IWindowedApplication::Init();
 
 	if(bSuccessfullyInitialized)
 	{
-		AppEntryPoint::GetWindow()->SetWindowMessageHandler(WindowMessageHandler(GameApp_WindowMessageHandler));
+		GetWindow()->SetWindowMessageHandler(WindowMessageHandler(GameApp_WindowMessageHandler));
 
 		GameClock::Init();
 
 		InputManager::CreateInstance();
+		InputManager::GetInstance()->Initialize();
 
 		GraphicsDevice::CreateInstance();
 		GraphicsDevice::GetInstance()->Init(1280, 720);
@@ -45,9 +46,23 @@ bool IDefaultGameApp::Init()
 	return bSuccessfullyInitialized;
 }
 
+void IDefaultGameApp::Run(AppState currState)
+{
+	IWindowedApplication::Run(currState);
+
+	switch(currState)
+	{
+	case AppState::Run:
+		{
+			RunSingleLoop();
+		}
+		break;
+	}
+}
+
 void IDefaultGameApp::RunSingleLoop()
 {
-	IApplication::RunSingleLoop();
+	IWindowedApplication::RunSingleLoop();
 
 	GameClock::Update();
 
@@ -62,7 +77,7 @@ void IDefaultGameApp::RunSingleLoop()
 
 void IDefaultGameApp::Shutdown()
 {
-	IApplication::Shutdown();
+	IWindowedApplication::Shutdown();
 
 	InputManager::DestroyInstance();
 

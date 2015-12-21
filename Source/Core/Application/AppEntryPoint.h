@@ -3,6 +3,8 @@
 
 #include <type_traits>
 
+#include "../Utilities/CmdLineArg.h"
+#include "../Utilities/CmdLineManager.h"
 #include "../Utilities/UtilitiesInclude.h"
 
 // Register New App Via REGISTER_APPLICATION In The Application's *.cpp File!
@@ -17,7 +19,6 @@ namespace recon
 {
 
 class IApplication;
-class IAppWindow;
 
 enum class AppState
 {
@@ -38,18 +39,16 @@ class AppEntryPoint final
 private:
 	static AppState ms_AppState;
 	static IApplication* ms_pApp;
-	static IAppWindow* ms_pAppWindow;
 
 public:
-	static bool InitEntryPoint();
-	static int ExecuteApp(int argc, wchar_t** argv);
+	static bool InitEntryPoint(int argc, char** argv);
+	static int ExecuteApp();
 	static void ShutdownEntryPoint();
 
 	static AppState GetState() { return ms_AppState; }
 	static void SetState(AppState appState) { ms_AppState = appState; }
 
 	static IApplication* GetApp() { return ms_pApp; }
-	static IAppWindow* GetWindow() { return ms_pAppWindow; }
 };
 
 } // namespace recon

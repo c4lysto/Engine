@@ -13,7 +13,7 @@ namespace recon
 	{
 		ms_Timers[(u32)GameTimer::LastFrame] = ms_Timers[(u32)GameTimer::UnDialated];
 
-		Timer::TimePoint currTimePoint = Timer::Now();
+		TimePoint currTimePoint = Timer::Now();
 
 		Timer& normalTimer = ms_Timers[(u32)GameTimer::UnDialated];
 		normalTimer.Update(currTimePoint);

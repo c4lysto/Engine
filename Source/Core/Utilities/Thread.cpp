@@ -1,10 +1,18 @@
 #include "Thread.h"
-#include <process.h>
 
+#if RECON_OS_WINDOWS
+#include <process.h>
+#endif // RECON_OS_WINDOWS
+
+#include "CmdLineArg.h"
 #include "Event.h"
+#include "Random.h"
+#include "Timer.h"
 
 namespace recon
 {
+
+static CmdLineArg s_ThreadRandomSeed("randomseed");
 
 Thread::Thread()
 {
@@ -57,12 +65,18 @@ bool Thread::StartThread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eTh
 	return bThreadStarted;
 }
 
-unsigned int __stdcall Thread::DefaultThreadProc(void* pArgs)
+int Thread::DefaultThreadProc(void* pArgs)
 {
-	u32 nProcRetVal = (u32)-1;
+	s32 nProcRetVal = -1;
 
 	if(pArgs)
 	{
+		s32 randomSeed = (s32)(TimePoint::Now() - TimePoint()).Get<TimeInterval::Milliseconds>();
+
+		s_ThreadRandomSeed.Get(randomSeed);
+
+		Rand::Seed(randomSeed);
+
 		ThreadArgs& threadArgs = *(ThreadArgs*)pArgs;
 
 		(threadArgs.m_pThreadFunc)(threadArgs.m_pArgs);
@@ -71,7 +85,7 @@ unsigned int __stdcall Thread::DefaultThreadProc(void* pArgs)
 	}
 
 #if RECON_ASSERT
-	if(nProcRetVal == (u32)-1)
+	if(nProcRetVal == -1)
 	{
 		Assertf(false, "Failed To Properly Start Thread! pArgs must be NULL for some reason!");
 	}
@@ -103,10 +117,10 @@ void Thread::SetThreadName(const char* szName, Thread* pThread /*= nullptr*/)
 
 	struct THREADNAME_INFO
 	{
-		const DWORD dwType = 0x1000; // Must be 0x1000.
-		LPCSTR szName; // Pointer to name (in user addr space).
-		DWORD dwThreadID; // Thread ID (-1=caller thread).
-		DWORD dwFlags; // Reserved for future use, must be zero.
+		const DWORD dwType = 0x1000;	// Must be 0x1000.
+		LPCSTR szName;					// Pointer to name (in user addr space).
+		DWORD dwThreadID;				// Thread ID (-1=caller thread).
+		DWORD dwFlags;					// Reserved for future use, must be zero.
 	};
 
 	THREADNAME_INFO info;

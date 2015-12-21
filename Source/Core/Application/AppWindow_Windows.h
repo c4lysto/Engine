@@ -5,6 +5,8 @@
 
 #if RECON_OS_WINDOWS
 
+#include <windows.h>
+
 namespace recon
 {
 

@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.23107.0
+# Visual Studio 2013
+VisualStudioVersion = 12.0.21005.1
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Test Console", "Test Console\Test Console.vcxproj", "{46515F17-3FB8-40BC-9844-82771937D02B}"
 	ProjectSection(ProjectDependencies) = postProject
@@ -21,9 +21,11 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Input Manager", "Input Mana
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics Engine", "Graphics Engine\Graphics Engine.vcxproj", "{EF308125-CA73-457E-AC86-9E0895F86A89}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application", "Application\Application.vcxproj", "{4497AB26-7896-4954-92F4-6DC123C88017}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Application Entry Point", "Application\Application.vcxproj", "{4497AB26-7896-4954-92F4-6DC123C88017}"
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Graphics Test App", "Graphics Test App\Graphics Test App.vcxproj", "{B2B421AE-3A31-4937-94C7-9CBE5C4FA8EA}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Game Entry Point", "Game Entry Point\Game Entry Point.vcxproj", "{61AACA37-DD27-46CF-B172-530D6013891E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -130,6 +132,17 @@ Global
 		{B2B421AE-3A31-4937-94C7-9CBE5C4FA8EA}.Release|Win32.Build.0 = Release|Win32
 		{B2B421AE-3A31-4937-94C7-9CBE5C4FA8EA}.Release|x64.ActiveCfg = Release|x64
 		{B2B421AE-3A31-4937-94C7-9CBE5C4FA8EA}.Release|x64.Build.0 = Release|x64
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Debug|Mixed Platforms.ActiveCfg = Debug|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Debug|Mixed Platforms.Build.0 = Debug|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Debug|Win32.ActiveCfg = Debug|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Debug|Win32.Build.0 = Debug|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Debug|x64.ActiveCfg = Debug|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Debug|x64.Build.0 = Debug|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Release|Mixed Platforms.ActiveCfg = Release|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Release|Mixed Platforms.Build.0 = Release|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Release|Win32.ActiveCfg = Release|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Release|Win32.Build.0 = Release|Win32
+		{61AACA37-DD27-46CF-B172-530D6013891E}.Release|x64.ActiveCfg = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

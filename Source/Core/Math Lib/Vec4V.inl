@@ -110,8 +110,7 @@ __forceinline Vec4V_Out RECON_VEC_CALLCONV Vec4V::operator=(Vec4V_In vVector)
 #if !RECON_OS_64BIT
 __forceinline Vec4V_Out RECON_VEC_CALLCONV Vec4V::operator=(Vec4V&& vVector)
 {
-	if(this != &vVector)
-		row = move(vVector.row);
+	if(this != &vVector) { row = std::move(vVector.row); }
 	return *this;
 }
 #endif // !RECON_OS_64BIT

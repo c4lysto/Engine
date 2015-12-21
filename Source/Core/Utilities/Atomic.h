@@ -9,6 +9,8 @@ namespace recon
 template<typename _StorageType>
 class _Atomic
 {
+	static_assert(!std::is_pointer<_StorageType>::value, "Atomic Storage Type Is A Pointer, Use AtomicPtr Instead!");
+
 private:
 	std::atomic<_StorageType> m_atomicVal;
 
@@ -18,6 +20,7 @@ public:
 
 	operator _StorageType() const { return m_atomicVal.load(); }
 
+	bool CompareExchange(_StorageType& expectedVal_SetIfFalse, _StorageType valToSet) { return m_atomicVal.compare_exchange_strong(&expectedVal_SetIfFalse, valToSet); }
 
 	_StorageType operator=(_StorageType val) { m_atomicVal.exchange(&val); return val; }
 
@@ -78,6 +81,8 @@ public:
 	AtomicPtr(_StorageType* const ptr) : m_atomicPtr(ptr) {}
 
 	operator _StorageType*() const { return _Get(); }
+
+	bool CompareExchange(_StorageType*& expectedVal_SetIfFalse, _StorageType* valToSet) { return m_atomicPtr.compare_exchange_strong(&expectedVal_SetIfFalse, valToSet); }
 
 	_StorageType* operator=(_StorageType* val) { m_atomicPtr.exchange(&val); return val; }
 

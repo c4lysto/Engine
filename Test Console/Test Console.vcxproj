@@ -164,8 +164,12 @@
       <AssemblerOutput Condition="'$(Configuration)|$(Platform)'=='Release|x64'">AssemblyAndMachineCode</AssemblerOutput>
       <Optimization Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Full</Optimization>
     </ClCompile>
+    <ClCompile Include="TestApp.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Application\Application.vcxproj">
+      <Project>{4497ab26-7896-4954-92f4-6dc123c88017}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\Utilities\Utilities.vcxproj">
       <Project>{10ae78bb-987d-4061-a1d4-8f4add9a86eb}</Project>
       <Private>true</Private>
@@ -174,6 +178,9 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
       <UseLibraryDependencyInputs>false</UseLibraryDependencyInputs>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="TestApp.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
