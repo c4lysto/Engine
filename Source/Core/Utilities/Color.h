@@ -22,6 +22,7 @@ private:
 
 public:
 	Color() {}
+	Color(const Color& rhs) : m_Color(rhs.m_Color) {}
 	explicit Color(u32 color) : m_Color(color) {}
 	inline Color(s32 R, s32 G, s32 B, s32 A = 255)
 	{
@@ -36,30 +37,39 @@ public:
 		Set(R, G, B, A);
 	}
 
-	u32 GetR() const {return r;}
-	f32 GetRf() const {return r*ONE_OVER_255;}
+	Color& operator=(const Color& rhs)
+	{
+		if(this != &rhs)
+		{
+			m_Color = rhs.m_Color;
+		}
+		return *this;
+	}
 
-	u32 GetG() const {return g;}
-	f32 GetGf() const {return g*ONE_OVER_255;}
+	u32 GetR() const { return r; }
+	f32 GetRf() const { return r*ONE_OVER_255; }
 
-	u32 GetB() const {return b;}
-	f32 GetBf() const {return b*ONE_OVER_255;}
+	u32 GetG() const { return g; }
+	f32 GetGf() const { return g*ONE_OVER_255; }
 
-	u32 GetA() const {return a;}
-	f32 GetAf() const {return a*ONE_OVER_255;}
+	u32 GetB() const { return b; }
+	f32 GetBf() const { return b*ONE_OVER_255; }
+
+	u32 GetA() const { return a; }
+	f32 GetAf() const { return a*ONE_OVER_255; }
 
 
-	inline void SetR(s32 R) {r = (u8)Clamp(R,0,255);}
-	inline void SetR(f32 R) {SetR(s32(Saturate(R)*255.0f));}
+	inline void SetR(s32 R) { r = (u8)Clamp(R,0,255); }
+	inline void SetR(f32 R) { SetR(s32(Saturate(R)*255.0f)); }
 
-	inline void SetG(s32 G) {g = (u8)Clamp(G,0,255);}
-	inline void SetG(f32 G) {SetR(s32(Saturate(G)*255.0f));}
+	inline void SetG(s32 G) { g = (u8)Clamp(G,0,255); }
+	inline void SetG(f32 G) { SetG(s32(Saturate(G)*255.0f)); }
 
-	inline void SetB(s32 B) {b = (u8)Clamp(B,0,255);}
-	inline void SetB(f32 B) {SetR(s32(Saturate(B)*255.0f));}
+	inline void SetB(s32 B) { b = (u8)Clamp(B,0,255); }
+	inline void SetB(f32 B) { SetB(s32(Saturate(B)*255.0f)); }
 
-	inline void SetA(s32 A) {a = (u8)Clamp(A,0,255);}
-	inline void SetA(f32 A) {SetR(s32(Saturate(A)*255.0f));}
+	inline void SetA(s32 A) { a = (u8)Clamp(A,0,255); }
+	inline void SetA(f32 A) { SetA(s32(Saturate(A)*255.0f)); }
 
 	__forceinline void Set(u32 color) {m_Color = color;}
 
@@ -72,6 +82,48 @@ public:
 	{
 		SetR(R); SetG(G); SetB(B); SetA(A);
 	}
+
+	Color operator+(const Color& rhs) const
+	{
+		return Color(r + rhs.r, g + rhs.g, b + rhs.b, a + rhs.a);
+	}
+
+	Color& operator+=(const Color& rhs)
+	{
+		r += rhs.r; g += rhs.g; b += rhs.b; a += rhs.a;
+		return *this;
+	}
+
+	Color operator-(const Color& rhs) const
+	{
+		return Color(r - rhs.r, g - rhs.g, b - rhs.b, a - rhs.a);
+	}
+
+	Color& operator-=(const Color& rhs)
+	{
+		r -= rhs.r; g -= rhs.g; b -= rhs.b; a -= rhs.a;
+		return *this;
+	}
+
+	Color operator*(const Color& rhs) const
+	{
+		return Color((r * rhs.r + 128) / 255, \
+					 (g * rhs.g + 128) / 255, \
+					 (b * rhs.b + 128) / 255, \
+					 (a * rhs.a + 128) / 255);
+	}
+
+	Color& operator*=(const Color& rhs)
+	{
+		r = (r * rhs.r + 128) / 255; \
+		g = (g * rhs.g + 128) / 255; \
+		b = (b * rhs.b + 128) / 255; \
+		a = (a * rhs.a + 128) / 255; \
+		return *this;
+	}
+
+	bool operator==(const Color& rhs) const { return m_Color == rhs.m_Color; }
+	bool operator!=(const Color& rhs) const { return m_Color != rhs.m_Color; }
 };
 
 // Color Values Taken From: http://www.w3schools.com/html/html_colorvalues.asp

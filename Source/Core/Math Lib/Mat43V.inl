@@ -116,15 +116,15 @@ __forceinline Mat43V_ConstRef RECON_VEC_CALLCONV Mat43V::operator=(Mat43V&& mMat
 
 inline Vec3V_Out RECON_VEC_CALLCONV operator*(Vec3V_ConstRef vPos, Mat43V_In mMatrix)
 {
-	Vector tmp1, tmp2;
-	Vector vPosVec(vPos.GetVector());
+	Vector128 tmp1, tmp2;
+	Vector128 vPosVec(vPos.GetVectorRef());
 
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(vPosVec);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(vPosVec);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(vPosVec);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	// Add on mMatrix.row4 since, vPos.w is expected to be 1
 	tmp2 = VectorAdd(mMatrix.row4, tmp2);
 
@@ -138,17 +138,17 @@ __forceinline Vec3V_Ref RECON_VEC_CALLCONV operator*=(Vec3V_Ref vPos, Mat43V_In 
 
 inline Vec3V_Out RECON_VEC_CALLCONV operator*(Vec4V_ConstRef vPos, Mat43V_In mMatrix)
 {
-	Vector tmp1, tmp2;
-	Vector vPosVec(vPos.GetVector());
+	Vector128 tmp1, tmp2;
+	Vector128 vPosVec(vPos.GetVectorRef());
 
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(vPosVec);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(vPosVec);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(vPosVec);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(vPosVec);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	return Vec3V(tmp2);
 }

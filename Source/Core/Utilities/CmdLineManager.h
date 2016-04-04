@@ -7,7 +7,6 @@
 #include "CmdLineArgData.h"
 #include "../Math Lib/MathLib.h"
 #include "Function.h"
-#include "HashString.h"
 
 namespace recon
 {
@@ -16,7 +15,7 @@ class CmdLineArg;
 
 class CmdLineManager
 {
-	typedef std::map<HashWithString, _CmdLineArgData*> ArgsMap;
+	typedef std::map<std::string, _CmdLineArgData*> ArgsMap;
 	typedef Function<void(void)> CmdLineConfigTypeCallback;
 
 private:
@@ -72,6 +71,7 @@ private:
 
 	static _CmdLineArgData* DetermineCmdLineArgData(char* argVal, u64& argValLength);
 
+	static bool IsCmdLineACommentLine(const char* cmdLine);
 	static bool IsCmdLineArgAnArray(char* argVal);
 	static bool DoesCmdLineArgContainFloat(char* argVal);
 
@@ -80,7 +80,7 @@ private:
 	static _CmdLineArgData* CreateCmdLineArgData_F32(char* argVal, u64& argValLength);
 	static _CmdLineArgData* CreateCmdLineArgData_S32(char* argVal, u64& argValLength);
 
-	static void _SetCmdLineArg(_CmdLineArgData* pArgPtr, _CmdLineArgData* pNewArg);
+	static void _SetCmdLineArg(const char* szArgName, _CmdLineArgData* pNewArgData);
 };
 
 template<typename... _ConfigTypes>

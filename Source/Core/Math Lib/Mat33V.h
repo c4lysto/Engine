@@ -35,7 +35,7 @@ private:
 
 		struct  
 		{
-			Vector row1, row2, row3;
+			Vector128 row1, row2, row3;
 		};
 
 		struct
@@ -109,6 +109,8 @@ public:
 	void RECON_VEC_CALLCONV SetScale(Vec3V_In vScale);
 	Vec3V_Out GetScale() const;
 };
+
+Vec2V_Out RECON_VEC_CALLCONV SinCos(ScalarV_In vRadians);
 
 #include "Mat33V.inl"
 

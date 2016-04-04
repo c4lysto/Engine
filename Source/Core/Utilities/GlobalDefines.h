@@ -17,14 +17,32 @@ typedef uint64_t u64;
 typedef float f32;
 typedef double f64;
 
+typedef intptr_t sptr;
+typedef uintptr_t uptr;
 
-#ifndef SSE_AVAILABLE
+
+#ifndef RECON_SSE_VERSION
+	#include <intrin.h>
+
+	#define SSE_VER_MMX	(5)
+	#define SSE_VER_10 (10)
+	#define SSE_VER_20 (20)
+	#define SSE_VER_30 (30)
+	#define SSE_VER_31 (31)
+	#define SSE_VER_41 (41)
+	#define SSE_VER_42 (42)
+	#define SSE_VER_AVX (50)
+
+	#define SSE_VER_ARM_NEON (SSE_VER_42)
+
 	#if defined(_M_IX86) || defined(_M_AMD64)
-		#define SSE_AVAILABLE (1)
+		#define RECON_SSE_VERSION (SSE_VER_AVX)
+	#elif defined (_M_ARM)
+		#define RECON_SSE_VERSION (SSE_VER_ARM_NEON)
 	#else
-		#define SSE_AVAILABLE (0)
+		#define RECON_SSE_VERSION (0)
 	#endif
-#endif // SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 #ifndef ALIGN
 	#if RECON_MSC_COMPILER
@@ -53,13 +71,17 @@ typedef double f64;
 #endif
 
 #ifndef THREADLOCAL
-	#if RECON_MSC_COMPILER
-		#define THREADLOCAL __declspec(thread)
-	#elif RECON_GCC_COMPILER
-		#define THREADLOCAL __thread
+	#if CPP11 && 0 // Set to 1 in visual studio 2015
+		#define THREADLOCAL thread_local
 	#else
-		#warning "#define THREADLOCAL NOT SUPPORTED FOR THIS COMPILER TYPE!"
-		#define THREADLOCAL
+		#if RECON_MSC_COMPILER
+			#define THREADLOCAL __declspec(thread)
+		#elif RECON_GCC_COMPILER
+			#define THREADLOCAL __thread
+		#else
+			#warning "#define THREADLOCAL NOT SUPPORTED FOR THIS COMPILER TYPE!"
+			#define THREADLOCAL
+		#endif
 	#endif
 #endif
 
@@ -199,7 +221,7 @@ typedef double f64;
 #define S32_SIGN_BIT BIT31
 #define S32_ABS_MASK (0x7FFFFFFFi32)
 
-#define S64_SIGN_BIT ((u64)1 << 64)
+#define S64_SIGN_BIT ((u64)1 << 63)
 #define S64_ABS_MASK (0x7FFFFFFFFFFFFFFFi64)
 
 #define F32_SIGN_BIT BIT31

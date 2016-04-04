@@ -9,25 +9,25 @@ __forceinline Vec3V::Vec3V(const f32& fX, const f32& fY, const f32& fZ) : row(Ve
 	
 }
 
-__forceinline Vec3V::Vec3V(ScalarV_In vVal) : row(vVal.GetVector())
+__forceinline Vec3V::Vec3V(ScalarV_In vVal) : row(vVal.GetVectorRef())
 {
 	
 }
 
 __forceinline Vec3V::Vec3V(ScalarV_In vX, ScalarV_In vY, ScalarV_In vZ)
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W1>(vX.GetVector(), vY.GetVector());
-	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(row, vZ.GetVector());
+	row = VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W1>(vX.GetVectorRef(), vY.GetVectorRef());
+	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(row, vZ.GetVectorRef());
 }
 
 __forceinline Vec3V::Vec3V(Vec2V_In vXY, ScalarV_In vZ) :
-	row(VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(vXY.GetVector(), vZ.GetVector()))
+	row(VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(vXY.GetVectorRef(), vZ.GetVectorRef()))
 {
 	
 }
 
 __forceinline Vec3V::Vec3V(ScalarV_In vX, Vec2V_In vYZ) :
-	row(VectorPermute<VecElem::X2, VecElem::X1, VecElem::Y1, VecElem::W2>(vYZ.GetVector(), vX.GetVector()))
+	row(VectorPermute<VecElem::X2, VecElem::X1, VecElem::Y1, VecElem::W2>(vYZ.GetVectorRef(), vX.GetVectorRef()))
 {
 	
 }
@@ -45,13 +45,13 @@ __forceinline Vec3V::Vec3V(Vec3V&& vVector) :
 }
 #endif // !RECON_OS_64BIT
 
-__forceinline Vec3V::Vec3V(Vector_In vVector) : row(vVector)
+__forceinline Vec3V::Vec3V(Vector128_In vVector) : row(vVector)
 {
 
 }
 
 #if !RECON_OS_64BIT
-__forceinline Vec3V::Vec3V(Vector&& vVector) : row(std::move(vVector))
+__forceinline Vec3V::Vec3V(Vector128&& vVector) : row(std::move(vVector))
 {
 	
 }
@@ -59,22 +59,22 @@ __forceinline Vec3V::Vec3V(Vector&& vVector) : row(std::move(vVector))
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::SetX(ScalarV_In vX)
 {
-	row = VectorPermute<VecElem::X2, VecElem::Y1, VecElem::Z1, VecElem::W1>(row, vX.GetVector());
+	row = VectorPermute<VecElem::X2, VecElem::Y1, VecElem::Z1, VecElem::W1>(row, vX.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::SetY(ScalarV_In vY)
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W1>(row, vY.GetVector());
+	row = VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W1>(row, vY.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::SetZ(ScalarV_In vZ)
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(row, vZ.GetVector());
+	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(row, vZ.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::SetW(ScalarV_In vW)
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(row, vW.GetVector());
+	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(row, vW.GetVectorRef());
 }
 
 __forceinline Vec3V_Out Vec3V::operator-() const
@@ -98,7 +98,7 @@ __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator=(Vec3V&& vVector)
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::operator*=(ScalarV_In vScalar)
 {
-	row = VectorDivide(row, vScalar.GetVector());
+	row = VectorDivide(row, vScalar.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::operator*=(Vec3V_In rhs)
@@ -108,7 +108,7 @@ __forceinline void RECON_VEC_CALLCONV Vec3V::operator*=(Vec3V_In rhs)
 
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator/(ScalarV_In vScalar) const
 {
-	return Vec3V(VectorDivide(row, vScalar.GetVector()));
+	return Vec3V(VectorDivide(row, vScalar.GetVectorRef()));
 }
 
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator/(Vec3V_In rhs) const
@@ -118,7 +118,7 @@ __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator/(Vec3V_In rhs) const
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::operator/=(ScalarV_In vScalar)
 {
-	row = VectorDivide(row, vScalar.GetVector());
+	row = VectorDivide(row, vScalar.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::operator/=(Vec3V_In rhs)
@@ -128,7 +128,7 @@ __forceinline void RECON_VEC_CALLCONV Vec3V::operator/=(Vec3V_In rhs)
 
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator*(ScalarV_In vScalar) const
 {
-	return Vec3V(VectorMultiply(row, vScalar.GetVector()));
+	return Vec3V(VectorMultiply(row, vScalar.GetVectorRef()));
 }
 
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator*(Vec3V_In rhs) const
@@ -138,7 +138,7 @@ __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3V::operator*(Vec3V_In rhs) const
 
 __forceinline Vec3V RECON_VEC_CALLCONV operator*(ScalarV_Ref vScalar, Vec3V_In vVector)
 {
-	return Vec3V(VectorMultiply(vScalar.GetVector(), vVector.row));
+	return Vec3V(VectorMultiply(vScalar.GetVectorRef(), vVector.row));
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec3V::operator+=(Vec3V_In vVector)
@@ -224,4 +224,22 @@ __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(s32 intVal)
 __forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(s32 intX, s32 intY, s32 intZ)
 {
 	return Vec3V(VectorSet(intX, intY, intZ, (s32)VEC_FILL_VAL));
+}
+
+template<s32 constantVal>
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VConstant()
+{
+	return Vec3V(VectorSetConstant<constantVal>());
+}
+
+template<s32 constantX, s32 constantY>
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VConstant()
+{
+	return Vec3V(VectorSetConstant<constantX, constantY, 0, 0>());
+}
+
+template<s32 constantX, s32 constantY, s32 constantZ>
+__forceinline Vec3V_Out RECON_VEC_CALLCONV Vec3VConstant()
+{
+	return Vec3V(VectorSetConstant<constantX, constantY, constantZ, 0>());
 }

@@ -3,7 +3,7 @@
 
 #include "MathDeclarations.h"
 
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 
 #include "ScalarV.h"
 
@@ -49,7 +49,7 @@ private:
 	union
 	{
 		f32 floatArr[4];
-		Vector row;
+		Vector128 row;
 
 		union
 		{
@@ -72,9 +72,9 @@ public:
 #if !RECON_OS_64BIT
 	Vec3V(Vec3V&& vVector);
 #endif // !RECON_OS_64BIT
-	explicit Vec3V(Vector_In vVector);
+	explicit Vec3V(Vector128_In vVector);
 #if !RECON_OS_64BIT
-	Vec3V(Vector&& vVector);
+	Vec3V(Vector128&& vVector);
 #endif // !RECON_OS_64BIT
 
 #ifdef DEFINE_VEC3V_ENUM_CONSTRUCTOR
@@ -163,13 +163,15 @@ public:
 	VEC3V_ACCESSOR_CONST(const f32&, GetZRef, z)
 	VEC3V_ACCESSOR_CONST(const f32&, GetWRef, w)
 
-	// Returns the Vector Intrinsic Data Type
-	VEC3V_ACCESSOR_CONST(Vector_Out, RECON_VEC_CALLCONV GetVector, row)
+	// Returns the Vector128 Intrinsic Data Type
+	VEC3V_ACCESSOR_CONST(Vector128_Out, RECON_VEC_CALLCONV GetVector, row)
+	VEC3V_ACCESSOR_CONST(Vector128_ConstRef, RECON_VEC_CALLCONV GetVectorRef, row)
 
 	VEC3V_ACCESSOR(f32&, GetXRef, x)
 	VEC3V_ACCESSOR(f32&, GetYRef, y)
 	VEC3V_ACCESSOR(f32&, GetZRef, z)
 	VEC3V_ACCESSOR(f32&, GetWRef, w)
+	VEC3V_ACCESSOR(Vector128_Ref, RECON_VEC_CALLCONV GetVectorRef, row)
 #undef VEC3V_ACCESSOR
 #undef VEC3V_ACCESSOR_CONST
 #undef VEC3V_ACCESSOR_SCALARV_CONST
@@ -198,7 +200,7 @@ public:
 #if !RECON_OS_64BIT
 	Vec3V_Out RECON_VEC_CALLCONV operator=(Vec3V&& vVector);
 #endif // !RECON_OS_64BIT
-	Vec3V_Out RECON_VEC_CALLCONV operator=(Vector_In vVector);
+	Vec3V_Out RECON_VEC_CALLCONV operator=(Vector128_In vVector);
 
 	void RECON_VEC_CALLCONV operator*=(ScalarV_In vScalar);
 	void RECON_VEC_CALLCONV operator*=(Vec3V_In rhs);
@@ -251,8 +253,18 @@ Vec3V_Out RECON_VEC_CALLCONV Cross(Vec3V_In vVectorA, Vec3V_In vVectorB);
 Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(s32 intVal);
 Vec3V_Out RECON_VEC_CALLCONV Vec3VInt(s32 intX, s32 intY, s32 intZ);
 
+template<s32 constantVal>
+Vec3V_Out RECON_VEC_CALLCONV Vec3VConstant();
+
+template<s32 constantX, s32 constantY>
+Vec3V_Out RECON_VEC_CALLCONV Vec3VConstant();
+
+template<s32 constantX, s32 constantY, s32 constantZ>
+Vec3V_Out RECON_VEC_CALLCONV Vec3VConstant();
+
+
 #include "Vec3V.inl"
 
-#endif // SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 #endif // VEC3V_H

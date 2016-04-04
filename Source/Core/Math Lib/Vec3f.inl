@@ -32,8 +32,8 @@ __forceinline Vec3f::Vec3f(Vec3f&& vVector) :
 
 }
 
-#if SSE_AVAILABLE
-__forceinline Vec3f::Vec3f(Vector_In vVector)
+#if RECON_SSE_VERSION
+__forceinline Vec3f::Vec3f(Vector128_In vVector)
 {
 	x = VectorExtractFloat<VecElem::X>(vVector);
 	y = VectorExtractFloat<VecElem::Y>(vVector);
@@ -41,14 +41,14 @@ __forceinline Vec3f::Vec3f(Vector_In vVector)
 }
 
 #if !RECON_OS_64BIT
-__forceinline Vec3f::Vec3f(Vector&& vVector)
+__forceinline Vec3f::Vec3f(Vector128&& vVector)
 {
 	x = VectorExtractFloat<VecElem::X>(vVector);
 	y = VectorExtractFloat<VecElem::Y>(vVector);
 	z = VectorExtractFloat<VecElem::Z>(vVector);
 }
 #endif // !RECON_OS_64BIT
-#endif // SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 __forceinline Vec3f_Out Vec3f::operator-() const
 {

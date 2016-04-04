@@ -11,27 +11,6 @@ class VecCmpResult;
 
 // Utility Functions
 
-template<typename Type>
-Type Max(const Type& lhs, const Type& rhs);
-
-template<typename Type>
-Type Min(const Type& lhs, const Type& rhs);
-
-template<typename Type>
-Type Clamp(const Type& val, const Type& minVal, const Type& maxVal);
-
-template<typename Type>
-Type Saturate(const Type& val);
-
-
-Vec2f_Out RECON_VEC_CALLCONV Max(Vec2f_In lhs, Vec2f_In rhs);
-Vec3f_Out RECON_VEC_CALLCONV Max(Vec3f_In lhs, Vec3f_In rhs);
-Vec4f_Out RECON_VEC_CALLCONV Max(Vec4f_In lhs, Vec4f_In rhs);
-
-Vec2f_Out RECON_VEC_CALLCONV Min(Vec2f_In lhs, Vec2f_In rhs);
-Vec3f_Out RECON_VEC_CALLCONV Min(Vec3f_In lhs, Vec3f_In rhs);
-Vec4f_Out RECON_VEC_CALLCONV Min(Vec4f_In lhs, Vec4f_In rhs);
-
 Vec2f_Out RECON_VEC_CALLCONV Clamp(Vec2f_In val, Vec2f_In minVal, Vec2f_In maxVal);
 Vec3f_Out RECON_VEC_CALLCONV Clamp(Vec3f_In val, Vec3f_In minVal, Vec3f_In maxVal);
 Vec4f_Out RECON_VEC_CALLCONV Clamp(Vec4f_In val, Vec4f_In minVal, Vec4f_In maxVal);
@@ -40,46 +19,34 @@ Vec2f_Out RECON_VEC_CALLCONV Saturate(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Saturate(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Saturate(Vec4f_In vVector);
 
-Vec2f_Out RECON_VEC_CALLCONV MaxInt(Vec2f_In lhs, Vec2f_In rhs);
-Vec3f_Out RECON_VEC_CALLCONV MaxInt(Vec3f_In lhs, Vec3f_In rhs);
-Vec4f_Out RECON_VEC_CALLCONV MaxInt(Vec4f_In lhs, Vec4f_In rhs);
+Vec2f_Out RECON_VEC_CALLCONV MaxS32(Vec2f_In lhs, Vec2f_In rhs);
+Vec3f_Out RECON_VEC_CALLCONV MaxS32(Vec3f_In lhs, Vec3f_In rhs);
+Vec4f_Out RECON_VEC_CALLCONV MaxS32(Vec4f_In lhs, Vec4f_In rhs);
 
-Vec2f_Out RECON_VEC_CALLCONV MinInt(Vec2f_In lhs, Vec2f_In rhs);
-Vec3f_Out RECON_VEC_CALLCONV MinInt(Vec3f_In lhs, Vec3f_In rhs);
-Vec4f_Out RECON_VEC_CALLCONV MinInt(Vec4f_In lhs, Vec4f_In rhs);
+Vec2f_Out RECON_VEC_CALLCONV MinS32(Vec2f_In lhs, Vec2f_In rhs);
+Vec3f_Out RECON_VEC_CALLCONV MinS32(Vec3f_In lhs, Vec3f_In rhs);
+Vec4f_Out RECON_VEC_CALLCONV MinS32(Vec4f_In lhs, Vec4f_In rhs);
 
-Vec2f_Out RECON_VEC_CALLCONV ClampInt(Vec2f_In val, Vec2f_In minVal, Vec2f_In maxVal);
-Vec3f_Out RECON_VEC_CALLCONV ClampInt(Vec3f_In val, Vec3f_In minVal, Vec3f_In maxVal);
-Vec4f_Out RECON_VEC_CALLCONV ClampInt(Vec4f_In val, Vec4f_In minVal, Vec4f_In maxVal);
+Vec2f_Out RECON_VEC_CALLCONV ClampS32(Vec2f_In val, Vec2f_In minVal, Vec2f_In maxVal);
+Vec3f_Out RECON_VEC_CALLCONV ClampS32(Vec3f_In val, Vec3f_In minVal, Vec3f_In maxVal);
+Vec4f_Out RECON_VEC_CALLCONV ClampS32(Vec4f_In val, Vec4f_In minVal, Vec4f_In maxVal);
 
-f32 RECON_VEC_CALLCONV Lerp(const f32& lhs, const f32& rhs, const f32& fLambda);
-f64 RECON_VEC_CALLCONV Lerp(const f64& lhs, const f64& rhs, const f64& fLambda);
 Vec2f_Out RECON_VEC_CALLCONV Lerp(Vec2f_In lhs, Vec2f_In rhs, const f32& fLambda);
 Vec3f_Out RECON_VEC_CALLCONV Lerp(Vec3f_In lhs, Vec3f_In rhs, const f32& fLambda);
 Vec4f_Out RECON_VEC_CALLCONV Lerp(Vec4f_In lhs, Vec4f_In rhs, const f32& fLambda);
 
-s8 Abs(const s8& iScalar);
-s16 Abs(const s16& iScalar);
-s32 Abs(const s32& iScalar);
-s64 Abs(const s64& iScalar);
-f32 Abs(const f32& fScalar);
-f64 Abs(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Abs(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Abs(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Abs(Vec4f_In vVector);
 
-Vec2f_Out RECON_VEC_CALLCONV AbsInt(Vec2f_In vVector);
-Vec3f_Out RECON_VEC_CALLCONV AbsInt(Vec3f_In vVector);
-Vec4f_Out RECON_VEC_CALLCONV AbsInt(Vec4f_In vVector);
+Vec2f_Out RECON_VEC_CALLCONV AbsS32(Vec2f_In vVector);
+Vec3f_Out RECON_VEC_CALLCONV AbsS32(Vec3f_In vVector);
+Vec4f_Out RECON_VEC_CALLCONV AbsS32(Vec4f_In vVector);
 
-f32 Sqrt(const f32& fScalar);
-f64 Sqrt(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Sqrt(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Sqrt(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Sqrt(Vec4f_In vVector);
 
-f32 SqrtSafe(const f32& fScalar, const f32& safeVal = 0.0f);
-f64 SqrtSafe(const f64& fScalar, const f64& safeVal = 0.0);
 Vec2f_Out RECON_VEC_CALLCONV SqrtSafe(Vec2f_In vVector, Vec2f_In vSafeVec = Vec2f(I_ZERO));
 Vec3f_Out RECON_VEC_CALLCONV SqrtSafe(Vec3f_In vVector, Vec3f_In vSafeVec = Vec3f(I_ZERO));
 Vec4f_Out RECON_VEC_CALLCONV SqrtSafe(Vec4f_In vVector, Vec4f_In vSafeVec = Vec4f(I_ZERO));
@@ -96,8 +63,6 @@ template<VecElem pX, VecElem pY> Vec2f_Out RECON_VEC_CALLCONV Permute(Vec2f_In l
 template<VecElem pX, VecElem pY, VecElem pZ> Vec3f_Out RECON_VEC_CALLCONV Permute(Vec3f_In lhs, Vec3f_In rhs);
 template<VecElem pX, VecElem pY, VecElem pZ, VecElem pW> Vec4f_Out RECON_VEC_CALLCONV Permute(Vec4f_In lhs, Vec4f_In rhs);
 
-f32 Sign(const f32& fScalar);
-f64 Sign(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Sign(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Sign(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Sign(Vec4f_In vVector);
@@ -121,38 +86,26 @@ f32 RECON_VEC_CALLCONV MaxComponent(Vec4f_In vVector);
 
 // Trigonometry
 
-f32 Sin(const f32& fRadians);
-f64 Sin(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV Sin(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV Sin(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV Sin(Vec4f_In vRadians);
 
-f32 ASin(const f32& fRadians);
-f64 ASin(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV ASin(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV ASin(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV ASin(Vec4f_In vRadians);
 
-f32 Cos(const f32& fRadians);
-f64 Cos(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV Cos(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV Cos(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV Cos(Vec4f_In vRadians);
 
-f32 ACos(const f32& fRadians);
-f64 ACos(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV ACos(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV ACos(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV ACos(Vec4f_In vRadians);
 
-f32 Tan(const f32& fRadians);
-f64 Tan(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV Tan(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV Tan(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV Tan(Vec4f_In vRadians);
 
-f32 ATan(const f32& fRadians);
-f64 ATan(const f64& fRadians);
 Vec2f_Out RECON_VEC_CALLCONV ATan(Vec2f_In vRadians);
 Vec3f_Out RECON_VEC_CALLCONV ATan(Vec3f_In vRadians);
 Vec4f_Out RECON_VEC_CALLCONV ATan(Vec4f_In vRadians);
@@ -208,29 +161,29 @@ VEC_CMP_DECL_VEC2(IsLessThanOrEqual, Vec2f)
 VEC_CMP_DECL_VEC3(IsLessThanOrEqual, Vec3f)
 VEC_CMP_DECL_VEC4(IsLessThanOrEqual, Vec4f)
 
-VEC_CMP_DECL_VEC2(IsEqualInt, Vec2f)
-VEC_CMP_DECL_VEC3(IsEqualInt, Vec3f)
-VEC_CMP_DECL_VEC4(IsEqualInt, Vec4f)
+VEC_CMP_DECL_VEC2(IsEqualS32, Vec2f)
+VEC_CMP_DECL_VEC3(IsEqualS32, Vec3f)
+VEC_CMP_DECL_VEC4(IsEqualS32, Vec4f)
 
-VEC_CMP_DECL_VEC2(IsGreaterThanInt, Vec2f)
-VEC_CMP_DECL_VEC3(IsGreaterThanInt, Vec3f)
-VEC_CMP_DECL_VEC4(IsGreaterThanInt, Vec4f)
+VEC_CMP_DECL_VEC2(IsGreaterThanS32, Vec2f)
+VEC_CMP_DECL_VEC3(IsGreaterThanS32, Vec3f)
+VEC_CMP_DECL_VEC4(IsGreaterThanS32, Vec4f)
 
-VEC_CMP_DECL_VEC2(IsLessThanInt, Vec2f)
-VEC_CMP_DECL_VEC3(IsLessThanInt, Vec3f)
-VEC_CMP_DECL_VEC4(IsLessThanInt, Vec4f)
+VEC_CMP_DECL_VEC2(IsLessThanS32, Vec2f)
+VEC_CMP_DECL_VEC3(IsLessThanS32, Vec3f)
+VEC_CMP_DECL_VEC4(IsLessThanS32, Vec4f)
 
-VEC_CMP_DECL_VEC2(IsNotEqualInt, Vec2f)
-VEC_CMP_DECL_VEC3(IsNotEqualInt, Vec3f)
-VEC_CMP_DECL_VEC4(IsNotEqualInt, Vec4f)
+VEC_CMP_DECL_VEC2(IsNotEqualS32, Vec2f)
+VEC_CMP_DECL_VEC3(IsNotEqualS32, Vec3f)
+VEC_CMP_DECL_VEC4(IsNotEqualS32, Vec4f)
 
-VEC_CMP_DECL_VEC2(IsGreaterThanOrEqualInt, Vec2f)
-VEC_CMP_DECL_VEC3(IsGreaterThanOrEqualInt, Vec3f)
-VEC_CMP_DECL_VEC4(IsGreaterThanOrEqualInt, Vec4f)
+VEC_CMP_DECL_VEC2(IsGreaterThanOrEqualS32, Vec2f)
+VEC_CMP_DECL_VEC3(IsGreaterThanOrEqualS32, Vec3f)
+VEC_CMP_DECL_VEC4(IsGreaterThanOrEqualS32, Vec4f)
 
-VEC_CMP_DECL_VEC2(IsLessThanOrEqualInt, Vec2f)
-VEC_CMP_DECL_VEC3(IsLessThanOrEqualInt, Vec3f)
-VEC_CMP_DECL_VEC4(IsLessThanOrEqualInt, Vec4f)
+VEC_CMP_DECL_VEC2(IsLessThanOrEqualS32, Vec2f)
+VEC_CMP_DECL_VEC3(IsLessThanOrEqualS32, Vec3f)
+VEC_CMP_DECL_VEC4(IsLessThanOrEqualS32, Vec4f)
 
 #undef VEC_CMP_DECL_VEC4
 #undef VEC_CMP_DECL_VEC3
@@ -265,28 +218,32 @@ VEC_ARITH_DECL(Divide, Vec2f)
 VEC_ARITH_DECL(Divide, Vec3f)
 VEC_ARITH_DECL(Divide, Vec4f)
 
+Vec2f_Out Mad(Vec2f_In vecMul1, Vec2f_In vecMul2, Vec2f_In vecAdd);
+Vec3f_Out Mad(Vec3f_In vecMul1, Vec3f_In vecMul2, Vec3f_In vecAdd);
+Vec4f_Out Mad(Vec4f_In vecMul1, Vec4f_In vecMul2, Vec4f_In vecAdd);
+
 
 // Integer Operations
-VEC_ARITH_DECL(AddInt, Vec2f)
-VEC_ARITH_DECL(AddInt, Vec3f)
-VEC_ARITH_DECL(AddInt, Vec4f)
+VEC_ARITH_DECL(AddS32, Vec2f)
+VEC_ARITH_DECL(AddS32, Vec3f)
+VEC_ARITH_DECL(AddS32, Vec4f)
 
-VEC_ARITH_DECL(SubtractInt, Vec2f)
-VEC_ARITH_DECL(SubtractInt, Vec3f)
-VEC_ARITH_DECL(SubtractInt, Vec4f)
+VEC_ARITH_DECL(SubtractS32, Vec2f)
+VEC_ARITH_DECL(SubtractS32, Vec3f)
+VEC_ARITH_DECL(SubtractS32, Vec4f)
 
-VEC_ARITH_DECL(MultiplyInt, Vec2f)
-VEC_ARITH_DECL(MultiplyInt, Vec3f)
-VEC_ARITH_DECL(MultiplyInt, Vec4f)
+VEC_ARITH_DECL(MultiplyS32, Vec2f)
+VEC_ARITH_DECL(MultiplyS32, Vec3f)
+VEC_ARITH_DECL(MultiplyS32, Vec4f)
 
-VEC_ARITH_DECL(DivideInt, Vec2f)
-VEC_ARITH_DECL(DivideInt, Vec3f)
-VEC_ARITH_DECL(DivideInt, Vec4f)
+VEC_ARITH_DECL(DivideS32, Vec2f)
+VEC_ARITH_DECL(DivideS32, Vec3f)
+VEC_ARITH_DECL(DivideS32, Vec4f)
 
 #undef VEC_ARITH_DECL
 
 
-// Vector Math Functions
+// Vector128 Math Functions
 
 f32 RECON_VEC_CALLCONV Dot(Vec2f_In vVectorA, Vec2f_In vVectorB);
 f32 RECON_VEC_CALLCONV Dot(Vec3f_In vVectorA, Vec3f_In vVectorB);
@@ -315,40 +272,30 @@ Mat33f_Out RECON_VEC_CALLCONV Normalize(Mat33f_In mMatrix);
 Mat43f_Out RECON_VEC_CALLCONV Normalize(Mat43f_In mMatrix);
 Mat44f_Out RECON_VEC_CALLCONV Normalize(Mat44f_In mMatrix);
 
-Vec2f_Out RECON_VEC_CALLCONV IntToFloat(Vec2f_In vVector);
-Vec3f_Out RECON_VEC_CALLCONV IntToFloat(Vec3f_In vVector);
-Vec4f_Out RECON_VEC_CALLCONV IntToFloat(Vec4f_In vVector);
+Vec2f_Out RECON_VEC_CALLCONV S32ToF32(Vec2f_In vVector);
+Vec3f_Out RECON_VEC_CALLCONV S32ToF32(Vec3f_In vVector);
+Vec4f_Out RECON_VEC_CALLCONV S32ToF32(Vec4f_In vVector);
 
-Vec2f_Out RECON_VEC_CALLCONV FloatToInt(Vec2f_In vVector);
-Vec3f_Out RECON_VEC_CALLCONV FloatToInt(Vec3f_In vVector);
-Vec4f_Out RECON_VEC_CALLCONV FloatToInt(Vec4f_In vVector);
+Vec2f_Out RECON_VEC_CALLCONV F32ToS32(Vec2f_In vVector);
+Vec3f_Out RECON_VEC_CALLCONV F32ToS32(Vec3f_In vVector);
+Vec4f_Out RECON_VEC_CALLCONV F32ToS32(Vec4f_In vVector);
 
-f32 Floor(const f32& fScalar);
-f64 Floor(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Floor(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Floor(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Floor(Vec4f_In vVector);
 
-f32 Ceil(const f32& fScalar);
-f64 Ceil(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Ceil(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Ceil(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Ceil(Vec4f_In vVector);
 
-f32 Trunc(const f32& fScalar);
-f64 Trunc(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Trunc(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Trunc(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Trunc(Vec4f_In vVector);
 
-f32 Round(const f32& fScalar);
-f64 Round(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Round(Vec2f& vVector);
 Vec3f_Out RECON_VEC_CALLCONV Round(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Round(Vec4f_In vVector);
 
-f32 Log2(const f32& fScalar);
-f64 Log2(const f64& fScalar);
 Vec2f_Out RECON_VEC_CALLCONV Log2(Vec2f_In vVector);
 Vec3f_Out RECON_VEC_CALLCONV Log2(Vec3f_In vVector);
 Vec4f_Out RECON_VEC_CALLCONV Log2(Vec4f_In vVector);
@@ -386,19 +333,9 @@ Mat44f_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(f32 unWidth, f32 unHeight)
 f32 CalculateGaussianWeight(s32 nOffset, f32 fSigma = 1.0f);
 
 // unRadius - Number of Pixels to Blur In a Single Direction Including the Center Pixel
-inline void CalculateGaussianWeights(f32* pGaussianWeights, u32 unRadius, f32 fLimit = 1.0f);
+void CalculateGaussianWeights(f32* pGaussianWeights, u32 unRadius, f32 fLimit = 1.0f);
 
-#if SSE_AVAILABLE
-
-ScalarV_Out RECON_VEC_CALLCONV Max(ScalarV_In lhs, ScalarV_In rhs);
-Vec2V_Out RECON_VEC_CALLCONV Max(Vec2V_In lhs, Vec2V_In rhs);
-Vec3V_Out RECON_VEC_CALLCONV Max(Vec3V_In lhs, Vec3V_In rhs);
-Vec4V_Out RECON_VEC_CALLCONV Max(Vec4V_In lhs, Vec4V_In rhs);
-
-ScalarV_Out RECON_VEC_CALLCONV Min(ScalarV_In lhs, ScalarV_In rhs);
-Vec2V_Out RECON_VEC_CALLCONV Min(Vec2V_In lhs, Vec2V_In rhs);
-Vec3V_Out RECON_VEC_CALLCONV Min(Vec3V_In lhs, Vec3V_In rhs);
-Vec4V_Out RECON_VEC_CALLCONV Min(Vec4V_In lhs, Vec4V_In rhs);
+#if RECON_SSE_VERSION
 
 ScalarV_Out RECON_VEC_CALLCONV Clamp(ScalarV_In val, ScalarV_In minVal, ScalarV_In maxVal);
 Vec2V_Out RECON_VEC_CALLCONV Clamp(Vec2V_In val, Vec2V_In minVal, Vec2V_In maxVal);
@@ -410,20 +347,20 @@ Vec2V_Out RECON_VEC_CALLCONV Saturate(Vec2V_In vVector);
 Vec3V_Out RECON_VEC_CALLCONV Saturate(Vec3V_In vVector);
 Vec4V_Out RECON_VEC_CALLCONV Saturate(Vec4V_In vVector);
 
-ScalarV_Out RECON_VEC_CALLCONV MaxInt(ScalarV_In lhs, ScalarV_In rhs);
-Vec2V_Out RECON_VEC_CALLCONV MaxInt(Vec2V_In lhs, Vec2V_In rhs);
-Vec3V_Out RECON_VEC_CALLCONV MaxInt(Vec3V_In lhs, Vec3V_In rhs);
-Vec4V_Out RECON_VEC_CALLCONV MaxInt(Vec4V_In lhs, Vec4V_In rhs);
+ScalarV_Out RECON_VEC_CALLCONV MaxS32(ScalarV_In lhs, ScalarV_In rhs);
+Vec2V_Out RECON_VEC_CALLCONV MaxS32(Vec2V_In lhs, Vec2V_In rhs);
+Vec3V_Out RECON_VEC_CALLCONV MaxS32(Vec3V_In lhs, Vec3V_In rhs);
+Vec4V_Out RECON_VEC_CALLCONV MaxS32(Vec4V_In lhs, Vec4V_In rhs);
 
-ScalarV_Out RECON_VEC_CALLCONV MinInt(ScalarV_In lhs, ScalarV_In rhs);
-Vec2V_Out RECON_VEC_CALLCONV MinInt(Vec2V_In lhs, Vec2V_In rhs);
-Vec3V_Out RECON_VEC_CALLCONV MinInt(Vec3V_In lhs, Vec3V_In rhs);
-Vec4V_Out RECON_VEC_CALLCONV MinInt(Vec4V_In lhs, Vec4V_In rhs);
+ScalarV_Out RECON_VEC_CALLCONV MinS32(ScalarV_In lhs, ScalarV_In rhs);
+Vec2V_Out RECON_VEC_CALLCONV MinS32(Vec2V_In lhs, Vec2V_In rhs);
+Vec3V_Out RECON_VEC_CALLCONV MinS32(Vec3V_In lhs, Vec3V_In rhs);
+Vec4V_Out RECON_VEC_CALLCONV MinS32(Vec4V_In lhs, Vec4V_In rhs);
 
-ScalarV_Out RECON_VEC_CALLCONV ClampInt(ScalarV_In val, ScalarV_In minVal, ScalarV_In maxVal);
-Vec2V_Out RECON_VEC_CALLCONV ClampInt(Vec2V_In val, Vec2V_In minVal, Vec2V_In maxVal);
-Vec3V_Out RECON_VEC_CALLCONV ClampInt(Vec3V_In val, Vec3V_In minVal, Vec3V_In maxVal);
-Vec4V_Out RECON_VEC_CALLCONV ClampInt(Vec4V_In val, Vec4V_In minVal, Vec4V_In maxVal);
+ScalarV_Out RECON_VEC_CALLCONV ClampS32(ScalarV_In val, ScalarV_In minVal, ScalarV_In maxVal);
+Vec2V_Out RECON_VEC_CALLCONV ClampS32(Vec2V_In val, Vec2V_In minVal, Vec2V_In maxVal);
+Vec3V_Out RECON_VEC_CALLCONV ClampS32(Vec3V_In val, Vec3V_In minVal, Vec3V_In maxVal);
+Vec4V_Out RECON_VEC_CALLCONV ClampS32(Vec4V_In val, Vec4V_In minVal, Vec4V_In maxVal);
 
 ScalarV_Out RECON_VEC_CALLCONV Lerp(ScalarV_In lhs, ScalarV_In rhs, ScalarV_In vLambda);
 Vec2V_Out RECON_VEC_CALLCONV Lerp(Vec2V_In lhs, Vec2V_In rhs, ScalarV_In vLambda);
@@ -435,10 +372,10 @@ Vec2V_Out RECON_VEC_CALLCONV Abs(Vec2V_In vVector);
 Vec3V_Out RECON_VEC_CALLCONV Abs(Vec3V_In vVector);
 Vec4V_Out RECON_VEC_CALLCONV Abs(Vec4V_In vVector);
 
-ScalarV_Out RECON_VEC_CALLCONV AbsInt(ScalarV_In vVector);
-Vec2V_Out RECON_VEC_CALLCONV AbsInt(Vec2V_In vVector);
-Vec3V_Out RECON_VEC_CALLCONV AbsInt(Vec3V_In vVector);
-Vec4V_Out RECON_VEC_CALLCONV AbsInt(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV AbsS32(ScalarV_In vVector);
+Vec2V_Out RECON_VEC_CALLCONV AbsS32(Vec2V_In vVector);
+Vec3V_Out RECON_VEC_CALLCONV AbsS32(Vec3V_In vVector);
+Vec4V_Out RECON_VEC_CALLCONV AbsS32(Vec4V_In vVector);
 
 template<VecElem splat> Vec2V_Out RECON_VEC_CALLCONV Splat(Vec2V_In lhs);
 template<VecElem splat> Vec3V_Out RECON_VEC_CALLCONV Splat(Vec3V_In lhs);
@@ -474,7 +411,7 @@ ScalarV_Out RECON_VEC_CALLCONV MaxComponent(Vec2V_In vVector);
 ScalarV_Out RECON_VEC_CALLCONV MaxComponent(Vec3V_In vVector);
 ScalarV_Out RECON_VEC_CALLCONV MaxComponent(Vec4V_In vVector);
 
-template<VecElem elem> ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vector_In vVector);
+template<VecElem elem> ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vector128_In vVector);
 template<VecElem elem> ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vec2V_In vVector);
 template<VecElem elem> ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vec3V_In vVector);
 template<VecElem elem> ScalarV_Out RECON_VEC_CALLCONV ScalarVFromElement(Vec4V_In vVector);
@@ -612,7 +549,7 @@ VEC_CMP_DECL_VEC4(IsLessThanOrEqualInt, Vec4V)
 
 
 
-// Vector Math Functions
+// Vector128 Math Functions
 
 ScalarV_Out RECON_VEC_CALLCONV Sqrt(ScalarV_In vScalar);
 Vec2V_Out RECON_VEC_CALLCONV Sqrt(Vec2V_In vVector);
@@ -651,6 +588,31 @@ Mat33V_Out RECON_VEC_CALLCONV Normalize(Mat33V_In mMatrix);
 Mat43V_Out RECON_VEC_CALLCONV Normalize(Mat43V_In mMatrix);
 Mat44V_Out RECON_VEC_CALLCONV Normalize(Mat44V_In mMatrix);
 
+ScalarV_Out RECON_VEC_CALLCONV Add(ScalarV_In lhs, ScalarV_In rhs);
+Vec2V_Out RECON_VEC_CALLCONV Add(Vec2V_In lhs, Vec2V_In rhs);
+Vec3V_Out RECON_VEC_CALLCONV Add(Vec3V_In lhs, Vec3V_In rhs);
+Vec4V_Out RECON_VEC_CALLCONV Add(Vec4V_In lhs, Vec4V_In rhs);
+
+ScalarV_Out RECON_VEC_CALLCONV Subtract(ScalarV_In lhs, ScalarV_In rhs);
+Vec2V_Out RECON_VEC_CALLCONV Subtract(Vec2V_In lhs, Vec2V_In rhs);
+Vec3V_Out RECON_VEC_CALLCONV Subtract(Vec3V_In lhs, Vec3V_In rhs);
+Vec4V_Out RECON_VEC_CALLCONV Subtract(Vec4V_In lhs, Vec4V_In rhs);
+
+ScalarV_Out RECON_VEC_CALLCONV Multiply(ScalarV_In lhs, ScalarV_In rhs);
+Vec2V_Out RECON_VEC_CALLCONV Multiply(Vec2V_In lhs, Vec2V_In rhs);
+Vec3V_Out RECON_VEC_CALLCONV Multiply(Vec3V_In lhs, Vec3V_In rhs);
+Vec4V_Out RECON_VEC_CALLCONV Multiply(Vec4V_In lhs, Vec4V_In rhs);
+
+ScalarV_Out RECON_VEC_CALLCONV Divide(ScalarV_In lhs, ScalarV_In rhs);
+Vec2V_Out RECON_VEC_CALLCONV Divide(Vec2V_In lhs, Vec2V_In rhs);
+Vec3V_Out RECON_VEC_CALLCONV Divide(Vec3V_In lhs, Vec3V_In rhs);
+Vec4V_Out RECON_VEC_CALLCONV Divide(Vec4V_In lhs, Vec4V_In rhs);
+
+ScalarV_Out RECON_VEC_CALLCONV Mad(ScalarV_In vecMul1, ScalarV_In vecMul2, ScalarV_In vecAdd);
+Vec2V_Out RECON_VEC_CALLCONV Mad(Vec2V_In vecMul1, Vec2V_In vecMul2, Vec2V_In vecAdd);
+Vec3V_Out RECON_VEC_CALLCONV Mad(Vec3V_In vecMul1, Vec3V_In vecMul2, Vec3V_In vecAdd);
+Vec4V_Out RECON_VEC_CALLCONV Mad(Vec4V_In vecMul1, Vec4V_In vecMul2, Vec4V_In vecAdd);
+
 ScalarV_Out RECON_VEC_CALLCONV AddInt(ScalarV_In lhs, ScalarV_In rhs);
 Vec2V_Out RECON_VEC_CALLCONV AddInt(Vec2V_In lhs, Vec2V_In rhs);
 Vec3V_Out RECON_VEC_CALLCONV AddInt(Vec3V_In lhs, Vec3V_In rhs);
@@ -666,15 +628,15 @@ Vec2V_Out RECON_VEC_CALLCONV MultiplyInt(Vec2V_In lhs, Vec2V_In rhs);
 Vec3V_Out RECON_VEC_CALLCONV MultiplyInt(Vec3V_In lhs, Vec3V_In rhs);
 Vec4V_Out RECON_VEC_CALLCONV MultiplyInt(Vec4V_In lhs, Vec4V_In rhs);
 
-ScalarV_Out RECON_VEC_CALLCONV IntToFloat(ScalarV_In vVector);
-Vec2V_Out RECON_VEC_CALLCONV IntToFloat(Vec2V_In vVector);
-Vec3V_Out RECON_VEC_CALLCONV IntToFloat(Vec3V_In vVector);
-Vec4V_Out RECON_VEC_CALLCONV IntToFloat(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV S32ToF32(ScalarV_In vVector);
+Vec2V_Out RECON_VEC_CALLCONV S32ToF32(Vec2V_In vVector);
+Vec3V_Out RECON_VEC_CALLCONV S32ToF32(Vec3V_In vVector);
+Vec4V_Out RECON_VEC_CALLCONV S32ToF32(Vec4V_In vVector);
 
-ScalarV_Out RECON_VEC_CALLCONV FloatToInt(ScalarV_In vVector);
-Vec2V_Out RECON_VEC_CALLCONV FloatToInt(Vec2V_In vVector);
-Vec3V_Out RECON_VEC_CALLCONV FloatToInt(Vec3V_In vVector);
-Vec4V_Out RECON_VEC_CALLCONV FloatToInt(Vec4V_In vVector);
+ScalarV_Out RECON_VEC_CALLCONV F32ToS32(ScalarV_In vVector);
+Vec2V_Out RECON_VEC_CALLCONV F32ToS32(Vec2V_In vVector);
+Vec3V_Out RECON_VEC_CALLCONV F32ToS32(Vec3V_In vVector);
+Vec4V_Out RECON_VEC_CALLCONV F32ToS32(Vec4V_In vVector);
 
 ScalarV_Out RECON_VEC_CALLCONV Floor(ScalarV_In vVector);
 Vec2V_Out RECON_VEC_CALLCONV Floor(Vec2V_In vVector);
@@ -730,7 +692,7 @@ Mat44V_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(ScalarV_In vWidth, ScalarV_
 Mat44V_Out RECON_VEC_CALLCONV MakeOrthographicMatrix(ScalarV_In fLeft, ScalarV_In fRight, ScalarV_In fBottom, ScalarV_In fTop, ScalarV_In fNear, ScalarV_In fFar);
 
 Mat44V_Out RECON_VEC_CALLCONV MakeTextureMatrixOffset(ScalarV_In unWidth, ScalarV_In unHeight);
-#endif //SSE_AVAILABLE
+#endif //RECON_SSE_VERSION
 
 class VecCmpResult
 {
@@ -743,20 +705,20 @@ public:
 	VecCmpResult(const bool& bX, const bool& bY, const bool& bZ);
 	VecCmpResult(const bool& bX, const bool& bY, const bool& bZ, const bool bW);
 
-#if SSE_AVAILABLE
-	VecCmpResult(Vector_In result);
-#endif // SSE_AVAILABLE
+#if RECON_SSE_VERSION
+	VecCmpResult(Vector128_In result);
+#endif // RECON_SSE_VERSION
 
 	explicit operator Vec2f() const;
 	explicit operator Vec3f() const;
 	explicit operator Vec4f() const;
 
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 	explicit operator Vec2V() const;
 	explicit operator Vec3V() const;
 	explicit operator Vec4V() const;
-	explicit operator Vector() const;
-#endif // SSE_AVAILABLE
+	explicit operator Vector128() const;
+#endif // RECON_SSE_VERSION
 
 	s32 GetResultMask() const;
 	operator s32 () const;

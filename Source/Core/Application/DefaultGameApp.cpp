@@ -5,10 +5,10 @@
 #endif // RECON_OS_WINDOWS
 
 #include "AppEntryPoint.h"
+#include "GameClock.h"
 #include "../Graphics/GraphicsDevice.h"
 #include "../Input/InputManager.h"
 #include "../Utilities/Function.h"
-#include "../Utilities/Timer.h"
 
 namespace recon
 {

@@ -27,27 +27,42 @@ void CmdLineArg::Init(const char* szArgName)
 
 void CmdLineArg::Set(bool boolVal)
 {
-	CmdLineManager::SetCmdLineArg(m_szArgName.c_str(), boolVal);
+	if(Verifyf(m_szArgName, "Cannot 'Set' An Invalid CmdLineArg!"))
+	{
+		CmdLineManager::SetCmdLineArg(m_szArgName, boolVal);
+	}
 }
 
 void CmdLineArg::Set(f32 floatVal)
 {
-	CmdLineManager::SetCmdLineArg(m_szArgName.c_str(), floatVal);
+	if(Verifyf(m_szArgName, "Cannot 'Set' An Invalid CmdLineArg!"))
+	{
+		CmdLineManager::SetCmdLineArg(m_szArgName, floatVal);
+	}
 }
 
 void CmdLineArg::Set(s32 intVal)
 {
-	CmdLineManager::SetCmdLineArg(m_szArgName.c_str(), intVal);
+	if(Verifyf(m_szArgName, "Cannot 'Set' An Invalid CmdLineArg!"))
+	{
+		CmdLineManager::SetCmdLineArg(m_szArgName, intVal);
+	}
 }
 
 void CmdLineArg::Set(const char* stringVal)
 {
-	CmdLineManager::SetCmdLineArg(m_szArgName.c_str(), stringVal);
+	if(Verifyf(m_szArgName, "Cannot 'Set' An Invalid CmdLineArg!"))
+	{
+		CmdLineManager::SetCmdLineArg(m_szArgName, stringVal);
+	}
 }
 
 void CmdLineArg::Set(const f32* floatArr, u32 arrSize)
 {
-	CmdLineManager::SetCmdLineArg(m_szArgName.c_str(), floatArr, arrSize);
+	if(Verifyf(m_szArgName, "Cannot 'Set' An Invalid CmdLineArg!"))
+	{
+		CmdLineManager::SetCmdLineArg(m_szArgName, floatArr, arrSize);
+	}
 }
 
 } // namespace recon

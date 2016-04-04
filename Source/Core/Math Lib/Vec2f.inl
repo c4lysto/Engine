@@ -19,21 +19,21 @@ __forceinline Vec2f::Vec2f(const f32& fX, const f32& fY) : x(fX), y(fY)
 	
 }
 
-#if SSE_AVAILABLE
-__forceinline Vec2f::Vec2f(Vector_In vVector)
+#if RECON_SSE_VERSION
+__forceinline Vec2f::Vec2f(Vector128_In vVector)
 {
 	x = VectorExtractFloat<VecElem::X>(vVector);
 	y = VectorExtractFloat<VecElem::Y>(vVector);
 }
 
 #if !RECON_OS_64BIT
-__forceinline Vec2f::Vec2f(Vector&& vVector)
+__forceinline Vec2f::Vec2f(Vector128&& vVector)
 {
 	x = VectorExtractFloat<VecElem::X>(vVector);
 	y = VectorExtractFloat<VecElem::Y>(vVector);
 }
 #endif // !RECON_OS_64BIT
-#endif
+#endif // RECON_SSE_VERSION
 
 __forceinline Vec2f_Ref RECON_VEC_CALLCONV Vec2f::operator=(Vec2f_In vVector)
 {

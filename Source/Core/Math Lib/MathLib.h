@@ -1,9 +1,10 @@
 #ifndef MATHLIB_H
 #define MATHLIB_H
 
+#include "../Utilities/UtilitiesInclude.h"
 #include "MathDeclarations.h"
 
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 #include "VectorWrapper.h"
 #endif
 
@@ -14,7 +15,7 @@
 #include "Mat43f.h"
 #include "Mat44f.h"
 
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 #include "ScalarV.h"
 #include "Vec2V.h"
 #include "Vec3V.h"

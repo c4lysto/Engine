@@ -1,7 +1,7 @@
-#ifndef DEBUGWINDOW_H
-#define DEBUGWINDOW_H
+#ifndef _RECON_DEBUGWINDOW_H_
+#define _RECON_DEBUGWINDOW_H_
 
-#include <Windows.h>
+#include "../Windows_Inc.h"
 #include <tchar.h>
 
 #define BUFFER_SIZE 100
@@ -25,4 +25,4 @@ public:
 
 } // namespace recon
 
-#endif
+#endif // _RECON_DEBUGWINDOW_H_

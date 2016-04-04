@@ -42,19 +42,10 @@
     <ClCompile Include="..\Source\Core\Utilities\ThreadPool.cpp">
       <Filter>Source Files\Threading</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp">
-      <Filter>Source Files\Memory</Filter>
-    </ClCompile>
     <ClCompile Include="..\Source\Core\Utilities\Debugging\DebugWindow.cpp">
       <Filter>Source Files\Debugging</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Core\Utilities\HashString.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\SysHook.cpp">
-      <Filter>Source Files\Misc</Filter>
-    </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\Timer.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
     <ClCompile Include="..\Source\Core\Utilities\Thread.cpp">
@@ -63,10 +54,19 @@
     <ClCompile Include="..\Source\Core\Utilities\CmdLineArg.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\CmdLineArgData.cpp">
+    <ClCompile Include="..\Source\Core\Utilities\CmdLineManager.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
-    <ClCompile Include="..\Source\Core\Utilities\CmdLineManager.cpp">
+    <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp">
+      <Filter>Source Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\WindowsHook.cpp">
+      <Filter>Source Files\Misc</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\Memory\LinearMemoryPool.cpp">
+      <Filter>Source Files\Memory</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Source\Core\Utilities\Random.cpp">
       <Filter>Source Files\Misc</Filter>
     </ClCompile>
   </ItemGroup>
@@ -80,9 +80,6 @@
     <ClInclude Include="..\Source\Core\Utilities\ThreadPool.h">
       <Filter>Header Files\Threading</Filter>
     </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h">
-      <Filter>Header Files\Memory</Filter>
-    </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\Function.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
@@ -93,9 +90,6 @@
       <Filter>Header Files\Debugging</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\HashString.h">
-      <Filter>Header Files\Misc</Filter>
-    </ClInclude>
-    <ClInclude Include="..\Source\Core\Utilities\SysHook.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
     <ClInclude Include="..\Source\Core\Utilities\BitSet.h">
@@ -134,5 +128,31 @@
     <ClInclude Include="..\Source\Core\Utilities\CmdLineManager.h">
       <Filter>Header Files\Misc</Filter>
     </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\GlobalFuncs.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Time.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Memory\MemPool.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Windows_Inc.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\WindowsHook.h">
+      <Filter>Header Files\Misc</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Source\Core\Utilities\Memory\LinearMemoryPool.h">
+      <Filter>Header Files\Memory</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Source\Core\Utilities\GlobalFuncs.inl">
+      <Filter>Resource Files</Filter>
+    </None>
   </ItemGroup>
 </Project>

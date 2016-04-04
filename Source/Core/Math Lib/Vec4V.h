@@ -2,7 +2,7 @@
 #define VEC4V_H
 
 #include "MathDeclarations.h"
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 
 typedef Vec4V& Vec4V_Ref;
 typedef const Vec4V& Vec4V_ConstRef;
@@ -47,7 +47,7 @@ private:
 	union
 	{
 		f32 floatArr[4];
-		Vector row;
+		Vector128 row;
 
 		union
 		{
@@ -73,9 +73,9 @@ public:
 	explicit Vec4V(Vec2V_In vXY, ScalarV_In vZ, ScalarV_In vW);
 	explicit Vec4V(Vec3V_In vXYZ, ScalarV_In vW);
 	explicit Vec4V(ScalarV_In vX, Vec3V_In vYZW);
-	explicit Vec4V(Vector_In vVector);
+	explicit Vec4V(Vector128_In vVector);
 #if !RECON_OS_64BIT
-	Vec4V(Vector&& vVector);
+	Vec4V(Vector128&& vVector);
 #endif // !RECON_OS_64BIT
 
 #if defined(VEC4V_ACCESSOR) && defined(VEC4V_ACCESSOR_CONST) && defined(VEC4V_ACCESSOR_SCALARV_CONST)
@@ -89,12 +89,14 @@ public:
 	VEC4V_ACCESSOR_CONST(const f32&, GetWRef, w)
 	__forceinline Vec3V RECON_VEC_CALLCONV GetXYZ() const { return Vec3V(row); }
 
-	VEC4V_ACCESSOR_CONST(Vector_Out, RECON_VEC_CALLCONV GetVector, row);
+	VEC4V_ACCESSOR_CONST(Vector128_Out, RECON_VEC_CALLCONV GetVector, row)
+	VEC4V_ACCESSOR_CONST(Vector128_ConstRef, RECON_VEC_CALLCONV GetVectorRef, row)
 
 	VEC4V_ACCESSOR(f32&, GetXRef, x)
 	VEC4V_ACCESSOR(f32&, GetYRef, y)
 	VEC4V_ACCESSOR(f32&, GetZRef, z)
 	VEC4V_ACCESSOR(f32&, GetWRef, w)
+	VEC4V_ACCESSOR(Vector128_Ref, RECON_VEC_CALLCONV GetVectorRef, row)
 #undef VEC4V_ACCESSOR
 #undef VEC4V_ACCESSOR_CONST
 #undef VEC4V_ACCESSOR_SCALARV_CONST
@@ -256,6 +258,19 @@ public:
 Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(s32 intVal);
 Vec4V_Out RECON_VEC_CALLCONV Vec4VInt(s32 intX, s32 intY, s32 intZ, s32 intW);
 
+template<s32 constantVal>
+Vec4V_Out RECON_VEC_CALLCONV Vec4VConstant();
+
+template<s32 constantX, s32 constantY>
+Vec4V_Out RECON_VEC_CALLCONV Vec4VConstant();
+
+template<s32 constantX, s32 constantY, s32 constantZ>
+Vec4V_Out RECON_VEC_CALLCONV Vec4VConstant();
+
+template<s32 constantX, s32 constantY, s32 constantZ, s32 constantW>
+Vec4V_Out RECON_VEC_CALLCONV Vec4VConstant();
+
+
 ScalarV_Out RECON_VEC_CALLCONV Dot(Vec4V_In lhs, Vec4V_In rhs);
 
 ScalarV_Out RECON_VEC_CALLCONV Mag(Vec4V_In vVector);
@@ -268,6 +283,6 @@ Vec4V_Out RECON_VEC_CALLCONV Cross(Vec4V_In vVectorA, Vec4V_In vVectorB);
 
 #include "Vec4V.inl"
 
-#endif // SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 #endif // VEC4V_H

@@ -112,61 +112,61 @@ inline Mat44f_Out RECON_VEC_CALLCONV Mat44f::operator*(Mat44f_In mMatrix) const
 {
 	Mat44f result;
 
-#if SSE_AVAILABLE
-	const Vector otherX = VectorLoadU(mMatrix.xAxis.GetVector());
-	const Vector otherY = VectorLoadU(mMatrix.yAxis.GetVector());
-	const Vector otherZ = VectorLoadU(mMatrix.zAxis.GetVector());
-	const Vector otherW = VectorLoadU(mMatrix.wAxis.GetVector());
+#if RECON_SSE_VERSION
+	const Vector128 otherX = VectorLoadU(mMatrix.xAxis.GetVectorRef());
+	const Vector128 otherY = VectorLoadU(mMatrix.yAxis.GetVectorRef());
+	const Vector128 otherZ = VectorLoadU(mMatrix.zAxis.GetVectorRef());
+	const Vector128 otherW = VectorLoadU(mMatrix.wAxis.GetVectorRef());
 
-	Vector tmp1, tmp2;
+	Vector128 tmp1, tmp2;
 
 	// get the top row
 	tmp1 = VectorSet(xAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(xAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(xAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 	tmp1 = VectorSet(xAxis.w);
-	tmp2 = VectorAdd(VectorMultiply(otherW, tmp1), tmp2);
+	tmp2 = VectorMad(otherW, tmp1, tmp2);
 
-	VectorStoreU(tmp2, result.xAxis.GetVector());
+	VectorStoreU(tmp2, result.xAxis.GetVectorRef());
 
 	// get 2nd row
 	tmp1 = VectorSet(yAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(yAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(yAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 	tmp1 = VectorSet(yAxis.w);
-	tmp2 = VectorAdd(VectorMultiply(otherW, tmp1), tmp2);
+	tmp2 = VectorMad(otherW, tmp1, tmp2);
 
-	VectorStoreU(tmp2, result.yAxis.GetVector());
+	VectorStoreU(tmp2, result.yAxis.GetVectorRef());
 
 	// get 3rd row
 	tmp1 = VectorSet(zAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(zAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(zAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 	tmp1 = VectorSet(zAxis.w);
-	tmp2 = VectorAdd(VectorMultiply(otherW, tmp1), tmp2);
+	tmp2 = VectorMad(otherW, tmp1, tmp2);
 
-	VectorStoreU(tmp2, result.zAxis.GetVector());
+	VectorStoreU(tmp2, result.zAxis.GetVectorRef());
 
 	// get bottom row
 	tmp1 = VectorSet(wAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(wAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(wAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 	tmp1 = VectorSet(wAxis.w);
-	tmp2 = VectorAdd(VectorMultiply(otherW, tmp1), tmp2);
+	tmp2 = VectorMad(otherW, tmp1, tmp2);
 
-	VectorStoreU(tmp2, result.wAxis.GetVector());
+	VectorStoreU(tmp2, result.wAxis.GetVectorRef());
 #else
 	const Vec4f& otherX = mMatrix.xAxis;
 	const Vec4f& otherY = mMatrix.yAxis;
@@ -192,68 +192,64 @@ inline Mat44f_Out RECON_VEC_CALLCONV Mat44f::operator*(Mat44f_In mMatrix) const
 	result.Wy = wAxis.x * otherX.y + wAxis.y * mMatrix.Yy + wAxis.z * mMatrix.Zy + wAxis.w * mMatrix.Wy;
 	result.Wz = wAxis.x * otherX.z + wAxis.y * mMatrix.Yz + wAxis.z * mMatrix.Zz + wAxis.w * mMatrix.Wz;
 	result.Ww = wAxis.x * otherX.w + wAxis.y * mMatrix.Yw + wAxis.z * mMatrix.Zw + wAxis.w * mMatrix.Ww;
-#endif
+#endif // RECON_SSE_VERSION
 
 	return result;
 }
 
 inline void RECON_VEC_CALLCONV Mat44f::operator*=(Mat44f_In mMatrix)
 {
-#if SSE_AVAILABLE
-	const Vector otherX = VectorLoadU(mMatrix.xAxis.GetVector());
-	const Vector otherY = VectorLoadU(mMatrix.yAxis.GetVector());
-	const Vector otherZ = VectorLoadU(mMatrix.zAxis.GetVector());
-	const Vector otherW = VectorLoadU(mMatrix.wAxis.GetVector());
+#if RECON_SSE_VERSION
+	const Vector128 otherX = VectorLoadU(mMatrix.xAxis.GetVectorRef());
+	const Vector128 otherY = VectorLoadU(mMatrix.yAxis.GetVectorRef());
+	const Vector128 otherZ = VectorLoadU(mMatrix.zAxis.GetVectorRef());
+	const Vector128 otherW = VectorLoadU(mMatrix.wAxis.GetVectorRef());
 
-	Vector tmp1, tmp2;
+	Vector128 tmp1, tmp2;
 
 	// get the top row
 	tmp1 = VectorSet(xAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(xAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(xAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 	tmp1 = VectorSet(xAxis.w);
-	tmp2 = VectorAdd(VectorMultiply(otherW, tmp1), tmp2);
-
-	VectorStoreU(tmp2, xAxis.GetVector());
+	tmp2 = VectorMad(otherW, tmp1, tmp2);
+	VectorStoreU(tmp2, xAxis.GetVectorRef());
 
 	// get 2nd row
 	tmp1 = VectorSet(yAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(yAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(yAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 	tmp1 = VectorSet(yAxis.w);
-	tmp2 = VectorAdd(VectorMultiply(otherW, tmp1), tmp2);
-
-	VectorStoreU(tmp2, yAxis.GetVector());
+	tmp2 = VectorMad(otherW, tmp1, tmp2);
+	VectorStoreU(tmp2, yAxis.GetVectorRef());
 
 	// get 3rd row
 	tmp1 = VectorSet(zAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(zAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(zAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 	tmp1 = VectorSet(zAxis.w);
-	tmp2 = VectorAdd(VectorMultiply(otherW, tmp1), tmp2);
-
-	VectorStoreU(tmp2, zAxis.GetVector());
+	tmp2 = VectorMad(otherW, tmp1, tmp2);
+	VectorStoreU(tmp2, zAxis.GetVectorRef());
 
 	// get bottom row
 	tmp1 = VectorSet(wAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(wAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(wAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 	tmp1 = VectorSet(wAxis.w);
-	tmp2 = VectorAdd(VectorMultiply(otherW, tmp1), tmp2);
-
-	VectorStoreU(tmp2, wAxis.GetVector());
+	tmp2 = VectorMad(otherW, tmp1, tmp2);
+	VectorStoreU(tmp2, wAxis.GetVectorRef());
 #else
 	const Vec4f& otherX = mMatrix.xAxis;
 	const Vec4f& otherY = mMatrix.yAxis;
@@ -284,7 +280,7 @@ inline void RECON_VEC_CALLCONV Mat44f::operator*=(Mat44f_In mMatrix)
 	wAxis.y = currAxis.x * otherX.y + currAxis.y * otherY.y + currAxis.z * otherZ.y + currAxis.w * otherW.y;
 	wAxis.z = currAxis.x * otherX.z + currAxis.y * otherY.z + currAxis.z * otherZ.z + currAxis.w * otherW.z;
 	wAxis.w = currAxis.x * otherX.w + currAxis.y * otherY.w + currAxis.z * otherZ.w + currAxis.w * otherW.w;
-#endif
+#endif // RECON_SSE_VERSION
 }
 
 inline Vec4f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector, Mat44f_In mMatrix)
@@ -294,18 +290,18 @@ inline Vec4f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector, Mat44f_In mMatri
 	f32 fZ = vVector.GetZ();
 	f32 fW = vVector.GetW();
 
-#if SSE_AVAILABLE
-	Vector tmp1, tmp2;
+#if RECON_SSE_VERSION
+	Vector128 tmp1, tmp2;
 
 	// get the top row
 	tmp1 = VectorSet(fX);
 	tmp2 = VectorMultiply(VectorLoadU((f32*)&mMatrix.xAxis), tmp1);
 	tmp1 = VectorSet(fY);
-	tmp2 = VectorAdd(VectorMultiply(VectorLoadU((f32*)&mMatrix.yAxis), tmp1), tmp2);
+	tmp2 = VectorMad(VectorLoadU((f32*)&mMatrix.yAxis), tmp1, tmp2);
 	tmp1 = VectorSet(fZ);
-	tmp2 = VectorAdd(VectorMultiply(VectorLoadU((f32*)&mMatrix.zAxis), tmp1), tmp2);
+	tmp2 = VectorMad(VectorLoadU((f32*)&mMatrix.zAxis), tmp1, tmp2);
 	tmp1 = VectorSet(fW);
-	tmp2 = VectorAdd(VectorMultiply(VectorLoadU((f32*)&mMatrix.wAxis), tmp1), tmp2);
+	tmp2 = VectorMad(VectorLoadU((f32*)&mMatrix.wAxis), tmp1, tmp2);
 
 	return Vec4f(tmp2);
 #else
@@ -313,7 +309,7 @@ inline Vec4f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector, Mat44f_In mMatri
 				 fX * mMatrix.xAxis.y + fY * mMatrix.yAxis.y + fZ * mMatrix.zAxis.y + fW * mMatrix.wAxis.y,
 				 fX * mMatrix.xAxis.z + fY * mMatrix.yAxis.z + fZ * mMatrix.zAxis.z + fW * mMatrix.wAxis.z,
 				 fX * mMatrix.xAxis.w + fY * mMatrix.yAxis.w + fZ * mMatrix.zAxis.w + fW * mMatrix.wAxis.w);
-#endif
+#endif // RECON_SSE_VERSION
 }
 
 __forceinline Vec4f_Ref RECON_VEC_CALLCONV operator*=(Vec4f_Ref vVector, Mat44f_In mMatrix)

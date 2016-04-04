@@ -118,17 +118,17 @@ inline Mat44V RECON_VEC_CALLCONV Mat44V::operator*(Mat44V_In mMatrix) const
 {
 	Mat44V result;
 
-	Vector tmp1, tmp2;
+	Vector128 tmp1, tmp2;
 
 	// get the top row
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row1);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row1);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row1);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row1);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	result.row1 = tmp2;
 
@@ -136,11 +136,11 @@ inline Mat44V RECON_VEC_CALLCONV Mat44V::operator*(Mat44V_In mMatrix) const
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row2);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row2);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row2);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row2);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	result.row2 = tmp2;
 
@@ -148,11 +148,11 @@ inline Mat44V RECON_VEC_CALLCONV Mat44V::operator*(Mat44V_In mMatrix) const
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row3);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row3);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row3);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row3);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	result.row3 = tmp2;
 
@@ -160,11 +160,11 @@ inline Mat44V RECON_VEC_CALLCONV Mat44V::operator*(Mat44V_In mMatrix) const
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row4);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row4);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row4);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row4);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	result.row4 = tmp2;
 
@@ -173,17 +173,17 @@ inline Mat44V RECON_VEC_CALLCONV Mat44V::operator*(Mat44V_In mMatrix) const
 
 inline void RECON_VEC_CALLCONV Mat44V::operator*=(Mat44V_In mMatrix)
 {
-	Vector tmp1, tmp2;
+	Vector128 tmp1, tmp2;
 
 	// get the top row
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row1);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row1);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row1);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row1);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	row1 = tmp2;
 
@@ -191,11 +191,11 @@ inline void RECON_VEC_CALLCONV Mat44V::operator*=(Mat44V_In mMatrix)
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row2);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row2);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row2);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row2);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	row2 = tmp2;
 
@@ -203,11 +203,11 @@ inline void RECON_VEC_CALLCONV Mat44V::operator*=(Mat44V_In mMatrix)
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row3);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row3);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row3);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row3);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	row3 = tmp2;
 
@@ -215,11 +215,11 @@ inline void RECON_VEC_CALLCONV Mat44V::operator*=(Mat44V_In mMatrix)
 	tmp1 = VectorPermute<VecElem::X, VecElem::X, VecElem::X, VecElem::X>(row4);
 	tmp2 = VectorMultiply(mMatrix.row1, tmp1);
 	tmp1 = VectorPermute<VecElem::Y, VecElem::Y, VecElem::Y, VecElem::Y>(row4);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row2, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row2, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::Z, VecElem::Z, VecElem::Z, VecElem::Z>(row4);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row3, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row3, tmp1, tmp2);
 	tmp1 = VectorPermute<VecElem::W, VecElem::W, VecElem::W, VecElem::W>(row4);
-	tmp2 = VectorAdd(VectorMultiply(mMatrix.row4, tmp1), tmp2);
+	tmp2 = VectorMad(mMatrix.row4, tmp1, tmp2);
 
 	row4 = tmp2;
 }

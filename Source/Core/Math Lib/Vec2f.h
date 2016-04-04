@@ -133,13 +133,13 @@ public:
 	explicit Vec2f(const f32& fVal);
 	Vec2f(const f32& fX, const f32& fY);
 
-#if SSE_AVAILABLE
-	explicit Vec2f(Vector_In vVector);
+#if RECON_SSE_VERSION
+	explicit Vec2f(Vector128_In vVector);
 
 #if !RECON_OS_64BIT
-	explicit Vec2f(Vector&& vVector);
+	explicit Vec2f(Vector128&& vVector);
 #endif
-#endif
+#endif // RECON_SSE_VERSION
 
 #if defined(VEC2_ACCESSOR) && defined(VEC2_ACCESSOR_CONST)
 	VEC2_ACCESSOR_CONST(f32, GetX, x)
@@ -147,6 +147,7 @@ public:
 	VEC2_ACCESSOR_CONST(const f32&, GetXRef, x)
 	VEC2_ACCESSOR_CONST(const f32&, GetYRef, y)
 	VEC2_ACCESSOR_CONST(const f32*, GetVector, vector)
+	VEC2_ACCESSOR_CONST(const f32*, GetVectorRef, (const f32*)vector)
 
 	VEC2_ACCESSOR_CONST(s32, GetXi, iX)
 	VEC2_ACCESSOR_CONST(s32, GetYi, iY)
@@ -155,7 +156,7 @@ public:
 
 	VEC2_ACCESSOR(f32&, GetXRef, x)
 	VEC2_ACCESSOR(f32&, GetYRef, y)
-	VEC2_ACCESSOR(f32*, GetVector, vector)
+	VEC2_ACCESSOR(f32*, GetVectorRef, vector)
 
 	VEC2_ACCESSOR(s32&, GetXiRef, iX)
 	VEC2_ACCESSOR(s32&, GetYiRef, iY)

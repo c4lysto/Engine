@@ -40,12 +40,13 @@ u32 HashString::_ComputeHash(const char* szString) const
 
 	if(szString)
 	{
-		for(u32 i = 0; szString[i]; ++i)
+		do
 		{
-			hash += szString[i];
+			hash += *szString;
 			hash += (hash << 10);
 			hash ^= (hash >> 6);
 		}
+		while(++szString);
 
 		hash += (hash << 3);
 		hash ^= (hash >> 11);

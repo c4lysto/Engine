@@ -125,8 +125,8 @@ inline Vec3f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector, Mat43f_In mMatri
 	const f32& fZ = vVector.GetZRef();
 	const f32& fW = vVector.GetWRef();
 
-#if SSE_AVAILABLE
-	Vector tmp1, tmp2;
+#if RECON_SSE_VERSION
+	Vector128 tmp1, tmp2;
 
 	Vec3f_ConstRef vXAxis = mMatrix.xAxis;
 	Vec3f_ConstRef vYAxis = mMatrix.yAxis;
@@ -135,20 +135,20 @@ inline Vec3f_Out RECON_VEC_CALLCONV operator*(Vec4f_In vVector, Mat43f_In mMatri
 
 	// get the top row
 	tmp1 = VectorSet(fX);
-	tmp2 = VectorMultiply(VectorLoadU(vXAxis.GetVector()), tmp1);
+	tmp2 = VectorMultiply(VectorLoadU(vXAxis.GetVectorRef()), tmp1);
 	tmp1 = VectorSet(fY);
-	tmp2 = VectorAdd(VectorMultiply(VectorLoadU(vYAxis.GetVector()), tmp1), tmp2);
+	tmp2 = VectorMad(VectorLoadU(vYAxis.GetVectorRef()), tmp1, tmp2);
 	tmp1 = VectorSet(fZ);
-	tmp2 = VectorAdd(VectorMultiply(VectorLoadU(vZAxis.GetVector()), tmp1), tmp2);
+	tmp2 = VectorMad(VectorLoadU(vZAxis.GetVectorRef()), tmp1, tmp2);
 	tmp1 = VectorSet(fW);
-	tmp2 = VectorAdd(VectorMultiply(VectorLoadU(vWAxis.GetVector()), tmp1), tmp2);
+	tmp2 = VectorMad(VectorLoadU(vWAxis.GetVectorRef()), tmp1, tmp2);
 
 	return Vec3f(tmp2);
 #else
 	return Vec3f(fX * mMatrix.xAxis.GetXRef() + fY * mMatrix.yAxis.GetXRef() + fZ * mMatrix.zAxis.GetXRef() + fW * mMatrix.wAxis.GetXRef(),
 				 fX * mMatrix.xAxis.GetYRef() + fY * mMatrix.yAxis.GetYRef() + fZ * mMatrix.zAxis.GetYRef() + fW * mMatrix.wAxis.GetYRef(),
 				 fX * mMatrix.xAxis.GetZRef() + fY * mMatrix.yAxis.GetZRef() + fZ * mMatrix.zAxis.GetZRef() + fW * mMatrix.wAxis.GetZRef());
-#endif
+#endif // RECON_SSE_VERSION
 }
 
 __forceinline Mat43f_Out RECON_VEC_CALLCONV Mat43f::operator+(Mat43f_In rhs) const

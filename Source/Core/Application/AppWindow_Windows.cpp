@@ -5,9 +5,6 @@
 #include "AppEntryPoint.h"
 #include "Application.h"
 
-#define WIN32_LEAN_AND_MEAN
-#include <Windows.h>
-
 #include <DbgHelp.h>
 #pragma comment(lib,"dbghelp.lib")
 

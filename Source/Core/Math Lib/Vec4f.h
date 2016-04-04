@@ -19,18 +19,18 @@ typedef Vec4f float4;
 
 class Vec4f
 {
-#if SSE_AVAILABLE && 0
+#if RECON_SSE_VERSION && 0
 #define DEFINE_VEC4_ENUM_CONSTRUCTOR(enumeration, valueToInit)\
 	explicit __forceinline Vec4f(enumeration)\
 	{\
-		VectorStoreU(VectorSet(valueToInit), vector); \
+		VectorStoreU(VectorSet(valueToInit), Vector128); \
 	}
 #else
 #define DEFINE_VEC4_ENUM_VAL_CONSTRUCTOR(enumeration, xVal, yVal, zVal, wVal)\
 	explicit __forceinline Vec4f(enumeration) : iX((s32)xVal), iY((s32)yVal), iZ((s32)zVal), iW((s32)wVal){}
 
 #define DEFINE_VEC4_ENUM_CONSTRUCTOR(enumeration, valueToInit) DEFINE_VEC4_ENUM_VAL_CONSTRUCTOR(enumeration, valueToInit, valueToInit, valueToInit, valueToInit)
-#endif //SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 #define VEC4_ACCESSOR(retType, funcName, retVal) \
 	__forceinline retType funcName() { return retVal; }
@@ -78,12 +78,12 @@ public:
 	explicit Vec4f(const f32& fX, Vec3f_In vYZW);
 	explicit Vec4f(Vec3f_In vVector, const f32& fA);
 
-#if SSE_AVAILABLE
-	explicit Vec4f(Vector_In vVector);
+#if RECON_SSE_VERSION
+	explicit Vec4f(Vector128_In vVector);
 #if !RECON_OS_64BIT
-	explicit Vec4f(Vector&& vVector);
+	explicit Vec4f(Vector128&& vVector);
 #endif // !RECON_OS_64BIT
-#endif //SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 #if defined(VEC4_ACCESSOR) && defined(VEC4_ACCESSOR_CONST)
 	VEC4_ACCESSOR_CONST(f32, GetX, x)
@@ -102,6 +102,7 @@ public:
 	VEC4_ACCESSOR_CONST(const f32&, GetZRef, z)
 	VEC4_ACCESSOR_CONST(const f32&, GetWRef, w)
 	VEC4_ACCESSOR_CONST(const f32*, GetVector, vector);
+	VEC4_ACCESSOR_CONST(const f32*, GetVectorRef, vector)
 
 	VEC4_ACCESSOR_CONST(const s32&, GetXiRef, iX)
 	VEC4_ACCESSOR_CONST(const s32&, GetYiRef, iY)
@@ -114,6 +115,7 @@ public:
 	VEC4_ACCESSOR(f32&, GetZRef, z)
 	VEC4_ACCESSOR(f32&, GetWRef, w)
 	VEC4_ACCESSOR(f32*, GetVector, vector)
+	VEC4_ACCESSOR(f32*, GetVectorRef, vector)
 
 	VEC4_ACCESSOR(s32&, GetXiRef, iX)
 	VEC4_ACCESSOR(s32&, GetYiRef, iY)

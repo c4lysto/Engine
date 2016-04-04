@@ -1,4 +1,4 @@
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 
 #ifndef MAT44V_H
 #define MAT44V_H
@@ -39,7 +39,7 @@ private:
 
 		struct
 		{
-			Vector row1, row2, row3, row4;
+			Vector128 row1, row2, row3, row4;
 		};
 
 		struct
@@ -139,4 +139,4 @@ Vec2V_Out RECON_VEC_CALLCONV SinCos(ScalarV_In vRadians);
 
 #endif // MAT44V_h
 
-#endif // SSE_AVAILABLE
+#endif // RECON_SSE_VERSION

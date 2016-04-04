@@ -12,10 +12,6 @@
 #if RECON_DEBUG
 #include <crtdbg.h>
 #include <assert.h>
-
-	#if RECON_OS_WINDOWS
-		#include <Windows.h>
-	#endif // RECON_OS_WINDOWS
 #endif
 
 #include "DebugWindow.h"

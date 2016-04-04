@@ -15,7 +15,7 @@ class CmdLineArg
 	friend class CmdLineManager;
 
 private:
-	std::string m_szArgName;
+	const char* m_szArgName;
 	_CmdLineArgData** m_pArgData;
 
 public:

@@ -20,15 +20,15 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\Source\Core\Utilities\CmdLineArg.cpp" />
-    <ClCompile Include="..\Source\Core\Utilities\CmdLineArgData.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\CmdLineManager.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\Debugging\DebugWindow.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\HashString.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\Memory\LinearMemoryPool.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.cpp" />
-    <ClCompile Include="..\Source\Core\Utilities\SysHook.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\Random.cpp" />
+    <ClCompile Include="..\Source\Core\Utilities\WindowsHook.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\Thread.cpp" />
     <ClCompile Include="..\Source\Core\Utilities\ThreadPool.cpp" />
-    <ClCompile Include="..\Source\Core\Utilities\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Source\Core\Utilities\Atomic.h" />
@@ -38,20 +38,28 @@
     <ClInclude Include="..\Source\Core\Utilities\CmdLineManager.h" />
     <ClInclude Include="..\Source\Core\Utilities\Color.h" />
     <ClInclude Include="..\Source\Core\Utilities\Function.h" />
+    <ClInclude Include="..\Source\Core\Utilities\GlobalFuncs.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Memory\LinearMemoryPool.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h" />
     <ClInclude Include="..\Source\Core\Utilities\Random.h" />
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugHelp.h" />
     <ClInclude Include="..\Source\Core\Utilities\Debugging\DebugWindow.h" />
     <ClInclude Include="..\Source\Core\Utilities\GlobalDefines.h" />
     <ClInclude Include="..\Source\Core\Utilities\HashString.h" />
-    <ClInclude Include="..\Source\Core\Utilities\Memory\ObjectMemoryPool.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Memory\MemPool.h" />
     <ClInclude Include="..\Source\Core\Utilities\Event.h" />
-    <ClInclude Include="..\Source\Core\Utilities\SysHook.h" />
+    <ClInclude Include="..\Source\Core\Utilities\WindowsHook.h" />
     <ClInclude Include="..\Source\Core\Utilities\Mutex.h" />
     <ClInclude Include="..\Source\Core\Utilities\Semaphore.h" />
     <ClInclude Include="..\Source\Core\Utilities\Thread.h" />
     <ClInclude Include="..\Source\Core\Utilities\ThreadPool.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Time.h" />
     <ClInclude Include="..\Source\Core\Utilities\Timer.h" />
     <ClInclude Include="..\Source\Core\Utilities\UtilitiesInclude.h" />
+    <ClInclude Include="..\Source\Core\Utilities\Windows_Inc.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Source\Core\Utilities\GlobalFuncs.inl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <ProjectGuid>{10AE78BB-987D-4061-A1D4-8F4ADD9A86EB}</ProjectGuid>

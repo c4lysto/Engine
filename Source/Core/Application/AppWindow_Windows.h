@@ -5,7 +5,7 @@
 
 #if RECON_OS_WINDOWS
 
-#include <windows.h>
+#include "../Utilities/Windows_Inc.h"
 
 namespace recon
 {

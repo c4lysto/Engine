@@ -1,7 +1,7 @@
 #ifndef SCALARV_H
 #define SCALARV_H
 
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 
 class ScalarV;
 
@@ -26,14 +26,14 @@ class ScalarV
 
 private:
 
-	Vector row;
+	Vector128 row;
 
 public:
 	ScalarV(){}
 #if !RECON_OS_64BIT
 	ScalarV(ScalarV&& vVector);
 #endif // !RECON_OS_64BIT
-	explicit ScalarV(Vector_In vVector);
+	explicit ScalarV(Vector128_In vVector);
 	explicit ScalarV(const f32& fVal);
 	explicit ScalarV(const s32& iVal);
 
@@ -106,7 +106,10 @@ public:
 #undef DEFINE_SCALARV_ENUM_CONSTRUCTOR
 #endif //DEFINE_SCALARV_ENUM_CONSTRUCTOR
 
-	Vector_Out GetVector() const;
+	Vector128_Out GetVector() const;
+
+	Vector128_Ref GetVectorRef();
+	Vector128_ConstRef GetVectorRef() const;
 
 	f32 GetFloat() const;
 	f32 AsFloat() const;
@@ -163,8 +166,13 @@ public:
 	operator bool() const;
 };
 
+ScalarV_Out ScalarVInt(s32 scalar);
+
+template<s32 constantVal>
+ScalarV_Out ScalarVConstant();
+
 #include "ScalarV.inl"
 
-#endif // SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 #endif // SCALARV_H

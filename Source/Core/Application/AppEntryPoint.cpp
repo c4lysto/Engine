@@ -1,6 +1,7 @@
 #include "AppEntryPoint.h"
 
 #include "Application.h"
+#include "../Utilities/Thread.h"
 
 namespace recon
 {
@@ -17,6 +18,8 @@ bool AppEntryPoint::InitEntryPoint(int argc, char** argv)
 
 	ms_pApp->InitCmdLineArgsConfigType();
 	CmdLineManager::ProcessCmdLineArgs(argc, argv);
+
+	Thread::InitMainThread();
 
 	return true;
 }

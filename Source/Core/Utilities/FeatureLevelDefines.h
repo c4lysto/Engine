@@ -1,5 +1,5 @@
-#ifndef FEATURE_LEVEL_DEFINES_H
-#define FEATURE_LEVEL_DEFINES_H
+#ifndef _RECON_FEATURE_LEVEL_DEFINES_H_
+#define _RECON_FEATURE_LEVEL_DEFINES_H_
 
 /* Start: Compiler Detection */
 
@@ -46,6 +46,8 @@
 	// Let Code Know That We've Detected an OS
 	#undef RECON_OS_DETECTED
 	#define RECON_OS_DETECTED (1)
+
+	#include "Windows_Inc.h"
 #endif 
 /*	End: Window Detection	*/
 
@@ -103,7 +105,6 @@
 /*	End: OS Detection	*/
 
 
-
 /*	Start: C++ Feature Detection	*/
 
 #ifndef CPP11
@@ -115,6 +116,13 @@
 #endif // CPP11
 
 #if RECON_MSC_COMPILER
+
+// Disable some stupid compiler warnings
+#pragma warning(disable : 4127) // Conditional Expression is Constant
+#pragma warning(disable : 4512) // Assignment Operator Was Implicitly Defined As Deleted
+#pragma warning(disable : 4010) // Single-Line Comment Contains Line-Continuation Character
+#pragma warning(disable : 4201) // nonstandard extension used : nameless struct/union
+#pragma warning(disable : 4714) // marked as __forceinline not inlined
 
 #if (_MSC_VER >= 1800)
 #define VS2013_FEATURE_LEVEL (1)
@@ -217,4 +225,4 @@
 
 
 
-#endif // FEATURE_LEVEL_DEFINES_H
+#endif // _RECON_FEATURE_LEVEL_DEFINES_H_

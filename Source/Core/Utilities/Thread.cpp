@@ -14,13 +14,16 @@ namespace recon
 
 static CmdLineArg s_ThreadRandomSeed("randomseed");
 
+THREADLOCAL u32 Thread::ms_ThreadType = ThreadType::Worker;
+THREADLOCAL u32 Thread::ms_ThreadFlags = 0;
+
 Thread::Thread()
 {
 }
 
-Thread::Thread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eThreadPrio /*= ThreadPriority::Normal*/, const char* szThreadName /*= nullptr*/)
+Thread::Thread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eThreadPrio /*= ThreadPriority::Normal*/, u32 threadType /*= ThreadType::Generic*/, u32 threadFlags /*= 0*/, const char* szThreadName /*= nullptr*/)
 {
-	StartThread(pThreadProc, pArgs, eThreadPrio, szThreadName);
+	StartThread(pThreadProc, pArgs, eThreadPrio, threadType, threadFlags, szThreadName);
 }
 
 Thread::Thread(Thread&& rhs) :
@@ -34,7 +37,7 @@ Thread::~Thread()
 	EndThread();
 }
 
-bool Thread::StartThread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eThreadPrio /*= ThreadPriority::Normal*/, const char* szThreadName /*= nullptr*/)
+bool Thread::StartThread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eThreadPrio /*= ThreadPriority::Normal*/, u32 threadType /*= ThreadType::Generic*/, u32 threadFlags /*= 0*/, const char* szThreadName /*= nullptr*/)
 {
 	bool bThreadStarted = false;
 
@@ -45,13 +48,15 @@ bool Thread::StartThread(ThreadProc pThreadProc, void* pArgs, ThreadPriority eTh
 
 			m_ThreadArgs.m_pThreadFunc = pThreadProc;
 			m_ThreadArgs.m_pArgs = pArgs;
+			m_ThreadArgs.m_ThreadType = threadType;
+			m_ThreadArgs.m_ThreadFlags = threadFlags;
 
 			m_Thread = std::thread(DefaultThreadProc, &m_ThreadArgs);
 
-			if(GetThreadHandle() != nullptr)
+			if(GetHandle() != nullptr)
 			{
-				Thread::SetThreadName(szThreadName, this);
-				Thread::SetThreadPriority(eThreadPrio, this);
+				Thread::SetName(szThreadName, this);
+				Thread::SetPriority(eThreadPrio, this);
 
 				bThreadStarted = true;
 			}
@@ -71,13 +76,16 @@ int Thread::DefaultThreadProc(void* pArgs)
 
 	if(pArgs)
 	{
-		s32 randomSeed = (s32)(TimePoint::Now() - TimePoint()).Get<TimeInterval::Milliseconds>();
+		s32 randomSeed = (s32)TimePoint::Now().GetAs<TimeInterval::Milliseconds>();
 
 		s_ThreadRandomSeed.Get(randomSeed);
-
+			
 		Rand::Seed(randomSeed);
 
 		ThreadArgs& threadArgs = *(ThreadArgs*)pArgs;
+
+		ms_ThreadType = threadArgs.m_ThreadType;
+		ms_ThreadFlags = threadArgs.m_ThreadFlags;
 
 		(threadArgs.m_pThreadFunc)(threadArgs.m_pArgs);
 
@@ -108,8 +116,11 @@ void Thread::EndThread()
 }
 
 // pThread - Pass nullptr to set Calling Thread's Name
-void Thread::SetThreadName(const char* szName, Thread* pThread /*= nullptr*/)
+void Thread::SetName(const char* szName, Thread* pThread /*= nullptr*/)
 {
+	(void)szName;
+	(void)pThread;
+
 #if RECON_OS_WINDOWS
 	// How to Set Thread Name According to MSDN
 
@@ -125,7 +136,7 @@ void Thread::SetThreadName(const char* szName, Thread* pThread /*= nullptr*/)
 
 	THREADNAME_INFO info;
 	info.szName = szName ? szName : "Worker Thread";
-	info.dwThreadID = pThread ? GetThreadId(pThread->GetThreadHandle()) : (DWORD)-1;
+	info.dwThreadID = pThread ? ::GetThreadId(pThread->GetHandle()) : (DWORD)-1;
 	info.dwFlags = 0;
 
 	__try
@@ -136,15 +147,29 @@ void Thread::SetThreadName(const char* szName, Thread* pThread /*= nullptr*/)
 #endif // RECON_OS_WINDOWS
 }
 
-void Thread::SetThreadPriority(ThreadPriority threadPriority, Thread* pThread /*= nullptr*/)
+void Thread::SetPriority(ThreadPriority threadPriority, Thread* pThread /*= nullptr*/)
 {
+	(void)threadPriority;
+	(void)pThread;
+
 #if RECON_OS_WINDOWS
 	if (Verifyf((threadPriority == ThreadPriority::Idle || threadPriority == ThreadPriority::Critical) ||
 		(threadPriority >= ThreadPriority::Low && threadPriority <= ThreadPriority::High), "Thread::SetThreadPriority() - Invalid Thread Priority"))
 	{
-		::SetThreadPriority(pThread ? pThread->GetThreadHandle() : GetCurrentThread(), (int)threadPriority);
+		::SetThreadPriority(pThread ? pThread->GetHandle() : GetCurrentThread(), (int)threadPriority);
 	}
 #endif // RECON_OS_WINDOWS
+}
+
+void Thread::InitMainThread(u32 threadFlags /*= 0*/)
+{ 
+	ms_ThreadType = ThreadType::Main; 
+	ms_ThreadFlags = threadFlags; 
+
+	s32 randomSeed = (s32)TimePoint::Now().GetAs<TimeInterval::Milliseconds>();
+	s_ThreadRandomSeed.Get(randomSeed);
+
+	Rand::Seed(randomSeed);
 }
 
 } // namespace recon

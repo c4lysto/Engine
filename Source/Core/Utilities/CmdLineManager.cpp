@@ -98,9 +98,9 @@ char* CmdLineManager::GetNextCmdLineDataBlockPtr(char* cmdLineIter)
 
 	while(*pNextDataBlock != '-' && *pNextDataBlock != '\0')
 	{
-		// if we're in a file and we see a '#' char, then
+		// if we're in a file and we see a '#' or ';' char, then
 		// ignore everything until we hit a new line
-		if(*pNextDataBlock == '#' && ms_ExtArgsParsingDepth)
+		if(IsCmdLineACommentLine(pNextDataBlock) && ms_ExtArgsParsingDepth)
 		{
 			while(*pNextDataBlock != '\n' && *pNextDataBlock != '\0')
 			{
@@ -148,32 +148,32 @@ bool CmdLineManager::IsArgValidForConfigType(const std::vector<_CmdLineConfigTyp
 
 void CmdLineManager::QueryCmdLineArg(CmdLineArg& arg, const char* szArgName)
 {
-	HashWithString hashName(ConvertArgName(szArgName).c_str());
+	std::string name(ConvertArgName(szArgName));
 
 	ArgsMap& argsMap = GetCmdLineArgsMap();
 
-	ArgsMap::iterator iter = argsMap.find(hashName);
+	ArgsMap::iterator iter = argsMap.find(name);
 	if(iter == argsMap.end())
 	{
-		argsMap[hashName] = nullptr;
+		argsMap[name] = nullptr;
 
-		iter = argsMap.find(hashName);
+		iter = argsMap.find(name);
 	}
 
-	arg.m_szArgName = hashName.GetString();
-	arg.m_pArgData = &argsMap[hashName];
+	arg.m_szArgName = iter->first.c_str();
+	arg.m_pArgData = &iter->second;
 }
 
 void CmdLineManager::RemoveCmdLineArg(const char* szArgName)
 {
-	HashWithString hashName(ConvertArgName(szArgName).c_str());
+	std::string name(ConvertArgName(szArgName));
 
 	ArgsMap& argsMap = GetCmdLineArgsMap();
 
-	ArgsMap::iterator iter = argsMap.find(hashName);
+	ArgsMap::iterator iter = argsMap.find(name);
 	if(iter != argsMap.end())
 	{
-		_CmdLineArgData*& pMapEntry = argsMap[hashName];
+		_CmdLineArgData*& pMapEntry = argsMap[name];
 		delete pMapEntry;
 		pMapEntry = nullptr;
 	}
@@ -181,42 +181,27 @@ void CmdLineManager::RemoveCmdLineArg(const char* szArgName)
 
 void CmdLineManager::SetCmdLineArg(const char* szArgName, bool boolVal)
 {
-	HashWithString hashName(ConvertArgName(szArgName).c_str());
-	_CmdLineArgData*& pMapEntry = GetCmdLineArgsMap()[hashName];
-	delete pMapEntry;
-	pMapEntry = new _CmdLineArgBool(boolVal);
+	_SetCmdLineArg(szArgName, new _CmdLineArgBool(boolVal));
 }
 
 void CmdLineManager::SetCmdLineArg(const char* szArgName, float floatVal)
 {
-	HashWithString hashName(ConvertArgName(szArgName).c_str());
-	_CmdLineArgData*& pMapEntry = GetCmdLineArgsMap()[hashName];
-	delete pMapEntry;
-	pMapEntry = new _CmdLineArgF32(floatVal);
+	_SetCmdLineArg(szArgName, new _CmdLineArgF32(floatVal));
 }
 
 void CmdLineManager::SetCmdLineArg(const char* szArgName, s32 intVal)
 {
-	HashWithString hashName(ConvertArgName(szArgName).c_str());
-	_CmdLineArgData*& pMapEntry = GetCmdLineArgsMap()[hashName];
-	delete pMapEntry;
-	pMapEntry = new _CmdLineArgS32(intVal);
+	_SetCmdLineArg(szArgName, new _CmdLineArgS32(intVal));
 }
 
 void CmdLineManager::SetCmdLineArg(const char* szArgName, const char* stringVal)
 {
-	HashWithString hashName(ConvertArgName(szArgName).c_str());
-	_CmdLineArgData*& pMapEntry = GetCmdLineArgsMap()[hashName];
-	delete pMapEntry;
-	pMapEntry = new _CmdLineArgString(stringVal);
+	_SetCmdLineArg(szArgName, new _CmdLineArgString(stringVal));
 }
 
 void CmdLineManager::SetCmdLineArg(const char* szArgName, const float* floatArr, u32 arrSize)
 {
-	HashWithString hashName(ConvertArgName(szArgName).c_str());
-	_CmdLineArgData*& pMapEntry = GetCmdLineArgsMap()[hashName];
-	delete pMapEntry;
-	pMapEntry = new _CmdLineArgArray(floatArr, arrSize);
+	_SetCmdLineArg(szArgName, new _CmdLineArgArray(floatArr, arrSize));
 }
 
 void CmdLineManager::PrintCmdLineArgs()
@@ -229,7 +214,7 @@ void CmdLineManager::PrintCmdLineArgs()
 	for(ArgsMap::const_iterator iter = argsMap.begin(); iter != argsMap.end(); ++iter)
 	{
 		std::string val = iter->second ? iter->second->Print() : "";
-		std::cout << "arg: " << iter->first.GetString() << ",\t value: '" << val << "'\n";
+		std::cout << "arg: " << iter->first.c_str() << ",\t value: '" << val << "'\n";
 
 		//DisplayDebugString("arg: '-%s', value: '%s'\n", iter->first.GetString(), iter->second ? iter->second->Print() : "");
 	}
@@ -339,14 +324,14 @@ u64 CmdLineManager::ProcessCmdLineArg(char* arg)
 
 void CmdLineManager::RegisterCmdLineArg(_CmdLineArgData* pArgData, const char* szArgName)
 {
-	HashWithString hashName(ConvertArgName(szArgName).c_str());
+	std::string name(ConvertArgName(szArgName));
 
 	ArgsMap& argsMap = GetCmdLineArgsMap();
 
-	ArgsMap::iterator iter = argsMap.find(hashName);
-	if(Verifyf(!(iter != argsMap.end() && hashName.GetString() != iter->first.GetString()), "Command line already exists or there is a hash collision!"))
+	ArgsMap::iterator iter = argsMap.find(name);
+	if(iter == argsMap.end())
 	{
-		argsMap[hashName] = pArgData;
+		argsMap[name] = pArgData;
 	}
 }
 
@@ -391,6 +376,11 @@ _CmdLineArgData* CmdLineManager::DetermineCmdLineArgData(char* argVal, u64& argV
 	return pArgData;
 }
 
+bool CmdLineManager::IsCmdLineACommentLine(const char* cmdLine)
+{
+	return *cmdLine == '#' || *cmdLine == ';';
+}
+
 bool CmdLineManager::IsCmdLineArgAnArray(char* argVal)
 {
 	while(!std::isspace(*argVal) && *argVal != '\0')
@@ -399,7 +389,7 @@ bool CmdLineManager::IsCmdLineArgAnArray(char* argVal)
 		{
 			return true;
 		}
-		else if(!std::isdigit(*argVal) && *argVal != '.')
+		else if(!std::isdigit(*argVal) && *argVal != '.' && *argVal != '-')
 		{
 			return false;
 		}
@@ -440,7 +430,8 @@ _CmdLineArgData* CmdLineManager::CreateCmdLineArgData_Array(char* argVal, u64& a
 	{
 		floatVec.push_back(strtof(argIter, &valEnd));
 
-		if(*valEnd == ',' && std::isdigit(*(valEnd + 1)))
+		if(*valEnd == ',' && 
+		   (std::isdigit(*(valEnd + 1)) || ((*(valEnd + 1)) == '-' && std::isdigit(*(valEnd + 2)))))
 		{
 			++valEnd;
 		}
@@ -564,11 +555,22 @@ _CmdLineArgData* CmdLineManager::CreateCmdLineArgData_S32(char* argVal, u64& arg
 	return new _CmdLineArgS32(intVal);
 }
 
-void CmdLineManager::_SetCmdLineArg(_CmdLineArgData* pArgPtr, _CmdLineArgData* pNewArg)
+void CmdLineManager::_SetCmdLineArg(const char* szArgName, _CmdLineArgData* pNewArgData)
 {
-	/*_CmdLineArgData* pOldData = pArgPtr;
+	std::string name(ConvertArgName(szArgName));
 
-	pArgPtr.CompareExchange();*/
+	ArgsMap& argsMap = GetCmdLineArgsMap();
+
+	ArgsMap::iterator iter = argsMap.find(name);
+	if(iter != argsMap.end())
+	{
+		delete iter->second;
+		iter->second = pNewArgData;
+	}
+	else
+	{
+		RegisterCmdLineArg(pNewArgData, name.c_str());
+	}
 }
 
 } // namespace recon

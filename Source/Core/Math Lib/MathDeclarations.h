@@ -4,13 +4,28 @@
 #include <cmath>
 #include <utility>
 
-#ifndef SSE_AVAILABLE
+#ifndef RECON_SSE_VERSION
+	#include <intrin.h>
+
+	#define SSE_VER_MMX	(5)
+	#define SSE_VER_10 (10)
+	#define SSE_VER_20 (20)
+	#define SSE_VER_30 (30)
+	#define SSE_VER_31 (31)
+	#define SSE_VER_41 (41)
+	#define SSE_VER_42 (42)
+	#define SSE_VER_AVX (50)
+
+	#define SSE_VER_ARM_NEON (SSE_VER_42)
+
 	#if defined(_M_IX86) || defined(_M_AMD64)
-		#define SSE_AVAILABLE 1
+		#define RECON_SSE_VERSION (SSE_VER_AVX)
+	#elif defined (_M_ARM)
+		#define RECON_SSE_VERSION (SSE_VER_ARM_NEON)
 	#else
-		#define SSE_AVAILABLE 0
+		#define RECON_SSE_VERSION (0)
 	#endif
-#endif // SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 #if RECON_MSC_COMPILER && RECON_OS_WINDOWS
 	#if RECON_OS_64BIT
@@ -208,7 +223,7 @@ class Mat33f;
 class Mat43f;
 class Mat44f;
 
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 class ScalarV;
 class Vec2V;
 class Vec3V;
@@ -275,13 +290,13 @@ class Mat44V;
 #define MAT33V_TO_MAT33F(x) x
 #define MAT34V_TO_MAT34F(x) x
 #define MAT44V_TO_MAT44F(x) x
-#endif//SSE_AVAILABLE
+#endif//RECON_SSE_VERSION
 
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 // Flipped the value around because __m128 stores the f32 in the opposite order that you think it does, TRUST ME!
 // _MM_FSHUFFLE makes using the _mm_shuffle_ps() function more intuitive by flipping the values that it passes to _MM_SHUFFLE()
 #define _MM_FSHUFFLE(fp0,fp1,fp2,fp3) _MM_SHUFFLE((int)(fp3),(int)(fp2),(int)(fp1),(int)(fp0))
-#endif
+#endif // RECON_SSE_VERSION
 
 #ifndef PI
 #define PI (3.1415926535897932384626433832795f)

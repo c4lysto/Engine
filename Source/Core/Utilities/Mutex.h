@@ -1,9 +1,9 @@
 #ifndef _RECON_MUTEX_H_
 #define _RECON_MUTEX_H_
 
-#include "UtilitiesInclude.h"
-
 #include <mutex>
+
+#include "UtilitiesInclude.h"
 
 namespace recon
 {

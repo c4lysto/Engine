@@ -58,13 +58,13 @@ public:
 	Vec3f(Vec3f_In vVector);
 	Vec3f(Vec3f&& vVector);
 
-#if SSE_AVAILABLE
-	explicit Vec3f(Vector_In vVector);
+#if RECON_SSE_VERSION
+	explicit Vec3f(Vector128_In vVector);
 
 #if !RECON_OS_64BIT
-	explicit Vec3f(Vector&& vVector);
+	explicit Vec3f(Vector128&& vVector);
 #endif
-#endif
+#endif // RECON_SSE_VERSION
 
 #ifdef DEFINE_VEC3_ENUM_CONSTRUCTOR
 	DEFINE_VEC3_ENUM_CONSTRUCTOR(eZeroInitializer,			FloatToIntRep::Zero)
@@ -150,6 +150,7 @@ public:
 	VEC3_ACCESSOR_CONST(const f32&, GetYRef, y)
 	VEC3_ACCESSOR_CONST(const f32&, GetZRef, z)
 	VEC3_ACCESSOR_CONST(const f32*, GetVector, vector)
+	VEC3_ACCESSOR_CONST(const f32*, GetVectorRef, vector)
 
 	VEC3_ACCESSOR_CONST(s32, GetXi, iX)
 	VEC3_ACCESSOR_CONST(s32, GetYi, iY)
@@ -162,6 +163,7 @@ public:
 	VEC3_ACCESSOR(f32&, GetYRef, y)
 	VEC3_ACCESSOR(f32&, GetZRef, z)
 	VEC3_ACCESSOR(f32*, GetVector, vector)
+	VEC3_ACCESSOR(f32*, GetVectorRef, vector)
 
 	VEC3_ACCESSOR(s32&, GetXiRef, iX)
 	VEC3_ACCESSOR(s32&, GetYiRef, iY)

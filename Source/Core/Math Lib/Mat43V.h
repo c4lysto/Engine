@@ -1,4 +1,4 @@
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 
 #ifndef MAT43V_H
 #define MAT43V_H
@@ -40,7 +40,7 @@ private:
 
 		struct
 		{
-			Vector row1, row2, row3, row4;
+			Vector128 row1, row2, row3, row4;
 		};
 
 		struct
@@ -148,4 +148,4 @@ Mat44V_Out RECON_VEC_CALLCONV Mat43ToMat44(Mat43V_In mMatrix);
 
 #endif // MAT43V_H
 
-#endif // SSE_AVAILABLE
+#endif // RECON_SSE_VERSION

@@ -2,7 +2,7 @@
 #define VEC2V_H
 
 #include "MathDeclarations.h"
-#if SSE_AVAILABLE
+#if RECON_SSE_VERSION
 
 #include "ScalarV.h"
 
@@ -50,7 +50,7 @@ private:
 	union
 	{
 		f32 floatArr[4];
-		Vector row;
+		Vector128 row;
 
 		union
 		{
@@ -73,9 +73,9 @@ public:
 #endif // !RECON_OS_64BIT
 	~Vec2V(){}
 
-	explicit Vec2V(Vector_In rhs);
+	explicit Vec2V(Vector128_In rhs);
 #if !RECON_OS_64BIT
-	Vec2V(Vector&& rhs);
+	Vec2V(Vector128&& rhs);
 #endif // !RECON_OS_64BIT
 
 #if defined(DEFINE_VEC2V_ENUM_CONSTRUCTOR) && defined(DEFINE_VEC2V_ENUM_VAL_CONSTRUCTOR)
@@ -163,12 +163,14 @@ public:
 	VEC2V_ACCESSOR_CONST(const f32&, GetZRef, z)
 	VEC2V_ACCESSOR_CONST(const f32&, GetWRef, w)
 
-	VEC2V_ACCESSOR_CONST(Vector_Out, RECON_VEC_CALLCONV GetVector, row)
+	VEC2V_ACCESSOR_CONST(Vector128_Out, RECON_VEC_CALLCONV GetVector, row)
+	VEC2V_ACCESSOR_CONST(Vector128_ConstRef, RECON_VEC_CALLCONV GetVectorRef, row)
 
 	VEC2V_ACCESSOR(f32&, GetXRef, x)
 	VEC2V_ACCESSOR(f32&, GetYRef, y)
 	VEC2V_ACCESSOR(f32&, GetZRef, z)
 	VEC2V_ACCESSOR(f32&, GetWRef, w)
+	VEC2V_ACCESSOR(Vector128_Ref, RECON_VEC_CALLCONV GetVectorRef, row)
 #undef VEC2V_ACCESSOR
 #undef VEC2V_ACCESSOR_CONST
 #undef VEC2V_ACCESSOR_SCALARV_CONST
@@ -239,6 +241,12 @@ public:
 Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(s32 intVal);
 Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(s32 intX, s32 intY);
 
+template<s32 constantVal>
+Vec2V_Out RECON_VEC_CALLCONV Vec2VConstant();
+
+template<s32 constantX, s32 constantY>
+Vec2V_Out RECON_VEC_CALLCONV Vec2VConstant();
+
 ScalarV RECON_VEC_CALLCONV Dot(Vec2V_In lhs, Vec2V_In rhs);
 
 ScalarV RECON_VEC_CALLCONV Mag(Vec2V_In vVector);
@@ -251,6 +259,6 @@ Vec2V_Out RECON_VEC_CALLCONV Cross(Vec2V_In vVectorA, Vec2V_In vVectorB);
 
 #include "Vec2V.inl"
 
-#endif //SSE_AVAILABLE
+#endif // RECON_SSE_VERSION
 
 #endif // VEC2V_H

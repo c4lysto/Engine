@@ -9,13 +9,13 @@ __forceinline Vec2V::Vec2V(const f32& fX, const f32& fY) : row(VectorSet(fX, fY,
 	
 }
 
-__forceinline Vec2V::Vec2V(ScalarV_In vVal) : row(vVal.GetVector())
+__forceinline Vec2V::Vec2V(ScalarV_In vVal) : row(vVal.GetVectorRef())
 {
 
 }
 
 __forceinline Vec2V::Vec2V(ScalarV_In vX, ScalarV_In vY) :
-	row(VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W2>(vX.GetVector(), vY.GetVector()))
+	row(VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W2>(vX.GetVectorRef(), vY.GetVectorRef()))
 {
 	
 }
@@ -32,13 +32,13 @@ __forceinline Vec2V::Vec2V(Vec2V&& vVector) : row(std::move(vVector.row))
 }
 #endif // !RECON_OS_64BIT
 
-__forceinline Vec2V::Vec2V(Vector_In rhs) : row(rhs)
+__forceinline Vec2V::Vec2V(Vector128_In rhs) : row(rhs)
 {
 
 }
 
 #if !RECON_OS_64BIT
-__forceinline Vec2V::Vec2V(Vector&& rhs) : row(std::move(rhs))
+__forceinline Vec2V::Vec2V(Vector128&& rhs) : row(std::move(rhs))
 {
 	
 }
@@ -46,22 +46,22 @@ __forceinline Vec2V::Vec2V(Vector&& rhs) : row(std::move(rhs))
 
 __forceinline void RECON_VEC_CALLCONV Vec2V::SetX(ScalarV_In xVal)
 {
-	row = VectorPermute<VecElem::X2, VecElem::Y1, VecElem::Z1, VecElem::W1>(row, xVal.GetVector());
+	row = VectorPermute<VecElem::X2, VecElem::Y1, VecElem::Z1, VecElem::W1>(row, xVal.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec2V::SetY(ScalarV_In yVal)
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W1>(row, yVal.GetVector());
+	row = VectorPermute<VecElem::X1, VecElem::Y2, VecElem::Z1, VecElem::W1>(row, yVal.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec2V::SetZ(ScalarV_In zVal)
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(row, zVal.GetVector());
+	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z2, VecElem::W1>(row, zVal.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec2V::SetW(ScalarV_In wVal)
 {
-	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(row, wVal.GetVector());
+	row = VectorPermute<VecElem::X1, VecElem::Y1, VecElem::Z1, VecElem::W2>(row, wVal.GetVectorRef());
 }
 
 __forceinline Vec2V_Out Vec2V::operator-() const
@@ -110,17 +110,17 @@ __forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator*(Vec2V_In vVector) co
 
 __forceinline Vec2V RECON_VEC_CALLCONV Vec2V::operator*(ScalarV_In vScalar) const
 {
-	return Vec2V(VectorMultiply(row, vScalar.GetVector()));
+	return Vec2V(VectorMultiply(row, vScalar.GetVectorRef()));
 }
 
 __forceinline Vec2V_Out RECON_VEC_CALLCONV operator*(ScalarV_Ref vScalar, Vec2V_In vVector)
 {
-	return Vec2V(VectorMultiply(vVector.row, vScalar.GetVector()));
+	return Vec2V(VectorMultiply(vVector.row, vScalar.GetVectorRef()));
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec2V::operator*=(ScalarV_In vScalar)
 {
-	row = VectorMultiply(row, vScalar.GetVector());
+	row = VectorMultiply(row, vScalar.GetVectorRef());
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec2V::operator*=(Vec2V_In vVector)
@@ -135,7 +135,7 @@ __forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator/(Vec2V_In vVector) co
 
 __forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2V::operator/(ScalarV_In vScalar) const
 {
-	return Vec2V(VectorDivide(row, vScalar.GetVector()));
+	return Vec2V(VectorDivide(row, vScalar.GetVectorRef()));
 }
 
 __forceinline void RECON_VEC_CALLCONV Vec2V::operator/=(Vec2V_In vVector)
@@ -145,7 +145,7 @@ __forceinline void RECON_VEC_CALLCONV Vec2V::operator/=(Vec2V_In vVector)
 
 __forceinline void RECON_VEC_CALLCONV Vec2V::operator/=(ScalarV_In vScalar)
 {
-	row = VectorDivide(row, vScalar.GetVector());
+	row = VectorDivide(row, vScalar.GetVectorRef());
 }
 
 __forceinline bool RECON_VEC_CALLCONV Vec2V::operator==(Vec2V_In vVector) const
@@ -211,4 +211,16 @@ __forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(s32 intVal)
 __forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VInt(s32 intX, s32 intY)
 {
 	return Vec2V(VectorSet(intX, intY, (s32)VEC_FILL_VAL, (s32)VEC_FILL_VAL));
+}
+
+template<s32 constantVal>
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VConstant()
+{
+	return Vec2V(VectorSetConstant<constantVal>());
+}
+
+template<s32 constantX, s32 constantY>
+__forceinline Vec2V_Out RECON_VEC_CALLCONV Vec2VConstant()
+{
+	return Vec2V(VectorSetConstant<constantX, constantY, 0, 0>());
 }

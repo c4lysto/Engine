@@ -3,10 +3,10 @@
 
 #include <list>
 
-#include "../UtilitiesInclude.h"
+#include "MemPool.h"
 #include "../Mutex.h"
 
-#define REGISTER_MEM_POOL(className) \
+#define REGISTER_OBJ_MEM_POOL(className) \
 private: \
 	static ObjectMemoryPool<className> ms_##className##_MemPool (TO_STRING(className)); \
 public: \
@@ -21,15 +21,6 @@ public: \
 
 namespace recon
 {
-
-class IMemPool
-{
-public:
-	virtual ~IMemPool() {}
-
-	virtual void Init(u32 poolSize) = 0;
-	virtual void Shutdown() = 0;
-};
 
 template <typename _ObjType>
 class ObjectMemoryPool : public IMemPool

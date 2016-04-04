@@ -27,11 +27,11 @@ void ThreadPool::WorkerThreadProc(void* pArgs)
 			{
 				if(pThreadPool->GetWork(jobArgs))
 				{
-					Thread::SetThreadPriority(jobArgs.m_ePriority);
+					Thread::SetPriority(jobArgs.m_ePriority);
 
 					(jobArgs.m_pProc)(jobArgs.m_pArgs);
 
-					Thread::SetThreadPriority(ThreadPriority::Normal);
+					Thread::SetPriority(ThreadPriority::Normal);
 				}
 				else
 				{
@@ -68,7 +68,7 @@ void ThreadPool::Init(u32 poolSize, const char* szPoolName /*= "Thread Pool"*/)
 		{
 			std::ostringstream threadName;
 			threadName << szPoolName << "(" << i << ")";
-			m_vThreads.push_back(Thread(WorkerThreadProc, this, ThreadPriority::Normal, threadName.str().c_str()));
+			m_vThreads.push_back(Thread(WorkerThreadProc, this, ThreadPriority::Normal, ThreadType::Worker, 0, threadName.str().c_str()));
 		}
 	}
 }

@@ -1,18 +1,17 @@
 #ifndef _RECON_INPUT_MANAGER_H_
 #define _RECON_INPUT_MANAGER_H_
 
-#include <Windows.h>
-#include "Input.h"
-
-#include "../Utilities/Event.h"
-#include "../Utilities/SysHook.h"
-#include "../Utilities/Mutex.h"
-#include "../Utilities/Thread.h"
-
 #include <atomic>
 #include <map>
 #include <list>
 #include <queue>
+
+#include "Input.h"
+
+#include "../Utilities/Event.h"
+#include "../Utilities/Mutex.h"
+#include "../Utilities/Thread.h"
+#include "../Utilities/WindowsHook.h"
 
 namespace recon
 {
@@ -37,7 +36,7 @@ private:
 	Event m_NewInputEvent;
 	Mutex m_PendingInputMutex;
 	Mutex m_CurrentInputMutex;
-	SysHook m_InputHook;
+	WindowsHook m_InputHook;
 	std::atomic_flag m_IsInputThreadRunning;
 
 	unsigned char m_ucModifiers;

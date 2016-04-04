@@ -9,19 +9,19 @@ __forceinline Vec4f::Vec4f(Vec4f&& vVector) : x(vVector.x), y(vVector.y), z(vVec
 
 }
 
-#if SSE_AVAILABLE
-__forceinline Vec4f::Vec4f(Vector_In vVector)
+#if RECON_SSE_VERSION
+__forceinline Vec4f::Vec4f(Vector128_In vVector)
 {
 	VectorStoreU(vVector, vector);
 }
 
 #if !RECON_OS_64BIT
-__forceinline Vec4f::Vec4f(Vector&& vVector)
+__forceinline Vec4f::Vec4f(Vector128&& vVector)
 {
 	VectorStoreU(vVector, vector);
 }
 #endif // !RECON_OS_64BIT
-#endif //SSE_AVAILABLE
+#endif //RECON_SSE_VERSION
 
 __forceinline Vec4f::Vec4f(const f32& fVal) : x(fVal), y(fVal), z(fVal), w(fVal)
 {

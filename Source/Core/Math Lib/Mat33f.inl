@@ -87,20 +87,20 @@ __forceinline Mat33f_Out RECON_VEC_CALLCONV Mat33f::operator*(Mat33f_In mMatrix)
 
 inline void RECON_VEC_CALLCONV Mat33f::operator*=(Mat33f_In mMatrix)
 {
-#if SSE_AVAILABLE
-	const Vector otherX = VectorSet(mMatrix.xAxis.GetXRef(), mMatrix.xAxis.GetYRef(), mMatrix.xAxis.GetZRef(), 0.0f);
-	const Vector otherY = VectorSet(mMatrix.yAxis.GetXRef(), mMatrix.yAxis.GetYRef(), mMatrix.yAxis.GetZRef(), 0.0f);
-	const Vector otherZ = VectorSet(mMatrix.zAxis.GetXRef(), mMatrix.zAxis.GetYRef(), mMatrix.zAxis.GetZRef(), 0.0f);
+#if RECON_SSE_VERSION
+	const Vector128 otherX = VectorSet(mMatrix.xAxis.GetXRef(), mMatrix.xAxis.GetYRef(), mMatrix.xAxis.GetZRef(), 0.0f);
+	const Vector128 otherY = VectorSet(mMatrix.yAxis.GetXRef(), mMatrix.yAxis.GetYRef(), mMatrix.yAxis.GetZRef(), 0.0f);
+	const Vector128 otherZ = VectorSet(mMatrix.zAxis.GetXRef(), mMatrix.zAxis.GetYRef(), mMatrix.zAxis.GetZRef(), 0.0f);
 
-	Vector tmp1, tmp2;
+	Vector128 tmp1, tmp2;
 
 	// get the top row
 	tmp1 = VectorSet(xAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(xAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(xAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 
 	xAxis = Vec3f(tmp2);
 
@@ -108,9 +108,9 @@ inline void RECON_VEC_CALLCONV Mat33f::operator*=(Mat33f_In mMatrix)
 	tmp1 = VectorSet(yAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(yAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(yAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 
 	yAxis = Vec3f(tmp2);
 
@@ -118,9 +118,9 @@ inline void RECON_VEC_CALLCONV Mat33f::operator*=(Mat33f_In mMatrix)
 	tmp1 = VectorSet(zAxis.x);
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(zAxis.y);
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(zAxis.z);
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 
 	zAxis = Vec3f(tmp2);
 #else
@@ -144,18 +144,18 @@ inline void RECON_VEC_CALLCONV Mat33f::operator*=(Mat33f_In mMatrix)
 
 inline Vec3f_Out RECON_VEC_CALLCONV operator*(Vec3f_ConstRef vVector, Mat33f_In mMatrix)
 {
-#if SSE_AVAILABLE
-	const Vector otherX = VectorSet(mMatrix.xAxis.GetXRef(), mMatrix.xAxis.GetYRef(), mMatrix.xAxis.GetZRef(), 0.0f);
-	const Vector otherY = VectorSet(mMatrix.yAxis.GetXRef(), mMatrix.yAxis.GetYRef(), mMatrix.yAxis.GetZRef(), 0.0f);
-	const Vector otherZ = VectorSet(mMatrix.zAxis.GetXRef(), mMatrix.zAxis.GetYRef(), mMatrix.zAxis.GetZRef(), 0.0f);
+#if RECON_SSE_VERSION
+	const Vector128 otherX = VectorSet(mMatrix.xAxis.GetXRef(), mMatrix.xAxis.GetYRef(), mMatrix.xAxis.GetZRef(), 0.0f);
+	const Vector128 otherY = VectorSet(mMatrix.yAxis.GetXRef(), mMatrix.yAxis.GetYRef(), mMatrix.yAxis.GetZRef(), 0.0f);
+	const Vector128 otherZ = VectorSet(mMatrix.zAxis.GetXRef(), mMatrix.zAxis.GetYRef(), mMatrix.zAxis.GetZRef(), 0.0f);
 
-	Vector tmp1, tmp2;
+	Vector128 tmp1, tmp2;
 	tmp1 = VectorSet(vVector.GetXRef());
 	tmp2 = VectorMultiply(otherX, tmp1);
 	tmp1 = VectorSet(vVector.GetYRef());
-	tmp2 = VectorAdd(VectorMultiply(otherY, tmp1), tmp2);
+	tmp2 = VectorMad(otherY, tmp1, tmp2);
 	tmp1 = VectorSet(vVector.GetZRef());
-	tmp2 = VectorAdd(VectorMultiply(otherZ, tmp1), tmp2);
+	tmp2 = VectorMad(otherZ, tmp1, tmp2);
 
 	return Vec3f(tmp2);
 #else
@@ -166,7 +166,7 @@ inline Vec3f_Out RECON_VEC_CALLCONV operator*(Vec3f_ConstRef vVector, Mat33f_In 
 	return Vec3f(	vVector.x * otherX.GetXRef() + vVector.y * otherY.GetXRef() + vVector.z * otherZ.GetXRef(),
 					vVector.x * otherX.GetYRef() + vVector.y * otherY.GetYRef() + vVector.z * otherZ.GetYRef(),
 					vVector.x * otherX.GetZRef() + vVector.y * otherY.GetZRef() + vVector.z * otherZ.GetZRef());
-#endif
+#endif // RECON_SSE_VERSION
 }
 
 __forceinline Vec3f_Ref RECON_VEC_CALLCONV operator*=(Vec3f_Ref vVector, Mat33f_In mMatrix)
